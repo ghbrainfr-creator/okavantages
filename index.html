@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OK Avantages â Bons d'achat et commerce local | Perpignan</title>
+<meta name="description" content="DÃ©couvrez les offres exclusives de vos commerÃ§ants locaux. Bons d'achat, rÃ©ductions et avantages Ã  Perpignan et environs.">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--primary:#f82032;--primary-hover:#d91a2b;--dark:#212529;--light:#6c757d;--bg:#fafafa;--card-shadow:0 2px 15px rgba(0,0,0,.08);--radius:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--dark)}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 20px}
+
+/* Top banner */
+.top-banner{background:#000;color:#fff;text-align:center;padding:8px;font-size:13px}
+.top-banner i{color:var(--primary);margin-right:6px}
+
+/* Nav */
+nav{background:#fff;padding:12px 0;box-shadow:0 2px 10px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
+nav .container{display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:22px;font-weight:700;color:var(--primary)}
+.logo span{color:#000}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{font-weight:500;font-size:14px;transition:.2s}
+.nav-links a:hover{color:var(--primary)}
+.nav-cta{background:var(--primary);color:#fff!important;padding:8px 20px;border-radius:8px}
+.nav-cta:hover{background:var(--primary-hover)}
+
+/* Hero */
+.hero{background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),url('https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover;color:#fff;padding:80px 0;text-align:center}
+.hero h1{font-size:clamp(28px,5vw,44px);font-weight:700;margin-bottom:12px}
+.hero p{font-size:18px;opacity:.9;margin-bottom:30px}
+.hero-stats{display:flex;justify-content:center;gap:40px;margin-top:30px}
+.hero-stats div{text-align:center}
+.hero-stats strong{display:block;font-size:28px}
+.hero-stats span{font-size:13px;opacity:.8}
+
+/* Search */
+.search-bar{max-width:600px;margin:-25px auto 0;position:relative;z-index:10}
+.search-bar input{width:100%;padding:16px 24px;border-radius:50px;border:none;box-shadow:0 4px 20px rgba(0,0,0,.12);font-size:15px;font-family:inherit}
+.search-bar i{position:absolute;right:20px;top:50%;transform:translateY(-50%);color:var(--light)}
+
+/* Categories */
+.categories{padding:50px 0 30px;text-align:center}
+.cat-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:20px}
+.cat-btn{padding:10px 22px;border-radius:50px;border:2px solid #e0e0e0;background:#fff;cursor:pointer;font-family:inherit;font-size:13px;font-weight:500;transition:.2s}
+.cat-btn:hover,.cat-btn.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* Section titles */
+.section-title{text-align:center;margin-bottom:30px}
+.section-title h2{font-size:28px;margin-bottom:8px}
+.section-title p{color:var(--light)}
+
+/* Cards grid */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:24px;padding:20px 0 60px}
+.card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--card-shadow);transition:.3s}
+.card:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.card-img{height:180px;background-size:cover;background-position:center;position:relative}
+.card-badge{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.card-featured{position:absolute;top:12px;right:12px;background:#ff6b35;color:#fff;padding:4px 10px;border-radius:20px;font-size:11px}
+.card-body{padding:16px}
+.card-body h3{font-size:16px;margin-bottom:6px}
+.card-meta{color:var(--light);font-size:13px;margin-bottom:8px}
+.card-meta i{margin-right:4px;width:14px}
+.card-rating{color:#ffc107;font-size:13px;margin-bottom:10px}
+.card-rating span{color:var(--light);margin-left:4px}
+.card-desc{font-size:13px;color:var(--light);line-height:1.5;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-offers{display:flex;gap:8px;flex-wrap:wrap}
+.offer-tag{background:#fff0f1;color:var(--primary);padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600}
+
+/* Offers section */
+.offers-section{background:#fff;padding:50px 0}
+.offer-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px;padding:20px 0}
+.offer-card{border:2px solid #f0f0f0;border-radius:var(--radius);padding:20px;transition:.2s;position:relative}
+.offer-card:hover{border-color:var(--primary)}
+.offer-header{display:flex;justify-content:space-between;align-items:start;margin-bottom:12px}
+.offer-price{font-size:24px;font-weight:700;color:var(--primary)}
+.offer-gift{background:#e8f5e9;color:#2e7d32;padding:4px 10px;border-radius:6px;font-size:13px;font-weight:600}
+.offer-merchant{font-weight:600;margin-bottom:4px}
+.offer-desc{color:var(--light);font-size:13px;margin-bottom:12px}
+.offer-btn{display:inline-block;background:var(--primary);color:#fff;padding:10px 24px;border-radius:8px;font-weight:500;font-size:14px;cursor:pointer;border:none;font-family:inherit;transition:.2s;width:100%;text-align:center}
+.offer-btn:hover{background:var(--primary-hover)}
+.offer-sales{color:var(--light);font-size:12px;margin-top:8px;text-align:center}
+
+/* Newsletter */
+.newsletter{background:linear-gradient(135deg,#000,#333);color:#fff;padding:60px 0;text-align:center}
+.newsletter h2{font-size:28px;margin-bottom:10px}
+.newsletter p{opacity:.8;margin-bottom:24px}
+.nl-form{display:flex;max-width:500px;margin:0 auto;gap:10px}
+.nl-form input{flex:1;padding:14px 20px;border-radius:8px;border:none;font-family:inherit;font-size:14px}
+.nl-form button{background:var(--primary);color:#fff;padding:14px 28px;border-radius:8px;border:none;font-weight:600;cursor:pointer;font-family:inherit;transition:.2s}
+.nl-form button:hover{background:var(--primary-hover)}
+
+/* Footer */
+footer{background:#111;color:#fff;padding:40px 0 20px;text-align:center}
+footer p{opacity:.6;font-size:13px;margin-top:16px}
+.footer-links{display:flex;justify-content:center;gap:20px;margin-bottom:16px}
+.footer-links a{color:#fff;opacity:.7;transition:.2s;font-size:14px}
+.footer-links a:hover{opacity:1;color:var(--primary)}
+
+/* Modal */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:30px;max-width:450px;width:90%;position:relative}
+.modal h3{margin-bottom:16px;font-size:20px}
+.modal-close{position:absolute;top:12px;right:16px;font-size:24px;cursor:pointer;color:var(--light)}
+.modal input{width:100%;padding:12px;border:2px solid #e0e0e0;border-radius:8px;margin-bottom:12px;font-family:inherit;font-size:14px}
+.modal input:focus{border-color:var(--primary);outline:none}
+.modal button{width:100%;padding:14px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-weight:600;font-size:15px;cursor:pointer;font-family:inherit}
+.modal .success{display:none;text-align:center;padding:20px}
+.modal .success i{font-size:48px;color:#2e7d32;margin-bottom:12px}
+
+/* Responsive */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero-stats{gap:20px}
+  .hero-stats strong{font-size:22px}
+  .nl-form{flex-direction:column}
+  .cards{grid-template-columns:1fr}
+}
+
+/* Loading */
+.loading{text-align:center;padding:40px;color:var(--light)}
+.loading i{font-size:24px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<div class="top-banner">
+  <i class="fas fa-gift"></i> Bienvenue sur OK Avantages â Soutenez vos commerÃ§ants locaux Ã  Perpignan !
+</div>
+
+<nav>
+  <div class="container">
+    <a href="#" class="logo">OK <span>Avantages</span></a>
+    <div class="nav-links">
+      <a href="#merchants">CommerÃ§ants</a>
+      <a href="#offers">Offres</a>
+      <a href="#newsletter">Newsletter</a>
+      <a href="#" class="nav-cta" onclick="document.getElementById('merchantModal').classList.add('show')">
+        <i class="fas fa-store"></i> Espace commerÃ§ant
+      </a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="container">
+    <h1>Bons d'achat chez vos commerÃ§ants prÃ©fÃ©rÃ©s</h1>
+    <p>Achetez malin, soutenez local. Jusqu'Ã  50% d'avantage en plus.</p>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Rechercher un commerÃ§ant, une catÃ©gorie..." oninput="filterMerchants()">
+      <i class="fas fa-search"></i>
+    </div>
+    <div class="hero-stats">
+      <div><strong id="statMerchants">0</strong><span>CommerÃ§ants</span></div>
+      <div><strong id="statOffers">0</strong><span>Offres actives</span></div>
+      <div><strong id="statSales">0</strong><span>Bons vendus</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="categories" id="merchants">
+  <div class="container">
+    <div class="section-title">
+      <h2>Nos commerÃ§ants partenaires</h2>
+      <p>DÃ©couvrez les meilleures adresses de Perpignan</p>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+    <div class="cards" id="merchantCards">
+      <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
+    </div>
+  </div>
+</section>
+
+<section class="offers-section" id="offers">
+  <div class="container">
+    <div class="section-title">
+      <h2><i class="fas fa-tags" style="color:var(--primary)"></i> Offres du moment</h2>
+      <p>Profitez de bons d'achat exclusifs</p>
+    </div>
+    <div class="offer-cards" id="offerCards">
+      <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
+    </div>
+  </div>
+</section>
+
+<section class="newsletter" id="newsletter">
+  <div class="container">
+    <h2><i class="fas fa-envelope"></i> Restez informÃ©</h2>
+    <p>Recevez les meilleures offres chaque semaine</p>
+    <form class="nl-form" onsubmit="return subscribeNewsletter(event)">
+      <input type="email" id="nlEmail" placeholder="Votre adresse email" required>
+      <button type="submit"><i class="fas fa-paper-plane"></i> S'inscrire</button>
+    </form>
+    <p id="nlMsg" style="margin-top:12px;display:none"></p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="logo" style="margin-bottom:16px">OK <span style="color:#fff">Avantages</span></div>
+    <div class="footer-links">
+      <a href="#">Accueil</a>
+      <a href="#merchants">CommerÃ§ants</a>
+      <a href="#offers">Offres</a>
+      <a href="#">Contact</a>
+    </div>
+    <p>&copy; 2026 OK Avantages â Perpignan. Tous droits rÃ©servÃ©s.</p>
+  </div>
+</footer>
+
+<!-- Lead Modal -->
+<div class="modal-overlay" id="leadModal">
+  <div class="modal">
+    <span class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('show')">&times;</span>
+    <div id="leadForm">
+      <h3><i class="fas fa-gift" style="color:var(--primary)"></i> Obtenir ce bon d'achat</h3>
+      <p style="color:var(--light);font-size:14px;margin-bottom:16px" id="leadOfferInfo"></p>
+      <input type="text" id="leadName" placeholder="Votre nom" required>
+      <input type="email" id="leadEmail" placeholder="Votre email" required>
+      <input type="tel" id="leadPhone" placeholder="TÃ©lÃ©phone (optionnel)">
+      <input type="hidden" id="leadOfferId">
+      <input type="hidden" id="leadMerchantId">
+      <button onclick="submitLead()">Recevoir mon bon <i class="fas fa-arrow-right"></i></button>
+    </div>
+    <div class="success" id="leadSuccess">
+      <i class="fas fa-check-circle"></i>
+      <h3>Bon d'achat rÃ©servÃ© !</h3>
+      <p style="color:var(--light)">Vous allez recevoir votre bon par email.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Merchant Modal -->
+<div class="modal-overlay" id="merchantModal">
+  <div class="modal">
+    <span class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('show')">&times;</span>
+    <h3><i class="fas fa-store" style="color:var(--primary)"></i> Espace commerÃ§ant</h3>
+    <p style="color:var(--light);font-size:14px;margin-bottom:16px">Rejoignez OK Avantages et boostez votre visibilitÃ© !</p>
+    <input type="text" placeholder="Nom du commerce">
+    <input type="email" placeholder="Email professionnel">
+    <input type="tel" placeholder="TÃ©lÃ©phone">
+    <button onclick="alert('Merci ! Nous vous contacterons sous 24h.')">Demander un accÃ¨s <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let allMerchants = [];
+let allOffers = [];
+let activeCategory = 'all';
+
+async function loadData() {
+  const [mRes, oRes] = await Promise.all([
+    sb.from('merchants').select('*').eq('status','active').order('featured',{ascending:false}),
+    sb.from('offers').select('*, merchants(name, category)').eq('status','active')
+  ]);
+  allMerchants = mRes.data || [];
+  allOffers = oRes.data || [];
+  
+  document.getElementById('statMerchants').textContent = allMerchants.length;
+  document.getElementById('statOffers').textContent = allOffers.length;
+  document.getElementById('statSales').textContent = allOffers.reduce((s,o) => s + (o.sales_count||0), 0);
+  
+  renderCategories();
+  renderMerchants();
+  renderOffers();
+}
+
+function renderCategories() {
+  const cats = [...new Set(allMerchants.map(m => m.category))].sort();
+  const grid = document.getElementById('catGrid');
+  grid.innerHTML = `<button class="cat-btn active" onclick="setCategory('all')">Tous</button>` +
+    cats.map(c => `<button class="cat-btn" onclick="setCategory('${c}')">${c}</button>`).join('');
+}
+
+function setCategory(cat) {
+  activeCategory = cat;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.toggle('active', 
+    (cat==='all' && b.textContent==='Tous') || b.textContent===cat));
+  renderMerchants();
+}
+
+function filterMerchants() {
+  renderMerchants();
+}
+
+function renderMerchants() {
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const filtered = allMerchants.filter(m => {
+    const matchCat = activeCategory === 'all' || m.category === activeCategory;
+    const matchSearch = !q || m.name.toLowerCase().includes(q) || m.category.toLowerCase().includes(q) || (m.description||'').toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
+  
+  const merchantOffers = {};
+  allOffers.forEach(o => {
+    if (!merchantOffers[o.merchant_id]) merchantOffers[o.merchant_id] = [];
+    merchantOffers[o.merchant_id].push(o);
+  });
+  
+  document.getElementById('merchantCards').innerHTML = filtered.length === 0 
+    ? '<p style="text-align:center;color:var(--light);grid-column:1/-1;padding:40px">Aucun commerÃ§ant trouvÃ©</p>'
+    : filtered.map(m => {
+      const offers = merchantOffers[m.id] || [];
+      const stars = 'â'.repeat(Math.round(m.rating)) + 'â'.repeat(5-Math.round(m.rating));
+      return `<div class="card">
+        <div class="card-img" style="background-image:url('${m.image_url||''}')">
+          <span class="card-badge">${m.category}</span>
+          ${m.featured ? '<span class="card-featured"><i class="fas fa-star"></i> Vedette</span>' : ''}
+        </div>
+        <div class="card-body">
+          <h3>${m.name}</h3>
+          <div class="card-meta"><i class="fas fa-map-marker-alt"></i> ${m.address||''}</div>
+          <div class="card-meta"><i class="fas fa-clock"></i> ${m.hours||''}</div>
+          <div class="card-rating">${stars} <span>${m.rating}/5 (${m.avis} avis)</span></div>
+          <div class="card-desc">${m.description||''}</div>
+          ${offers.length ? '<div class="card-offers">' + offers.map(o => 
+            `<span class="offer-tag" style="cursor:pointer" onclick="openLead('${o.id}','${m.id}','${m.name}',${o.price},${o.gift})">${o.price}â¬ payÃ© â ${o.price+o.gift}â¬ offert</span>`
+          ).join('') + '</div>' : ''}
+        </div>
+      </div>`;
+    }).join('');
+}
+
+function renderOffers() {
+  document.getElementById('offerCards').innerHTML = allOffers.map(o => {
+    const mn = o.merchants ? o.merchants.name : '';
+    return `<div class="offer-card">
+      <div class="offer-header">
+        <div class="offer-price">${o.price}â¬</div>
+        <div class="offer-gift"><i class="fas fa-gift"></i> +${o.gift}â¬ offerts</div>
+      </div>
+      <div class="offer-merchant">${mn}</div>
+      <div class="offer-desc">${o.description||''}</div>
+      <button class="offer-btn" onclick="openLead('${o.id}','${o.merchant_id}','${mn}',${o.price},${o.gift})">
+        <i class="fas fa-shopping-cart"></i> Obtenir ce bon
+      </button>
+      <div class="offer-sales"><i class="fas fa-fire"></i> ${o.sales_count||0} bons vendus</div>
+    </div>`;
+  }).join('');
+}
+
+function openLead(offerId, merchantId, merchantName, price, gift) {
+  document.getElementById('leadOfferInfo').textContent = `${merchantName} â Payez ${price}â¬, recevez ${price+gift}â¬`;
+  document.getElementById('leadOfferId').value = offerId;
+  document.getElementById('leadMerchantId').value = merchantId;
+  document.getElementById('leadForm').style.display = 'block';
+  document.getElementById('leadSuccess').style.display = 'none';
+  document.getElementById('leadModal').classList.add('show');
+}
+
+async function submitLead() {
+  const name = document.getElementById('leadName').value;
+  const email = document.getElementById('leadEmail').value;
+  const phone = document.getElementById('leadPhone').value;
+  const offerId = document.getElementById('leadOfferId').value;
+  const merchantId = document.getElementById('leadMerchantId').value;
+  if (!name || !email) return alert('Veuillez remplir votre nom et email');
+  
+  await sb.from('leads').insert({
+    name, email, phone: phone||null,
+    offer_id: offerId, merchant_id: merchantId,
+    source: 'website', status: 'new'
+  });
+  
+  document.getElementById('leadForm').style.display = 'none';
+  document.getElementById('leadSuccess').style.display = 'block';
+  setTimeout(() => document.getElementById('leadModal').classList.remove('show'), 2500);
+}
+
+async function subscribeNewsletter(e) {
+  e.preventDefault();
+  const email = document.getElementById('nlEmail').value;
+  const {error} = await sb.from('newsletter_subscribers').insert({email});
+  const msg = document.getElementById('nlMsg');
+  msg.style.display = 'block';
+  if (error && error.code === '23505') {
+    msg.textContent = 'Vous Ãªtes dÃ©jÃ  inscrit !';
+    msg.style.color = '#ff6b35';
+  } else if (error) {
+    msg.textContent = 'Erreur, veuillez rÃ©essayer.';
+    msg.style.color = '#f82032';
+  } else {
+    msg.textContent = 'â Inscription rÃ©ussie ! Bienvenue.';
+    msg.style.color = '#4caf50';
+    document.getElementById('nlEmail').value = '';
+  }
+  setTimeout(() => msg.style.display = 'none', 4000);
+  return false;
+}
+
+// Init
+loadData();
+</script>
+</body>
+</html>
