@@ -407,9 +407,12 @@ function applySiteSettings(s) {
   if (s.color_dark) root.style.setProperty('--dark', s.color_dark);
 
   // --- Title & meta ---
+  // Legacy values from before rebrand are ignored so the current HTML default wins.
+  const LEGACY_TITLES = ['OK Avantages', 'MonBonLoc'];
+  const effectiveTitle = (s.site_title && !LEGACY_TITLES.includes(s.site_title)) ? s.site_title : null;
   const tagline = s.site_tagline || '';
-  if (s.site_title) {
-    document.title = s.site_title + (tagline ? ' — ' + tagline : '');
+  if (effectiveTitle) {
+    document.title = effectiveTitle + (tagline ? ' — ' + tagline : '');
   }
   if (s.meta_description) {
     const md = document.querySelector('meta[name="description"]');
@@ -424,8 +427,8 @@ function applySiteSettings(s) {
   }
 
   // --- Nav logo ---
-  if (s.site_title) {
-    const parts = s.site_title.split(' ');
+  if (effectiveTitle) {
+    const parts = effectiveTitle.split(' ');
     const first = parts.shift();
     const rest = parts.join(' ');
     document.querySelectorAll('.logo').forEach(el => {
