@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OK Avantages â Bons d'achat et commerce local | Perpignan</title>
-<meta name="description" content="DÃ©couvrez les offres exclusives de vos commerÃ§ants locaux. Bons d'achat, rÃ©ductions et avantages Ã  Perpignan et environs.">
+<title>OK Avantages — Bons d'achat et commerce local | Perpignan</title>
+<meta name="description" content="Découvrez les offres exclusives de vos commerçants locaux. Bons d'achat, réductions et avantages à Perpignan et environs.">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -127,23 +127,68 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
 .loading{text-align:center;padding:40px;color:var(--light)}
 .loading i{font-size:24px;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
+
+/* Agent immo — Mon sacré voisin */
+.agent-section{background:linear-gradient(135deg,#fff0f1 0%,#fff 100%);padding:60px 0}
+.agent-card{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:center;background:#fff;border-radius:20px;padding:40px;box-shadow:0 10px 40px rgba(0,0,0,.08);border:2px solid var(--primary)}
+.agent-photo{width:240px;height:240px;border-radius:50%;background-size:cover;background-position:center;border:6px solid var(--primary);box-shadow:0 8px 24px rgba(248,32,50,.25)}
+.agent-badge{display:inline-block;background:var(--primary);color:#fff;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:12px;letter-spacing:.5px}
+.agent-card h2{font-size:30px;margin-bottom:6px;color:var(--dark)}
+.agent-card .agent-role{color:var(--primary);font-weight:600;margin-bottom:16px;font-size:15px}
+.agent-card .agent-bio{color:#555;line-height:1.7;margin-bottom:20px;font-size:15px}
+.agent-contacts{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.agent-contacts a{background:#fff0f1;color:var(--primary);padding:10px 18px;border-radius:8px;font-weight:500;font-size:14px;display:inline-flex;align-items:center;gap:8px;transition:.2s;border:1px solid #ffd6d9}
+.agent-contacts a:hover{background:var(--primary);color:#fff}
+.agent-services{display:flex;gap:10px;flex-wrap:wrap}
+.agent-services span{background:#f5f5f5;color:#555;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500}
+
+/* Blog */
+.blog-section{background:#fafafa;padding:60px 0}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:24px;margin-top:30px}
+.blog-card{background:#fff;border-radius:var(--radius);overflow:hidden;box-shadow:var(--card-shadow);transition:.3s;cursor:pointer}
+.blog-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(0,0,0,.12)}
+.blog-img{height:200px;background-size:cover;background-position:center;position:relative}
+.blog-tag{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.blog-body{padding:20px}
+.blog-body h3{font-size:18px;margin-bottom:8px;line-height:1.3}
+.blog-meta{color:var(--light);font-size:12px;margin-bottom:10px}
+.blog-meta i{margin-right:4px}
+.blog-excerpt{color:#555;font-size:13px;line-height:1.6;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.blog-link{color:var(--primary);font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px}
+
+/* Blog modal */
+.blog-modal{background:#fff;border-radius:16px;padding:0;max-width:700px;width:90%;max-height:85vh;overflow-y:auto;position:relative}
+.blog-modal .blog-modal-img{height:280px;background-size:cover;background-position:center;border-radius:16px 16px 0 0}
+.blog-modal .blog-modal-body{padding:30px 36px 36px}
+.blog-modal h2{font-size:26px;margin-bottom:10px;line-height:1.3}
+.blog-modal .blog-modal-content{color:#444;line-height:1.75;font-size:15px}
+.blog-modal .blog-modal-content p{margin-bottom:14px}
+
+@media(max-width:768px){
+  .agent-card{grid-template-columns:1fr;padding:28px 20px;text-align:center}
+  .agent-photo{margin:0 auto;width:180px;height:180px}
+  .agent-contacts{justify-content:center}
+  .agent-services{justify-content:center}
+}
 </style>
 </head>
 <body>
 
 <div class="top-banner">
-  <i class="fas fa-gift"></i> Bienvenue sur OK Avantages â Soutenez vos commerÃ§ants locaux Ã  Perpignan !
+  <i class="fas fa-gift"></i> Bienvenue sur OK Avantages — Soutenez vos commerçants locaux à Perpignan !
 </div>
 
 <nav>
   <div class="container">
     <a href="#" class="logo">OK <span>Avantages</span></a>
     <div class="nav-links">
-      <a href="#merchants">CommerÃ§ants</a>
+      <a href="#merchants">Commerçants</a>
       <a href="#offers">Offres</a>
+      <a href="#agent-immo">Agent immo</a>
+      <a href="#blog">Le Mag</a>
       <a href="#newsletter">Newsletter</a>
       <a href="#" class="nav-cta" onclick="document.getElementById('merchantModal').classList.add('show')">
-        <i class="fas fa-store"></i> Espace commerÃ§ant
+        <i class="fas fa-store"></i> Espace commerçant
       </a>
     </div>
   </div>
@@ -151,14 +196,14 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
 
 <section class="hero">
   <div class="container">
-    <h1>Bons d'achat chez vos commerÃ§ants prÃ©fÃ©rÃ©s</h1>
-    <p>Achetez malin, soutenez local. Jusqu'Ã  50% d'avantage en plus.</p>
+    <h1>Bons d'achat chez vos commerçants préférés</h1>
+    <p>Achetez malin, soutenez local. Jusqu'à 50% d'avantage en plus.</p>
     <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Rechercher un commerÃ§ant, une catÃ©gorie..." oninput="filterMerchants()">
+      <input type="text" id="searchInput" placeholder="Rechercher un commerçant, une catégorie..." oninput="filterMerchants()">
       <i class="fas fa-search"></i>
     </div>
     <div class="hero-stats">
-      <div><strong id="statMerchants">0</strong><span>CommerÃ§ants</span></div>
+      <div><strong id="statMerchants">0</strong><span>Commerçants</span></div>
       <div><strong id="statOffers">0</strong><span>Offres actives</span></div>
       <div><strong id="statSales">0</strong><span>Bons vendus</span></div>
     </div>
@@ -168,12 +213,42 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
 <section class="categories" id="merchants">
   <div class="container">
     <div class="section-title">
-      <h2>Nos commerÃ§ants partenaires</h2>
-      <p>DÃ©couvrez les meilleures adresses de Perpignan</p>
+      <h2>Nos commerçants partenaires</h2>
+      <p>Découvrez les meilleures adresses de Perpignan</p>
     </div>
     <div class="cat-grid" id="catGrid"></div>
     <div class="cards" id="merchantCards">
       <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Mon sacré voisin : bandeau agent immobilier -->
+<section class="agent-section" id="agent-immo">
+  <div class="container">
+    <div class="section-title">
+      <h2><i class="fas fa-home" style="color:var(--primary)"></i> Mon sacré voisin</h2>
+      <p>Votre conseiller immobilier de confiance à Perpignan</p>
+    </div>
+    <div class="agent-card">
+      <div class="agent-photo" id="agentPhoto" style="background-image:url('https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80')"></div>
+      <div>
+        <span class="agent-badge"><i class="fas fa-award"></i> Agent certifié</span>
+        <h2 id="agentName">Nordine Mouaouia</h2>
+        <div class="agent-role" id="agentRole">Conseiller immobilier — Guy Hoquet Perpignan</div>
+        <p class="agent-bio" id="agentBio">Expert du marché immobilier perpignanais depuis plus de 15 ans, je vous accompagne dans tous vos projets : achat, vente, estimation, conseil patrimonial. Approche humaine, données marché à jour, stratégie personnalisée. Votre réussite est ma priorité.</p>
+        <div class="agent-contacts">
+          <a href="tel:+33468000000" id="agentTel"><i class="fas fa-phone"></i> 04 68 00 00 00</a>
+          <a href="mailto:n.mouaouia@guyhoquet.com" id="agentEmail"><i class="fas fa-envelope"></i> n.mouaouia@guyhoquet.com</a>
+          <a href="#" id="agentWeb" onclick="document.getElementById('agentModal').classList.add('show');return false"><i class="fas fa-calendar-check"></i> Prendre rendez-vous</a>
+        </div>
+        <div class="agent-services">
+          <span><i class="fas fa-check"></i> Estimation gratuite</span>
+          <span><i class="fas fa-check"></i> Vente & Achat</span>
+          <span><i class="fas fa-check"></i> Conseil patrimonial</span>
+          <span><i class="fas fa-check"></i> Investissement locatif</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -192,7 +267,7 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
 
 <section class="newsletter" id="newsletter">
   <div class="container">
-    <h2><i class="fas fa-envelope"></i> Restez informÃ©</h2>
+    <h2><i class="fas fa-envelope"></i> Restez informé</h2>
     <p>Recevez les meilleures offres chaque semaine</p>
     <form class="nl-form" onsubmit="return subscribeNewsletter(event)">
       <input type="email" id="nlEmail" placeholder="Votre adresse email" required>
@@ -202,16 +277,58 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
   </div>
 </section>
 
+<!-- Blog section -->
+<section class="blog-section" id="blog">
+  <div class="container">
+    <div class="section-title">
+      <h2><i class="fas fa-newspaper" style="color:var(--primary)"></i> Le Mag de votre région</h2>
+      <p>Recettes typiques, événements locaux et conseils immobiliers</p>
+    </div>
+    <div class="blog-grid" id="blogGrid">
+      <div class="loading" style="grid-column:1/-1"><i class="fas fa-spinner"></i> Chargement...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Blog Modal -->
+<div class="modal-overlay" id="blogModal">
+  <div class="blog-modal">
+    <span class="modal-close" style="background:rgba(255,255,255,.9);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center" onclick="this.closest('.modal-overlay').classList.remove('show')">&times;</span>
+    <div class="blog-modal-img" id="blogModalImg"></div>
+    <div class="blog-modal-body">
+      <span class="blog-tag" style="position:static;display:inline-block;margin-bottom:12px" id="blogModalTag"></span>
+      <h2 id="blogModalTitle"></h2>
+      <div class="blog-meta" id="blogModalMeta"></div>
+      <div class="blog-modal-content" id="blogModalContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Agent Modal -->
+<div class="modal-overlay" id="agentModal">
+  <div class="modal">
+    <span class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('show')">&times;</span>
+    <h3><i class="fas fa-home" style="color:var(--primary)"></i> Prendre rendez-vous</h3>
+    <p style="color:var(--light);font-size:14px;margin-bottom:16px">Laissez-moi vos coordonnées et je vous rappelle sous 24h.</p>
+    <input type="text" id="agentContactName" placeholder="Votre nom">
+    <input type="email" id="agentContactEmail" placeholder="Votre email">
+    <input type="tel" id="agentContactPhone" placeholder="Téléphone">
+    <button onclick="submitAgentContact()">Envoyer la demande <i class="fas fa-arrow-right"></i></button>
+  </div>
+</div>
+
 <footer>
   <div class="container">
     <div class="logo" style="margin-bottom:16px">OK <span style="color:#fff">Avantages</span></div>
     <div class="footer-links">
       <a href="#">Accueil</a>
-      <a href="#merchants">CommerÃ§ants</a>
+      <a href="#merchants">Commerçants</a>
       <a href="#offers">Offres</a>
+      <a href="#agent-immo">Agent immo</a>
+      <a href="#blog">Le Mag</a>
       <a href="#">Contact</a>
     </div>
-    <p>&copy; 2026 OK Avantages â Perpignan. Tous droits rÃ©servÃ©s.</p>
+    <p>&copy; 2026 OK Avantages — Perpignan. Tous droits réservés.</p>
   </div>
 </footer>
 
@@ -224,14 +341,14 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
       <p style="color:var(--light);font-size:14px;margin-bottom:16px" id="leadOfferInfo"></p>
       <input type="text" id="leadName" placeholder="Votre nom" required>
       <input type="email" id="leadEmail" placeholder="Votre email" required>
-      <input type="tel" id="leadPhone" placeholder="TÃ©lÃ©phone (optionnel)">
+      <input type="tel" id="leadPhone" placeholder="Téléphone (optionnel)">
       <input type="hidden" id="leadOfferId">
       <input type="hidden" id="leadMerchantId">
       <button onclick="submitLead()">Recevoir mon bon <i class="fas fa-arrow-right"></i></button>
     </div>
     <div class="success" id="leadSuccess">
       <i class="fas fa-check-circle"></i>
-      <h3>Bon d'achat rÃ©servÃ© !</h3>
+      <h3>Bon d'achat réservé !</h3>
       <p style="color:var(--light)">Vous allez recevoir votre bon par email.</p>
     </div>
   </div>
@@ -241,12 +358,12 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
 <div class="modal-overlay" id="merchantModal">
   <div class="modal">
     <span class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('show')">&times;</span>
-    <h3><i class="fas fa-store" style="color:var(--primary)"></i> Espace commerÃ§ant</h3>
-    <p style="color:var(--light);font-size:14px;margin-bottom:16px">Rejoignez OK Avantages et boostez votre visibilitÃ© !</p>
+    <h3><i class="fas fa-store" style="color:var(--primary)"></i> Espace commerçant</h3>
+    <p style="color:var(--light);font-size:14px;margin-bottom:16px">Rejoignez OK Avantages et boostez votre visibilité !</p>
     <input type="text" placeholder="Nom du commerce">
     <input type="email" placeholder="Email professionnel">
-    <input type="tel" placeholder="TÃ©lÃ©phone">
-    <button onclick="alert('Merci ! Nous vous contacterons sous 24h.')">Demander un accÃ¨s <i class="fas fa-arrow-right"></i></button>
+    <input type="tel" placeholder="Téléphone">
+    <button onclick="alert('Merci ! Nous vous contacterons sous 24h.')">Demander un accès <i class="fas fa-arrow-right"></i></button>
   </div>
 </div>
 
@@ -258,23 +375,130 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allMerchants = [];
 let allOffers = [];
+let allBlogPosts = [];
 let activeCategory = 'all';
 
+// Blog fallback content (recettes, événements, conseil immo) utilisé si la table blog_posts est vide
+const FALLBACK_BLOG = [
+  {
+    id:'r1', category:'Recettes',
+    title:'La véritable boles de picolat catalane',
+    excerpt:"Boulettes de viande mijotées à la tomate, olives et champignons : le plat signature de la cuisine catalane nord. Découvrez la recette authentique transmise de génération en génération à Perpignan.",
+    image:'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=80',
+    author:'Chef Marc R.', date:'5 avril 2026',
+    content:`<p>Les <strong>boles de picolat</strong> sont l'un des plats emblématiques de la cuisine catalane du Roussillon. Ces boulettes de viande mijotées à la sauce tomate, relevées d'olives vertes et de cèpes, se dégustent traditionnellement avec des haricots blancs.</p><p><strong>Ingrédients (4 personnes)</strong> : 500g de viande hachée (bœuf + porc), 2 œufs, 100g de mie de pain, 1 oignon, 4 gousses d'ail, persil, 500g de tomates concassées, 150g d'olives vertes dénoyautées, 200g de cèpes, 400g de haricots blancs cuits, huile d'olive, sel, poivre.</p><p><strong>Préparation</strong> : Mélangez la viande, l'oignon haché, l'ail, le persil, les œufs et la mie de pain trempée dans du lait. Formez des boulettes de la taille d'une noix. Faites-les dorer à la poêle, puis mijotez-les 30 minutes dans la tomate avec olives et cèpes. Ajoutez les haricots en fin de cuisson. Servez bien chaud avec du pain de campagne et un verre de Côtes-du-Roussillon.</p><p>Astuce : préparez ce plat la veille, il sera encore meilleur réchauffé !</p>`
+  },
+  {
+    id:'e1', category:'Événements',
+    title:'Festival Live au Campo : la programmation 2026 dévoilée',
+    excerpt:"Du 3 au 6 juillet, le Campo Santo accueille à nouveau les plus grands artistes pour son festival estival. Voici les têtes d'affiche et les infos pratiques pour ne rien manquer.",
+    image:'https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=800&q=80',
+    author:'Rédaction', date:'2 avril 2026',
+    content:`<p>Le célèbre festival <strong>Live au Campo</strong> revient en juillet 2026 dans le cadre magique du Campo Santo de Perpignan, cloître-cimetière gothique classé. Quatre soirées de concerts sous les étoiles avec une programmation éclectique mêlant pop française, rock et musiques du monde.</p><p><strong>Programmation 2026</strong> : M (Matthieu Chedid), Juliette Armanet, Feu! Chatterton, Angèle, Clara Luciani, Calogero et de nombreux artistes locaux en première partie.</p><p><strong>Infos pratiques</strong> : billetterie ouverte sur le site officiel de la Ville de Perpignan. Tarifs de 25€ à 45€ selon les soirées. Ouverture des portes à 19h30. Restauration et buvette sur place. Pensez à réserver tôt : les éditions précédentes ont affiché complet en quelques semaines !</p><p>Un événement à ne pas manquer pour découvrir le patrimoine de Perpignan en musique.</p>`
+  },
+  {
+    id:'c1', category:'Conseil immo',
+    title:'Acheter à Perpignan en 2026 : les 5 quartiers à surveiller',
+    excerpt:"Prix en hausse modérée, rendements locatifs attractifs, métro-bus en développement : Perpignan reste une valeur sûre. Analyse des quartiers porteurs et des pièges à éviter.",
+    image:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
+    author:'Nordine Mouaouia', date:'8 avril 2026',
+    content:`<p>En 2026, Perpignan confirme son statut de marché immobilier accessible en France : le <strong>prix médian</strong> au m² reste sous les 2 000€, très loin des moyennes nationales, avec des rendements locatifs bruts pouvant dépasser 7% dans certains secteurs.</p><p><strong>Les 5 quartiers à surveiller</strong> :</p><p><strong>1. Saint-Assiscle</strong> — Proche gare TGV, en pleine mutation. Idéal pour investir locatif : la demande étudiante est forte.</p><p><strong>2. Centre historique</strong> — Cachet unique, mais vigilance sur l'état du bâti. À privilégier pour les passionnés de pierre.</p><p><strong>3. Moulin à Vent</strong> — Quartier résidentiel calme, familial. Prix raisonnables, écoles à proximité.</p><p><strong>4. Saint-Jacques</strong> — En pleine rénovation urbaine. Opportunités à saisir pour les investisseurs patients.</p><p><strong>5. Catalunya</strong> — Dynamique commercial, idéal pour primo-accédants.</p><p><strong>Pièges à éviter</strong> : DPE F/G qui deviendront non louables, copropriétés dégradées, biens sur nuisances sonores. Faites toujours estimer par un professionnel avant de signer.</p>`
+  },
+  {
+    id:'r2', category:'Recettes',
+    title:'Crème catalane : le dessert emblématique du Roussillon',
+    excerpt:"Cousine de la crème brûlée, parfumée à la cannelle et au zeste de citron : la crème catalane est le dessert star des tables catalanes. Recette simple et inratable en 20 minutes.",
+    image:'https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=800&q=80',
+    author:'Chef Marc R.', date:'30 mars 2026',
+    content:`<p>La <strong>crème catalane</strong>, ou <em>crema catalana</em>, est traditionnellement dégustée le jour de la Saint-Joseph. Crémeuse, parfumée à la cannelle et au citron, avec son caramel croquant sur le dessus, c'est un dessert festif et simple à réaliser.</p><p><strong>Ingrédients (6 personnes)</strong> : 1L de lait entier, 8 jaunes d'œufs, 200g de sucre + 60g pour caraméliser, 40g de Maïzena, 1 bâton de cannelle, le zeste d'un citron non traité.</p><p><strong>Préparation</strong> : Faites infuser cannelle et zeste dans le lait chaud 10 minutes. Fouettez les jaunes avec le sucre et la Maïzena. Versez le lait filtré sur les jaunes, mélangez, puis remettez sur feu doux jusqu'à épaississement (ne pas bouillir). Répartissez dans des ramequins, réfrigérez 4h minimum. Au moment de servir, saupoudrez de sucre et caramélisez au chalumeau.</p><p>Accompagnez d'un verre de Muscat de Rivesaltes pour une note 100% catalane !</p>`
+  },
+  {
+    id:'e2', category:'Événements',
+    title:'Les Jeudis de Perpignan : animations gratuites tout l\'été',
+    excerpt:"Tous les jeudis de juillet et août, le centre-ville de Perpignan vibre au rythme des concerts gratuits, marchés d'artisans et spectacles de rue. Le rendez-vous incontournable de l'été.",
+    image:'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=800&q=80',
+    author:'Rédaction', date:'28 mars 2026',
+    content:`<p>Les <strong>Jeudis de Perpignan</strong> reviennent pour une nouvelle édition : chaque jeudi soir de juillet et août, le centre-ville se transforme en scène à ciel ouvert, avec des animations gratuites pour tous.</p><p><strong>Au programme</strong> : concerts (jazz manouche, rumba catalane, pop indé), marchés nocturnes d'artisans et producteurs locaux, spectacles de rue, démonstrations de danse sardane, et bien sûr une restauration 100% catalane avec paella géante et grillades.</p><p><strong>Lieux</strong> : place de la République, place de la Loge, quai Vauban. Début des animations à 19h jusqu'à minuit. Entrée libre. Parking gratuit aux Allées Maillol après 19h.</p><p>L'occasion parfaite de redécouvrir le cœur historique de Perpignan en famille ou entre amis, dans une ambiance conviviale et chaleureuse.</p>`
+  },
+  {
+    id:'c2', category:'Conseil immo',
+    title:'Vendre son bien en 2026 : le guide des étapes clés',
+    excerpt:"Estimation, diagnostic, mise en valeur, négociation : vendre son bien immobilier ne s'improvise pas. Découvrez les 7 étapes pour réussir votre vente au meilleur prix à Perpignan.",
+    image:'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800&q=80',
+    author:'Nordine Mouaouia', date:'6 avril 2026',
+    content:`<p>Vendre son bien immobilier est une étape importante qui mérite une méthode rigoureuse. Voici les <strong>7 étapes clés</strong> pour maximiser vos chances de vendre vite et au bon prix sur le marché perpignanais.</p><p><strong>1. L'estimation</strong> — Gratuite et sans engagement chez un professionnel. Basée sur les transactions récentes du secteur (DVF).</p><p><strong>2. Les diagnostics</strong> — Obligatoires avant la mise en vente : DPE, amiante, plomb, électricité, gaz selon l'âge du bien.</p><p><strong>3. La mise en valeur</strong> — Home staging léger, photos professionnelles, dépersonnalisation des espaces.</p><p><strong>4. La commercialisation</strong> — Annonces ciblées, réseau d'agence, visites qualifiées.</p><p><strong>5. Les visites</strong> — Toujours accompagnées, questions préparées, feedback immédiat.</p><p><strong>6. La négociation</strong> — Un bon agent fait la différence entre 5 et 10% de prix final.</p><p><strong>7. Le compromis et l'acte</strong> — Délai moyen de 3 mois entre le compromis et la signature chez le notaire.</p><p>Conseil : entourez-vous d'un professionnel local qui connaît parfaitement votre quartier. L'écart de prix entre une vente bien menée et une vente improvisée peut dépasser 15%.</p>`
+  }
+];
+
 async function loadData() {
-  const [mRes, oRes] = await Promise.all([
+  const [mRes, oRes, bRes] = await Promise.all([
     sb.from('merchants').select('*').eq('status','active').order('featured',{ascending:false}),
-    sb.from('offers').select('*, merchants(name, category)').eq('status','active')
+    sb.from('offers').select('*, merchants(name, category)').eq('status','active'),
+    sb.from('blog_posts').select('*').order('published_at',{ascending:false}).limit(6)
   ]);
   allMerchants = mRes.data || [];
   allOffers = oRes.data || [];
-  
+  allBlogPosts = (bRes.data && bRes.data.length > 0) ? bRes.data : FALLBACK_BLOG;
+
   document.getElementById('statMerchants').textContent = allMerchants.length;
   document.getElementById('statOffers').textContent = allOffers.length;
   document.getElementById('statSales').textContent = allOffers.reduce((s,o) => s + (o.sales_count||0), 0);
-  
+
   renderCategories();
   renderMerchants();
   renderOffers();
+  renderBlog();
+}
+
+function renderBlog() {
+  const grid = document.getElementById('blogGrid');
+  if (!allBlogPosts.length) { grid.innerHTML = '<p style="text-align:center;color:var(--light);grid-column:1/-1">Aucun article pour le moment.</p>'; return; }
+  grid.innerHTML = allBlogPosts.map((p,i) => {
+    const img = p.image || p.image_url || 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80';
+    const cat = p.category || 'Actualité';
+    const title = p.title || '';
+    const excerpt = p.excerpt || (p.content ? p.content.replace(/<[^>]+>/g,'').slice(0,140)+'…' : '');
+    const author = p.author || 'Rédaction';
+    const date = p.date || (p.published_at ? new Date(p.published_at).toLocaleDateString('fr-FR') : '');
+    return `<div class="blog-card" onclick="openBlog(${i})">
+      <div class="blog-img" style="background-image:url('${img}')">
+        <span class="blog-tag">${cat}</span>
+      </div>
+      <div class="blog-body">
+        <h3>${title}</h3>
+        <div class="blog-meta"><i class="fas fa-user"></i> ${author} &nbsp;•&nbsp; <i class="fas fa-calendar"></i> ${date}</div>
+        <p class="blog-excerpt">${excerpt}</p>
+        <span class="blog-link">Lire l'article <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openBlog(i) {
+  const p = allBlogPosts[i];
+  const img = p.image || p.image_url || '';
+  document.getElementById('blogModalImg').style.backgroundImage = `url('${img}')`;
+  document.getElementById('blogModalTag').textContent = p.category || 'Actualité';
+  document.getElementById('blogModalTitle').textContent = p.title || '';
+  document.getElementById('blogModalMeta').innerHTML = `<i class="fas fa-user"></i> ${p.author||'Rédaction'} &nbsp;•&nbsp; <i class="fas fa-calendar"></i> ${p.date || (p.published_at ? new Date(p.published_at).toLocaleDateString('fr-FR') : '')}`;
+  document.getElementById('blogModalContent').innerHTML = p.content || p.body || '<p>'+(p.excerpt||'')+'</p>';
+  document.getElementById('blogModal').classList.add('show');
+}
+
+async function submitAgentContact() {
+  const name = document.getElementById('agentContactName').value;
+  const email = document.getElementById('agentContactEmail').value;
+  const phone = document.getElementById('agentContactPhone').value;
+  if (!name || !email) { alert('Veuillez remplir votre nom et email'); return; }
+  await sb.from('leads').insert({
+    name, email, phone: phone||null,
+    source: 'agent-immo', status: 'new'
+  });
+  alert('Merci ! Je vous recontacte sous 24h.');
+  document.getElementById('agentModal').classList.remove('show');
+  document.getElementById('agentContactName').value = '';
+  document.getElementById('agentContactEmail').value = '';
+  document.getElementById('agentContactPhone').value = '';
 }
 
 function renderCategories() {
@@ -310,10 +534,10 @@ function renderMerchants() {
   });
   
   document.getElementById('merchantCards').innerHTML = filtered.length === 0 
-    ? '<p style="text-align:center;color:var(--light);grid-column:1/-1;padding:40px">Aucun commerÃ§ant trouvÃ©</p>'
+    ? '<p style="text-align:center;color:var(--light);grid-column:1/-1;padding:40px">Aucun commerçant trouvé</p>'
     : filtered.map(m => {
       const offers = merchantOffers[m.id] || [];
-      const stars = 'â'.repeat(Math.round(m.rating)) + 'â'.repeat(5-Math.round(m.rating));
+      const stars = '★'.repeat(Math.round(m.rating)) + '☆'.repeat(5-Math.round(m.rating));
       return `<div class="card">
         <div class="card-img" style="background-image:url('${m.image_url||''}')">
           <span class="card-badge">${m.category}</span>
@@ -326,7 +550,7 @@ function renderMerchants() {
           <div class="card-rating">${stars} <span>${m.rating}/5 (${m.avis} avis)</span></div>
           <div class="card-desc">${m.description||''}</div>
           ${offers.length ? '<div class="card-offers">' + offers.map(o => 
-            `<span class="offer-tag" style="cursor:pointer" onclick="openLead('${o.id}','${m.id}','${m.name}',${o.price},${o.gift})">${o.price}â¬ payÃ© â ${o.price+o.gift}â¬ offert</span>`
+            `<span class="offer-tag" style="cursor:pointer" onclick="openLead('${o.id}','${m.id}','${m.name}',${o.price},${o.gift})">${o.price}€ payé → ${o.price+o.gift}€ offert</span>`
           ).join('') + '</div>' : ''}
         </div>
       </div>`;
@@ -338,8 +562,8 @@ function renderOffers() {
     const mn = o.merchants ? o.merchants.name : '';
     return `<div class="offer-card">
       <div class="offer-header">
-        <div class="offer-price">${o.price}â¬</div>
-        <div class="offer-gift"><i class="fas fa-gift"></i> +${o.gift}â¬ offerts</div>
+        <div class="offer-price">${o.price}€</div>
+        <div class="offer-gift"><i class="fas fa-gift"></i> +${o.gift}€ offerts</div>
       </div>
       <div class="offer-merchant">${mn}</div>
       <div class="offer-desc">${o.description||''}</div>
@@ -352,7 +576,7 @@ function renderOffers() {
 }
 
 function openLead(offerId, merchantId, merchantName, price, gift) {
-  document.getElementById('leadOfferInfo').textContent = `${merchantName} â Payez ${price}â¬, recevez ${price+gift}â¬`;
+  document.getElementById('leadOfferInfo').textContent = `${merchantName} — Payez ${price}€, recevez ${price+gift}€`;
   document.getElementById('leadOfferId').value = offerId;
   document.getElementById('leadMerchantId').value = merchantId;
   document.getElementById('leadForm').style.display = 'block';
@@ -386,13 +610,13 @@ async function subscribeNewsletter(e) {
   const msg = document.getElementById('nlMsg');
   msg.style.display = 'block';
   if (error && error.code === '23505') {
-    msg.textContent = 'Vous Ãªtes dÃ©jÃ  inscrit !';
+    msg.textContent = 'Vous êtes déjà inscrit !';
     msg.style.color = '#ff6b35';
   } else if (error) {
-    msg.textContent = 'Erreur, veuillez rÃ©essayer.';
+    msg.textContent = 'Erreur, veuillez réessayer.';
     msg.style.color = '#f82032';
   } else {
-    msg.textContent = 'â Inscription rÃ©ussie ! Bienvenue.';
+    msg.textContent = '✓ Inscription réussie ! Bienvenue.';
     msg.style.color = '#4caf50';
     document.getElementById('nlEmail').value = '';
   }
