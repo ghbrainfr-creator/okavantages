@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace commerçant — MonBonAgent</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
+header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+header .brand{font-size:20px;font-weight:700;color:#f82032}
+header .brand span{color:#212529}
+header .right{display:flex;align-items:center;gap:14px}
+header .user-email{font-size:13px;color:#6c757d}
+header button{background:#f82032;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
+header button:hover{background:#d91a2b}
+header button.ghost{background:#e9ecef;color:#495057}
+.impersonate-banner{background:#fff3cd;color:#664d03;padding:10px 24px;font-size:13px;border-bottom:1px solid #ffecb5;display:none;align-items:center;justify-content:space-between}
+.impersonate-banner.show{display:flex}
+.impersonate-banner button{background:#664d03;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit}
+.wrap{max-width:1200px;margin:24px auto;padding:0 20px}
+.tabs{display:flex;gap:4px;background:#fff;border-radius:12px;padding:6px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow-x:auto}
+.tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#6c757d;white-space:nowrap;transition:.2s}
+.tab:hover{background:#f8f9fa}
+.tab.active{background:#f82032;color:#fff}
+.panel{display:none;background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.panel.active{display:block}
+h2{font-size:20px;margin-bottom:6px}
+.sub{color:#6c757d;font-size:13px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+.field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px;transition:.2s}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:#f82032}
+.field textarea{min-height:80px;resize:vertical}
+.btn{background:#f82032;color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{background:#d91a2b}
+.btn.ghost{background:#e9ecef;color:#495057}
+.btn.ghost:hover{background:#dee2e6}
+.btn.sm{padding:6px 12px;font-size:12px}
+.btn.danger{background:#dc3545}
+.btn.danger:hover{background:#b02a37}
+.toast{position:fixed;bottom:20px;right:20px;background:#212529;color:#fff;padding:14px 20px;border-radius:8px;display:none;z-index:500;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast.ok{background:#198754}
+.toast.err{background:#dc3545}
+.loader{text-align:center;padding:40px;color:#6c757d}
+.empty{text-align:center;padding:40px;color:#6c757d;font-size:14px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid #f0f1f3;font-size:13px;vertical-align:top}
+th{background:#f8f9fa;font-weight:600;color:#495057;font-size:11px;text-transform:uppercase;letter-spacing:.3px}
+tr:hover{background:#fafbfc}
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:500}
+.pill.new{background:#e7f5ff;color:#1971c2}
+.pill.ok{background:#d3f9d8;color:#2b8a3e}
+.pill.warn{background:#fff4e6;color:#d9480f}
+.pill.muted{background:#f1f3f5;color:#6c757d}
+.stat-card{background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffe3e5;padding:22px;border-radius:12px}
+.stat-card .label{font-size:11px;text-transform:uppercase;color:#6c757d;font-weight:600;letter-spacing:.5px}
+.stat-card .value{font-size:32px;font-weight:700;color:#f82032;margin-top:6px}
+.stat-card .trend{font-size:12px;color:#6c757d;margin-top:4px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
+.modal h3{margin-bottom:18px;font-size:20px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;padding-top:18px;border-top:1px solid #f0f1f3}
+.row{display:flex;gap:8px;align-items:center}
+.row-between{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.search{padding:9px 14px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:13px;min-width:220px}
+.template-card{border:1.5px solid #e9ecef;border-radius:10px;padding:16px;margin-bottom:12px;transition:.2s;cursor:pointer}
+.template-card:hover{border-color:#f82032;box-shadow:0 2px 10px rgba(248,32,50,.08)}
+.template-card h4{font-size:15px;margin-bottom:4px}
+.template-card .subj{color:#495057;font-size:13px;margin-bottom:6px}
+.template-card .meta{color:#6c757d;font-size:12px}
+.vars-list{background:#f8f9fa;padding:14px;border-radius:8px;font-size:12px;color:#495057;margin-bottom:14px}
+.vars-list code{background:#fff;padding:2px 6px;border-radius:4px;color:#f82032;font-family:Menlo,Monaco,monospace;font-size:11px;margin:2px}
+.sequence-card{border:1.5px solid #e9ecef;border-radius:10px;padding:16px;margin-bottom:12px}
+.sequence-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sequence-card .name{font-weight:600;font-size:15px}
+.sequence-card .trig{font-size:12px;color:#6c757d;margin-bottom:8px}
+.switch{position:relative;width:40px;height:22px;background:#dee2e6;border-radius:12px;cursor:pointer;transition:.2s}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
+.switch.on{background:#198754}
+.switch.on::after{left:20px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Mon<span>BonAgent</span> <span style="font-weight:400;color:#6c757d;font-size:13px;margin-left:8px">Back-office commerçant</span></div>
+  <div class="right">
+    <span class="user-email" id="userEmail">…</span>
+    <a href="/" style="color:#6c757d;text-decoration:none;font-size:13px"><i class="fas fa-external-link-alt"></i> Voir le site</a>
+    <button class="ghost" onclick="logout()">Déconnexion</button>
+  </div>
+</header>
+
+<div class="impersonate-banner" id="impersonateBanner">
+  <span><i class="fas fa-user-secret"></i> Mode impersonation — vous consultez un commerçant en tant qu'admin.</span>
+  <button onclick="stopImpersonate()"><i class="fas fa-times"></i> Quitter</button>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</div>
+    <div class="tab" data-tab="offers"><i class="fas fa-tags"></i> Offres</div>
+    <div class="tab" data-tab="leads"><i class="fas fa-users"></i> Leads</div>
+    <div class="tab" data-tab="templates"><i class="fas fa-file-alt"></i> Modèles email</div>
+    <div class="tab" data-tab="sequences"><i class="fas fa-clock"></i> Séquences</div>
+    <div class="tab" data-tab="profile"><i class="fas fa-store"></i> Ma fiche</div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="panel active" id="panel-dashboard">
+    <h2>Vue d'ensemble</h2>
+    <p class="sub">Vos chiffres clés des 30 derniers jours.</p>
+    <div class="grid-4" id="stats_grid">
+      <div class="loader">Chargement…</div>
+    </div>
+    <h2 style="margin-top:28px;font-size:16px">Derniers leads</h2>
+    <div id="recent_leads"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- OFFERS -->
+  <div class="panel" id="panel-offers">
+    <div class="row-between">
+      <div>
+        <h2>Mes offres</h2>
+        <p class="sub">Créez et gérez vos bons d'achat.</p>
+      </div>
+      <button class="btn" onclick="openOfferModal()"><i class="fas fa-plus"></i> Nouvelle offre</button>
+    </div>
+    <div id="offers_table"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- LEADS -->
+  <div class="panel" id="panel-leads">
+    <div class="row-between">
+      <div>
+        <h2>Mes leads</h2>
+        <p class="sub">Clients qui ont demandé vos offres.</p>
+      </div>
+      <input type="search" class="search" placeholder="Rechercher…" oninput="filterLeads(this.value)">
+    </div>
+    <div id="leads_table"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- TEMPLATES -->
+  <div class="panel" id="panel-templates">
+    <div class="row-between">
+      <div>
+        <h2>Modèles d'emails</h2>
+        <p class="sub">Ces emails sont envoyés <strong>en votre nom</strong> à vos leads.</p>
+      </div>
+      <button class="btn" onclick="openTemplateModal()"><i class="fas fa-plus"></i> Nouveau modèle</button>
+    </div>
+    <div class="vars-list">
+      <strong>Variables disponibles :</strong>
+      <code>{{nom}}</code><code>{{email}}</code><code>{{commerce}}</code><code>{{adresse}}</code>
+      <code>{{offre}}</code><code>{{prix}}</code><code>{{gift}}</code>
+      <code>{{agent_nom}}</code><code>{{agent_tel}}</code>
+    </div>
+    <div id="templates_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- SEQUENCES -->
+  <div class="panel" id="panel-sequences">
+    <div class="row-between">
+      <div>
+        <h2>Séquences automatiques</h2>
+        <p class="sub">Déclenchez des emails à des moments clés (nouveau lead, conversion, anniversaire…).</p>
+      </div>
+      <button class="btn" onclick="openSequenceModal()"><i class="fas fa-plus"></i> Nouvelle séquence</button>
+    </div>
+    <div id="sequences_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="panel" id="panel-profile">
+    <h2>Ma fiche commerce</h2>
+    <p class="sub">Les informations affichées sur le site public.</p>
+    <div class="grid-2">
+      <div class="field"><label>Nom du commerce</label><input id="m_name"></div>
+      <div class="field"><label>Catégorie</label><input id="m_category" placeholder="Ex: Restaurant, Bijouterie…"></div>
+    </div>
+    <div class="field"><label>Adresse</label><input id="m_address"></div>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone</label><input id="m_phone"></div>
+      <div class="field"><label>Horaires</label><input id="m_hours" placeholder="Ex: Lun-Sam 9h-19h"></div>
+    </div>
+    <div class="field"><label>Description</label><textarea id="m_description" rows="4"></textarea></div>
+    <div class="field"><label>URL de l'image (upload Supabase Storage bientôt)</label><input id="m_image_url"></div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+      <button class="btn ghost" onclick="loadProfile()">Annuler</button>
+      <button class="btn" onclick="saveProfile()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- OFFER MODAL -->
+<div class="modal-overlay" id="offerModal">
+  <div class="modal">
+    <h3 id="offerModalTitle">Nouvelle offre</h3>
+    <div class="field"><label>Nom de l'offre</label><input id="o_name"></div>
+    <div class="field"><label>Description</label><textarea id="o_description" rows="3"></textarea></div>
+    <div class="grid-2">
+      <div class="field"><label>Prix payé (€)</label><input type="number" id="o_price" min="0" step="1"></div>
+      <div class="field"><label>Bonus offert (€)</label><input type="number" id="o_gift" min="0" step="1"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Stock (laisser vide = illimité)</label><input type="number" id="o_stock" min="0"></div>
+      <div class="field"><label>Date d'expiration</label><input type="date" id="o_expires_at"></div>
+    </div>
+    <div class="field"><label>Statut</label><select id="o_status"><option value="active">Active</option><option value="paused">En pause</option><option value="archived">Archivée</option></select></div>
+    <input type="hidden" id="o_id">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('offerModal')">Annuler</button>
+      <button class="btn" onclick="saveOffer()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATE MODAL -->
+<div class="modal-overlay" id="templateModal">
+  <div class="modal">
+    <h3 id="templateModalTitle">Nouveau modèle d'email</h3>
+    <div class="field"><label>Nom interne</label><input id="t_name" placeholder="Ex: Bienvenue nouveau lead"></div>
+    <div class="field"><label>Sujet de l'email</label><input id="t_subject" placeholder="Ex: Bienvenue {{nom}} chez {{commerce}} !"></div>
+    <div class="field"><label>Corps de l'email (HTML autorisé)</label><textarea id="t_body" rows="10" placeholder="Bonjour {{nom}}, merci d'avoir choisi {{commerce}}…"></textarea></div>
+    <input type="hidden" id="t_id">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('templateModal')">Annuler</button>
+      <button class="btn" onclick="saveTemplate()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEQUENCE MODAL -->
+<div class="modal-overlay" id="sequenceModal">
+  <div class="modal">
+    <h3 id="sequenceModalTitle">Nouvelle séquence</h3>
+    <div class="field"><label>Nom</label><input id="s_name" placeholder="Ex: Onboarding nouveau lead"></div>
+    <div class="field">
+      <label>Déclencheur</label>
+      <select id="s_trigger">
+        <option value="new_lead">Nouveau lead reçu</option>
+        <option value="lead_converted">Lead converti (a acheté)</option>
+        <option value="birthday">Anniversaire du lead</option>
+      </select>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Modèle d'email</label><select id="s_template_id"></select></div>
+      <div class="field"><label>Délai après déclenchement (heures)</label><input type="number" id="s_delay_hours" value="0" min="0"></div>
+    </div>
+    <div class="field">
+      <label>Actif ?</label>
+      <select id="s_active"><option value="true">Oui</option><option value="false">Non</option></select>
+    </div>
+    <input type="hidden" id="s_id">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('sequenceModal')">Annuler</button>
+      <button class="btn" onclick="saveSequence()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let merchantId = null;     // the merchant we're managing
+let merchantData = null;   // its row in the merchants table
+let isImpersonating = false;
+let offers = [];
+let leads = [];
+let templates = [];
+let sequences = [];
+
+// ---------- utils ----------
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+function esc(s) { return (s==null?'':String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function fmtDate(d) { return d ? new Date(d).toLocaleDateString('fr-FR') : ''; }
+
+// ---------- auth ----------
+async function logout() {
+  sessionStorage.removeItem('admin_impersonate_merchant');
+  await sb.auth.signOut();
+  window.location.href = '/login.html';
+}
+
+async function checkAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = '/login.html'; return; }
+  currentUser = session.user;
+  document.getElementById('userEmail').textContent = session.user.email;
+
+  // Check if admin is impersonating
+  const impersonatedId = sessionStorage.getItem('admin_impersonate_merchant');
+  if (impersonatedId) {
+    const { data: isAdmin } = await sb.from('admin_users').select('user_id').eq('user_id', session.user.id).maybeSingle();
+    if (isAdmin) {
+      merchantId = impersonatedId;
+      isImpersonating = true;
+      document.getElementById('impersonateBanner').classList.add('show');
+      return;
+    } else {
+      sessionStorage.removeItem('admin_impersonate_merchant');
+    }
+  }
+
+  // Normal merchant user
+  const { data: link } = await sb.from('merchant_users').select('merchant_id').eq('user_id', session.user.id).maybeSingle();
+  if (!link) {
+    // Could be admin who logged in here by mistake
+    const { data: isAdmin } = await sb.from('admin_users').select('user_id').eq('user_id', session.user.id).maybeSingle();
+    if (isAdmin) { window.location.href = '/admin.html'; return; }
+    toast("Vous n'êtes lié à aucun commerce.", 'err');
+    setTimeout(() => logout(), 2000);
+    return;
+  }
+  merchantId = link.merchant_id;
+}
+
+function stopImpersonate() {
+  sessionStorage.removeItem('admin_impersonate_merchant');
+  window.location.href = '/admin.html';
+}
+
+// ---------- tabs ----------
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ---------- profile ----------
+async function loadProfile() {
+  const { data, error } = await sb.from('merchants').select('*').eq('id', merchantId).maybeSingle();
+  if (error || !data) { toast("Impossible de charger la fiche", 'err'); return; }
+  merchantData = data;
+  document.getElementById('m_name').value = data.name || '';
+  document.getElementById('m_category').value = data.category || '';
+  document.getElementById('m_address').value = data.address || '';
+  document.getElementById('m_phone').value = data.phone || '';
+  document.getElementById('m_hours').value = data.hours || '';
+  document.getElementById('m_description').value = data.description || '';
+  document.getElementById('m_image_url').value = data.image_url || '';
+}
+async function saveProfile() {
+  const payload = {
+    name: document.getElementById('m_name').value,
+    category: document.getElementById('m_category').value,
+    address: document.getElementById('m_address').value,
+    phone: document.getElementById('m_phone').value,
+    hours: document.getElementById('m_hours').value,
+    description: document.getElementById('m_description').value,
+    image_url: document.getElementById('m_image_url').value
+  };
+  const { error } = await sb.from('merchants').update(payload).eq('id', merchantId);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Fiche enregistrée');
+  loadProfile();
+}
+
+// ---------- offers ----------
+async function loadOffers() {
+  const { data, error } = await sb.from('offers').select('*').eq('merchant_id', merchantId).order('created_at', {ascending: false});
+  if (error) { toast('Erreur offres: ' + error.message, 'err'); return; }
+  offers = data || [];
+  renderOffers();
+}
+function renderOffers() {
+  const host = document.getElementById('offers_table');
+  if (!offers.length) { host.innerHTML = '<div class="empty">Aucune offre pour le moment. Cliquez sur "Nouvelle offre" pour commencer.</div>'; return; }
+  host.innerHTML = `<table>
+    <thead><tr><th>Nom</th><th>Prix</th><th>Bonus</th><th>Stock</th><th>Ventes</th><th>Statut</th><th>Actions</th></tr></thead>
+    <tbody>${offers.map(o => `
+      <tr>
+        <td><strong>${esc(o.name || 'Offre sans nom')}</strong><div style="color:#6c757d;font-size:12px">${esc((o.description||'').slice(0,60))}</div></td>
+        <td>${o.price}€</td>
+        <td>+${o.gift}€</td>
+        <td>${o.stock ?? '∞'}</td>
+        <td>${o.sales_count || 0}</td>
+        <td><span class="pill ${o.status==='active'?'ok':(o.status==='paused'?'warn':'muted')}">${o.status||'-'}</span></td>
+        <td>
+          <button class="btn sm ghost" onclick="editOffer('${o.id}')"><i class="fas fa-edit"></i></button>
+          <button class="btn sm danger" onclick="deleteOffer('${o.id}')"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+function openOfferModal() {
+  document.getElementById('offerModalTitle').textContent = 'Nouvelle offre';
+  ['o_name','o_description','o_price','o_gift','o_stock','o_expires_at','o_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('o_status').value = 'active';
+  document.getElementById('offerModal').classList.add('show');
+}
+function editOffer(id) {
+  const o = offers.find(x => x.id === id);
+  if (!o) return;
+  document.getElementById('offerModalTitle').textContent = 'Éditer l\'offre';
+  document.getElementById('o_id').value = o.id;
+  document.getElementById('o_name').value = o.name || '';
+  document.getElementById('o_description').value = o.description || '';
+  document.getElementById('o_price').value = o.price || 0;
+  document.getElementById('o_gift').value = o.gift || 0;
+  document.getElementById('o_stock').value = o.stock ?? '';
+  document.getElementById('o_expires_at').value = o.expires_at ? o.expires_at.slice(0,10) : '';
+  document.getElementById('o_status').value = o.status || 'active';
+  document.getElementById('offerModal').classList.add('show');
+}
+async function saveOffer() {
+  const id = document.getElementById('o_id').value;
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('o_name').value,
+    description: document.getElementById('o_description').value,
+    price: parseInt(document.getElementById('o_price').value || '0', 10),
+    gift: parseInt(document.getElementById('o_gift').value || '0', 10),
+    stock: document.getElementById('o_stock').value ? parseInt(document.getElementById('o_stock').value, 10) : null,
+    expires_at: document.getElementById('o_expires_at').value || null,
+    status: document.getElementById('o_status').value
+  };
+  const { error } = id
+    ? await sb.from('offers').update(payload).eq('id', id)
+    : await sb.from('offers').insert(payload);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Offre enregistrée');
+  closeModal('offerModal');
+  loadOffers();
+  loadStats();
+}
+async function deleteOffer(id) {
+  if (!confirm('Supprimer cette offre ? Cette action est irréversible.')) return;
+  const { error } = await sb.from('offers').delete().eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Offre supprimée');
+  loadOffers();
+  loadStats();
+}
+
+// ---------- leads ----------
+let allLeads = [];
+async function loadLeads() {
+  const { data, error } = await sb.from('leads').select('*').eq('merchant_id', merchantId).order('created_at', {ascending: false}).limit(200);
+  if (error) { toast('Erreur leads: ' + error.message, 'err'); return; }
+  allLeads = data || [];
+  leads = allLeads;
+  renderLeads();
+}
+function filterLeads(q) {
+  const s = (q||'').toLowerCase();
+  leads = allLeads.filter(l => !s || (l.name||'').toLowerCase().includes(s) || (l.email||'').toLowerCase().includes(s));
+  renderLeads();
+}
+function renderLeads() {
+  const host = document.getElementById('leads_table');
+  if (!leads.length) { host.innerHTML = '<div class="empty">Aucun lead pour le moment.</div>'; return; }
+  host.innerHTML = `<table>
+    <thead><tr><th>Date</th><th>Nom</th><th>Email</th><th>Téléphone</th><th>Source</th><th>Statut</th></tr></thead>
+    <tbody>${leads.map(l => `
+      <tr>
+        <td>${fmtDate(l.created_at)}</td>
+        <td>${esc(l.name)}</td>
+        <td><a href="mailto:${esc(l.email)}">${esc(l.email)}</a></td>
+        <td>${esc(l.phone||'-')}</td>
+        <td><span class="pill muted">${esc(l.source||'-')}</span></td>
+        <td><span class="pill ${l.status==='converted'?'ok':'new'}">${esc(l.status||'new')}</span></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+// ---------- templates ----------
+async function loadTemplates() {
+  const { data, error } = await sb.from('email_templates').select('*').eq('merchant_id', merchantId).order('created_at', {ascending: false});
+  if (error) { toast('Erreur modèles: ' + error.message, 'err'); return; }
+  templates = data || [];
+  renderTemplates();
+  // also populate sequence template select
+  const sel = document.getElementById('s_template_id');
+  sel.innerHTML = templates.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('') || '<option value="">— aucun modèle —</option>';
+}
+function renderTemplates() {
+  const host = document.getElementById('templates_list');
+  if (!templates.length) { host.innerHTML = '<div class="empty">Aucun modèle. Créez-en un pour commencer.</div>'; return; }
+  host.innerHTML = templates.map(t => `
+    <div class="template-card" onclick="editTemplate('${t.id}')">
+      <h4>${esc(t.name)}</h4>
+      <div class="subj"><i class="fas fa-envelope"></i> ${esc(t.subject||'(pas de sujet)')}</div>
+      <div class="meta">Modifié ${fmtDate(t.updated_at||t.created_at)} • <a href="javascript:void(0)" onclick="event.stopPropagation();deleteTemplate('${t.id}')" style="color:#dc3545">Supprimer</a></div>
+    </div>`).join('');
+}
+function openTemplateModal() {
+  document.getElementById('templateModalTitle').textContent = 'Nouveau modèle';
+  ['t_name','t_subject','t_body','t_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('templateModal').classList.add('show');
+}
+function editTemplate(id) {
+  const t = templates.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('templateModalTitle').textContent = 'Éditer le modèle';
+  document.getElementById('t_id').value = t.id;
+  document.getElementById('t_name').value = t.name || '';
+  document.getElementById('t_subject').value = t.subject || '';
+  document.getElementById('t_body').value = t.body || '';
+  document.getElementById('templateModal').classList.add('show');
+}
+async function saveTemplate() {
+  const id = document.getElementById('t_id').value;
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('t_name').value,
+    subject: document.getElementById('t_subject').value,
+    body: document.getElementById('t_body').value,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = id
+    ? await sb.from('email_templates').update(payload).eq('id', id)
+    : await sb.from('email_templates').insert(payload);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Modèle enregistré');
+  closeModal('templateModal');
+  loadTemplates();
+}
+async function deleteTemplate(id) {
+  if (!confirm('Supprimer ce modèle ?')) return;
+  const { error } = await sb.from('email_templates').delete().eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Modèle supprimé');
+  loadTemplates();
+}
+
+// ---------- sequences ----------
+async function loadSequences() {
+  const { data, error } = await sb.from('email_sequences').select('*, email_templates(name)').eq('merchant_id', merchantId).order('created_at', {ascending: false});
+  if (error) { toast('Erreur séquences: ' + error.message, 'err'); return; }
+  sequences = data || [];
+  renderSequences();
+}
+function renderSequences() {
+  const host = document.getElementById('sequences_list');
+  if (!sequences.length) { host.innerHTML = '<div class="empty">Aucune séquence. Créez-en une pour automatiser vos emails.</div>'; return; }
+  const trigLabels = {new_lead:'Nouveau lead', lead_converted:'Lead converti', birthday:'Anniversaire'};
+  host.innerHTML = sequences.map(s => `
+    <div class="sequence-card">
+      <div class="head">
+        <div class="name">${esc(s.name)}</div>
+        <div class="switch ${s.active?'on':''}" onclick="toggleSequence('${s.id}', ${!s.active})"></div>
+      </div>
+      <div class="trig"><i class="fas fa-bolt"></i> Déclencheur : <strong>${trigLabels[s.trigger]||s.trigger}</strong> • Modèle : ${esc(s.email_templates?.name || '(supprimé)')} • Délai : ${s.delay_hours}h</div>
+      <div class="row">
+        <button class="btn sm ghost" onclick="editSequence('${s.id}')"><i class="fas fa-edit"></i> Éditer</button>
+        <button class="btn sm danger" onclick="deleteSequence('${s.id}')"><i class="fas fa-trash"></i> Supprimer</button>
+      </div>
+    </div>`).join('');
+}
+function openSequenceModal() {
+  document.getElementById('sequenceModalTitle').textContent = 'Nouvelle séquence';
+  ['s_name','s_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('s_trigger').value = 'new_lead';
+  document.getElementById('s_delay_hours').value = 0;
+  document.getElementById('s_active').value = 'true';
+  document.getElementById('sequenceModal').classList.add('show');
+}
+function editSequence(id) {
+  const s = sequences.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('sequenceModalTitle').textContent = 'Éditer la séquence';
+  document.getElementById('s_id').value = s.id;
+  document.getElementById('s_name').value = s.name || '';
+  document.getElementById('s_trigger').value = s.trigger || 'new_lead';
+  document.getElementById('s_template_id').value = s.template_id || '';
+  document.getElementById('s_delay_hours').value = s.delay_hours || 0;
+  document.getElementById('s_active').value = s.active ? 'true' : 'false';
+  document.getElementById('sequenceModal').classList.add('show');
+}
+async function saveSequence() {
+  const id = document.getElementById('s_id').value;
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('s_name').value,
+    trigger: document.getElementById('s_trigger').value,
+    template_id: document.getElementById('s_template_id').value || null,
+    delay_hours: parseInt(document.getElementById('s_delay_hours').value || '0', 10),
+    active: document.getElementById('s_active').value === 'true'
+  };
+  const { error } = id
+    ? await sb.from('email_sequences').update(payload).eq('id', id)
+    : await sb.from('email_sequences').insert(payload);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Séquence enregistrée');
+  closeModal('sequenceModal');
+  loadSequences();
+}
+async function toggleSequence(id, newState) {
+  const { error } = await sb.from('email_sequences').update({active: newState}).eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  loadSequences();
+}
+async function deleteSequence(id) {
+  if (!confirm('Supprimer cette séquence ?')) return;
+  const { error } = await sb.from('email_sequences').delete().eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Séquence supprimée');
+  loadSequences();
+}
+
+// ---------- dashboard stats ----------
+async function loadStats() {
+  const thirty = new Date(Date.now() - 30*24*60*60*1000).toISOString();
+  const [oRes, lRes, lRecent, eRes] = await Promise.all([
+    sb.from('offers').select('id, sales_count', {count: 'exact'}).eq('merchant_id', merchantId),
+    sb.from('leads').select('id', {count: 'exact', head: true}).eq('merchant_id', merchantId),
+    sb.from('leads').select('*').eq('merchant_id', merchantId).gte('created_at', thirty).order('created_at', {ascending: false}).limit(5),
+    sb.from('email_logs').select('id', {count: 'exact', head: true}).eq('merchant_id', merchantId)
+  ]);
+  const totalOffers = oRes.count || 0;
+  const totalSales = (oRes.data || []).reduce((s,o) => s + (o.sales_count||0), 0);
+  const totalLeads = lRes.count || 0;
+  const totalEmails = eRes.count || 0;
+
+  document.getElementById('stats_grid').innerHTML = `
+    <div class="stat-card"><div class="label">Offres actives</div><div class="value">${totalOffers}</div></div>
+    <div class="stat-card"><div class="label">Leads totaux</div><div class="value">${totalLeads}</div></div>
+    <div class="stat-card"><div class="label">Bons vendus</div><div class="value">${totalSales}</div></div>
+    <div class="stat-card"><div class="label">Emails envoyés</div><div class="value">${totalEmails}</div></div>
+  `;
+
+  const recent = lRecent.data || [];
+  document.getElementById('recent_leads').innerHTML = recent.length
+    ? `<table><thead><tr><th>Date</th><th>Nom</th><th>Email</th><th>Source</th></tr></thead>
+       <tbody>${recent.map(l => `<tr><td>${fmtDate(l.created_at)}</td><td>${esc(l.name)}</td><td>${esc(l.email)}</td><td><span class="pill muted">${esc(l.source||'-')}</span></td></tr>`).join('')}</tbody></table>`
+    : '<div class="empty">Aucun lead récent.</div>';
+}
+
+// ---------- init ----------
+(async () => {
+  await checkAuth();
+  if (!merchantId) return;
+  await Promise.all([
+    loadProfile(),
+    loadOffers(),
+    loadLeads(),
+    loadTemplates(),
+    loadSequences(),
+    loadStats()
+  ]);
+})();
+</script>
+</body>
+</html>

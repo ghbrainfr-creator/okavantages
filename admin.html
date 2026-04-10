@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — MonBonAgent</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
+header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+header .brand{font-size:20px;font-weight:700;color:#f82032}
+header .brand span{color:#212529}
+header .right{display:flex;align-items:center;gap:16px}
+header .user-email{font-size:13px;color:#6c757d}
+header button{background:#f82032;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
+header button:hover{background:#d91a2b}
+header button.ghost{background:#e9ecef;color:#495057}
+.wrap{max-width:1100px;margin:24px auto;padding:0 20px}
+.tabs{display:flex;gap:4px;background:#fff;border-radius:12px;padding:6px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow-x:auto}
+.tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#6c757d;white-space:nowrap;transition:.2s}
+.tab:hover{background:#f8f9fa}
+.tab.active{background:#f82032;color:#fff}
+.panel{display:none;background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.panel.active{display:block}
+h2{font-size:20px;margin-bottom:6px}
+.sub{color:#6c757d;font-size:13px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:720px){.grid-2{grid-template-columns:1fr}}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+.field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px;transition:.2s}
+.field input:focus,.field textarea:focus{outline:none;border-color:#f82032}
+.field textarea{min-height:80px;resize:vertical}
+.color-row{display:flex;gap:8px;align-items:center}
+.color-row input[type=color]{width:50px;height:40px;padding:2px;cursor:pointer}
+.btn{background:#f82032;color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
+.btn:hover{background:#d91a2b}
+.btn.ghost{background:#e9ecef;color:#495057}
+.save-bar{position:sticky;bottom:0;background:#fff;padding:16px;margin:20px -28px -28px;border-top:1px solid #e9ecef;border-radius:0 0 12px 12px;display:flex;justify-content:flex-end;gap:10px}
+.toast{position:fixed;bottom:20px;right:20px;background:#212529;color:#fff;padding:14px 20px;border-radius:8px;display:none;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast.ok{background:#198754}
+.toast.err{background:#dc3545}
+.loader{text-align:center;padding:40px;color:#6c757d}
+.empty{text-align:center;padding:40px;color:#6c757d;font-size:14px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid #f0f1f3;font-size:13px}
+th{background:#f8f9fa;font-weight:600;color:#495057;font-size:11px;text-transform:uppercase}
+tr:hover{background:#fafbfc}
+.pill{display:inline-block;padding:3px 9px;border-radius:12px;font-size:11px;font-weight:500}
+.pill.new{background:#e7f5ff;color:#1971c2}
+.pill.ok{background:#d3f9d8;color:#2b8a3e}
+.pill.warn{background:#fff4e6;color:#d9480f}
+.row{display:flex;gap:8px;align-items:center}
+.services-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.service-chip{background:#fff0f1;color:#f82032;padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
+.service-chip i{cursor:pointer}
+.add-service{display:flex;gap:6px;margin-top:8px}
+.add-service input{flex:1}
+.add-service button{padding:8px 14px;background:#e9ecef;border:none;border-radius:6px;cursor:pointer;font-family:inherit}
+.merchant-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #f0f1f3;border-radius:8px;margin-bottom:8px}
+.merchant-row strong{flex:1}
+.merchant-row .tiny{color:#6c757d;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Mon<span>BonAgent</span> <span style="font-weight:400;color:#6c757d;font-size:13px;margin-left:8px">Admin</span></div>
+  <div class="right">
+    <span class="user-email" id="userEmail">…</span>
+    <a href="/" style="color:#6c757d;text-decoration:none;font-size:13px"><i class="fas fa-external-link-alt"></i> Voir le site</a>
+    <button class="ghost" onclick="logout()">Déconnexion</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-tab="branding"><i class="fas fa-palette"></i> Branding</div>
+    <div class="tab" data-tab="agent"><i class="fas fa-user-tie"></i> Agent / Voisin</div>
+    <div class="tab" data-tab="contact"><i class="fas fa-envelope"></i> Contact</div>
+    <div class="tab" data-tab="merchants"><i class="fas fa-store"></i> Commerçants</div>
+    <div class="tab" data-tab="stats"><i class="fas fa-chart-bar"></i> Vue d'ensemble</div>
+  </div>
+
+  <!-- BRANDING -->
+  <div class="panel active" id="panel-branding">
+    <h2>Branding du site</h2>
+    <p class="sub">Personnalisez le titre, le tagline et les couleurs affichées sur la page d'accueil.</p>
+    <div class="grid-2">
+      <div class="field"><label>Titre du site</label><input id="site_title"></div>
+      <div class="field"><label>Tagline (baseline)</label><input id="site_tagline"></div>
+    </div>
+    <div class="field"><label>Titre du hero (grand texte d'accueil)</label><input id="hero_title"></div>
+    <div class="field"><label>Sous-titre du hero</label><input id="hero_subtitle"></div>
+    <div class="grid-2">
+      <div class="field"><label>URL du logo</label><input id="logo_url" placeholder="https://..."></div>
+      <div class="field"><label>URL du favicon</label><input id="favicon_url" placeholder="https://..."></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Couleur principale</label><div class="color-row"><input type="color" id="color_primary_picker"><input id="color_primary"></div></div>
+      <div class="field"><label>Couleur accent</label><div class="color-row"><input type="color" id="color_accent_picker"><input id="color_accent"></div></div>
+    </div>
+    <div class="field"><label>Couleur sombre (texte)</label><div class="color-row"><input type="color" id="color_dark_picker"><input id="color_dark"></div></div>
+    <h2 style="margin-top:24px;font-size:16px">Titres des sections</h2>
+    <div class="grid-2">
+      <div class="field"><label>Titre "commerçants"</label><input id="st_merchants"></div>
+      <div class="field"><label>Titre "offres"</label><input id="st_offers"></div>
+      <div class="field"><label>Titre "blog"</label><input id="st_blog"></div>
+      <div class="field"><label>Titre "agent"</label><input id="st_agent"></div>
+      <div class="field"><label>Titre "newsletter"</label><input id="st_newsletter"></div>
+    </div>
+    <div class="save-bar">
+      <button class="btn ghost" onclick="loadSettings()">Annuler</button>
+      <button class="btn" onclick="saveBranding()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- AGENT -->
+  <div class="panel" id="panel-agent">
+    <h2>Votre profil — "Mon sacré voisin"</h2>
+    <p class="sub">Les informations affichées dans la section agent immobilier.</p>
+    <div class="grid-2">
+      <div class="field"><label>Nom complet</label><input id="agent_name"></div>
+      <div class="field"><label>Rôle / titre</label><input id="agent_role"></div>
+    </div>
+    <div class="field"><label>Bio</label><textarea id="agent_bio" rows="4"></textarea></div>
+    <div class="field"><label>URL photo (upload Supabase Storage bientôt)</label><input id="agent_photo_url" placeholder="https://..."></div>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone</label><input id="agent_tel"></div>
+      <div class="field"><label>Email</label><input id="agent_email"></div>
+    </div>
+    <div class="field">
+      <label>Services proposés</label>
+      <div class="services-list" id="services_list"></div>
+      <div class="add-service">
+        <input id="service_input" placeholder="Ex: Estimation gratuite">
+        <button type="button" onclick="addService()"><i class="fas fa-plus"></i> Ajouter</button>
+      </div>
+    </div>
+    <div class="save-bar">
+      <button class="btn ghost" onclick="loadSettings()">Annuler</button>
+      <button class="btn" onclick="saveAgent()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="panel" id="panel-contact">
+    <h2>Contact & réseaux</h2>
+    <div class="grid-2">
+      <div class="field"><label>Email contact</label><input id="contact_email"></div>
+      <div class="field"><label>Adresse</label><input id="contact_address"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>LinkedIn</label><input id="social_linkedin" placeholder="https://..."></div>
+      <div class="field"><label>Instagram</label><input id="social_instagram" placeholder="https://..."></div>
+    </div>
+    <div class="field"><label>Facebook</label><input id="social_facebook" placeholder="https://..."></div>
+    <div class="save-bar">
+      <button class="btn ghost" onclick="loadSettings()">Annuler</button>
+      <button class="btn" onclick="saveContact()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- MERCHANTS -->
+  <div class="panel" id="panel-merchants">
+    <h2>Commerçants inscrits</h2>
+    <p class="sub">Liste des commerçants et impersonation (voir leur back-office).</p>
+    <div id="merchants_list" class="loader">Chargement…</div>
+  </div>
+
+  <!-- STATS -->
+  <div class="panel" id="panel-stats">
+    <h2>Vue d'ensemble</h2>
+    <p class="sub">Statistiques globales de la plateforme.</p>
+    <div class="grid-2" id="stats_grid">
+      <div class="loader">Chargement…</div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let settings = null;
+let services = [];
+let currentUser = null;
+
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  window.location.href = '/login.html';
+}
+
+async function checkAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = '/login.html'; return null; }
+  currentUser = session.user;
+  document.getElementById('userEmail').textContent = session.user.email;
+  // verify admin
+  const { data: isAdmin, error } = await sb.from('admin_users').select('user_id').eq('user_id', session.user.id).maybeSingle();
+  if (!isAdmin) {
+    toast("Accès refusé — vous n'êtes pas admin", 'err');
+    setTimeout(() => window.location.href = '/merchant.html', 1500);
+    return null;
+  }
+  return session.user;
+}
+
+async function loadSettings() {
+  const { data, error } = await sb.from('site_settings').select('*').limit(1).maybeSingle();
+  if (error || !data) { toast("Impossible de charger les paramètres", 'err'); return; }
+  settings = data;
+  document.getElementById('site_title').value = data.site_title || '';
+  document.getElementById('site_tagline').value = data.site_tagline || '';
+  document.getElementById('hero_title').value = data.hero_title || '';
+  document.getElementById('hero_subtitle').value = data.hero_subtitle || '';
+  document.getElementById('logo_url').value = data.logo_url || '';
+  document.getElementById('favicon_url').value = data.favicon_url || '';
+  document.getElementById('color_primary').value = data.color_primary || '#f82032';
+  document.getElementById('color_primary_picker').value = data.color_primary || '#f82032';
+  document.getElementById('color_accent').value = data.color_accent || '#ff6b35';
+  document.getElementById('color_accent_picker').value = data.color_accent || '#ff6b35';
+  document.getElementById('color_dark').value = data.color_dark || '#1a1a2e';
+  document.getElementById('color_dark_picker').value = data.color_dark || '#1a1a2e';
+  const st = data.section_titles || {};
+  document.getElementById('st_merchants').value = st.merchants || '';
+  document.getElementById('st_offers').value = st.offers || '';
+  document.getElementById('st_blog').value = st.blog || '';
+  document.getElementById('st_agent').value = st.agent || '';
+  document.getElementById('st_newsletter').value = st.newsletter || '';
+
+  document.getElementById('agent_name').value = data.agent_name || '';
+  document.getElementById('agent_role').value = data.agent_role || '';
+  document.getElementById('agent_bio').value = data.agent_bio || '';
+  document.getElementById('agent_photo_url').value = data.agent_photo_url || '';
+  document.getElementById('agent_tel').value = data.agent_tel || '';
+  document.getElementById('agent_email').value = data.agent_email || '';
+  services = Array.isArray(data.agent_services) ? data.agent_services : [];
+  renderServices();
+
+  document.getElementById('contact_email').value = data.contact_email || '';
+  document.getElementById('contact_address').value = data.contact_address || '';
+  const sl = data.social_links || {};
+  document.getElementById('social_linkedin').value = sl.linkedin || '';
+  document.getElementById('social_instagram').value = sl.instagram || '';
+  document.getElementById('social_facebook').value = sl.facebook || '';
+}
+
+function renderServices() {
+  const host = document.getElementById('services_list');
+  host.innerHTML = services.map((s, i) => `<span class="service-chip">${s} <i class="fas fa-times" onclick="removeService(${i})"></i></span>`).join('');
+}
+function addService() {
+  const inp = document.getElementById('service_input');
+  const v = inp.value.trim();
+  if (!v) return;
+  services.push(v);
+  inp.value = '';
+  renderServices();
+}
+function removeService(i) { services.splice(i,1); renderServices(); }
+
+// Color picker sync
+['primary','accent','dark'].forEach(k => {
+  document.getElementById('color_'+k+'_picker').addEventListener('input', e => {
+    document.getElementById('color_'+k).value = e.target.value;
+  });
+  document.getElementById('color_'+k).addEventListener('input', e => {
+    document.getElementById('color_'+k+'_picker').value = e.target.value;
+  });
+});
+
+async function saveBranding() {
+  const patch = {
+    site_title: document.getElementById('site_title').value,
+    site_tagline: document.getElementById('site_tagline').value,
+    hero_title: document.getElementById('hero_title').value,
+    hero_subtitle: document.getElementById('hero_subtitle').value,
+    logo_url: document.getElementById('logo_url').value || null,
+    favicon_url: document.getElementById('favicon_url').value || null,
+    color_primary: document.getElementById('color_primary').value,
+    color_accent: document.getElementById('color_accent').value,
+    color_dark: document.getElementById('color_dark').value,
+    section_titles: {
+      merchants: document.getElementById('st_merchants').value,
+      offers: document.getElementById('st_offers').value,
+      blog: document.getElementById('st_blog').value,
+      agent: document.getElementById('st_agent').value,
+      newsletter: document.getElementById('st_newsletter').value
+    },
+    updated_at: new Date().toISOString(),
+    updated_by: currentUser.id
+  };
+  const { error } = await sb.from('site_settings').update(patch).eq('id', settings.id);
+  if (error) toast('Erreur: ' + error.message, 'err');
+  else { toast('Branding enregistré ✓'); loadSettings(); }
+}
+
+async function saveAgent() {
+  const patch = {
+    agent_name: document.getElementById('agent_name').value,
+    agent_role: document.getElementById('agent_role').value,
+    agent_bio: document.getElementById('agent_bio').value,
+    agent_photo_url: document.getElementById('agent_photo_url').value,
+    agent_tel: document.getElementById('agent_tel').value,
+    agent_email: document.getElementById('agent_email').value,
+    agent_services: services,
+    updated_at: new Date().toISOString(),
+    updated_by: currentUser.id
+  };
+  const { error } = await sb.from('site_settings').update(patch).eq('id', settings.id);
+  if (error) toast('Erreur: ' + error.message, 'err');
+  else { toast('Profil agent enregistré ✓'); loadSettings(); }
+}
+
+async function saveContact() {
+  const patch = {
+    contact_email: document.getElementById('contact_email').value,
+    contact_address: document.getElementById('contact_address').value,
+    social_links: {
+      linkedin: document.getElementById('social_linkedin').value,
+      instagram: document.getElementById('social_instagram').value,
+      facebook: document.getElementById('social_facebook').value
+    },
+    updated_at: new Date().toISOString(),
+    updated_by: currentUser.id
+  };
+  const { error } = await sb.from('site_settings').update(patch).eq('id', settings.id);
+  if (error) toast('Erreur: ' + error.message, 'err');
+  else { toast('Contact enregistré ✓'); loadSettings(); }
+}
+
+async function loadMerchants() {
+  const host = document.getElementById('merchants_list');
+  host.innerHTML = '<div class="loader">Chargement…</div>';
+  const { data: merchants, error } = await sb.from('merchants').select('*').order('name');
+  if (error) { host.innerHTML = '<div class="empty">Erreur: ' + error.message + '</div>'; return; }
+  if (!merchants.length) { host.innerHTML = '<div class="empty">Aucun commerçant inscrit.</div>'; return; }
+  host.innerHTML = merchants.map(m => `
+    <div class="merchant-row">
+      <strong>${m.name}</strong>
+      <span class="tiny">${m.category || ''}</span>
+      <span class="tiny">${m.city || ''}</span>
+      <button class="btn ghost" onclick="impersonate('${m.id}')" title="Ouvrir le back-office en tant que ce commerçant"><i class="fas fa-user-secret"></i> Impersonate</button>
+    </div>
+  `).join('');
+}
+
+function impersonate(merchantId) {
+  sessionStorage.setItem('admin_impersonate_merchant', merchantId);
+  window.location.href = '/merchant.html';
+}
+
+async function loadStats() {
+  const host = document.getElementById('stats_grid');
+  const queries = await Promise.all([
+    sb.from('merchants').select('id', { count: 'exact', head: true }),
+    sb.from('offers').select('id', { count: 'exact', head: true }),
+    sb.from('leads').select('id', { count: 'exact', head: true }),
+    sb.from('email_logs').select('id', { count: 'exact', head: true }),
+  ]);
+  const [m, o, l, e] = queries.map(q => q.count || 0);
+  host.innerHTML = `
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Commerçants</div><div style="font-size:32px;font-weight:700;color:#f82032">${m}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Offres</div><div style="font-size:32px;font-weight:700;color:#f82032">${o}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Leads</div><div style="font-size:32px;font-weight:700;color:#f82032">${l}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Emails envoyés</div><div style="font-size:32px;font-weight:700;color:#f82032">${e}</div></div>
+  `;
+}
+
+// Tabs
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const panel = document.getElementById('panel-' + t.dataset.tab);
+    panel.classList.add('active');
+    if (t.dataset.tab === 'merchants') loadMerchants();
+    if (t.dataset.tab === 'stats') loadStats();
+  });
+});
+
+(async () => {
+  const user = await checkAuth();
+  if (user) {
+    await loadSettings();
+  }
+})();
+</script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OK Avantages — Bons d'achat et commerce local | Perpignan</title>
+<title>MonBonAgent — Bons d'achat et commerce local | Perpignan</title>
 <meta name="description" content="Découvrez les offres exclusives de vos commerçants locaux. Bons d'achat, réductions et avantages à Perpignan et environs.">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -175,12 +175,12 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
 <body>
 
 <div class="top-banner">
-  <i class="fas fa-gift"></i> Bienvenue sur OK Avantages — Soutenez vos commerçants locaux à Perpignan !
+  <i class="fas fa-gift"></i> Bienvenue sur MonBonAgent — Soutenez vos commerçants locaux à Perpignan !
 </div>
 
 <nav>
   <div class="container">
-    <a href="#" class="logo">OK <span>Avantages</span></a>
+    <a href="#" class="logo">Mon <span>BonAgent</span></a>
     <div class="nav-links">
       <a href="#merchants">Commerçants</a>
       <a href="#offers">Offres</a>
@@ -328,7 +328,7 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
       <a href="#blog">Le Mag</a>
       <a href="#">Contact</a>
     </div>
-    <p>&copy; 2026 OK Avantages — Perpignan. Tous droits réservés.</p>
+    <p>&copy; 2026 MonBonAgent — Perpignan. Tous droits réservés.</p>
   </div>
 </footer>
 
@@ -359,7 +359,7 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
   <div class="modal">
     <span class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('show')">&times;</span>
     <h3><i class="fas fa-store" style="color:var(--primary)"></i> Espace commerçant</h3>
-    <p style="color:var(--light);font-size:14px;margin-bottom:16px">Rejoignez OK Avantages et boostez votre visibilité !</p>
+    <p style="color:var(--light);font-size:14px;margin-bottom:16px">Rejoignez MonBonAgent et boostez votre visibilité !</p>
     <input type="text" placeholder="Nom du commerce">
     <input type="email" placeholder="Email professionnel">
     <input type="tel" placeholder="Téléphone">
@@ -377,6 +377,150 @@ let allMerchants = [];
 let allOffers = [];
 let allBlogPosts = [];
 let activeCategory = 'all';
+let siteSettings = null;
+
+// Darken a hex color by a percentage (for hover states)
+function darkenHex(hex, pct) {
+  hex = (hex||'').replace('#','');
+  if (hex.length !== 6) return '#d91a2b';
+  const num = parseInt(hex, 16);
+  let r = (num >> 16) - Math.round(255 * pct);
+  let g = ((num >> 8) & 0x00ff) - Math.round(255 * pct);
+  let b = (num & 0x0000ff) - Math.round(255 * pct);
+  r = Math.max(0, Math.min(255, r));
+  g = Math.max(0, Math.min(255, g));
+  b = Math.max(0, Math.min(255, b));
+  return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
+}
+
+// Apply site_settings to the DOM + CSS variables
+function applySiteSettings(s) {
+  if (!s) return;
+  siteSettings = s;
+
+  // --- Colors (CSS variables) ---
+  const root = document.documentElement;
+  if (s.color_primary) {
+    root.style.setProperty('--primary', s.color_primary);
+    root.style.setProperty('--primary-hover', darkenHex(s.color_primary, 0.08));
+  }
+  if (s.color_dark) root.style.setProperty('--dark', s.color_dark);
+
+  // --- Title & meta ---
+  const tagline = s.site_tagline || '';
+  if (s.site_title) {
+    document.title = s.site_title + (tagline ? ' — ' + tagline : '');
+  }
+  if (s.meta_description) {
+    const md = document.querySelector('meta[name="description"]');
+    if (md) md.setAttribute('content', s.meta_description);
+  }
+
+  // --- Favicon ---
+  if (s.favicon_url) {
+    let link = document.querySelector('link[rel="icon"]');
+    if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
+    link.href = s.favicon_url;
+  }
+
+  // --- Nav logo ---
+  if (s.site_title) {
+    const parts = s.site_title.split(' ');
+    const first = parts.shift();
+    const rest = parts.join(' ');
+    document.querySelectorAll('.logo').forEach(el => {
+      el.innerHTML = first + (rest ? ' <span>' + rest + '</span>' : '');
+    });
+  }
+
+  // --- Hero ---
+  if (s.hero_title) {
+    const h = document.querySelector('.hero h1');
+    if (h) h.textContent = s.hero_title;
+  }
+  if (s.hero_subtitle) {
+    const p = document.querySelector('.hero p');
+    if (p) p.textContent = s.hero_subtitle;
+  }
+
+  // --- Section titles ---
+  const st = s.section_titles || {};
+  const secMap = {
+    merchants: ['#merchants .section-title h2', '#merchants .section-title p'],
+    offers:    ['.offers-section .section-title h2', '.offers-section .section-title p'],
+    agent:     ['.agent-section .section-title h2', '.agent-section .section-title p'],
+    blog:      ['.blog-section .section-title h2', '.blog-section .section-title p'],
+    newsletter:['.newsletter h2', '.newsletter p']
+  };
+  Object.keys(secMap).forEach(k => {
+    const entry = st[k];
+    if (!entry) return;
+    const [hSel, pSel] = secMap[k];
+    if (typeof entry === 'string') {
+      const el = document.querySelector(hSel);
+      if (el) {
+        const icon = el.querySelector('i');
+        el.textContent = ' ' + entry;
+        if (icon) el.prepend(icon);
+      }
+    } else if (typeof entry === 'object') {
+      if (entry.title) {
+        const el = document.querySelector(hSel);
+        if (el) {
+          const icon = el.querySelector('i');
+          el.textContent = ' ' + entry.title;
+          if (icon) el.prepend(icon);
+        }
+      }
+      if (entry.subtitle) {
+        const el = document.querySelector(pSel);
+        if (el) el.textContent = entry.subtitle;
+      }
+    }
+  });
+
+  // --- Agent card ---
+  if (s.agent_name) document.getElementById('agentName').textContent = s.agent_name;
+  if (s.agent_role) document.getElementById('agentRole').textContent = s.agent_role;
+  if (s.agent_bio)  document.getElementById('agentBio').textContent  = s.agent_bio;
+  if (s.agent_photo_url) {
+    document.getElementById('agentPhoto').style.backgroundImage = `url('${s.agent_photo_url}')`;
+  }
+  if (s.agent_tel) {
+    const a = document.getElementById('agentTel');
+    a.href = 'tel:' + s.agent_tel.replace(/\s+/g, '');
+    a.innerHTML = '<i class="fas fa-phone"></i> ' + s.agent_tel;
+  }
+  if (s.agent_email) {
+    const a = document.getElementById('agentEmail');
+    a.href = 'mailto:' + s.agent_email;
+    a.innerHTML = '<i class="fas fa-envelope"></i> ' + s.agent_email;
+  }
+  if (Array.isArray(s.agent_services) && s.agent_services.length) {
+    const host = document.querySelector('.agent-services');
+    if (host) {
+      host.innerHTML = s.agent_services.map(sv =>
+        `<span><i class="fas fa-check"></i> ${sv}</span>`
+      ).join('');
+    }
+  }
+
+  // --- Footer contact / social ---
+  if (s.contact_email) {
+    // No dedicated contact el for now — we could extend the footer later
+  }
+  const sl = s.social_links || {};
+  // Social links could be injected in footer in a future iteration.
+}
+
+async function loadSiteSettings() {
+  try {
+    const { data } = await sb.from('site_settings').select('*').limit(1).maybeSingle();
+    if (data) applySiteSettings(data);
+  } catch (e) {
+    console.warn('site_settings not loaded:', e);
+  }
+}
 
 // Blog fallback content (recettes, événements, conseil immo) utilisé si la table blog_posts est vide
 const FALLBACK_BLOG = [
@@ -625,6 +769,7 @@ async function subscribeNewsletter(e) {
 }
 
 // Init
+loadSiteSettings();
 loadData();
 </script>
 </body>

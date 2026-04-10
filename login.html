@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connexion — MonBonAgent</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Rubik',sans-serif;background:linear-gradient(135deg,#f82032 0%,#ff6b35 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.card{background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.2);padding:40px;max-width:420px;width:100%}
+.logo{text-align:center;margin-bottom:30px}
+.logo .brand{font-size:28px;font-weight:700;color:#f82032}
+.logo .brand span{color:#212529}
+.logo .tagline{font-size:13px;color:#6c757d;margin-top:4px}
+h1{font-size:22px;margin-bottom:6px;color:#212529}
+.sub{color:#6c757d;font-size:14px;margin-bottom:24px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:500;color:#495057;margin-bottom:6px}
+.field input{width:100%;padding:12px 14px;border:1.5px solid #dee2e6;border-radius:10px;font-family:inherit;font-size:14px;transition:.2s}
+.field input:focus{outline:none;border-color:#f82032}
+button{width:100%;padding:13px;background:#f82032;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:.2s}
+button:hover{background:#d91a2b}
+button:disabled{opacity:.6;cursor:not-allowed}
+.msg{margin-top:16px;padding:12px;border-radius:8px;font-size:13px;display:none}
+.msg.err{background:#fee;color:#c00;display:block}
+.msg.ok{background:#efe;color:#070;display:block}
+.footer{text-align:center;margin-top:20px;font-size:12px;color:#6c757d}
+.footer a{color:#f82032;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="brand">Mon<span>BonAgent</span></div>
+    <div class="tagline">Espace administrateur & commerçant</div>
+  </div>
+  <h1>Connexion</h1>
+  <p class="sub">Accédez à votre espace personnel</p>
+  <form id="loginForm">
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="email" required autocomplete="email" placeholder="vous@exemple.fr">
+    </div>
+    <div class="field">
+      <label>Mot de passe</label>
+      <input type="password" id="password" required autocomplete="current-password" placeholder="••••••••">
+    </div>
+    <button type="submit" id="submitBtn">Se connecter</button>
+  </form>
+  <div id="msg" class="msg"></div>
+  <div class="footer">
+    <a href="/">← Retour au site</a>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const form = document.getElementById('loginForm');
+const btn = document.getElementById('submitBtn');
+const msg = document.getElementById('msg');
+
+async function redirectByRole() {
+  const { data: adminCheck } = await sb.from('admin_users').select('user_id').limit(1);
+  if (adminCheck && adminCheck.length > 0) {
+    window.location.href = '/admin.html';
+    return;
+  }
+  const { data: mu } = await sb.from('merchant_users').select('merchant_id').limit(1);
+  if (mu && mu.length > 0) {
+    window.location.href = '/merchant.html';
+    return;
+  }
+  msg.className = 'msg err';
+  msg.textContent = "Compte connecté mais aucun accès (ni admin ni commerçant). Contactez l'administrateur.";
+}
+
+sb.auth.getSession().then(({ data }) => {
+  if (data.session) redirectByRole();
+});
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  btn.disabled = true;
+  btn.textContent = 'Connexion…';
+  msg.className = 'msg';
+  msg.textContent = '';
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) {
+    msg.className = 'msg err';
+    msg.textContent = 'Identifiants incorrects. ' + (error.message || '');
+    btn.disabled = false;
+    btn.textContent = 'Se connecter';
+    return;
+  }
+  msg.className = 'msg ok';
+  msg.textContent = 'Connexion réussie — redirection…';
+  setTimeout(redirectByRole, 500);
+});
+</script>
+</body>
+</html>
