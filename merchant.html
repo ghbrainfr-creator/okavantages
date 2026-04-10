@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
@@ -224,6 +225,62 @@ tr:hover{background:#fafbfc}
   </div>
 </div>
 
+<!-- QR CODE MODAL -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal" style="max-width:720px">
+    <h3><i class="fas fa-qrcode" style="color:#f82032"></i> QR code du bon</h3>
+    <p class="sub">Personnalisez l'apparence du QR code pour votre offre et téléchargez-le en haute définition pour l'imprimer, l'afficher en vitrine ou l'envoyer à vos clients.</p>
+    <div class="grid-2" style="gap:24px">
+      <div>
+        <div class="field">
+          <label>Titre affiché sur le bon</label>
+          <input id="qr_label" placeholder="Ex: 10€ offerts chez Ma Boulangerie">
+        </div>
+        <div class="field">
+          <label>Instructions (affiché sous le QR)</label>
+          <textarea id="qr_instructions" rows="2" placeholder="Ex: Présentez ce bon en caisse pour profiter de l'offre."></textarea>
+        </div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Couleur QR</label>
+            <input type="color" id="qr_color_fg" value="#1a1a2e">
+          </div>
+          <div class="field">
+            <label>Couleur fond</label>
+            <input type="color" id="qr_color_bg" value="#ffffff">
+          </div>
+        </div>
+        <div class="field">
+          <label>URL encodée dans le QR</label>
+          <input id="qr_url" readonly style="background:#f8f9fa;font-size:12px;color:#6c757d">
+        </div>
+        <div class="field">
+          <label>Taille à télécharger</label>
+          <select id="qr_size">
+            <option value="600">Standard (600×600)</option>
+            <option value="1200" selected>Haute déf. (1200×1200)</option>
+            <option value="2400">Ultra HD (2400×2400)</option>
+          </select>
+        </div>
+        <div class="row" style="gap:10px;flex-wrap:wrap">
+          <button class="btn" onclick="saveQrConfig()"><i class="fas fa-save"></i> Enregistrer</button>
+          <button class="btn ghost" onclick="downloadQr('png')"><i class="fas fa-download"></i> PNG</button>
+          <button class="btn ghost" onclick="downloadQr('svg')"><i class="fas fa-download"></i> SVG</button>
+          <button class="btn ghost" onclick="closeModal('qrModal')">Fermer</button>
+        </div>
+      </div>
+      <div>
+        <div id="qrPreview" style="background:#fff;border:2px dashed #dee2e6;border-radius:12px;padding:20px;text-align:center">
+          <div id="qrLabelTop" style="font-weight:700;font-size:15px;margin-bottom:10px;color:#1a1a2e">—</div>
+          <canvas id="qrCanvas" style="max-width:100%;height:auto"></canvas>
+          <div id="qrInstructions" style="font-size:12px;color:#6c757d;margin-top:10px;line-height:1.5">—</div>
+          <div style="font-size:10px;color:#999;margin-top:8px;text-transform:uppercase;letter-spacing:.5px">MonBonAgent</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- TEMPLATE MODAL -->
 <div class="modal-overlay" id="templateModal">
   <div class="modal">
@@ -401,8 +458,9 @@ function renderOffers() {
         <td>${o.sales_count || 0}</td>
         <td><span class="pill ${o.status==='active'?'ok':(o.status==='paused'?'warn':'muted')}">${o.status||'-'}</span></td>
         <td>
-          <button class="btn sm ghost" onclick="editOffer('${o.id}')"><i class="fas fa-edit"></i></button>
-          <button class="btn sm danger" onclick="deleteOffer('${o.id}')"><i class="fas fa-trash"></i></button>
+          <button class="btn sm ghost" onclick="editOffer('${o.id}')" title="Éditer"><i class="fas fa-edit"></i></button>
+          <button class="btn sm ghost" onclick="openQrModal('${o.id}')" title="QR code du bon" style="background:#e7f5ff;color:#1971c2"><i class="fas fa-qrcode"></i></button>
+          <button class="btn sm danger" onclick="deleteOffer('${o.id}')" title="Supprimer"><i class="fas fa-trash"></i></button>
         </td>
       </tr>`).join('')}
     </tbody></table>`;
@@ -456,6 +514,176 @@ async function deleteOffer(id) {
   loadOffers();
   loadStats();
 }
+
+// ---------- QR CODE PAR OFFRE ----------
+let qrCurrentOffer = null;
+const QR_BASE_URL = 'https://monbonagent.vercel.app/bon';
+
+function openQrModal(offerId) {
+  const o = offers.find(x => x.id === offerId);
+  if (!o) return;
+  qrCurrentOffer = o;
+  const cfg = o.qr_config || {};
+  const defaultLabel = (o.name || 'Bon MonBonAgent') + ' • ' + (o.price+'€ → '+(o.price+(o.gift||0))+'€');
+  document.getElementById('qr_label').value = cfg.label || defaultLabel;
+  document.getElementById('qr_instructions').value = cfg.instructions || "Présentez ce bon en caisse pour profiter de l'offre.";
+  document.getElementById('qr_color_fg').value = cfg.color_fg || '#1a1a2e';
+  document.getElementById('qr_color_bg').value = cfg.color_bg || '#ffffff';
+  const redeemUrl = QR_BASE_URL + '?offer=' + encodeURIComponent(o.id) + (o.redemption_code ? '&code='+encodeURIComponent(o.redemption_code) : '');
+  document.getElementById('qr_url').value = redeemUrl;
+  document.getElementById('qrModal').classList.add('show');
+  renderQrPreview();
+  ['qr_label','qr_instructions','qr_color_fg','qr_color_bg'].forEach(id => {
+    const el = document.getElementById(id);
+    el.oninput = renderQrPreview;
+    el.onchange = renderQrPreview;
+  });
+}
+
+function renderQrPreview() {
+  if (!qrCurrentOffer) return;
+  const url = document.getElementById('qr_url').value;
+  const fg = document.getElementById('qr_color_fg').value;
+  const bg = document.getElementById('qr_color_bg').value;
+  const label = document.getElementById('qr_label').value;
+  const instr = document.getElementById('qr_instructions').value;
+  document.getElementById('qrLabelTop').textContent = label || '—';
+  document.getElementById('qrLabelTop').style.color = fg;
+  document.getElementById('qrInstructions').textContent = instr || '—';
+  document.getElementById('qrPreview').style.background = bg;
+  const canvas = document.getElementById('qrCanvas');
+  QRCode.toCanvas(canvas, url, {
+    width: 280,
+    margin: 2,
+    color: { dark: fg, light: bg },
+    errorCorrectionLevel: 'H'
+  }, (err) => {
+    if (err) console.warn('QR error', err);
+  });
+}
+
+async function saveQrConfig() {
+  if (!qrCurrentOffer) return;
+  const payload = {
+    qr_config: {
+      label: document.getElementById('qr_label').value,
+      instructions: document.getElementById('qr_instructions').value,
+      color_fg: document.getElementById('qr_color_fg').value,
+      color_bg: document.getElementById('qr_color_bg').value,
+      logo_in_center: true
+    }
+  };
+  const { error } = await sb.from('offers').update(payload).eq('id', qrCurrentOffer.id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Configuration QR enregistrée', 'ok');
+  qrCurrentOffer.qr_config = payload.qr_config;
+  loadOffers();
+}
+
+async function downloadQr(format) {
+  if (!qrCurrentOffer) return;
+  const url = document.getElementById('qr_url').value;
+  const fg = document.getElementById('qr_color_fg').value;
+  const bg = document.getElementById('qr_color_bg').value;
+  const label = document.getElementById('qr_label').value;
+  const instr = document.getElementById('qr_instructions').value;
+  const size = parseInt(document.getElementById('qr_size').value, 10) || 1200;
+  const safeName = (qrCurrentOffer.name || 'bon').replace(/[^a-z0-9\-]+/gi,'_').toLowerCase();
+
+  if (format === 'svg') {
+    QRCode.toString(url, {
+      type:'svg', width:size, margin:2,
+      color: { dark: fg, light: bg },
+      errorCorrectionLevel:'H'
+    }, (err, svgQr) => {
+      if (err) { toast('Erreur SVG: '+err.message, 'err'); return; }
+      // Wrap the QR SVG inside a labeled poster SVG
+      const W = size, H = size + 240;
+      const poster = `<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
+  <rect width="${W}" height="${H}" fill="${bg}"/>
+  <text x="${W/2}" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(size/20)}" font-weight="700" fill="${fg}">${escapeXml(label)}</text>
+  <g transform="translate(0, 120)">${svgQr.replace(/<\?xml[^>]*\?>/,'').replace(/<svg[^>]*>/,'<g>').replace(/<\/svg>/,'</g>')}</g>
+  <text x="${W/2}" y="${H-90}" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(size/36)}" fill="${fg}">${escapeXml(instr)}</text>
+  <text x="${W/2}" y="${H-40}" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(size/48)}" font-weight="600" letter-spacing="4" fill="#999">MONBONAGENT</text>
+</svg>`;
+      const blob = new Blob([poster], {type:'image/svg+xml'});
+      triggerDownload(blob, 'bon-'+safeName+'.svg');
+    });
+    return;
+  }
+
+  // PNG export: composite label + QR + instructions on a canvas
+  QRCode.toCanvas(url, {
+    width: size, margin: 2,
+    color: { dark: fg, light: bg },
+    errorCorrectionLevel: 'H'
+  }, (err, qrCanvas) => {
+    if (err) { toast('Erreur PNG: '+err.message, 'err'); return; }
+    const W = size;
+    const H = size + Math.round(size/2.5);
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext('2d');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+    // Label top
+    ctx.fillStyle = fg;
+    ctx.textAlign = 'center';
+    ctx.font = 'bold ' + Math.round(size/22) + 'px Rubik, Arial, sans-serif';
+    wrapText(ctx, label, W/2, Math.round(size/12), W - 80, Math.round(size/18));
+
+    // QR in middle
+    ctx.drawImage(qrCanvas, 0, Math.round(size/5));
+
+    // Instructions bottom
+    ctx.font = Math.round(size/32) + 'px Rubik, Arial, sans-serif';
+    ctx.fillStyle = fg;
+    wrapText(ctx, instr, W/2, size + Math.round(size/6), W - 80, Math.round(size/26));
+
+    // Brand line
+    ctx.font = '600 ' + Math.round(size/40) + 'px Rubik, Arial, sans-serif';
+    ctx.fillStyle = '#999';
+    ctx.fillText('MonBonAgent', W/2, H - Math.round(size/28));
+
+    canvas.toBlob(blob => {
+      if (!blob) { toast('Erreur export PNG', 'err'); return; }
+      triggerDownload(blob, 'bon-'+safeName+'.png');
+    }, 'image/png');
+  });
+}
+
+function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+  const words = (text || '').split(/\s+/);
+  let line = '';
+  for (let i = 0; i < words.length; i++) {
+    const test = line + words[i] + ' ';
+    if (ctx.measureText(test).width > maxWidth && i > 0) {
+      ctx.fillText(line.trim(), x, y);
+      line = words[i] + ' ';
+      y += lineHeight;
+    } else line = test;
+  }
+  ctx.fillText(line.trim(), x, y);
+}
+
+function triggerDownload(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
+  toast('Téléchargement lancé', 'ok');
+}
+
+function escapeXml(s) {
+  return String(s||'').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'})[c]);
+}
+
+window.openQrModal = openQrModal;
+window.saveQrConfig = saveQrConfig;
+window.downloadQr = downloadQr;
 
 // ---------- leads ----------
 let allLeads = [];

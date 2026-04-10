@@ -78,8 +78,11 @@ tr:hover{background:#fafbfc}
 <div class="wrap">
   <div class="tabs">
     <div class="tab active" data-tab="branding"><i class="fas fa-palette"></i> Branding</div>
+    <div class="tab" data-tab="sections"><i class="fas fa-layer-group"></i> Sections</div>
     <div class="tab" data-tab="agent"><i class="fas fa-user-tie"></i> Agent / Voisin</div>
-    <div class="tab" data-tab="contact"><i class="fas fa-envelope"></i> Contact</div>
+    <div class="tab" data-tab="footer"><i class="fas fa-shoe-prints"></i> Footer</div>
+    <div class="tab" data-tab="cookies"><i class="fas fa-cookie-bite"></i> Cookies</div>
+    <div class="tab" data-tab="contact"><i class="fas fa-envelope"></i> Contact & réseaux</div>
     <div class="tab" data-tab="merchants"><i class="fas fa-store"></i> Commerçants</div>
     <div class="tab" data-tab="stats"><i class="fas fa-chart-bar"></i> Vue d'ensemble</div>
   </div>
@@ -98,15 +101,26 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>URL du logo</label><input id="logo_url" placeholder="https://..."></div>
       <div class="field"><label>URL du favicon</label><input id="favicon_url" placeholder="https://..."></div>
     </div>
+    <h2 style="margin-top:20px;font-size:16px">Charte graphique</h2>
+    <p class="sub">Vos couleurs sont appliquées en live sur le site public.</p>
     <div class="grid-2">
       <div class="field"><label>Couleur principale</label><div class="color-row"><input type="color" id="color_primary_picker"><input id="color_primary"></div></div>
       <div class="field"><label>Couleur accent</label><div class="color-row"><input type="color" id="color_accent_picker"><input id="color_accent"></div></div>
+      <div class="field"><label>Couleur secondaire</label><div class="color-row"><input type="color" id="color_secondary_picker"><input id="color_secondary"></div></div>
+      <div class="field"><label>Couleur sombre (texte)</label><div class="color-row"><input type="color" id="color_dark_picker"><input id="color_dark"></div></div>
+      <div class="field"><label>Couleur fond</label><div class="color-row"><input type="color" id="color_bg_picker"><input id="color_bg"></div></div>
+      <div class="field"><label>Couleur texte</label><div class="color-row"><input type="color" id="color_text_picker"><input id="color_text"></div></div>
     </div>
-    <div class="field"><label>Couleur sombre (texte)</label><div class="color-row"><input type="color" id="color_dark_picker"><input id="color_dark"></div></div>
+    <div class="grid-2">
+      <div class="field"><label>Police des titres</label><input id="font_heading" placeholder="Poppins, Rubik…"></div>
+      <div class="field"><label>Police du texte</label><input id="font_body" placeholder="Inter, Rubik…"></div>
+    </div>
     <h2 style="margin-top:24px;font-size:16px">Titres des sections</h2>
     <div class="grid-2">
       <div class="field"><label>Titre "commerçants"</label><input id="st_merchants"></div>
-      <div class="field"><label>Titre "offres"</label><input id="st_offers"></div>
+      <div class="field"><label>Titre "offres" (Les bons moments)</label><input id="st_offers"></div>
+      <div class="field"><label>Titre "offres terminées"</label><input id="st_offers_ended"></div>
+      <div class="field"><label>Titre "pourquoi MonBonAgent"</label><input id="st_about"></div>
       <div class="field"><label>Titre "blog"</label><input id="st_blog"></div>
       <div class="field"><label>Titre "agent"</label><input id="st_agent"></div>
       <div class="field"><label>Titre "newsletter"</label><input id="st_newsletter"></div>
@@ -114,6 +128,66 @@ tr:hover{background:#fafbfc}
     <div class="save-bar">
       <button class="btn ghost" onclick="loadSettings()">Annuler</button>
       <button class="btn" onclick="saveBranding()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- SECTIONS (Pourquoi MonBonAgent) -->
+  <div class="panel" id="panel-sections">
+    <h2>Sections "Pourquoi MonBonAgent"</h2>
+    <p class="sub">Ajoutez, modifiez ou supprimez les blocs image + texte affichés sur la page d'accueil.</p>
+    <div id="sections_list"></div>
+    <button class="btn ghost" onclick="addAboutSection()" style="margin-top:10px"><i class="fas fa-plus"></i> Ajouter un bloc</button>
+    <div class="save-bar">
+      <button class="btn ghost" onclick="loadSettings()">Annuler</button>
+      <button class="btn" onclick="saveSections()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="panel" id="panel-footer">
+    <h2>Pied de page</h2>
+    <p class="sub">Personnalisez le contenu du footer du site public.</p>
+    <div class="field"><label>Texte "À propos"</label><textarea id="footer_about_text" rows="3"></textarea></div>
+    <div class="grid-2">
+      <div class="field"><label>Ligne légale (bas de page)</label><input id="footer_legal_line"></div>
+    </div>
+    <h2 style="margin-top:20px;font-size:16px">Colonne 1 — MonBonAgent</h2>
+    <div class="field"><label>Titre de colonne</label><input id="footer_col1_title"></div>
+    <div id="footer_col1_items"></div>
+    <button class="btn ghost" onclick="addFooterItem('col1')"><i class="fas fa-plus"></i> Ajouter un lien</button>
+    <h2 style="margin-top:20px;font-size:16px">Colonne 2 — Service client</h2>
+    <div class="field"><label>Titre de colonne</label><input id="footer_col2_title"></div>
+    <div id="footer_col2_items"></div>
+    <button class="btn ghost" onclick="addFooterItem('col2')"><i class="fas fa-plus"></i> Ajouter un lien</button>
+    <h2 style="margin-top:20px;font-size:16px">Colonne 3 — Informations</h2>
+    <div class="field"><label>Titre de colonne</label><input id="footer_col3_title"></div>
+    <div id="footer_col3_items"></div>
+    <button class="btn ghost" onclick="addFooterItem('col3')"><i class="fas fa-plus"></i> Ajouter un lien</button>
+    <div class="save-bar">
+      <button class="btn ghost" onclick="loadSettings()">Annuler</button>
+      <button class="btn" onclick="saveFooter()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+
+  <!-- COOKIES -->
+  <div class="panel" id="panel-cookies">
+    <h2>Politique de cookies</h2>
+    <p class="sub">Personnalisez le bandeau RGPD affiché aux visiteurs.</p>
+    <div class="field"><label>Titre du bandeau</label><input id="cookies_banner_title"></div>
+    <div class="field"><label>Texte explicatif</label><textarea id="cookies_banner_text" rows="3"></textarea></div>
+    <div class="grid-2">
+      <div class="field"><label>Label "Tout accepter"</label><input id="cookies_accept_label"></div>
+      <div class="field"><label>Label "Tout refuser"</label><input id="cookies_refuse_label"></div>
+      <div class="field"><label>Label "Personnaliser"</label><input id="cookies_settings_label"></div>
+      <div class="field"><label>URL politique complète</label><input id="cookies_policy_url"></div>
+    </div>
+    <h2 style="margin-top:20px;font-size:16px">Catégories de cookies</h2>
+    <p class="sub">Les cookies "essentiels" sont toujours activés et non désactivables.</p>
+    <div id="cookies_categories_list"></div>
+    <button class="btn ghost" onclick="addCookieCategory()"><i class="fas fa-plus"></i> Ajouter une catégorie</button>
+    <div class="save-bar">
+      <button class="btn ghost" onclick="loadSettings()">Annuler</button>
+      <button class="btn" onclick="saveCookies()"><i class="fas fa-save"></i> Enregistrer</button>
     </div>
   </div>
 
@@ -147,16 +221,21 @@ tr:hover{background:#fafbfc}
 
   <!-- CONTACT -->
   <div class="panel" id="panel-contact">
-    <h2>Contact & réseaux</h2>
+    <h2>Contact & réseaux sociaux</h2>
+    <p class="sub">Les liens renseignés ici apparaissent en bas de page. Les champs vides ne seront pas affichés.</p>
     <div class="grid-2">
       <div class="field"><label>Email contact</label><input id="contact_email"></div>
       <div class="field"><label>Adresse</label><input id="contact_address"></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>LinkedIn</label><input id="social_linkedin" placeholder="https://..."></div>
-      <div class="field"><label>Instagram</label><input id="social_instagram" placeholder="https://..."></div>
+      <div class="field"><label><i class="fab fa-facebook-f"></i> Facebook</label><input id="social_facebook" placeholder="https://facebook.com/..."></div>
+      <div class="field"><label><i class="fab fa-instagram"></i> Instagram</label><input id="social_instagram" placeholder="https://instagram.com/..."></div>
+      <div class="field"><label><i class="fab fa-linkedin-in"></i> LinkedIn</label><input id="social_linkedin" placeholder="https://linkedin.com/..."></div>
+      <div class="field"><label><i class="fab fa-x-twitter"></i> X / Twitter</label><input id="social_twitter" placeholder="https://x.com/..."></div>
+      <div class="field"><label><i class="fab fa-tiktok"></i> TikTok</label><input id="social_tiktok" placeholder="https://tiktok.com/@..."></div>
+      <div class="field"><label><i class="fab fa-youtube"></i> YouTube</label><input id="social_youtube" placeholder="https://youtube.com/@..."></div>
+      <div class="field"><label><i class="fab fa-whatsapp"></i> WhatsApp</label><input id="social_whatsapp" placeholder="https://wa.me/33..."></div>
     </div>
-    <div class="field"><label>Facebook</label><input id="social_facebook" placeholder="https://..."></div>
     <div class="save-bar">
       <button class="btn ghost" onclick="loadSettings()">Annuler</button>
       <button class="btn" onclick="saveContact()"><i class="fas fa-save"></i> Enregistrer</button>
@@ -165,9 +244,44 @@ tr:hover{background:#fafbfc}
 
   <!-- MERCHANTS -->
   <div class="panel" id="panel-merchants">
-    <h2>Commerçants inscrits</h2>
-    <p class="sub">Liste des commerçants et impersonation (voir leur back-office).</p>
+    <h2>Commerçants</h2>
+    <p class="sub">Ajoutez un commerçant en collant un lien (site web, Instagram, Facebook, Google Business…) : couleurs, textes et photos sont récupérés automatiquement.</p>
+
+    <div style="background:#f8f9fa;border:1px dashed #dee2e6;border-radius:12px;padding:18px;margin-bottom:20px">
+      <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-magic" style="color:#f82032"></i> Ajout auto depuis un lien</h3>
+      <div class="row" style="gap:10px;flex-wrap:wrap">
+        <input id="enrich_url" placeholder="https://instagram.com/ma-boulangerie ou https://www.ma-boutique.fr" style="flex:1;min-width:280px;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px">
+        <button class="btn" onclick="enrichMerchant()"><i class="fas fa-download"></i> Récupérer</button>
+      </div>
+      <div id="enrich_result" style="margin-top:14px;display:none;background:#fff;border:1px solid #e9ecef;border-radius:10px;padding:16px"></div>
+    </div>
+
+    <h3 style="font-size:15px;margin-bottom:10px">Commerçants inscrits</h3>
     <div id="merchants_list" class="loader">Chargement…</div>
+  </div>
+
+  <!-- NEW MERCHANT MODAL -->
+  <div class="modal-overlay" id="newMerchantModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+    <div style="background:#fff;border-radius:16px;padding:28px;max-width:560px;width:100%;max-height:90vh;overflow-y:auto">
+      <h3 style="margin-bottom:14px">Nouveau commerçant</h3>
+      <div class="field"><label>Nom</label><input id="nm_name"></div>
+      <div class="grid-2">
+        <div class="field"><label>Catégorie</label><input id="nm_category" placeholder="Boulangerie, Restaurant…"></div>
+        <div class="field"><label>Ville</label><input id="nm_city" value="Perpignan"></div>
+      </div>
+      <div class="field"><label>Adresse</label><input id="nm_address"></div>
+      <div class="field"><label>Description</label><textarea id="nm_description" rows="3"></textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Téléphone</label><input id="nm_phone"></div>
+        <div class="field"><label>Email</label><input id="nm_email"></div>
+      </div>
+      <div class="field"><label>URL photo</label><input id="nm_image_url"></div>
+      <div class="field"><label>URL source (auto)</label><input id="nm_source_url" readonly style="background:#f8f9fa"></div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid #f0f1f3">
+        <button class="btn ghost" onclick="document.getElementById('newMerchantModal').style.display='none'">Annuler</button>
+        <button class="btn" onclick="createMerchant()"><i class="fas fa-save"></i> Créer</button>
+      </div>
+    </div>
   </div>
 
   <!-- STATS -->
@@ -219,6 +333,10 @@ async function checkAuth() {
   return session.user;
 }
 
+let aboutSections = [];
+let footerBlocks = {};
+let cookiesCategories = [];
+
 async function loadSettings() {
   const { data, error } = await sb.from('site_settings').select('*').limit(1).maybeSingle();
   if (error || !data) { toast("Impossible de charger les paramètres", 'err'); return; }
@@ -229,15 +347,28 @@ async function loadSettings() {
   document.getElementById('hero_subtitle').value = data.hero_subtitle || '';
   document.getElementById('logo_url').value = data.logo_url || '';
   document.getElementById('favicon_url').value = data.favicon_url || '';
-  document.getElementById('color_primary').value = data.color_primary || '#f82032';
-  document.getElementById('color_primary_picker').value = data.color_primary || '#f82032';
-  document.getElementById('color_accent').value = data.color_accent || '#ff6b35';
-  document.getElementById('color_accent_picker').value = data.color_accent || '#ff6b35';
-  document.getElementById('color_dark').value = data.color_dark || '#1a1a2e';
-  document.getElementById('color_dark_picker').value = data.color_dark || '#1a1a2e';
+
+  const setColor = (key, def) => {
+    const v = data[key] || def;
+    const inp = document.getElementById(key);
+    const pick = document.getElementById(key + '_picker');
+    if (inp) inp.value = v;
+    if (pick) pick.value = v;
+  };
+  setColor('color_primary', '#f82032');
+  setColor('color_accent', '#ff6b35');
+  setColor('color_secondary', '#0ea5e9');
+  setColor('color_dark', '#1a1a2e');
+  setColor('color_bg', '#ffffff');
+  setColor('color_text', '#1a1a2e');
+  document.getElementById('font_heading').value = data.font_heading || 'Poppins';
+  document.getElementById('font_body').value = data.font_body || 'Inter';
+
   const st = data.section_titles || {};
   document.getElementById('st_merchants').value = st.merchants || '';
   document.getElementById('st_offers').value = st.offers || '';
+  document.getElementById('st_offers_ended').value = st.offers_ended || '';
+  document.getElementById('st_about').value = st.about || '';
   document.getElementById('st_blog').value = st.blog || '';
   document.getElementById('st_agent').value = st.agent || '';
   document.getElementById('st_newsletter').value = st.newsletter || '';
@@ -254,10 +385,259 @@ async function loadSettings() {
   document.getElementById('contact_email').value = data.contact_email || '';
   document.getElementById('contact_address').value = data.contact_address || '';
   const sl = data.social_links || {};
-  document.getElementById('social_linkedin').value = sl.linkedin || '';
-  document.getElementById('social_instagram').value = sl.instagram || '';
-  document.getElementById('social_facebook').value = sl.facebook || '';
+  ['linkedin','instagram','facebook','twitter','tiktok','youtube','whatsapp'].forEach(k => {
+    const el = document.getElementById('social_'+k);
+    if (el) el.value = sl[k] || '';
+  });
+
+  // V2 sections
+  aboutSections = Array.isArray(data.about_sections) ? data.about_sections : [];
+  renderSectionsEditor();
+
+  // V2 footer
+  footerBlocks = data.footer_blocks || {};
+  const fb = footerBlocks;
+  document.getElementById('footer_about_text').value = fb.about_text || '';
+  document.getElementById('footer_legal_line').value = fb.legal_line || '';
+  document.getElementById('footer_col1_title').value = (fb.links_col1||{}).title || '';
+  document.getElementById('footer_col2_title').value = (fb.links_col2||{}).title || '';
+  document.getElementById('footer_col3_title').value = (fb.links_col3||{}).title || '';
+  renderFooterItems('col1', (fb.links_col1||{}).items || []);
+  renderFooterItems('col2', (fb.links_col2||{}).items || []);
+  renderFooterItems('col3', (fb.links_col3||{}).items || []);
+
+  // V2 cookies
+  const cp = data.cookies_policy || {};
+  document.getElementById('cookies_banner_title').value = cp.banner_title || '';
+  document.getElementById('cookies_banner_text').value = cp.banner_text || '';
+  document.getElementById('cookies_accept_label').value = cp.accept_label || '';
+  document.getElementById('cookies_refuse_label').value = cp.refuse_label || '';
+  document.getElementById('cookies_settings_label').value = cp.settings_label || '';
+  document.getElementById('cookies_policy_url').value = cp.policy_url || '';
+  cookiesCategories = Array.isArray(cp.categories) ? cp.categories : [];
+  renderCookieCategories();
 }
+
+// ---------- Sections editor ----------
+function renderSectionsEditor() {
+  const host = document.getElementById('sections_list');
+  if (!host) return;
+  host.innerHTML = aboutSections.map((b, i) => `
+    <div style="border:1px solid #e9ecef;border-radius:10px;padding:16px;margin-bottom:10px;background:#fafbfc">
+      <div class="row" style="justify-content:space-between;margin-bottom:10px">
+        <strong style="font-size:13px;color:#6c757d">Bloc ${i+1}</strong>
+        <button class="btn ghost" onclick="removeAboutSection(${i})" style="padding:4px 10px;font-size:12px"><i class="fas fa-trash"></i></button>
+      </div>
+      <div class="field"><label>Titre</label><input value="${escapeAttr(b.title||'')}" oninput="aboutSections[${i}].title=this.value"></div>
+      <div class="field"><label>Texte</label><textarea rows="3" oninput="aboutSections[${i}].text=this.value">${escapeHtmlText(b.text||'')}</textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>URL image</label><input value="${escapeAttr(b.image||'')}" oninput="aboutSections[${i}].image=this.value"></div>
+        <div class="field"><label>URL du bouton (ancre #section)</label><input value="${escapeAttr(b.cta_url||'')}" oninput="aboutSections[${i}].cta_url=this.value"></div>
+      </div>
+      <div class="field"><label>Label du bouton (optionnel)</label><input value="${escapeAttr(b.cta_label||'')}" oninput="aboutSections[${i}].cta_label=this.value"></div>
+    </div>
+  `).join('') || '<div class="empty">Aucun bloc — cliquez sur "Ajouter un bloc".</div>';
+}
+function addAboutSection() {
+  aboutSections.push({ title:'Nouveau bloc', text:'', image:'', cta_label:'', cta_url:'#' });
+  renderSectionsEditor();
+}
+function removeAboutSection(i) {
+  if (!confirm('Supprimer ce bloc ?')) return;
+  aboutSections.splice(i, 1);
+  renderSectionsEditor();
+}
+async function saveSections() {
+  const { error } = await sb.from('site_settings').update({
+    about_sections: aboutSections,
+    updated_at: new Date().toISOString(),
+    updated_by: currentUser.id
+  }).eq('id', settings.id);
+  if (error) toast('Erreur: '+error.message, 'err');
+  else { toast('Sections enregistrées ✓'); loadSettings(); }
+}
+
+// ---------- Footer editor ----------
+function renderFooterItems(col, items) {
+  const host = document.getElementById('footer_'+col+'_items');
+  if (!host) return;
+  host.innerHTML = items.map((it, i) => `
+    <div class="row" style="gap:6px;margin-bottom:6px">
+      <input style="flex:1" placeholder="Libellé" value="${escapeAttr(it.label||'')}" oninput="footerBlocks.links_${col}.items[${i}].label=this.value">
+      <input style="flex:1.3" placeholder="URL" value="${escapeAttr(it.url||'')}" oninput="footerBlocks.links_${col}.items[${i}].url=this.value">
+      <button class="btn ghost" onclick="removeFooterItem('${col}',${i})" style="padding:6px 10px"><i class="fas fa-times"></i></button>
+    </div>
+  `).join('');
+  if (!footerBlocks['links_'+col]) footerBlocks['links_'+col] = { title:'', items:[] };
+  footerBlocks['links_'+col].items = items;
+}
+function addFooterItem(col) {
+  if (!footerBlocks['links_'+col]) footerBlocks['links_'+col] = { title:'', items:[] };
+  footerBlocks['links_'+col].items.push({ label:'Nouveau lien', url:'#' });
+  renderFooterItems(col, footerBlocks['links_'+col].items);
+}
+function removeFooterItem(col, i) {
+  footerBlocks['links_'+col].items.splice(i, 1);
+  renderFooterItems(col, footerBlocks['links_'+col].items);
+}
+async function saveFooter() {
+  ['col1','col2','col3'].forEach(c => {
+    if (!footerBlocks['links_'+c]) footerBlocks['links_'+c] = { title:'', items:[] };
+    footerBlocks['links_'+c].title = document.getElementById('footer_'+c+'_title').value;
+  });
+  footerBlocks.about_text = document.getElementById('footer_about_text').value;
+  footerBlocks.legal_line = document.getElementById('footer_legal_line').value;
+  const { error } = await sb.from('site_settings').update({
+    footer_blocks: footerBlocks,
+    updated_at: new Date().toISOString(),
+    updated_by: currentUser.id
+  }).eq('id', settings.id);
+  if (error) toast('Erreur: '+error.message, 'err');
+  else { toast('Footer enregistré ✓'); loadSettings(); }
+}
+
+// ---------- Cookies editor ----------
+function renderCookieCategories() {
+  const host = document.getElementById('cookies_categories_list');
+  if (!host) return;
+  host.innerHTML = cookiesCategories.map((c, i) => `
+    <div style="border:1px solid #e9ecef;border-radius:10px;padding:14px;margin-bottom:8px;background:#fafbfc">
+      <div class="row" style="justify-content:space-between;margin-bottom:8px">
+        <strong style="font-size:13px">${c.required ? '<span class="pill ok">Obligatoire</span>' : '<span class="pill muted">Optionnel</span>'}</strong>
+        ${c.required ? '' : `<button class="btn ghost" onclick="removeCookieCategory(${i})" style="padding:4px 10px;font-size:12px"><i class="fas fa-trash"></i></button>`}
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Clé (anglais)</label><input value="${escapeAttr(c.key||'')}" ${c.required?'readonly':''} oninput="cookiesCategories[${i}].key=this.value"></div>
+        <div class="field"><label>Libellé affiché</label><input value="${escapeAttr(c.label||'')}" oninput="cookiesCategories[${i}].label=this.value"></div>
+      </div>
+      <div class="field"><label>Description</label><textarea rows="2" oninput="cookiesCategories[${i}].description=this.value">${escapeHtmlText(c.description||'')}</textarea></div>
+    </div>
+  `).join('');
+}
+function addCookieCategory() {
+  cookiesCategories.push({ key:'nouveau', label:'Nouvelle catégorie', required:false, description:'' });
+  renderCookieCategories();
+}
+function removeCookieCategory(i) {
+  cookiesCategories.splice(i, 1);
+  renderCookieCategories();
+}
+async function saveCookies() {
+  const policy = {
+    banner_title: document.getElementById('cookies_banner_title').value,
+    banner_text: document.getElementById('cookies_banner_text').value,
+    accept_label: document.getElementById('cookies_accept_label').value,
+    refuse_label: document.getElementById('cookies_refuse_label').value,
+    settings_label: document.getElementById('cookies_settings_label').value,
+    policy_url: document.getElementById('cookies_policy_url').value,
+    categories: cookiesCategories
+  };
+  const { error } = await sb.from('site_settings').update({
+    cookies_policy: policy,
+    updated_at: new Date().toISOString(),
+    updated_by: currentUser.id
+  }).eq('id', settings.id);
+  if (error) toast('Erreur: '+error.message, 'err');
+  else { toast('Cookies enregistrés ✓'); loadSettings(); }
+}
+
+// ---------- Merchant enrichment ----------
+let enrichedPayload = null;
+async function enrichMerchant() {
+  const url = document.getElementById('enrich_url').value.trim();
+  if (!url) { toast('Collez une URL', 'err'); return; }
+  const resBox = document.getElementById('enrich_result');
+  resBox.style.display = 'block';
+  resBox.innerHTML = '<div class="loader"><i class="fas fa-spinner fa-spin"></i> Scraping en cours…</div>';
+  try {
+    const r = await fetch(SUPABASE_URL + '/functions/v1/enrich-merchant', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      },
+      body: JSON.stringify({ url })
+    });
+    const data = await r.json();
+    if (!r.ok || data.error) throw new Error(data.error || 'Erreur réseau');
+    enrichedPayload = data;
+    resBox.innerHTML = `
+      <div class="row" style="gap:16px;align-items:flex-start">
+        ${data.image_url ? `<img src="${data.image_url}" style="width:100px;height:100px;object-fit:cover;border-radius:10px">` : ''}
+        <div style="flex:1">
+          <h4 style="margin-bottom:6px">${escapeHtmlText(data.name||'(sans nom)')}</h4>
+          <p style="color:#6c757d;font-size:13px;margin-bottom:10px">${escapeHtmlText((data.description||'').slice(0,220))}</p>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+            ${Object.keys(data.social_links||{}).map(k => `<span class="pill new"><i class="fab fa-${k==='twitter'?'x-twitter':k}"></i> ${k}</span>`).join('')}
+          </div>
+          <button class="btn" onclick="openNewMerchantFromEnrichment()"><i class="fas fa-plus"></i> Créer ce commerçant</button>
+        </div>
+      </div>
+    `;
+  } catch (e) {
+    resBox.innerHTML = '<div style="color:#dc3545;font-size:13px"><i class="fas fa-exclamation-triangle"></i> Erreur : '+escapeHtmlText(e.message||String(e))+'</div>';
+  }
+}
+
+function openNewMerchantFromEnrichment() {
+  if (!enrichedPayload) return;
+  const e = enrichedPayload;
+  document.getElementById('nm_name').value = e.name || '';
+  document.getElementById('nm_category').value = e.category || '';
+  document.getElementById('nm_city').value = 'Perpignan';
+  document.getElementById('nm_address').value = e.address || '';
+  document.getElementById('nm_description').value = e.description || '';
+  document.getElementById('nm_image_url').value = e.image_url || '';
+  document.getElementById('nm_source_url').value = e.source_url || '';
+  document.getElementById('nm_phone').value = '';
+  document.getElementById('nm_email').value = '';
+  document.getElementById('newMerchantModal').style.display = 'flex';
+}
+
+async function createMerchant() {
+  const payload = {
+    name: document.getElementById('nm_name').value.trim(),
+    category: document.getElementById('nm_category').value.trim() || 'Commerce',
+    city: document.getElementById('nm_city').value.trim() || 'Perpignan',
+    address: document.getElementById('nm_address').value.trim() || null,
+    description: document.getElementById('nm_description').value.trim() || null,
+    phone: document.getElementById('nm_phone').value.trim() || null,
+    email: document.getElementById('nm_email').value.trim() || null,
+    image_url: document.getElementById('nm_image_url').value.trim() || null,
+    source_url: document.getElementById('nm_source_url').value.trim() || null,
+    enriched_at: enrichedPayload ? new Date().toISOString() : null,
+    enrichment_payload: enrichedPayload || null,
+    social_links: enrichedPayload ? enrichedPayload.social_links : {},
+    status: 'active',
+    rating: 0,
+    avis: 0
+  };
+  if (!payload.name) { toast('Le nom est requis', 'err'); return; }
+  const { error } = await sb.from('merchants').insert(payload);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Commerçant créé ✓');
+  document.getElementById('newMerchantModal').style.display = 'none';
+  document.getElementById('enrich_result').style.display = 'none';
+  document.getElementById('enrich_url').value = '';
+  enrichedPayload = null;
+  loadMerchants();
+}
+
+function escapeAttr(s) { return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function escapeHtmlText(s) { return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]); }
+
+window.addAboutSection = addAboutSection;
+window.removeAboutSection = removeAboutSection;
+window.saveSections = saveSections;
+window.addFooterItem = addFooterItem;
+window.removeFooterItem = removeFooterItem;
+window.saveFooter = saveFooter;
+window.addCookieCategory = addCookieCategory;
+window.removeCookieCategory = removeCookieCategory;
+window.saveCookies = saveCookies;
+window.enrichMerchant = enrichMerchant;
+window.openNewMerchantFromEnrichment = openNewMerchantFromEnrichment;
+window.createMerchant = createMerchant;
 
 function renderServices() {
   const host = document.getElementById('services_list');
@@ -274,13 +654,12 @@ function addService() {
 function removeService(i) { services.splice(i,1); renderServices(); }
 
 // Color picker sync
-['primary','accent','dark'].forEach(k => {
-  document.getElementById('color_'+k+'_picker').addEventListener('input', e => {
-    document.getElementById('color_'+k).value = e.target.value;
-  });
-  document.getElementById('color_'+k).addEventListener('input', e => {
-    document.getElementById('color_'+k+'_picker').value = e.target.value;
-  });
+['primary','accent','secondary','dark','bg','text'].forEach(k => {
+  const picker = document.getElementById('color_'+k+'_picker');
+  const txt = document.getElementById('color_'+k);
+  if (!picker || !txt) return;
+  picker.addEventListener('input', e => { txt.value = e.target.value; });
+  txt.addEventListener('input', e => { picker.value = e.target.value; });
 });
 
 async function saveBranding() {
@@ -293,10 +672,17 @@ async function saveBranding() {
     favicon_url: document.getElementById('favicon_url').value || null,
     color_primary: document.getElementById('color_primary').value,
     color_accent: document.getElementById('color_accent').value,
+    color_secondary: document.getElementById('color_secondary').value,
     color_dark: document.getElementById('color_dark').value,
+    color_bg: document.getElementById('color_bg').value,
+    color_text: document.getElementById('color_text').value,
+    font_heading: document.getElementById('font_heading').value,
+    font_body: document.getElementById('font_body').value,
     section_titles: {
       merchants: document.getElementById('st_merchants').value,
       offers: document.getElementById('st_offers').value,
+      offers_ended: document.getElementById('st_offers_ended').value,
+      about: document.getElementById('st_about').value,
       blog: document.getElementById('st_blog').value,
       agent: document.getElementById('st_agent').value,
       newsletter: document.getElementById('st_newsletter').value
@@ -331,9 +717,13 @@ async function saveContact() {
     contact_email: document.getElementById('contact_email').value,
     contact_address: document.getElementById('contact_address').value,
     social_links: {
-      linkedin: document.getElementById('social_linkedin').value,
+      facebook: document.getElementById('social_facebook').value,
       instagram: document.getElementById('social_instagram').value,
-      facebook: document.getElementById('social_facebook').value
+      linkedin: document.getElementById('social_linkedin').value,
+      twitter: document.getElementById('social_twitter').value,
+      tiktok: document.getElementById('social_tiktok').value,
+      youtube: document.getElementById('social_youtube').value,
+      whatsapp: document.getElementById('social_whatsapp').value
     },
     updated_at: new Date().toISOString(),
     updated_by: currentUser.id

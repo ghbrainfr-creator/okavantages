@@ -170,6 +170,97 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
   .agent-contacts{justify-content:center}
   .agent-services{justify-content:center}
 }
+
+/* =============================================== */
+/* V2 : Sections Pourquoi, Cookies, Footer, Ended  */
+/* =============================================== */
+
+/* Section Pourquoi */
+.about-section{padding:70px 0;background:#fff}
+.about-section .section-title{margin-bottom:40px}
+.about-section .section-title h2{font-size:32px}
+.about-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:60px}
+.about-row.reverse{direction:rtl}
+.about-row.reverse > *{direction:ltr}
+.about-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.12)}
+.about-text h3{font-size:24px;margin-bottom:14px;color:var(--dark);line-height:1.2}
+.about-text p{color:#555;font-size:15.5px;line-height:1.75;margin-bottom:20px}
+.about-cta{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;padding:12px 24px;border-radius:10px;font-weight:600;font-size:14px;transition:.2s}
+.about-cta:hover{background:var(--primary-hover);transform:translateX(3px)}
+
+/* Ended offers carousel */
+.ended-section{background:#f5f5f7;padding:60px 0}
+.ended-section .section-title h2{font-size:26px;color:#555}
+.ended-section .section-title p{color:#999}
+.ended-wrap{position:relative;margin-top:20px}
+.ended-scroll{display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;padding:10px 4px 30px;scrollbar-width:thin}
+.ended-scroll::-webkit-scrollbar{height:6px}
+.ended-scroll::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+.ended-card{flex:0 0 260px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);position:relative;opacity:.88;transition:.2s}
+.ended-card:hover{opacity:1;transform:translateY(-3px)}
+.ended-card .card-img{height:140px;filter:grayscale(.3)}
+.ended-card .ended-badge{position:absolute;top:10px;right:10px;background:#999;color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.ended-card .card-body{padding:14px}
+.ended-card h4{font-size:15px;margin-bottom:4px}
+.ended-card .ended-merchant{color:var(--light);font-size:12px;margin-bottom:8px}
+.ended-card .ended-price{color:#888;text-decoration:line-through;font-size:14px;font-weight:600}
+.ended-arrows{display:flex;gap:10px;justify-content:flex-end;margin-bottom:10px}
+.ended-arrows button{width:38px;height:38px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:14px;color:#555;transition:.2s}
+.ended-arrows button:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
+
+/* Footer V2 */
+footer.footer-v2{background:#111;color:#fff;padding:60px 0 0;text-align:left}
+footer.footer-v2 .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid #333}
+footer.footer-v2 .footer-col h4{font-size:14px;text-transform:uppercase;letter-spacing:1px;margin-bottom:18px;color:#fff}
+footer.footer-v2 .footer-col p,footer.footer-v2 .footer-col a{color:#aaa;font-size:14px;line-height:1.8;transition:.2s}
+footer.footer-v2 .footer-col a:hover{color:var(--primary)}
+footer.footer-v2 .footer-col ul{list-style:none}
+footer.footer-v2 .footer-col ul li{margin-bottom:8px}
+footer.footer-v2 .footer-about .logo{font-size:24px;margin-bottom:14px;display:inline-block}
+footer.footer-v2 .footer-about .logo span{color:#fff}
+footer.footer-v2 .footer-about p{color:#aaa;font-size:14px;line-height:1.7;margin-bottom:18px}
+footer.footer-v2 .footer-social{display:flex;gap:12px}
+footer.footer-v2 .footer-social a{width:38px;height:38px;border-radius:50%;background:#222;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;transition:.2s}
+footer.footer-v2 .footer-social a:hover{background:var(--primary);transform:translateY(-2px)}
+footer.footer-v2 .footer-bottom{padding:20px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+footer.footer-v2 .footer-bottom p{color:#888;font-size:13px;margin:0}
+footer.footer-v2 .footer-payments{display:flex;gap:8px;align-items:center}
+footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
+@media(max-width:768px){
+  footer.footer-v2 .footer-grid{grid-template-columns:1fr;gap:30px}
+  .about-row{grid-template-columns:1fr;gap:24px;margin-bottom:40px}
+  .about-row.reverse{direction:ltr}
+  .about-img{aspect-ratio:16/10}
+}
+
+/* Cookies banner */
+.cookies-banner{position:fixed;left:20px;bottom:20px;right:20px;max-width:480px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:24px;z-index:9999;display:none;border:1px solid #eee}
+.cookies-banner.show{display:block;animation:slideUp .4s ease}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.cookies-banner h4{font-size:17px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.cookies-banner h4 i{color:var(--primary)}
+.cookies-banner p{font-size:13px;color:#555;line-height:1.6;margin-bottom:16px}
+.cookies-banner .cookies-actions{display:flex;gap:8px;flex-wrap:wrap}
+.cookies-banner button{flex:1;padding:11px 14px;border-radius:8px;border:none;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer;transition:.2s;min-width:100px}
+.cookies-banner .btn-accept{background:var(--primary);color:#fff}
+.cookies-banner .btn-accept:hover{background:var(--primary-hover)}
+.cookies-banner .btn-refuse{background:#f5f5f5;color:#333}
+.cookies-banner .btn-refuse:hover{background:#e0e0e0}
+.cookies-banner .btn-settings{background:transparent;color:#555;text-decoration:underline;padding:8px 0;font-weight:500}
+.cookies-banner .cookies-categories{margin-top:16px;border-top:1px solid #eee;padding-top:16px;display:none;max-height:220px;overflow-y:auto}
+.cookies-banner.expanded .cookies-categories{display:block}
+.cookies-cat{margin-bottom:14px}
+.cookies-cat label{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;cursor:pointer}
+.cookies-cat .cookies-cat-desc{font-size:12px;color:#777;margin-top:4px;padding-left:24px}
+.cookies-cat input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary)}
+.cookies-cat input[disabled]{opacity:.5}
+.cookies-fab{position:fixed;left:20px;bottom:20px;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid #ddd;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.12);display:none;align-items:center;justify-content:center;font-size:18px;color:var(--primary);z-index:998;transition:.2s}
+.cookies-fab:hover{transform:scale(1.1)}
+.cookies-fab.show{display:flex}
+@media(max-width:520px){
+  .cookies-banner{left:10px;right:10px;bottom:10px;padding:18px}
+  .cookies-banner .cookies-actions{flex-direction:column}
+}
 </style>
 </head>
 <body>
@@ -253,14 +344,46 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
   </div>
 </section>
 
+<!-- Pourquoi MonBonAgent -->
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="section-title">
+      <h2><i class="fas fa-heart" style="color:var(--primary)"></i> Pourquoi MonBonAgent</h2>
+      <p>Un agent immobilier, des commerçants locaux, une seule communauté perpignanaise</p>
+    </div>
+    <div id="aboutRows">
+      <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
+    </div>
+  </div>
+</section>
+
 <section class="offers-section" id="offers">
   <div class="container">
     <div class="section-title">
-      <h2><i class="fas fa-tags" style="color:var(--primary)"></i> Offres du moment</h2>
-      <p>Profitez de bons d'achat exclusifs</p>
+      <h2><i class="fas fa-tags" style="color:var(--primary)"></i> Les bons moments</h2>
+      <p>Profitez de bons d'achat exclusifs chez vos commerçants préférés</p>
     </div>
     <div class="offer-cards" id="offerCards">
       <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Offres terminées -->
+<section class="ended-section" id="offers-ended">
+  <div class="container">
+    <div class="section-title">
+      <h2><i class="fas fa-clock" style="color:#888"></i> Offres terminées</h2>
+      <p>Revenez bientôt, ces offres pourraient revenir</p>
+    </div>
+    <div class="ended-arrows">
+      <button onclick="scrollEnded(-1)" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
+      <button onclick="scrollEnded(1)" aria-label="Suivant"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="ended-wrap">
+      <div class="ended-scroll" id="endedScroll">
+        <div class="loading" style="flex:1"><i class="fas fa-spinner"></i> Chargement...</div>
+      </div>
     </div>
   </div>
 </section>
@@ -317,20 +440,69 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
   </div>
 </div>
 
-<footer>
+<footer class="footer-v2" id="footer">
   <div class="container">
-    <div class="logo" style="margin-bottom:16px">Mon <span style="color:#fff">BonAgent</span></div>
-    <div class="footer-links">
-      <a href="#">Accueil</a>
-      <a href="#merchants">Commerçants</a>
-      <a href="#offers">Offres</a>
-      <a href="#agent-immo">Agent immo</a>
-      <a href="#blog">Le Mag</a>
-      <a href="#">Contact</a>
+    <div class="footer-grid">
+      <div class="footer-col footer-about">
+        <a href="#" class="logo">Mon <span>BonAgent</span></a>
+        <p id="footerAbout">MonBonAgent est la plateforme locale qui connecte Nordine Mouaouia, agent Guy Hoquet Perpignan, aux meilleurs commerçants de la ville.</p>
+        <div class="footer-social" id="footerSocial"></div>
+      </div>
+      <div class="footer-col" id="footerCol1">
+        <h4>MonBonAgent</h4>
+        <ul>
+          <li><a href="#about">À propos</a></li>
+          <li><a href="#merchants">Nos commerçants</a></li>
+          <li><a href="#offers">Les bons moments</a></li>
+          <li><a href="#blog">Le Mag</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" id="footerCol2">
+        <h4>Service client</h4>
+        <ul>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="merchant.html">Devenir partenaire</a></li>
+          <li><a href="mailto:n.mouaouia@guyhoquet.com">Nous écrire</a></li>
+        </ul>
+      </div>
+      <div class="footer-col" id="footerCol3">
+        <h4>Informations</h4>
+        <ul>
+          <li><a href="#mentions">Mentions légales</a></li>
+          <li><a href="#cgu">CGU</a></li>
+          <li><a href="#privacy">Confidentialité</a></li>
+          <li><a href="#" onclick="openCookiesSettings();return false">Gérer les cookies</a></li>
+        </ul>
+      </div>
     </div>
-    <p>&copy; 2026 MonBonAgent — Perpignan. Tous droits réservés.</p>
+    <div class="footer-bottom">
+      <p id="footerLegal">© 2026 MonBonAgent — Nordine Mouaouia, agent Guy Hoquet Perpignan. Tous droits réservés.</p>
+      <div class="footer-payments">
+        <i class="fab fa-cc-visa"></i>
+        <i class="fab fa-cc-mastercard"></i>
+        <i class="fab fa-cc-amex"></i>
+        <i class="fab fa-cc-paypal"></i>
+        <i class="fab fa-cc-apple-pay"></i>
+      </div>
+    </div>
   </div>
 </footer>
+
+<!-- Cookies banner -->
+<div class="cookies-banner" id="cookiesBanner">
+  <h4><i class="fas fa-cookie-bite"></i> <span id="cookiesTitle">Votre vie privée compte</span></h4>
+  <p id="cookiesText">Nous utilisons des cookies pour faire fonctionner le site, mesurer l'audience et vous proposer des contenus pertinents.</p>
+  <div class="cookies-actions">
+    <button class="btn-refuse" onclick="refuseCookies()" id="btnRefuse">Tout refuser</button>
+    <button class="btn-accept" onclick="acceptCookies()" id="btnAccept">Tout accepter</button>
+  </div>
+  <button class="btn-settings" onclick="toggleCookiesSettings()" id="btnSettings">Personnaliser mes choix</button>
+  <div class="cookies-categories" id="cookiesCategories"></div>
+</div>
+<button class="cookies-fab" id="cookiesFab" onclick="openCookiesSettings()" aria-label="Gérer les cookies" title="Gérer les cookies">
+  <i class="fas fa-cookie-bite"></i>
+</button>
 
 <!-- Lead Modal -->
 <div class="modal-overlay" id="leadModal">
@@ -375,6 +547,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allMerchants = [];
 let allOffers = [];
+let endedOffers = [];
 let allBlogPosts = [];
 let activeCategory = 'all';
 let siteSettings = null;
@@ -508,13 +681,183 @@ function applySiteSettings(s) {
     }
   }
 
-  // --- Footer contact / social ---
-  if (s.contact_email) {
-    // No dedicated contact el for now — we could extend the footer later
-  }
-  const sl = s.social_links || {};
-  // Social links could be injected in footer in a future iteration.
+  // --- About sections "Pourquoi MonBonAgent" ---
+  renderAboutSections(s.about_sections);
+
+  // --- Footer blocks ---
+  applyFooter(s.footer_blocks || {}, s.social_links || {});
+
+  // --- Cookies policy ---
+  applyCookiesPolicy(s.cookies_policy || null);
 }
+
+// ---------- About sections ----------
+function renderAboutSections(sections) {
+  const host = document.getElementById('aboutRows');
+  if (!host) return;
+  if (!Array.isArray(sections) || !sections.length) {
+    // fallback content
+    sections = [
+      { title:"Un agent immobilier au cœur de Perpignan",
+        text:"MonBonAgent, c'est d'abord l'engagement de Nordine Mouaouia, conseiller Guy Hoquet à Perpignan, pour vous connecter aux meilleurs commerçants de la ville.",
+        image:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80",
+        cta_label:"Découvrir mon agence", cta_url:"#agent-immo" },
+      { title:"Des bons d'achat chez vos commerçants préférés",
+        text:"Chaque bon MonBonAgent est négocié en direct avec un commerçant perpignanais. Vous profitez de vraies remises, eux d'une nouvelle clientèle locale.",
+        image:"https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1000&q=80",
+        cta_label:"Voir les bons", cta_url:"#offers" },
+      { title:"Un réseau local qui fait vivre le quartier",
+        text:"En rejoignant MonBonAgent, vous soutenez une économie de proximité. 100% des commerçants présents sur la plateforme sont indépendants.",
+        image:"https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1000&q=80",
+        cta_label:"Nos commerçants", cta_url:"#merchants" }
+    ];
+  }
+  host.innerHTML = sections.map((b, i) => `
+    <div class="about-row ${i % 2 === 1 ? 'reverse' : ''}">
+      <div class="about-img" style="background-image:url('${(b.image||'').replace(/'/g,"\\'")}')"></div>
+      <div class="about-text">
+        <h3>${escapeHtml(b.title||'')}</h3>
+        <p>${escapeHtml(b.text||'')}</p>
+        ${b.cta_label ? `<a href="${b.cta_url||'#'}" class="about-cta">${escapeHtml(b.cta_label)} <i class="fas fa-arrow-right"></i></a>` : ''}
+      </div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]);
+}
+
+// ---------- Footer rendering ----------
+function applyFooter(fb, sl) {
+  if (fb.about_text) {
+    const a = document.getElementById('footerAbout');
+    if (a) a.textContent = fb.about_text;
+  }
+  if (fb.legal_line) {
+    const l = document.getElementById('footerLegal');
+    if (l) l.textContent = fb.legal_line;
+  }
+  const setCol = (id, col) => {
+    if (!col) return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = `<h4>${escapeHtml(col.title||'')}</h4><ul>` +
+      (col.items||[]).map(it => `<li><a href="${it.url||'#'}">${escapeHtml(it.label||'')}</a></li>`).join('') +
+      `</ul>`;
+  };
+  setCol('footerCol1', fb.links_col1);
+  setCol('footerCol2', fb.links_col2);
+  setCol('footerCol3', fb.links_col3);
+
+  // Social icons
+  const socialHost = document.getElementById('footerSocial');
+  if (socialHost) {
+    const icons = {
+      facebook:'fab fa-facebook-f', instagram:'fab fa-instagram',
+      linkedin:'fab fa-linkedin-in', twitter:'fab fa-x-twitter',
+      tiktok:'fab fa-tiktok', youtube:'fab fa-youtube',
+      whatsapp:'fab fa-whatsapp'
+    };
+    const html = Object.keys(icons)
+      .filter(k => sl[k] && sl[k].trim())
+      .map(k => `<a href="${sl[k]}" target="_blank" rel="noopener" aria-label="${k}"><i class="${icons[k]}"></i></a>`)
+      .join('');
+    socialHost.innerHTML = html || '<a href="mailto:n.mouaouia@guyhoquet.com" aria-label="email"><i class="fas fa-envelope"></i></a>';
+  }
+}
+
+// ---------- Cookies banner ----------
+let cookiesPolicy = null;
+function applyCookiesPolicy(policy) {
+  const defaults = {
+    banner_title:"Votre vie privée compte",
+    banner_text:"Nous utilisons des cookies pour faire fonctionner le site, mesurer l'audience et vous proposer des contenus pertinents.",
+    accept_label:"Tout accepter",
+    refuse_label:"Tout refuser",
+    settings_label:"Personnaliser mes choix",
+    categories:[
+      {key:"essential",label:"Essentiels",required:true,description:"Nécessaires au fonctionnement du site."},
+      {key:"analytics",label:"Mesure d'audience",required:false,description:"Statistiques anonymes pour améliorer le site."},
+      {key:"marketing",label:"Marketing",required:false,description:"Personnalisation des contenus et campagnes."}
+    ]
+  };
+  cookiesPolicy = Object.assign({}, defaults, policy || {});
+  if (policy && policy.categories) cookiesPolicy.categories = policy.categories;
+
+  document.getElementById('cookiesTitle').textContent = cookiesPolicy.banner_title;
+  document.getElementById('cookiesText').textContent = cookiesPolicy.banner_text;
+  document.getElementById('btnAccept').textContent = cookiesPolicy.accept_label;
+  document.getElementById('btnRefuse').textContent = cookiesPolicy.refuse_label;
+  document.getElementById('btnSettings').textContent = cookiesPolicy.settings_label;
+
+  const host = document.getElementById('cookiesCategories');
+  host.innerHTML = cookiesPolicy.categories.map(c => `
+    <div class="cookies-cat">
+      <label>
+        <input type="checkbox" data-key="${c.key}" ${c.required ? 'checked disabled' : ''}>
+        ${escapeHtml(c.label)}
+      </label>
+      <div class="cookies-cat-desc">${escapeHtml(c.description||'')}</div>
+    </div>
+  `).join('') + `<div style="margin-top:14px;display:flex;gap:8px">
+    <button class="btn-refuse" onclick="saveCookiesChoice()" style="flex:1;padding:10px;border-radius:8px;border:none;font-weight:600;background:var(--primary);color:#fff;cursor:pointer">Enregistrer mes choix</button>
+  </div>`;
+
+  // Show banner if no decision yet
+  const saved = localStorage.getItem('cookies_consent');
+  if (!saved) {
+    setTimeout(() => document.getElementById('cookiesBanner').classList.add('show'), 600);
+  } else {
+    document.getElementById('cookiesFab').classList.add('show');
+  }
+}
+
+function acceptCookies() {
+  const choice = { essential:true, analytics:true, marketing:true, ts:Date.now() };
+  localStorage.setItem('cookies_consent', JSON.stringify(choice));
+  document.getElementById('cookiesBanner').classList.remove('show','expanded');
+  document.getElementById('cookiesFab').classList.add('show');
+}
+function refuseCookies() {
+  const choice = { essential:true, analytics:false, marketing:false, ts:Date.now() };
+  localStorage.setItem('cookies_consent', JSON.stringify(choice));
+  document.getElementById('cookiesBanner').classList.remove('show','expanded');
+  document.getElementById('cookiesFab').classList.add('show');
+}
+function toggleCookiesSettings() {
+  document.getElementById('cookiesBanner').classList.toggle('expanded');
+}
+function openCookiesSettings() {
+  const saved = localStorage.getItem('cookies_consent');
+  if (saved) {
+    try {
+      const choice = JSON.parse(saved);
+      document.querySelectorAll('#cookiesCategories input[type=checkbox]').forEach(cb => {
+        const key = cb.getAttribute('data-key');
+        if (!cb.disabled && choice[key] !== undefined) cb.checked = !!choice[key];
+      });
+    } catch(e) {}
+  }
+  document.getElementById('cookiesBanner').classList.add('show','expanded');
+}
+function saveCookiesChoice() {
+  const choice = { ts:Date.now() };
+  document.querySelectorAll('#cookiesCategories input[type=checkbox]').forEach(cb => {
+    choice[cb.getAttribute('data-key')] = cb.checked;
+  });
+  choice.essential = true;
+  localStorage.setItem('cookies_consent', JSON.stringify(choice));
+  document.getElementById('cookiesBanner').classList.remove('show','expanded');
+  document.getElementById('cookiesFab').classList.add('show');
+}
+
+// Expose for inline onclick handlers
+window.acceptCookies = acceptCookies;
+window.refuseCookies = refuseCookies;
+window.toggleCookiesSettings = toggleCookiesSettings;
+window.openCookiesSettings = openCookiesSettings;
+window.saveCookiesChoice = saveCookiesChoice;
 
 async function loadSiteSettings() {
   try {
@@ -578,13 +921,15 @@ const FALLBACK_BLOG = [
 ];
 
 async function loadData() {
-  const [mRes, oRes, bRes] = await Promise.all([
+  const [mRes, oRes, eRes, bRes] = await Promise.all([
     sb.from('merchants').select('*').eq('status','active').order('featured',{ascending:false}),
-    sb.from('offers').select('*, merchants(name, category)').eq('status','active'),
+    sb.from('offers').select('*, merchants(name, category, image_url)').eq('status','active'),
+    sb.from('offers').select('*, merchants(name, category, image_url)').eq('status','ended').order('ended_at',{ascending:false}).limit(12),
     sb.from('blog_posts').select('*').order('published_at',{ascending:false}).limit(6)
   ]);
   allMerchants = mRes.data || [];
   allOffers = oRes.data || [];
+  endedOffers = eRes.data || [];
   allBlogPosts = (bRes.data && bRes.data.length > 0) ? bRes.data : FALLBACK_BLOG;
 
   document.getElementById('statMerchants').textContent = allMerchants.length;
@@ -594,8 +939,38 @@ async function loadData() {
   renderCategories();
   renderMerchants();
   renderOffers();
+  renderEndedOffers();
   renderBlog();
 }
+
+function renderEndedOffers() {
+  const host = document.getElementById('endedScroll');
+  if (!host) return;
+  if (!endedOffers.length) {
+    host.innerHTML = '<p style="color:#999;flex:1;text-align:center;padding:20px">Aucune offre terminée pour le moment.</p>';
+    return;
+  }
+  host.innerHTML = endedOffers.map(o => {
+    const m = o.merchants || {};
+    const img = m.image_url || 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&q=80';
+    return `<div class="ended-card">
+      <div class="card-img" style="background-image:url('${img}')">
+        <span class="ended-badge">Terminé</span>
+      </div>
+      <div class="card-body">
+        <h4>${escapeHtml(o.title || (o.price+'€ → '+(o.price+o.gift)+'€ offert'))}</h4>
+        <div class="ended-merchant">${escapeHtml(m.name||'')}</div>
+        <div class="ended-price">${o.price}€ payé → ${o.price + (o.gift||0)}€</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function scrollEnded(dir) {
+  const el = document.getElementById('endedScroll');
+  if (el) el.scrollBy({ left: dir * 300, behavior:'smooth' });
+}
+window.scrollEnded = scrollEnded;
 
 function renderBlog() {
   const grid = document.getElementById('blogGrid');
