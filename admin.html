@@ -718,6 +718,20 @@ tr:hover{background:#fafbfc}
       <input id="agent_cities_in" placeholder="perpignan, canet-en-roussillon, argeles-sur-mer">
       <small style="color:#6c757d">La 1ʳᵉ ville indiquée sera marquée comme principale.</small>
     </div>
+
+    <!-- ===== BRANDING DE L'AGENT ===== -->
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-palette"></i> Branding de l'agent</h4>
+    <p class="sub" style="font-size:12px">Ces couleurs sont automatiquement reprises sur toutes les pages liées à cet agent (jeux concours, fiche agent, landing). Chaque jeu peut les surcharger au cas par cas.</p>
+    <div class="grid-2">
+      <div class="field"><label>Couleur principale</label><input type="color" id="agent_brand_primary" value="#f82032"></div>
+      <div class="field"><label>Couleur accent</label><input type="color" id="agent_brand_accent" value="#ff6b35"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Couleur sombre</label><input type="color" id="agent_brand_dark" value="#212529"></div>
+      <div class="field"><label>Couleur or (gagnants)</label><input type="color" id="agent_brand_gold" value="#ffc107"></div>
+    </div>
+    <div class="field"><label>Logo (URL)</label><input id="agent_brand_logo" placeholder="https://…/logo.png"></div>
+
     <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
       <button class="btn btn-ghost" onclick="document.getElementById('agentModal').style.display='none'">Annuler</button>
       <button class="btn" onclick="saveP6Agent()"><i class="fas fa-save"></i> Enregistrer</button>
@@ -3348,6 +3362,13 @@ function openAgentModal(id){
   document.getElementById('agent_bio').value = a ? (a.bio||'') : '';
   const slugs = a && a.agent_cities ? a.agent_cities.sort((x,y)=>(y.is_primary?1:0)-(x.is_primary?1:0)).map(ac => ac.cities && ac.cities.slug).filter(Boolean).join(', ') : '';
   document.getElementById('agent_cities_in').value = slugs;
+  // Branding
+  const b = (a && a.brand) || {};
+  document.getElementById('agent_brand_primary').value = b.primary || '#f82032';
+  document.getElementById('agent_brand_accent').value  = b.accent  || '#ff6b35';
+  document.getElementById('agent_brand_dark').value    = b.dark    || '#212529';
+  document.getElementById('agent_brand_gold').value    = b.gold    || '#ffc107';
+  document.getElementById('agent_brand_logo').value    = b.logo    || '';
   document.getElementById('agentModal').style.display = 'flex';
 }
 async function saveP6Agent(){
@@ -3363,7 +3384,15 @@ async function saveP6Agent(){
     phone: document.getElementById('agent_phone').value.trim() || null,
     website: document.getElementById('agent_site').value.trim() || null,
     photo_url: document.getElementById('agent_photo').value.trim() || null,
-    bio: document.getElementById('agent_bio').value.trim() || null
+    bio: document.getElementById('agent_bio').value.trim() || null,
+    brand: {
+      primary:      document.getElementById('agent_brand_primary').value,
+      primaryHover: document.getElementById('agent_brand_primary').value,
+      accent:       document.getElementById('agent_brand_accent').value,
+      dark:         document.getElementById('agent_brand_dark').value,
+      gold:         document.getElementById('agent_brand_gold').value,
+      logo:         document.getElementById('agent_brand_logo').value.trim() || ''
+    }
   };
   try{
     let agentId = id;
@@ -3502,14 +3531,34 @@ function ctSyncPreview(){
 window.ctSyncPreview = ctSyncPreview;
 
 async function ctLoadAgents(){
-  if (_ctAgents.length) return _ctAgents;
+  // always refresh so edits in the agent modal propagate here
   const { data } = await sb.from('agents').select('id,slug,name,agency,photo_url,brand').eq('is_active', true).order('is_primary', {ascending:false});
   _ctAgents = data || [];
   const sel = document.getElementById('ct_agent_id');
+  const current = sel.value;
   sel.innerHTML = '<option value="">— Aucun (branding par défaut MonBonAgent) —</option>' +
     _ctAgents.map(a => '<option value="'+a.id+'">'+a.name+(a.agency?' — '+a.agency:'')+'</option>').join('');
+  if (current) sel.value = current;
   return _ctAgents;
 }
+
+// Quand on change l'agent assigné dans la modale concours, on hérite automatiquement
+// de son branding (les 4 color pickers). L'utilisateur peut encore surcharger juste après.
+function ctApplyAgentBrandToPickers(agent) {
+  if (!agent || !agent.brand) return;
+  const b = agent.brand || {};
+  if (b.primary) document.getElementById('ct_brand_primary').value = b.primary;
+  if (b.accent)  document.getElementById('ct_brand_accent').value  = b.accent;
+  if (b.dark)    document.getElementById('ct_brand_dark').value    = b.dark;
+  if (b.gold)    document.getElementById('ct_brand_gold').value    = b.gold;
+  ctSyncPreview();
+}
+document.addEventListener('change', (e) => {
+  if (e.target && e.target.id === 'ct_agent_id') {
+    const agent = ctGetSelectedAgent();
+    ctApplyAgentBrandToPickers(agent);
+  }
+});
 
 async function openContestModal(id){
   const c = id ? _p6Contests.find(x=>x.id===id) : null;
@@ -3537,13 +3586,17 @@ async function openContestModal(id){
   _ctSegments = (c && Array.isArray(c.segments) && c.segments.length) ? JSON.parse(JSON.stringify(c.segments)) : JSON.parse(JSON.stringify(CT_DEFAULT_SEGMENTS));
   window._ctSegments = _ctSegments;
   ctRenderSegments();
-  const b = (c && c.brand) || {};
+  await ctLoadAgents();
+  document.getElementById('ct_agent_id').value = (c && c.agent_id) || '';
+  // Priorité d'héritage : contest.brand > agent.brand > défaut MonBonAgent
+  const selectedAgent = ctGetSelectedAgent();
+  const agentBrand = (selectedAgent && selectedAgent.brand) || {};
+  const contestBrand = (c && c.brand) || {};
+  const b = Object.assign({}, agentBrand, contestBrand);
   document.getElementById('ct_brand_primary').value = b.primary || '#f82032';
   document.getElementById('ct_brand_accent').value  = b.accent  || '#ff6b35';
   document.getElementById('ct_brand_dark').value    = b.dark    || '#212529';
   document.getElementById('ct_brand_gold').value    = b.gold    || '#ffc107';
-  await ctLoadAgents();
-  document.getElementById('ct_agent_id').value = (c && c.agent_id) || '';
 
   // Preview iframe
   const previewUrl = c ? ('contest.html?id='+c.id+'&preview=1') : 'contest.html?preview=1';
