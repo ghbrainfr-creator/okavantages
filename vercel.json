@@ -6,6 +6,11 @@
     { "source": "/login", "destination": "/login.html" },
     { "source": "/merchant", "destination": "/merchant.html" }
   ],
+  "functions": {
+    "api/ai.js": {
+      "maxDuration": 30
+    }
+  },
   "headers": [
     {
       "source": "/(.*)",
