@@ -92,6 +92,7 @@ async function getContest({ contestId, slug, email }) {
     id: contest.id,
     merchant_id: contest.merchant_id,
     city_id: contest.city_id,
+    agent_id: contest.agent_id || null,
     title: contest.title,
     description: contest.description,
     prize_description: contest.prize_description,
@@ -110,10 +111,32 @@ async function getContest({ contestId, slug, email }) {
     spins_per_share: contest.spins_per_share,
     max_spins_per_user: contest.max_spins_per_user,
     next_winner_in: Math.max(1, contest.selection_interval - (contest.total_spins % contest.selection_interval)),
-    has_winner: !!contest.winner_participation_id
+    has_winner: !!contest.winner_participation_id,
+    segments: contest.segments || [],
+    brand: contest.brand || {}
   };
 
-  return { ok: true, contest: publicContest, participation: participation ? {
+  // Fetch agent branding (if attached) — also fall back to city_lead_agent
+  let publicAgent = null;
+  try {
+    let agentId = contest.agent_id;
+    if (!agentId && contest.city_id) {
+      const leadRows = await sbFetch('/rest/v1/city_lead_agent', { params: 'city_id=eq.' + contest.city_id + '&select=agent_id' });
+      if (leadRows && leadRows[0]) agentId = leadRows[0].agent_id;
+    }
+    if (agentId) {
+      const arows = await sbFetch('/rest/v1/agents', { params: 'id=eq.' + agentId + '&select=id,slug,name,title,agency,photo_url,phone,email,brand' });
+      const a = arows && arows[0];
+      if (a) {
+        publicAgent = {
+          id: a.id, slug: a.slug, name: a.name, title: a.title, agency: a.agency,
+          photo_url: a.photo_url, phone: a.phone, email: a.email, brand: a.brand || {}
+        };
+      }
+    }
+  } catch (e) { /* non-fatal */ }
+
+  return { ok: true, contest: publicContest, agent: publicAgent, participation: participation ? {
     id: participation.id,
     email: participation.email,
     first_name: participation.first_name,

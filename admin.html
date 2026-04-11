@@ -727,7 +727,8 @@ tr:hover{background:#fafbfc}
 
 <!-- ========== CONTEST MODAL ========== -->
 <div class="modal-overlay" id="contestModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
-  <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:1240px;width:100%;max-height:94vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+    <div style="min-width:0">
     <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#f82032"></i> Jeu du mois</h3>
     <p class="sub">Concours avec roue de la chance. Sélection automatique toutes les N participations.</p>
     <input type="hidden" id="ct_id_hidden">
@@ -771,9 +772,51 @@ tr:hover{background:#fafbfc}
     <div class="field">
       <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="ct_req_agent" checked> Consentement contact agent obligatoire</label>
     </div>
+
+    <!-- ===== AGENT BRANDING ===== -->
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-user-tie"></i> Agent immobilier (branding)</h4>
+    <p class="sub" style="font-size:12px">La page d'inscription reprendra le nom et les couleurs de l'agent. Chaque contest peut surcharger ces couleurs.</p>
+    <div class="field">
+      <label>Agent assigné</label>
+      <select id="ct_agent_id"><option value="">— Aucun (branding par défaut MonBonAgent) —</option></select>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Couleur principale</label><input type="color" id="ct_brand_primary" value="#f82032"></div>
+      <div class="field"><label>Couleur accent</label><input type="color" id="ct_brand_accent" value="#ff6b35"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Couleur sombre</label><input type="color" id="ct_brand_dark" value="#212529"></div>
+      <div class="field"><label>Couleur or (gagnants)</label><input type="color" id="ct_brand_gold" value="#ffc107"></div>
+    </div>
+
+    <!-- ===== WHEEL EDITOR ===== -->
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-sync-alt"></i> Roue de la chance — palmes</h4>
+    <p class="sub" style="font-size:12px">Ajoutez, retirez ou modifiez les segments (gagné, perdu, café, bon d'achat, remise…). La roue s'adapte automatiquement au nombre de palmes.</p>
+    <div id="ct_segments_list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button type="button" class="btn btn-sm" onclick="ctAddSegment('win','Gagné','#f82032','#ffffff')"><i class="fas fa-plus"></i> Gagné</button>
+      <button type="button" class="btn btn-sm btn-ghost" onclick="ctAddSegment('lose','Perdu','#ffffff','#212529')"><i class="fas fa-plus"></i> Perdu</button>
+      <button type="button" class="btn btn-sm" style="background:#ff6b35" onclick="ctAddSegment('win','Café offert','#ff6b35','#ffffff')"><i class="fas fa-mug-hot"></i> Café</button>
+      <button type="button" class="btn btn-sm" style="background:#ffc107;color:#212529" onclick="ctAddSegment('win','Bon 5€','#ffc107','#212529')"><i class="fas fa-ticket-alt"></i> Bon</button>
+      <button type="button" class="btn btn-sm" style="background:#28a745" onclick="ctAddSegment('win','-10%','#28a745','#ffffff')"><i class="fas fa-percent"></i> Remise</button>
+      <button type="button" class="btn btn-sm" style="background:#212529" onclick="ctAddSegment('jackpot','Grand prix','#212529','#ffc107')"><i class="fas fa-crown"></i> Jackpot</button>
+    </div>
+
     <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
       <button class="btn btn-ghost" onclick="document.getElementById('contestModal').style.display='none'">Annuler</button>
       <button class="btn" onclick="saveContest()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+    </div>
+    <!-- ===== LIVE PREVIEW PANEL ===== -->
+    <div style="min-width:0;position:sticky;top:0;align-self:flex-start">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <h4 style="font-size:14px;color:#6c757d;margin:0"><i class="fas fa-eye"></i> Aperçu en direct</h4>
+        <a href="#" id="ct_preview_open" target="_blank" class="btn btn-sm btn-ghost" style="font-size:11px"><i class="fas fa-external-link-alt"></i> Ouvrir</a>
+      </div>
+      <div style="border:1px solid #e5e5e5;border-radius:12px;overflow:hidden;background:#fafafa;height:calc(94vh - 120px);min-height:520px">
+        <iframe id="ct_preview_frame" src="about:blank" style="border:none;width:100%;height:100%;background:#fafafa"></iframe>
+      </div>
+      <p class="sub" style="font-size:11px;margin-top:6px;text-align:center">La page se personnalise au fur et à mesure de vos modifications.</p>
     </div>
   </div>
 </div>
@@ -3386,6 +3429,88 @@ function renderAdminContests(){
     }).join('') + '</div>';
 }
 function _p6ToLocalInput(iso){ if(!iso) return ''; const d = new Date(iso); const p = n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes()); }
+const CT_DEFAULT_SEGMENTS = [
+  {label:'10% offerts', type:'win',  color:'#f82032', textColor:'#ffffff'},
+  {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
+  {label:'Café offert', type:'win',  color:'#ff6b35', textColor:'#ffffff'},
+  {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
+  {label:'Bon 5€',      type:'win',  color:'#ffc107', textColor:'#212529'},
+  {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
+  {label:'Grand prix',  type:'jackpot', color:'#212529', textColor:'#ffc107'},
+  {label:'Rejouez',     type:'replay', color:'#ffffff', textColor:'#212529'}
+];
+let _ctSegments = [];
+let _ctAgents = [];
+
+function ctRenderSegments(){
+  const host = document.getElementById('ct_segments_list');
+  host.innerHTML = _ctSegments.map((s,i) =>
+    '<div style="display:grid;grid-template-columns:1fr 90px 42px 42px 60px 30px;gap:6px;align-items:center;padding:6px;border:1px solid #eee;border-radius:8px">' +
+      '<input value="'+(s.label||'').replace(/"/g,'&quot;')+'" oninput="_ctSegments['+i+'].label=this.value;ctSyncPreview()" placeholder="Texte" style="padding:6px;border:1px solid #ddd;border-radius:6px">' +
+      '<select onchange="_ctSegments['+i+'].type=this.value;ctSyncPreview()" style="padding:6px;border:1px solid #ddd;border-radius:6px;font-size:12px">' +
+        '<option value="win"'+(s.type==='win'?' selected':'')+'>Gagné</option>' +
+        '<option value="lose"'+(s.type==='lose'?' selected':'')+'>Perdu</option>' +
+        '<option value="jackpot"'+(s.type==='jackpot'?' selected':'')+'>Jackpot</option>' +
+        '<option value="replay"'+(s.type==='replay'?' selected':'')+'>Rejouer</option>' +
+      '</select>' +
+      '<input type="color" value="'+(s.color||'#ffffff')+'" oninput="_ctSegments['+i+'].color=this.value;ctSyncPreview()" title="Fond">' +
+      '<input type="color" value="'+(s.textColor||'#212529')+'" oninput="_ctSegments['+i+'].textColor=this.value;ctSyncPreview()" title="Texte">' +
+      '<input type="number" min="1" max="10" value="'+(s.weight||1)+'" oninput="_ctSegments['+i+'].weight=parseInt(this.value)||1;ctSyncPreview()" title="Poids" style="padding:6px;border:1px solid #ddd;border-radius:6px">' +
+      '<button type="button" onclick="_ctSegments.splice('+i+',1);ctRenderSegments();ctSyncPreview()" style="background:#fff0f1;color:#c62828;border:1px solid #ffc7cd;border-radius:6px;cursor:pointer" title="Supprimer"><i class="fas fa-trash"></i></button>' +
+    '</div>'
+  ).join('') || '<p class="sub" style="font-size:12px;padding:10px;background:#fafafa;border-radius:8px;text-align:center">Aucune palme — ajoutez-en ci-dessous.</p>';
+}
+function ctAddSegment(type, label, color, textColor){
+  _ctSegments.push({type, label, color, textColor, weight:1});
+  ctRenderSegments();
+  ctSyncPreview();
+}
+window.ctAddSegment = ctAddSegment;
+window.ctRenderSegments = ctRenderSegments;
+window._ctSegments = _ctSegments;
+
+function ctGetBrand(){
+  return {
+    primary: document.getElementById('ct_brand_primary').value,
+    primaryHover: document.getElementById('ct_brand_primary').value,
+    accent: document.getElementById('ct_brand_accent').value,
+    dark: document.getElementById('ct_brand_dark').value,
+    gold: document.getElementById('ct_brand_gold').value
+  };
+}
+function ctGetSelectedAgent(){
+  const id = document.getElementById('ct_agent_id').value;
+  return id ? _ctAgents.find(a => a.id === id) || null : null;
+}
+function ctSyncPreview(){
+  const frame = document.getElementById('ct_preview_frame');
+  if (!frame || !frame.contentWindow) return;
+  const agent = ctGetSelectedAgent();
+  const payload = {
+    type: 'contest-preview',
+    contest: {
+      title: document.getElementById('ct_title').value || 'Votre jeu du mois',
+      prize_description: document.getElementById('ct_prize').value,
+      selection_interval: parseInt(document.getElementById('ct_interval').value,10) || 50,
+      segments: _ctSegments.slice(),
+      brand: ctGetBrand(),
+      agent: agent
+    }
+  };
+  try { frame.contentWindow.postMessage(payload, '*'); } catch(e){}
+}
+window.ctSyncPreview = ctSyncPreview;
+
+async function ctLoadAgents(){
+  if (_ctAgents.length) return _ctAgents;
+  const { data } = await sb.from('agents').select('id,slug,name,agency,photo_url,brand').eq('is_active', true).order('is_primary', {ascending:false});
+  _ctAgents = data || [];
+  const sel = document.getElementById('ct_agent_id');
+  sel.innerHTML = '<option value="">— Aucun (branding par défaut MonBonAgent) —</option>' +
+    _ctAgents.map(a => '<option value="'+a.id+'">'+a.name+(a.agency?' — '+a.agency:'')+'</option>').join('');
+  return _ctAgents;
+}
+
 async function openContestModal(id){
   const c = id ? _p6Contests.find(x=>x.id===id) : null;
   document.getElementById('ct_id_hidden').value = c ? c.id : '';
@@ -3407,8 +3532,39 @@ async function openContestModal(id){
   document.getElementById('ct_cta').value = c ? (c.cta_text||'Tenter ma chance') : 'Tenter ma chance';
   document.getElementById('ct_req_newsletter').checked = c ? !!c.require_consent_newsletter : true;
   document.getElementById('ct_req_agent').checked = c ? !!c.require_consent_agent : true;
+
+  // Segments + brand + agent
+  _ctSegments = (c && Array.isArray(c.segments) && c.segments.length) ? JSON.parse(JSON.stringify(c.segments)) : JSON.parse(JSON.stringify(CT_DEFAULT_SEGMENTS));
+  window._ctSegments = _ctSegments;
+  ctRenderSegments();
+  const b = (c && c.brand) || {};
+  document.getElementById('ct_brand_primary').value = b.primary || '#f82032';
+  document.getElementById('ct_brand_accent').value  = b.accent  || '#ff6b35';
+  document.getElementById('ct_brand_dark').value    = b.dark    || '#212529';
+  document.getElementById('ct_brand_gold').value    = b.gold    || '#ffc107';
+  await ctLoadAgents();
+  document.getElementById('ct_agent_id').value = (c && c.agent_id) || '';
+
+  // Preview iframe
+  const previewUrl = c ? ('contest.html?id='+c.id+'&preview=1') : 'contest.html?preview=1';
+  document.getElementById('ct_preview_open').href = previewUrl;
+  const frame = document.getElementById('ct_preview_frame');
+  frame.src = previewUrl;
+
   document.getElementById('contestModal').style.display = 'flex';
+  // Debounced push of form values into the iframe
+  setTimeout(ctSyncPreview, 800);
 }
+
+// Live preview on form edits
+document.addEventListener('input', (e) => {
+  if (!e.target.id) return;
+  if (e.target.id.startsWith('ct_')) ctSyncPreview();
+});
+// Listen for the iframe's ready signal
+window.addEventListener('message', (ev) => {
+  if (ev.data && ev.data.type === 'contest-preview-ready') ctSyncPreview();
+});
 async function saveContest(){
   const id = document.getElementById('ct_id_hidden').value;
   const title = document.getElementById('ct_title').value.trim();
@@ -3438,7 +3594,10 @@ async function saveContest(){
     max_spins_per_user: parseInt(document.getElementById('ct_spins_max').value, 10) || 10,
     cta_text: document.getElementById('ct_cta').value.trim() || 'Tenter ma chance',
     require_consent_newsletter: document.getElementById('ct_req_newsletter').checked,
-    require_consent_agent: document.getElementById('ct_req_agent').checked
+    require_consent_agent: document.getElementById('ct_req_agent').checked,
+    agent_id: document.getElementById('ct_agent_id').value || null,
+    segments: _ctSegments,
+    brand: ctGetBrand()
   };
   try{
     if(id){
