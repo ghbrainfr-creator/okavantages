@@ -7,6 +7,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+  if (window['pdfjsLib']) {
+    window['pdfjsLib'].GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }
+</script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
@@ -53,6 +60,7 @@ tr:hover{background:#fafbfc}
 .pill.new{background:#e7f5ff;color:#1971c2}
 .pill.ok{background:#d3f9d8;color:#2b8a3e}
 .pill.warn{background:#fff4e6;color:#d9480f}
+.pill.muted{background:#e9ecef;color:#6c757d}
 .row{display:flex;gap:8px;align-items:center}
 .services-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .service-chip{background:#fff0f1;color:#f82032;padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
@@ -63,6 +71,133 @@ tr:hover{background:#fafbfc}
 .merchant-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #f0f1f3;border-radius:8px;margin-bottom:8px}
 .merchant-row strong{flex:1}
 .merchant-row .tiny{color:#6c757d;font-size:12px}
+
+/* ===== File upload UI ===== */
+.file-upload{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.file-upload input[type=text]{flex:1;min-width:160px}
+.file-upload .upbtn{background:#e9ecef;color:#495057;border:none;padding:10px 12px;border-radius:8px;cursor:pointer;font-family:inherit;font-size:13px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.file-upload .upbtn:hover{background:#dee2e6}
+.file-upload .upbtn.uploading{background:#fff4e6;color:#d9480f;cursor:wait}
+.file-upload .preview{width:44px;height:44px;border-radius:8px;object-fit:cover;border:1px solid #e9ecef;background:#f8f9fa}
+.file-upload input[type=file]{display:none}
+
+/* ===== Charte PDF box ===== */
+.charte-box{background:#fff8e1;border:2px dashed #fcc419;border-radius:14px;padding:20px;margin-bottom:22px}
+.charte-box h3{font-size:15px;margin-bottom:6px;color:#8a6d00}
+.charte-box p{color:#8a6d00;font-size:13px;margin-bottom:12px}
+.charte-dropzone{border:2px dashed #fab005;border-radius:10px;padding:22px;text-align:center;background:#fff;cursor:pointer;transition:.15s}
+.charte-dropzone:hover{background:#fff3bf}
+.charte-dropzone.dragging{background:#fff3bf;border-color:#f08c00}
+.charte-dropzone i{font-size:28px;color:#f08c00;margin-bottom:8px}
+.charte-dropzone strong{display:block;color:#4d3a00;font-size:14px;margin-bottom:4px}
+.charte-dropzone span{color:#8a6d00;font-size:12px}
+.charte-preview{margin-top:14px;background:#fff;border:1px solid #fcc419;border-radius:10px;padding:14px;display:none}
+.charte-preview.visible{display:block}
+.charte-preview h4{font-size:13px;margin-bottom:10px;color:#495057}
+.color-swatches{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.swatch{width:72px;text-align:center;cursor:pointer;border-radius:8px;padding:4px;border:2px solid transparent;transition:.15s}
+.swatch:hover{border-color:#f82032}
+.swatch .chip{height:48px;border-radius:6px;border:1px solid #dee2e6;margin-bottom:4px}
+.swatch .hex{font-size:10px;color:#495057;font-family:monospace}
+.slot-picker{background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:10px}
+.slot-picker .apply-btn{background:#198754;color:#fff;border:none;padding:10px 16px;border-radius:8px;cursor:pointer;font-family:inherit;font-weight:500;margin-top:8px}
+.slot-picker .apply-btn:hover{background:#157347}
+.pdf-canvas-preview{max-width:100%;border:1px solid #e9ecef;border-radius:8px;margin-top:10px}
+
+/* ===== Live preview drawer ===== */
+.preview-drawer{position:fixed;top:0;right:-520px;width:500px;max-width:92vw;height:100vh;background:#fff;box-shadow:-6px 0 32px rgba(0,0,0,.18);z-index:400;transition:right .3s ease;display:flex;flex-direction:column}
+.preview-drawer.open{right:0}
+.preview-drawer header{padding:12px 16px;border-bottom:1px solid #e9ecef;display:flex;align-items:center;gap:10px;position:static}
+.preview-drawer .url-input{flex:1;padding:7px 10px;border:1px solid #dee2e6;border-radius:6px;font-family:inherit;font-size:12px}
+.preview-drawer .icon-btn{background:#e9ecef;color:#495057;border:none;padding:7px 10px;border-radius:6px;cursor:pointer;font-size:12px}
+.preview-drawer .icon-btn:hover{background:#dee2e6}
+.preview-drawer iframe{flex:1;width:100%;border:none;background:#f5f6f8}
+.preview-toggle-fab{position:fixed;bottom:24px;right:24px;background:#1a1a2e;color:#fff;border:none;width:56px;height:56px;border-radius:50%;box-shadow:0 6px 22px rgba(0,0,0,.25);cursor:pointer;font-size:20px;z-index:399;display:flex;align-items:center;justify-content:center;transition:.15s}
+.preview-toggle-fab:hover{background:#f82032;transform:scale(1.06)}
+.preview-toggle-fab.active{background:#f82032}
+@media(max-width:720px){.preview-drawer{width:100vw;max-width:100vw}}
+
+/* ===== Merchant row enrichments ===== */
+.merchant-row{flex-wrap:wrap}
+.merchant-row .actions{display:flex;gap:6px;flex-wrap:wrap}
+.btn.sm{padding:6px 10px;font-size:12px}
+.btn.danger{background:#dc3545}
+.btn.danger:hover{background:#b02a37}
+
+/* ===== Sticky save bar improvements ===== */
+.save-bar .hint{flex:1;color:#6c757d;font-size:12px;text-align:left;padding-left:6px}
+.btn.loading{opacity:.7;cursor:wait}
+.btn.loading i{animation:spin 1s linear infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+
+/* ===== V3 — Mobile-first + Prospects + Templates outreach ===== */
+.tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{height:0}
+@media(max-width:720px){
+  header{padding:10px 12px;flex-wrap:wrap;gap:6px}
+  header .brand{font-size:15px}
+  header .right{flex:1;justify-content:flex-end;gap:6px}
+  header .user-email{display:none}
+  header a{font-size:11px}
+  header button{padding:7px 11px;font-size:11px}
+  .wrap{margin:14px auto;padding:0 10px}
+  .panel{padding:18px 14px}
+  .tabs{padding:4px;gap:2px}
+  .tab{padding:9px 11px;font-size:12px}
+  .tab i{font-size:13px}
+  .tab span{display:none}
+  .grid-2,.grid-3,.grid-4{grid-template-columns:1fr !important}
+  h2{font-size:16px}
+  .merchant-row{flex-direction:column;align-items:stretch !important;gap:8px}
+  .merchant-row .actions{justify-content:flex-start}
+  table{font-size:11px}
+  th,td{padding:7px 5px}
+  .preview-drawer{width:100vw}
+  .preview-toggle-fab{bottom:14px;right:14px;width:48px;height:48px}
+  .modal-overlay{padding:10px}
+  .modal-overlay > div{padding:18px !important;max-height:94vh}
+}
+.tab span{display:inline}
+.prospect-row{display:grid;grid-template-columns:30px 1fr 1fr 110px 110px auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid #f0f1f3;border-radius:8px;margin-bottom:6px;background:#fff}
+@media(max-width:720px){.prospect-row{grid-template-columns:30px 1fr auto;gap:6px}.prospect-row .col-cat,.prospect-row .col-status,.prospect-row .col-source{display:none}}
+.prospect-row .name{font-weight:600;font-size:13px}
+.prospect-row .col-email,.prospect-row .col-phone,.prospect-row .col-cat{font-size:12px;color:#6c757d;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.prospect-row .pill-status{display:inline-block;padding:2px 9px;border-radius:10px;font-size:10px;font-weight:600;text-transform:uppercase}
+.pill-status.new{background:#e7f5ff;color:#1971c2}
+.pill-status.contacted{background:#fff3cd;color:#856404}
+.pill-status.interested{background:#d3f9d8;color:#2b8a3e}
+.pill-status.converted{background:#d3f9d8;color:#0b5d2c}
+.pill-status.rejected{background:#ffe3e3;color:#c92a2a}
+.pill-status.unreachable{background:#f1f3f5;color:#6c757d}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
+.tpl-card{border:1.5px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s;background:#fff}
+.tpl-card:hover{border-color:#f82032;box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
+.tpl-card .icon{font-size:22px;margin-bottom:6px}
+.tpl-card .name{font-weight:600;font-size:14px;margin-bottom:4px}
+.tpl-card .meta{font-size:11px;color:#6c757d}
+.tpl-card .badge-sys{display:inline-block;background:#fff3cd;color:#856404;padding:2px 7px;border-radius:8px;font-size:9px;text-transform:uppercase;margin-left:6px;font-weight:600}
+.tpl-card .acts{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.tpl-card .acts .btn{padding:5px 9px;font-size:11px}
+.help-banner{background:#e7f5ff;color:#1971c2;border-left:3px solid #1971c2;padding:12px 14px;border-radius:6px;font-size:13px;margin-bottom:14px}
+.help-banner code{background:#fff;padding:1px 6px;border-radius:4px;color:#1971c2;font-size:11px}
+.import-result{background:#d3f9d8;color:#2b8a3e;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
+.import-result.show{display:block}
+.section-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.upload-zone{border:2px dashed #dee2e6;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:.2s}
+.upload-zone:hover,.upload-zone.dragover{border-color:#f82032;background:#fff5f6}
+.upload-zone i{font-size:30px;color:#adb5bd;margin-bottom:8px;display:block}
+.preview-mail{background:#f8f9fa;border:1px solid #e9ecef;border-radius:10px;padding:18px;font-size:13px;line-height:1.6;max-height:380px;overflow-y:auto}
+.preview-mail .from{font-size:11px;color:#6c757d;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e9ecef}
+.preview-mail .subject{font-weight:600;font-size:15px;margin-bottom:10px}
+.checkbox-list{max-height:300px;overflow-y:auto;border:1px solid #e9ecef;border-radius:8px;padding:10px;background:#fafbfc}
+.checkbox-list label{display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f1f3}
+.checkbox-list label:last-child{border-bottom:none}
+.empty-icon{font-size:48px;color:#dee2e6;margin-bottom:10px;display:block}
+.signature-preview{border:1px solid #e9ecef;border-radius:8px;padding:14px;background:#fafbfc;margin-top:8px;font-size:13px;line-height:1.5}
+.signature-preview img{max-height:60px;display:block;margin-top:8px}
+.segment-pill{display:inline-block;padding:5px 12px;background:#f1f3f5;color:#495057;border-radius:14px;font-size:12px;margin:3px;cursor:pointer;border:1.5px solid #e9ecef;user-select:none;transition:.2s}
+.segment-pill:hover{border-color:#f82032}
+.segment-pill.active{background:#f82032;color:#fff;border-color:#f82032}
 </style>
 </head>
 <body>
@@ -70,27 +205,53 @@ tr:hover{background:#fafbfc}
   <div class="brand">Mon<span>BonAgent</span> <span style="font-weight:400;color:#6c757d;font-size:13px;margin-left:8px">Admin</span></div>
   <div class="right">
     <span class="user-email" id="userEmail">…</span>
-    <a href="/" style="color:#6c757d;text-decoration:none;font-size:13px"><i class="fas fa-external-link-alt"></i> Voir le site</a>
+    <button class="ghost" onclick="togglePreview()" id="previewHeaderBtn" title="Afficher l'aperçu live du site"><i class="fas fa-eye"></i> Aperçu live</button>
+    <a href="/" target="_blank" style="color:#6c757d;text-decoration:none;font-size:13px"><i class="fas fa-external-link-alt"></i> Ouvrir le site</a>
     <button class="ghost" onclick="logout()">Déconnexion</button>
   </div>
 </header>
 
 <div class="wrap">
   <div class="tabs">
-    <div class="tab active" data-tab="branding"><i class="fas fa-palette"></i> Branding</div>
-    <div class="tab" data-tab="sections"><i class="fas fa-layer-group"></i> Sections</div>
-    <div class="tab" data-tab="agent"><i class="fas fa-user-tie"></i> Agent / Voisin</div>
-    <div class="tab" data-tab="footer"><i class="fas fa-shoe-prints"></i> Footer</div>
-    <div class="tab" data-tab="cookies"><i class="fas fa-cookie-bite"></i> Cookies</div>
-    <div class="tab" data-tab="contact"><i class="fas fa-envelope"></i> Contact & réseaux</div>
-    <div class="tab" data-tab="merchants"><i class="fas fa-store"></i> Commerçants</div>
-    <div class="tab" data-tab="stats"><i class="fas fa-chart-bar"></i> Vue d'ensemble</div>
+    <div class="tab active" data-tab="branding"><i class="fas fa-palette"></i> <span>Branding</span></div>
+    <div class="tab" data-tab="sections"><i class="fas fa-layer-group"></i> <span>Sections</span></div>
+    <div class="tab" data-tab="agent"><i class="fas fa-user-tie"></i> <span>Agent</span></div>
+    <div class="tab" data-tab="footer"><i class="fas fa-shoe-prints"></i> <span>Footer</span></div>
+    <div class="tab" data-tab="cookies"><i class="fas fa-cookie-bite"></i> <span>Cookies</span></div>
+    <div class="tab" data-tab="contact"><i class="fas fa-envelope"></i> <span>Contact</span></div>
+    <div class="tab" data-tab="merchants"><i class="fas fa-store"></i> <span>Commerçants</span></div>
+    <div class="tab" data-tab="prospects"><i class="fas fa-user-plus"></i> <span>Prospects</span></div>
+    <div class="tab" data-tab="outreach"><i class="fas fa-paper-plane"></i> <span>Outreach</span></div>
+    <div class="tab" data-tab="signature"><i class="fas fa-signature"></i> <span>Signature</span></div>
+    <div class="tab" data-tab="stats"><i class="fas fa-chart-bar"></i> <span>Stats</span></div>
   </div>
 
   <!-- BRANDING -->
   <div class="panel active" id="panel-branding">
     <h2>Branding du site</h2>
     <p class="sub">Personnalisez le titre, le tagline et les couleurs affichées sur la page d'accueil.</p>
+
+    <!-- CHARTE PDF AUTO -->
+    <div class="charte-box">
+      <h3><i class="fas fa-file-pdf"></i> Charte graphique automatique (PDF)</h3>
+      <p>Déposez le PDF de la charte graphique de l'agent — les couleurs sont extraites automatiquement. Vous choisissez ensuite quelles couleurs appliquer à quels emplacements, puis vous validez.</p>
+      <div class="charte-dropzone" id="charteDrop" onclick="document.getElementById('charteFile').click()">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <strong>Cliquez ou glissez un PDF ici</strong>
+        <span>Formats supportés : .pdf</span>
+      </div>
+      <input type="file" id="charteFile" accept="application/pdf" style="display:none">
+      <div class="charte-preview" id="chartePreview">
+        <h4>Couleurs détectées dans le PDF</h4>
+        <div class="color-swatches" id="charteSwatches"></div>
+        <h4 style="margin-top:14px">Assignation aux emplacements</h4>
+        <div class="slot-picker" id="slotPicker"></div>
+        <button class="apply-btn" onclick="applyCharteColors()"><i class="fas fa-check"></i> Appliquer ces couleurs au site</button>
+        <button class="btn ghost" onclick="resetCharte()" style="margin-top:8px"><i class="fas fa-times"></i> Annuler</button>
+        <canvas id="chartePdfCanvas" class="pdf-canvas-preview" style="display:none"></canvas>
+      </div>
+    </div>
+
     <div class="grid-2">
       <div class="field"><label>Titre du site</label><input id="site_title"></div>
       <div class="field"><label>Tagline (baseline)</label><input id="site_tagline"></div>
@@ -98,8 +259,24 @@ tr:hover{background:#fafbfc}
     <div class="field"><label>Titre du hero (grand texte d'accueil)</label><input id="hero_title"></div>
     <div class="field"><label>Sous-titre du hero</label><input id="hero_subtitle"></div>
     <div class="grid-2">
-      <div class="field"><label>URL du logo</label><input id="logo_url" placeholder="https://..."></div>
-      <div class="field"><label>URL du favicon</label><input id="favicon_url" placeholder="https://..."></div>
+      <div class="field">
+        <label>Logo</label>
+        <div class="file-upload">
+          <img class="preview" id="logo_url_preview" src="" alt="" style="display:none">
+          <input type="text" id="logo_url" placeholder="https://... ou téléverser">
+          <input type="file" id="logo_url_file" accept="image/*">
+          <button type="button" class="upbtn" onclick="document.getElementById('logo_url_file').click()"><i class="fas fa-upload"></i> Fichier</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Favicon</label>
+        <div class="file-upload">
+          <img class="preview" id="favicon_url_preview" src="" alt="" style="display:none">
+          <input type="text" id="favicon_url" placeholder="https://... ou téléverser">
+          <input type="file" id="favicon_url_file" accept="image/*,.ico">
+          <button type="button" class="upbtn" onclick="document.getElementById('favicon_url_file').click()"><i class="fas fa-upload"></i> Fichier</button>
+        </div>
+      </div>
     </div>
     <h2 style="margin-top:20px;font-size:16px">Charte graphique</h2>
     <p class="sub">Vos couleurs sont appliquées en live sur le site public.</p>
@@ -193,14 +370,22 @@ tr:hover{background:#fafbfc}
 
   <!-- AGENT -->
   <div class="panel" id="panel-agent">
-    <h2>Votre profil — "Mon sacré voisin"</h2>
+    <h2>Votre profil — "Mon Bon Agent"</h2>
     <p class="sub">Les informations affichées dans la section agent immobilier.</p>
     <div class="grid-2">
       <div class="field"><label>Nom complet</label><input id="agent_name"></div>
       <div class="field"><label>Rôle / titre</label><input id="agent_role"></div>
     </div>
     <div class="field"><label>Bio</label><textarea id="agent_bio" rows="4"></textarea></div>
-    <div class="field"><label>URL photo (upload Supabase Storage bientôt)</label><input id="agent_photo_url" placeholder="https://..."></div>
+    <div class="field">
+      <label>Photo de l'agent</label>
+      <div class="file-upload">
+        <img class="preview" id="agent_photo_url_preview" src="" alt="" style="display:none">
+        <input type="text" id="agent_photo_url" placeholder="https://... ou téléverser une image">
+        <input type="file" id="agent_photo_url_file" accept="image/*">
+        <button type="button" class="upbtn" onclick="document.getElementById('agent_photo_url_file').click()"><i class="fas fa-upload"></i> Téléverser</button>
+      </div>
+    </div>
     <div class="grid-2">
       <div class="field"><label>Téléphone</label><input id="agent_tel"></div>
       <div class="field"><label>Email</label><input id="agent_email"></div>
@@ -275,11 +460,106 @@ tr:hover{background:#fafbfc}
         <div class="field"><label>Téléphone</label><input id="nm_phone"></div>
         <div class="field"><label>Email</label><input id="nm_email"></div>
       </div>
-      <div class="field"><label>URL photo</label><input id="nm_image_url"></div>
+      <div class="field"><label>Horaires</label><input id="nm_hours" placeholder="Lun-Sam 9h-19h"></div>
+      <div class="field">
+        <label>Photo du commerçant</label>
+        <div class="file-upload">
+          <img class="preview" id="nm_image_url_preview" src="" alt="" style="display:none">
+          <input type="text" id="nm_image_url" placeholder="https://... ou téléverser">
+          <input type="file" id="nm_image_url_file" accept="image/*">
+          <button type="button" class="upbtn" onclick="document.getElementById('nm_image_url_file').click()"><i class="fas fa-upload"></i> Fichier</button>
+        </div>
+      </div>
       <div class="field"><label>URL source (auto)</label><input id="nm_source_url" readonly style="background:#f8f9fa"></div>
       <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;padding-top:16px;border-top:1px solid #f0f1f3">
         <button class="btn ghost" onclick="document.getElementById('newMerchantModal').style.display='none'">Annuler</button>
         <button class="btn" onclick="createMerchant()"><i class="fas fa-save"></i> Créer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROSPECTS -->
+  <div class="panel" id="panel-prospects">
+    <div class="row-between">
+      <div>
+        <h2>Prospects — commerçants à contacter</h2>
+        <p class="sub">Vos cibles d'outreach : commerçants pas encore inscrits, à upgrade, etc.</p>
+      </div>
+      <div class="section-toolbar">
+        <button class="btn ghost" onclick="exportProspectsCsv()"><i class="fas fa-download"></i> Exporter</button>
+        <button class="btn ghost" onclick="document.getElementById('prospectsCsvFile').click()"><i class="fas fa-upload"></i> Importer CSV</button>
+        <input type="file" id="prospectsCsvFile" accept=".csv,.txt" style="display:none">
+        <button class="btn" onclick="openProspectModal()"><i class="fas fa-plus"></i> Nouveau</button>
+      </div>
+    </div>
+    <div class="help-banner">
+      <i class="fas fa-info-circle"></i> Fichier CSV attendu : colonnes <code>name,category,city,address,phone,email,website,notes</code>. Première ligne = en-têtes. Vous pouvez importer une liste Pages Jaunes / Google Maps / votre prospection terrain.
+    </div>
+    <div id="import_result_prospects" class="import-result"></div>
+    <div class="row" style="gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <input type="search" class="search" id="prospects_search" placeholder="Rechercher nom, catégorie, ville…" oninput="filterProspects(this.value)" style="flex:1;padding:9px 14px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:13px;min-width:220px">
+      <select id="prospects_status_filter" onchange="filterProspectsByStatus(this.value)" style="padding:9px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:13px">
+        <option value="">Tous statuts</option>
+        <option value="new">Nouveaux</option>
+        <option value="contacted">Contactés</option>
+        <option value="interested">Intéressés</option>
+        <option value="converted">Convertis</option>
+        <option value="rejected">Refusés</option>
+        <option value="unreachable">Injoignables</option>
+      </select>
+      <span class="tiny" id="prospects_count" style="color:#6c757d;font-size:12px;align-self:center"></span>
+    </div>
+    <div id="prospects_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- OUTREACH (templates + campaigns) -->
+  <div class="panel" id="panel-outreach">
+    <div class="row-between">
+      <div>
+        <h2>Outreach — Templates & Campagnes</h2>
+        <p class="sub">Modèles d'invitation, d'upgrade, de relance pour vos prospects et commerçants.</p>
+      </div>
+      <div class="section-toolbar">
+        <button class="btn ghost" onclick="openAdminTemplateModal()"><i class="fas fa-plus"></i> Nouveau modèle</button>
+        <button class="btn" onclick="openAdminCampaignWizard()"><i class="fas fa-paper-plane"></i> Nouvelle campagne</button>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px;margin-top:14px;color:#495057">Modèles d'outreach</h3>
+    <div id="admin_templates_list" class="tpl-grid"><div class="loader">Chargement…</div></div>
+
+    <h3 style="font-size:14px;margin-top:24px;color:#495057">Campagnes envoyées</h3>
+    <div id="admin_campaigns_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- SIGNATURE ADMIN -->
+  <div class="panel" id="panel-signature">
+    <h2>Ma signature email (admin)</h2>
+    <p class="sub">Cette signature est ajoutée à toutes vos campagnes d'outreach.</p>
+    <div class="grid-2">
+      <div>
+        <div class="field">
+          <label>Logo / Photo (PNG/JPG, max 1 Mo)</label>
+          <div class="upload-zone" id="adm_sig_dropzone" onclick="document.getElementById('adm_sig_file').click()">
+            <i class="fas fa-image"></i>
+            <div>Glissez votre logo ici ou cliquez pour parcourir</div>
+            <div class="hint">Format recommandé : 200×60 px</div>
+            <input type="file" id="adm_sig_file" accept="image/*" style="display:none">
+          </div>
+          <input type="hidden" id="adm_sig_image_url">
+        </div>
+        <div class="field">
+          <label>Texte HTML de la signature</label>
+          <textarea id="adm_sig_html" rows="8" placeholder="Cordialement,&#10;Nordine Mouaouia&#10;Conseiller Guy Hoquet Perpignan&#10;04 68 00 00 00"></textarea>
+        </div>
+        <div class="field" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn ghost" onclick="loadAdminSignaturePreset()"><i class="fas fa-magic"></i> Modèle Nordine</button>
+          <button class="btn" onclick="saveAdminSignature()"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Aperçu</label>
+        <div class="signature-preview" id="adm_sig_preview"><em>Votre signature apparaîtra ici…</em></div>
       </div>
     </div>
   </div>
@@ -294,12 +574,186 @@ tr:hover{background:#fafbfc}
   </div>
 </div>
 
+<!-- EDIT MERCHANT MODAL (full fields, same as merchant.html profile) -->
+<div class="modal-overlay" id="editMerchantModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto">
+    <h3 style="margin-bottom:4px"><i class="fas fa-store" style="color:#f82032"></i> Fiche commerçant</h3>
+    <p class="sub">Édition complète de la fiche — mêmes champs que l'espace commerçant.</p>
+    <input type="hidden" id="em_id">
+    <div class="grid-2">
+      <div class="field"><label>Nom du commerce</label><input id="em_name"></div>
+      <div class="field"><label>Catégorie</label><input id="em_category" placeholder="Restaurant, Boulangerie…"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Ville</label><input id="em_city"></div>
+      <div class="field"><label>Adresse complète</label><input id="em_address"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone</label><input id="em_phone"></div>
+      <div class="field"><label>Email</label><input id="em_email"></div>
+    </div>
+    <div class="field"><label>Horaires</label><input id="em_hours" placeholder="Lun-Sam 9h-19h"></div>
+    <div class="field"><label>Description</label><textarea id="em_description" rows="4"></textarea></div>
+    <div class="field">
+      <label>Photo du commerçant</label>
+      <div class="file-upload">
+        <img class="preview" id="em_image_url_preview" src="" alt="" style="display:none">
+        <input type="text" id="em_image_url" placeholder="https://... ou téléverser">
+        <input type="file" id="em_image_url_file" accept="image/*">
+        <button type="button" class="upbtn" onclick="document.getElementById('em_image_url_file').click()"><i class="fas fa-upload"></i> Fichier</button>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Statut</label><select id="em_status"><option value="active">Active</option><option value="paused">En pause</option><option value="pending">En attente</option><option value="archived">Archivée</option></select></div>
+      <div class="field"><label>URL source (auto-enrichissement)</label><input id="em_source_url" placeholder="https://..."></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Note (0-5)</label><input type="number" id="em_rating" min="0" max="5" step="0.1"></div>
+      <div class="field"><label>Nombre d'avis</label><input type="number" id="em_avis" min="0"></div>
+    </div>
+    <h4 style="margin-top:6px;font-size:13px;color:#495057;text-transform:uppercase;letter-spacing:.3px">Réseaux sociaux</h4>
+    <div class="grid-2" style="margin-top:8px">
+      <div class="field"><label><i class="fab fa-facebook-f"></i> Facebook</label><input id="em_sl_facebook"></div>
+      <div class="field"><label><i class="fab fa-instagram"></i> Instagram</label><input id="em_sl_instagram"></div>
+      <div class="field"><label><i class="fab fa-x-twitter"></i> X</label><input id="em_sl_twitter"></div>
+      <div class="field"><label><i class="fab fa-tiktok"></i> TikTok</label><input id="em_sl_tiktok"></div>
+      <div class="field"><label><i class="fab fa-youtube"></i> YouTube</label><input id="em_sl_youtube"></div>
+      <div class="field"><label><i class="fab fa-whatsapp"></i> WhatsApp</label><input id="em_sl_whatsapp"></div>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:space-between;align-items:center;margin-top:18px;padding-top:16px;border-top:1px solid #f0f1f3;flex-wrap:wrap">
+      <button class="btn danger" onclick="deleteMerchantFromModal()"><i class="fas fa-trash"></i> Supprimer ce commerçant</button>
+      <div style="display:flex;gap:10px">
+        <button class="btn ghost" onclick="document.getElementById('editMerchantModal').style.display='none'">Annuler</button>
+        <button class="btn" onclick="saveEditMerchant()" id="em_save_btn"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE PREVIEW DRAWER -->
+<div class="preview-drawer" id="previewDrawer">
+  <header>
+    <button class="icon-btn" onclick="refreshPreview()" title="Recharger l'aperçu"><i class="fas fa-sync-alt"></i></button>
+    <input type="text" class="url-input" id="previewUrl" value="/" onkeydown="if(event.key==='Enter')refreshPreview()">
+    <button class="icon-btn" onclick="openPreviewInTab()" title="Ouvrir dans un nouvel onglet"><i class="fas fa-external-link-alt"></i></button>
+    <button class="icon-btn" onclick="togglePreview()" title="Fermer"><i class="fas fa-times"></i></button>
+  </header>
+  <iframe id="previewFrame" src=""></iframe>
+</div>
+<button class="preview-toggle-fab" id="previewFab" onclick="togglePreview()" title="Aperçu live du site"><i class="fas fa-eye"></i></button>
+
+<!-- PROSPECT MODAL -->
+<div class="modal-overlay" id="prospectModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
+    <h3 id="prospectModalTitle"><i class="fas fa-user-plus" style="color:#f82032"></i> Nouveau prospect</h3>
+    <p class="sub">Commerçant à contacter pour une invitation, upgrade, etc.</p>
+    <div class="grid-2">
+      <div class="field"><label>Nom du commerce</label><input id="p_name"></div>
+      <div class="field"><label>Catégorie</label><input id="p_category" placeholder="Restaurant, Boulangerie…"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Ville</label><input id="p_city" value="Perpignan"></div>
+      <div class="field"><label>Adresse</label><input id="p_address"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone</label><input id="p_phone"></div>
+      <div class="field"><label>Email</label><input type="email" id="p_email"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Site web / GMB</label><input id="p_website" placeholder="https://..."></div>
+      <div class="field"><label>Statut</label><select id="p_status"><option value="new">Nouveau</option><option value="contacted">Contacté</option><option value="interested">Intéressé</option><option value="converted">Converti</option><option value="rejected">Refusé</option><option value="unreachable">Injoignable</option></select></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Forfait suggéré</label><select id="p_plan"><option value="free">Gratuit</option><option value="pro">Pro</option><option value="premium">Premium</option></select></div>
+      <div class="field"><label>Source</label><select id="p_source"><option value="manual">Manuel</option><option value="csv">Import CSV</option><option value="scrape">Scraping</option></select></div>
+    </div>
+    <div class="field"><label>Notes</label><textarea id="p_notes" rows="3"></textarea></div>
+    <input type="hidden" id="p_id">
+    <div style="display:flex;gap:10px;justify-content:space-between;margin-top:18px;padding-top:16px;border-top:1px solid #f0f1f3;flex-wrap:wrap">
+      <button class="btn danger" onclick="deleteProspectFromModal()"><i class="fas fa-trash"></i> Supprimer</button>
+      <div style="display:flex;gap:10px">
+        <button class="btn ghost" onclick="document.getElementById('prospectModal').style.display='none'">Annuler</button>
+        <button class="btn" onclick="saveProspect()"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN TEMPLATE MODAL -->
+<div class="modal-overlay" id="adminTemplateModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
+    <h3 id="adminTemplateModalTitle"><i class="fas fa-file-alt" style="color:#f82032"></i> Nouveau modèle d'outreach</h3>
+    <div class="grid-2">
+      <div class="field"><label>Nom interne</label><input id="at_name" placeholder="Ex: Invitation forfait gratuit"></div>
+      <div class="field"><label>Catégorie</label><select id="at_category"><option value="outreach">Outreach</option><option value="upsell">Upgrade</option><option value="welcome">Bienvenue</option><option value="followup">Relance</option><option value="newsletter">Newsletter</option><option value="announcement">Annonce</option><option value="other">Autre</option></select></div>
+    </div>
+    <div class="field"><label>Sujet</label><input id="at_subject" placeholder="{{commerce}} : votre fiche offerte sur MonBonAgent"></div>
+    <div class="field"><label>Corps HTML</label><textarea id="at_body" rows="10"></textarea></div>
+    <div class="vars-list" style="background:#f8f9fa;padding:12px;border-radius:8px;font-size:12px;margin-top:10px;color:#495057">
+      <strong>Variables :</strong> <code>{{nom}}</code> <code>{{commerce}}</code> <code>{{email}}</code> <code>{{ville}}</code> <code>{{categorie}}</code>
+    </div>
+    <input type="hidden" id="at_id">
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;padding-top:16px;border-top:1px solid #f0f1f3">
+      <button class="btn ghost" onclick="document.getElementById('adminTemplateModal').style.display='none'">Annuler</button>
+      <button class="btn" onclick="saveAdminTemplate()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN CAMPAIGN WIZARD MODAL -->
+<div class="modal-overlay" id="adminCampaignModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:780px;width:100%;max-height:94vh;overflow-y:auto">
+    <h3 id="adminCampaignModalTitle"><i class="fas fa-paper-plane" style="color:#f82032"></i> Nouvelle campagne d'outreach</h3>
+    <div class="field"><label>Nom interne</label><input id="acmp_name" placeholder="Ex: Vague invitation 2026 T2"></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">1. Modèle</h4>
+    <div class="field"><select id="acmp_template_id" onchange="loadAdminCampaignTemplate()"><option value="">— Choisir un modèle —</option></select></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">2. Personnaliser</h4>
+    <div class="field"><label>Sujet</label><input id="acmp_subject"></div>
+    <div class="field"><label>Corps HTML</label><textarea id="acmp_body" rows="8"></textarea></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">3. Destinataires</h4>
+    <div class="field">
+      <span class="segment-pill active" data-target="all_prospects" onclick="adminSelectTarget('all_prospects', this)"><i class="fas fa-users"></i> Tous les prospects</span>
+      <span class="segment-pill" data-target="selected_prospects" onclick="adminSelectTarget('selected_prospects', this)"><i class="fas fa-check-square"></i> Sélection prospects</span>
+      <span class="segment-pill" data-target="all_merchants" onclick="adminSelectTarget('all_merchants', this)"><i class="fas fa-store"></i> Tous commerçants inscrits</span>
+      <span class="segment-pill" data-target="selected_merchants" onclick="adminSelectTarget('selected_merchants', this)"><i class="fas fa-check"></i> Sélection commerçants</span>
+      <span class="segment-pill" data-target="custom" onclick="adminSelectTarget('custom', this)"><i class="fas fa-plus"></i> Saisie libre</span>
+    </div>
+
+    <div id="acmp_selection_picker" style="display:none">
+      <div class="field"><label>Cochez les destinataires</label><div class="checkbox-list" id="acmp_recipient_checkboxes"></div></div>
+    </div>
+    <div id="acmp_custom_picker" style="display:none">
+      <div class="field"><label>Emails (un par ligne ou virgules)</label><textarea id="acmp_custom_emails" rows="4"></textarea></div>
+    </div>
+
+    <div style="background:#fff3cd;color:#664d03;padding:10px 14px;border-radius:8px;font-size:13px;margin:12px 0">
+      <i class="fas fa-info-circle"></i> <strong id="acmp_recipient_count">0 destinataire(s)</strong>
+    </div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">4. Aperçu</h4>
+    <div class="preview-mail" id="acmp_preview">Choisissez un modèle pour voir l'aperçu…</div>
+
+    <input type="hidden" id="acmp_id">
+    <input type="hidden" id="acmp_target_type" value="all_prospects">
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:18px;padding-top:16px;border-top:1px solid #f0f1f3;flex-wrap:wrap">
+      <button class="btn ghost" onclick="document.getElementById('adminCampaignModal').style.display='none'">Annuler</button>
+      <button class="btn ghost" onclick="saveAdminCampaignDraft()"><i class="fas fa-save"></i> Brouillon</button>
+      <button class="btn" onclick="sendAdminCampaign()"><i class="fas fa-paper-plane"></i> Envoyer</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast" class="toast"></div>
 
 <script>
 const SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const STORAGE_BUCKET = 'site-assets';
 
 let settings = null;
 let services = [];
@@ -323,8 +777,7 @@ async function checkAuth() {
   if (!session) { window.location.href = '/login.html'; return null; }
   currentUser = session.user;
   document.getElementById('userEmail').textContent = session.user.email;
-  // verify admin
-  const { data: isAdmin, error } = await sb.from('admin_users').select('user_id').eq('user_id', session.user.id).maybeSingle();
+  const { data: isAdmin } = await sb.from('admin_users').select('user_id').eq('user_id', session.user.id).maybeSingle();
   if (!isAdmin) {
     toast("Accès refusé — vous n'êtes pas admin", 'err');
     setTimeout(() => window.location.href = '/merchant.html', 1500);
@@ -333,6 +786,238 @@ async function checkAuth() {
   return session.user;
 }
 
+/* =========================================================
+   Storage upload helper
+   ========================================================= */
+async function uploadToStorage(file, pathPrefix) {
+  if (!file) throw new Error('Aucun fichier');
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+  const path = `${pathPrefix}/${Date.now()}_${safeName}`;
+  const { error } = await sb.storage.from(STORAGE_BUCKET).upload(path, file, {
+    cacheControl: '3600',
+    upsert: true,
+    contentType: file.type || undefined
+  });
+  if (error) throw error;
+  const { data } = sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+  return data.publicUrl;
+}
+
+function wireFileUpload(inputId, fileId, previewId, pathPrefix, onChange) {
+  const txt = document.getElementById(inputId);
+  const file = document.getElementById(fileId);
+  const preview = previewId ? document.getElementById(previewId) : null;
+  if (!txt || !file) return;
+
+  const refreshPreview = (url) => {
+    if (!preview) return;
+    if (url) { preview.src = url; preview.style.display = 'inline-block'; }
+    else preview.style.display = 'none';
+  };
+  refreshPreview(txt.value);
+  txt.addEventListener('input', () => refreshPreview(txt.value));
+
+  file.addEventListener('change', async (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (!f) return;
+    const btn = document.querySelector(`button[onclick*="${fileId}"]`);
+    const prevHtml = btn ? btn.innerHTML : '';
+    if (btn) { btn.classList.add('uploading'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi…'; }
+    try {
+      const url = await uploadToStorage(f, pathPrefix);
+      txt.value = url;
+      refreshPreview(url);
+      if (onChange) onChange(url);
+      toast('Fichier téléversé ✓');
+    } catch (err) {
+      console.error(err);
+      toast('Erreur upload : ' + (err.message || err), 'err');
+    } finally {
+      if (btn) { btn.classList.remove('uploading'); btn.innerHTML = prevHtml || '<i class="fas fa-upload"></i> Fichier'; }
+      file.value = '';
+    }
+  });
+}
+
+/* =========================================================
+   PDF charte graphique — extraction des couleurs
+   ========================================================= */
+let charteDetectedColors = [];
+let charteSlotAssign = {
+  color_primary: '', color_accent: '', color_secondary: '',
+  color_dark: '', color_bg: '', color_text: ''
+};
+
+function initCharteDropzone() {
+  const dz = document.getElementById('charteDrop');
+  const input = document.getElementById('charteFile');
+  if (!dz || !input) return;
+  ['dragover','dragenter'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('dragging'); }));
+  ['dragleave','drop'].forEach(ev => dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('dragging'); }));
+  dz.addEventListener('drop', e => {
+    const f = e.dataTransfer.files && e.dataTransfer.files[0];
+    if (f) handleChartePdf(f);
+  });
+  input.addEventListener('change', e => {
+    const f = e.target.files && e.target.files[0];
+    if (f) handleChartePdf(f);
+  });
+}
+
+async function handleChartePdf(file) {
+  if (!file || file.type !== 'application/pdf') {
+    toast('Seuls les fichiers PDF sont acceptés', 'err'); return;
+  }
+  if (!window.pdfjsLib) { toast('pdf.js non chargé', 'err'); return; }
+  toast('Analyse du PDF en cours…');
+  try {
+    const buf = await file.arrayBuffer();
+    const pdf = await window.pdfjsLib.getDocument({ data: buf }).promise;
+    const hexCounts = new Map();
+
+    // 1) Scan text for hex codes and rgb() up to 5 pages
+    const maxPages = Math.min(pdf.numPages, 5);
+    for (let p = 1; p <= maxPages; p++) {
+      const page = await pdf.getPage(p);
+      const txt = await page.getTextContent();
+      const str = txt.items.map(it => it.str).join(' ');
+      const hexes = str.match(/#([0-9a-fA-F]{6}|[0-9a-fA-F]{3})\b/g) || [];
+      hexes.forEach(h => {
+        let full = h.toLowerCase();
+        if (full.length === 4) full = '#' + full[1]+full[1]+full[2]+full[2]+full[3]+full[3];
+        hexCounts.set(full, (hexCounts.get(full) || 0) + 5);
+      });
+      const rgbs = str.match(/rgb\s*\(\s*\d+\s*,\s*\d+\s*,\s*\d+\s*\)/gi) || [];
+      rgbs.forEach(r => {
+        const m = r.match(/\d+/g);
+        if (m && m.length >= 3) {
+          const hex = '#' + [0,1,2].map(i => parseInt(m[i]).toString(16).padStart(2,'0')).join('');
+          hexCounts.set(hex, (hexCounts.get(hex) || 0) + 5);
+        }
+      });
+    }
+
+    // 2) Render first page and sample dominant pixels
+    const page1 = await pdf.getPage(1);
+    const baseViewport = page1.getViewport({ scale: 1.0 });
+    const canvas = document.getElementById('chartePdfCanvas');
+    canvas.width = Math.min(baseViewport.width, 900);
+    const scale = canvas.width / baseViewport.width;
+    const v2 = page1.getViewport({ scale });
+    canvas.height = v2.height;
+    const ctx = canvas.getContext('2d');
+    await page1.render({ canvasContext: ctx, viewport: v2 }).promise;
+    canvas.style.display = 'block';
+
+    try {
+      const img = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      const buckets = new Map();
+      const step = 6;
+      for (let i = 0; i < img.length; i += 4 * step) {
+        const r = img[i], g = img[i+1], b = img[i+2], a = img[i+3];
+        if (a < 200) continue;
+        if (r > 240 && g > 240 && b > 240) continue;
+        if (r < 15 && g < 15 && b < 15) continue;
+        const rq = (r >> 5) << 5, gq = (g >> 5) << 5, bq = (b >> 5) << 5;
+        const key = (rq<<16)|(gq<<8)|bq;
+        buckets.set(key, (buckets.get(key) || 0) + 1);
+      }
+      const top = [...buckets.entries()].sort((a,b) => b[1]-a[1]).slice(0, 8);
+      top.forEach(([k, c]) => {
+        const r = (k>>16)&0xff, g = (k>>8)&0xff, b = k&0xff;
+        const hex = '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+        hexCounts.set(hex, (hexCounts.get(hex) || 0) + Math.floor(c/10));
+      });
+    } catch (e) {
+      console.warn('Canvas sampling failed', e);
+    }
+
+    charteDetectedColors = [...hexCounts.entries()]
+      .map(([hex, count]) => ({ hex, count }))
+      .sort((a,b) => b.count - a.count)
+      .slice(0, 14);
+
+    if (!charteDetectedColors.length) {
+      toast('Aucune couleur détectée dans ce PDF', 'err');
+      return;
+    }
+
+    const slots = Object.keys(charteSlotAssign);
+    slots.forEach((s, i) => { charteSlotAssign[s] = (charteDetectedColors[i] || charteDetectedColors[0]).hex; });
+    charteSlotAssign.color_bg = '#ffffff';
+    charteSlotAssign.color_text = charteDetectedColors[charteDetectedColors.length-1] ? charteDetectedColors[charteDetectedColors.length-1].hex : '#1a1a2e';
+
+    renderCharteSwatches();
+    renderSlotPicker();
+    document.getElementById('chartePreview').classList.add('visible');
+    toast(`${charteDetectedColors.length} couleurs détectées ✓`);
+  } catch (e) {
+    console.error(e);
+    toast('Erreur lecture PDF : ' + (e.message || e), 'err');
+  }
+}
+
+function renderCharteSwatches() {
+  const host = document.getElementById('charteSwatches');
+  host.innerHTML = charteDetectedColors.map(c => `
+    <div class="swatch" title="Cliquez pour copier ${c.hex}" onclick="copyHex('${c.hex}')">
+      <div class="chip" style="background:${c.hex}"></div>
+      <div class="hex">${c.hex}</div>
+    </div>
+  `).join('');
+}
+function copyHex(hex) {
+  if (navigator.clipboard) navigator.clipboard.writeText(hex);
+  toast('Copié : ' + hex);
+}
+
+function renderSlotPicker() {
+  const host = document.getElementById('slotPicker');
+  const labels = {
+    color_primary: 'Couleur principale',
+    color_accent: 'Couleur accent',
+    color_secondary: 'Couleur secondaire',
+    color_dark: 'Couleur sombre (titres)',
+    color_bg: 'Couleur fond',
+    color_text: 'Couleur texte'
+  };
+  host.innerHTML = Object.keys(charteSlotAssign).map(slot => `
+    <div style="margin-bottom:10px">
+      <label style="font-size:11px;color:#495057;text-transform:uppercase;letter-spacing:.3px;font-weight:600;margin-bottom:4px;display:block">${labels[slot]}</label>
+      <div class="row" style="gap:6px;flex-wrap:wrap">
+        <select onchange="charteSlotAssign['${slot}']=this.value;document.getElementById('slot_prev_${slot}').style.background=this.value" style="padding:6px 8px;border:1px solid #dee2e6;border-radius:6px;font-size:12px;font-family:inherit">
+          ${charteDetectedColors.map(c => `<option value="${c.hex}" ${charteSlotAssign[slot]===c.hex?'selected':''}>${c.hex}</option>`).join('')}
+          <option value="#ffffff" ${charteSlotAssign[slot]==='#ffffff'?'selected':''}>#ffffff (blanc)</option>
+          <option value="#000000" ${charteSlotAssign[slot]==='#000000'?'selected':''}>#000000 (noir)</option>
+        </select>
+        <span id="slot_prev_${slot}" style="display:inline-block;width:28px;height:28px;border-radius:6px;border:1px solid #dee2e6;background:${charteSlotAssign[slot]}"></span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function applyCharteColors() {
+  Object.keys(charteSlotAssign).forEach(slot => {
+    const txt = document.getElementById(slot);
+    const pick = document.getElementById(slot + '_picker');
+    if (txt) txt.value = charteSlotAssign[slot];
+    if (pick) pick.value = charteSlotAssign[slot];
+  });
+  toast('Couleurs pré-remplies — cliquez sur Enregistrer pour valider');
+  document.getElementById('chartePreview').classList.remove('visible');
+}
+function resetCharte() {
+  charteDetectedColors = [];
+  document.getElementById('chartePreview').classList.remove('visible');
+  document.getElementById('charteFile').value = '';
+}
+window.copyHex = copyHex;
+window.applyCharteColors = applyCharteColors;
+window.resetCharte = resetCharte;
+
+/* =========================================================
+   Load settings
+   ========================================================= */
 let aboutSections = [];
 let footerBlocks = {};
 let cookiesCategories = [];
@@ -347,6 +1032,15 @@ async function loadSettings() {
   document.getElementById('hero_subtitle').value = data.hero_subtitle || '';
   document.getElementById('logo_url').value = data.logo_url || '';
   document.getElementById('favicon_url').value = data.favicon_url || '';
+
+  ['logo_url','favicon_url'].forEach(id => {
+    const p = document.getElementById(id+'_preview');
+    const t = document.getElementById(id);
+    if (p && t) {
+      if (t.value) { p.src = t.value; p.style.display = 'inline-block'; }
+      else p.style.display = 'none';
+    }
+  });
 
   const setColor = (key, def) => {
     const v = data[key] || def;
@@ -377,6 +1071,11 @@ async function loadSettings() {
   document.getElementById('agent_role').value = data.agent_role || '';
   document.getElementById('agent_bio').value = data.agent_bio || '';
   document.getElementById('agent_photo_url').value = data.agent_photo_url || '';
+  const ap = document.getElementById('agent_photo_url_preview');
+  if (ap) {
+    if (data.agent_photo_url) { ap.src = data.agent_photo_url; ap.style.display = 'inline-block'; }
+    else ap.style.display = 'none';
+  }
   document.getElementById('agent_tel').value = data.agent_tel || '';
   document.getElementById('agent_email').value = data.agent_email || '';
   services = Array.isArray(data.agent_services) ? data.agent_services : [];
@@ -390,11 +1089,9 @@ async function loadSettings() {
     if (el) el.value = sl[k] || '';
   });
 
-  // V2 sections
   aboutSections = Array.isArray(data.about_sections) ? data.about_sections : [];
   renderSectionsEditor();
 
-  // V2 footer
   footerBlocks = data.footer_blocks || {};
   const fb = footerBlocks;
   document.getElementById('footer_about_text').value = fb.about_text || '';
@@ -406,7 +1103,6 @@ async function loadSettings() {
   renderFooterItems('col2', (fb.links_col2||{}).items || []);
   renderFooterItems('col3', (fb.links_col3||{}).items || []);
 
-  // V2 cookies
   const cp = data.cookies_policy || {};
   document.getElementById('cookies_banner_title').value = cp.banner_title || '';
   document.getElementById('cookies_banner_text').value = cp.banner_text || '';
@@ -418,7 +1114,9 @@ async function loadSettings() {
   renderCookieCategories();
 }
 
-// ---------- Sections editor ----------
+/* =========================================================
+   Sections editor (Pourquoi MonBonAgent)
+   ========================================================= */
 function renderSectionsEditor() {
   const host = document.getElementById('sections_list');
   if (!host) return;
@@ -431,13 +1129,54 @@ function renderSectionsEditor() {
       <div class="field"><label>Titre</label><input value="${escapeAttr(b.title||'')}" oninput="aboutSections[${i}].title=this.value"></div>
       <div class="field"><label>Texte</label><textarea rows="3" oninput="aboutSections[${i}].text=this.value">${escapeHtmlText(b.text||'')}</textarea></div>
       <div class="grid-2">
-        <div class="field"><label>URL image</label><input value="${escapeAttr(b.image||'')}" oninput="aboutSections[${i}].image=this.value"></div>
+        <div class="field">
+          <label>Image</label>
+          <div class="file-upload">
+            <img class="preview" id="about_img_prev_${i}" src="${escapeAttr(b.image||'')}" style="${b.image?'':'display:none'}">
+            <input type="text" id="about_img_${i}" value="${escapeAttr(b.image||'')}" placeholder="https://... ou téléverser" oninput="aboutSections[${i}].image=this.value;syncAboutPreview(${i})">
+            <input type="file" id="about_img_file_${i}" accept="image/*" onchange="uploadAboutImage(${i}, this)">
+            <button type="button" class="upbtn" onclick="document.getElementById('about_img_file_${i}').click()"><i class="fas fa-upload"></i> Fichier</button>
+          </div>
+        </div>
         <div class="field"><label>URL du bouton (ancre #section)</label><input value="${escapeAttr(b.cta_url||'')}" oninput="aboutSections[${i}].cta_url=this.value"></div>
       </div>
       <div class="field"><label>Label du bouton (optionnel)</label><input value="${escapeAttr(b.cta_label||'')}" oninput="aboutSections[${i}].cta_label=this.value"></div>
     </div>
   `).join('') || '<div class="empty">Aucun bloc — cliquez sur "Ajouter un bloc".</div>';
 }
+
+function syncAboutPreview(i) {
+  const txt = document.getElementById('about_img_'+i);
+  const prev = document.getElementById('about_img_prev_'+i);
+  if (!txt || !prev) return;
+  if (txt.value) { prev.src = txt.value; prev.style.display = 'inline-block'; }
+  else prev.style.display = 'none';
+}
+window.syncAboutPreview = syncAboutPreview;
+
+async function uploadAboutImage(i, input) {
+  const f = input.files && input.files[0];
+  if (!f) return;
+  const btn = input.parentElement.querySelector('.upbtn');
+  const prevHtml = btn ? btn.innerHTML : '';
+  if (btn) { btn.classList.add('uploading'); btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi…'; }
+  try {
+    const url = await uploadToStorage(f, 'about-sections');
+    aboutSections[i].image = url;
+    const txt = document.getElementById('about_img_'+i);
+    const prev = document.getElementById('about_img_prev_'+i);
+    if (txt) txt.value = url;
+    if (prev) { prev.src = url; prev.style.display = 'inline-block'; }
+    toast('Image téléversée ✓');
+  } catch (e) {
+    toast('Erreur upload : ' + (e.message || e), 'err');
+  } finally {
+    if (btn) { btn.classList.remove('uploading'); btn.innerHTML = prevHtml || '<i class="fas fa-upload"></i> Fichier'; }
+    input.value = '';
+  }
+}
+window.uploadAboutImage = uploadAboutImage;
+
 function addAboutSection() {
   aboutSections.push({ title:'Nouveau bloc', text:'', image:'', cta_label:'', cta_url:'#' });
   renderSectionsEditor();
@@ -457,7 +1196,9 @@ async function saveSections() {
   else { toast('Sections enregistrées ✓'); loadSettings(); }
 }
 
-// ---------- Footer editor ----------
+/* =========================================================
+   Footer editor
+   ========================================================= */
 function renderFooterItems(col, items) {
   const host = document.getElementById('footer_'+col+'_items');
   if (!host) return;
@@ -496,7 +1237,9 @@ async function saveFooter() {
   else { toast('Footer enregistré ✓'); loadSettings(); }
 }
 
-// ---------- Cookies editor ----------
+/* =========================================================
+   Cookies editor
+   ========================================================= */
 function renderCookieCategories() {
   const host = document.getElementById('cookies_categories_list');
   if (!host) return;
@@ -541,7 +1284,9 @@ async function saveCookies() {
   else { toast('Cookies enregistrés ✓'); loadSettings(); }
 }
 
-// ---------- Merchant enrichment ----------
+/* =========================================================
+   Merchant enrichment
+   ========================================================= */
 let enrichedPayload = null;
 async function enrichMerchant() {
   const url = document.getElementById('enrich_url').value.trim();
@@ -588,9 +1333,15 @@ function openNewMerchantFromEnrichment() {
   document.getElementById('nm_address').value = e.address || '';
   document.getElementById('nm_description').value = e.description || '';
   document.getElementById('nm_image_url').value = e.image_url || '';
+  const p = document.getElementById('nm_image_url_preview');
+  if (p) {
+    if (e.image_url) { p.src = e.image_url; p.style.display = 'inline-block'; }
+    else p.style.display = 'none';
+  }
   document.getElementById('nm_source_url').value = e.source_url || '';
-  document.getElementById('nm_phone').value = '';
-  document.getElementById('nm_email').value = '';
+  document.getElementById('nm_phone').value = e.phone || '';
+  document.getElementById('nm_email').value = e.email || '';
+  document.getElementById('nm_hours').value = e.hours || '';
   document.getElementById('newMerchantModal').style.display = 'flex';
 }
 
@@ -604,6 +1355,7 @@ async function createMerchant() {
     phone: document.getElementById('nm_phone').value.trim() || null,
     email: document.getElementById('nm_email').value.trim() || null,
     image_url: document.getElementById('nm_image_url').value.trim() || null,
+    hours: document.getElementById('nm_hours').value.trim() || null,
     source_url: document.getElementById('nm_source_url').value.trim() || null,
     enriched_at: enrichedPayload ? new Date().toISOString() : null,
     enrichment_payload: enrichedPayload || null,
@@ -638,6 +1390,14 @@ window.saveCookies = saveCookies;
 window.enrichMerchant = enrichMerchant;
 window.openNewMerchantFromEnrichment = openNewMerchantFromEnrichment;
 window.createMerchant = createMerchant;
+window.openEditMerchant = (id) => openEditMerchant(id);
+window.saveEditMerchant = () => saveEditMerchant();
+window.deleteMerchant = (id, name) => deleteMerchant(id, name);
+window.deleteMerchantFromModal = () => deleteMerchantFromModal();
+window.impersonate = impersonate;
+window.togglePreview = togglePreview;
+window.refreshPreview = refreshPreview;
+window.openPreviewInTab = openPreviewInTab;
 
 function renderServices() {
   const host = document.getElementById('services_list');
@@ -653,7 +1413,6 @@ function addService() {
 }
 function removeService(i) { services.splice(i,1); renderServices(); }
 
-// Color picker sync
 ['primary','accent','secondary','dark','bg','text'].forEach(k => {
   const picker = document.getElementById('color_'+k+'_picker');
   const txt = document.getElementById('color_'+k);
@@ -733,25 +1492,158 @@ async function saveContact() {
   else { toast('Contact enregistré ✓'); loadSettings(); }
 }
 
+let merchantsCache = [];
+
 async function loadMerchants() {
   const host = document.getElementById('merchants_list');
   host.innerHTML = '<div class="loader">Chargement…</div>';
   const { data: merchants, error } = await sb.from('merchants').select('*').order('name');
   if (error) { host.innerHTML = '<div class="empty">Erreur: ' + error.message + '</div>'; return; }
-  if (!merchants.length) { host.innerHTML = '<div class="empty">Aucun commerçant inscrit.</div>'; return; }
-  host.innerHTML = merchants.map(m => `
+  merchantsCache = merchants || [];
+  if (!merchantsCache.length) { host.innerHTML = '<div class="empty">Aucun commerçant inscrit. Utilisez le bouton <strong>Nouveau</strong> ci-dessus pour en ajouter un.</div>'; return; }
+  host.innerHTML = merchantsCache.map(m => {
+    const thumb = m.image_url ? `<img src="${escapeAttr(m.image_url)}" alt="" style="width:42px;height:42px;border-radius:8px;object-fit:cover;flex-shrink:0">` : `<div style="width:42px;height:42px;border-radius:8px;background:#f0f1f3;display:flex;align-items:center;justify-content:center;color:#adb5bd;flex-shrink:0"><i class="fas fa-store"></i></div>`;
+    const statusBadge = m.status && m.status !== 'active' ? `<span class="tiny" style="background:#fff3cd;color:#856404;padding:2px 8px;border-radius:10px">${m.status}</span>` : '';
+    return `
     <div class="merchant-row">
-      <strong>${m.name}</strong>
-      <span class="tiny">${m.category || ''}</span>
-      <span class="tiny">${m.city || ''}</span>
-      <button class="btn ghost" onclick="impersonate('${m.id}')" title="Ouvrir le back-office en tant que ce commerçant"><i class="fas fa-user-secret"></i> Impersonate</button>
+      ${thumb}
+      <div style="flex:1;min-width:180px">
+        <strong>${escapeHtmlText(m.name)}</strong> ${statusBadge}
+        <div class="tiny">${escapeHtmlText(m.category || '')} ${m.city ? '· ' + escapeHtmlText(m.city) : ''}</div>
+      </div>
+      <div class="actions">
+        <button class="btn sm" onclick="openEditMerchant('${m.id}')" title="Éditer la fiche complète"><i class="fas fa-edit"></i> Éditer</button>
+        <button class="btn sm ghost" onclick="impersonate('${m.id}')" title="Ouvrir le back-office en tant que ce commerçant"><i class="fas fa-user-secret"></i> Gérer</button>
+        <button class="btn sm danger" onclick="deleteMerchant('${m.id}', '${escapeAttr(m.name)}')" title="Supprimer définitivement"><i class="fas fa-trash"></i></button>
+      </div>
     </div>
-  `).join('');
+  `; }).join('');
 }
 
 function impersonate(merchantId) {
   sessionStorage.setItem('admin_impersonate_merchant', merchantId);
   window.location.href = '/merchant.html';
+}
+
+function openEditMerchant(id) {
+  const m = merchantsCache.find(x => x.id === id);
+  if (!m) { toast('Commerçant introuvable', 'err'); return; }
+  document.getElementById('em_id').value = m.id;
+  document.getElementById('em_name').value = m.name || '';
+  document.getElementById('em_category').value = m.category || '';
+  document.getElementById('em_city').value = m.city || '';
+  document.getElementById('em_address').value = m.address || '';
+  document.getElementById('em_phone').value = m.phone || '';
+  document.getElementById('em_email').value = m.email || '';
+  document.getElementById('em_hours').value = m.hours || '';
+  document.getElementById('em_description').value = m.description || '';
+  document.getElementById('em_image_url').value = m.image_url || '';
+  const p = document.getElementById('em_image_url_preview');
+  if (p) {
+    if (m.image_url) { p.src = m.image_url; p.style.display = 'inline-block'; }
+    else p.style.display = 'none';
+  }
+  document.getElementById('em_status').value = m.status || 'active';
+  document.getElementById('em_source_url').value = m.source_url || '';
+  document.getElementById('em_rating').value = m.rating ?? 0;
+  document.getElementById('em_avis').value = m.avis ?? 0;
+  const sl = m.social_links || {};
+  document.getElementById('em_sl_facebook').value = sl.facebook || '';
+  document.getElementById('em_sl_instagram').value = sl.instagram || '';
+  document.getElementById('em_sl_twitter').value = sl.twitter || sl.x || '';
+  document.getElementById('em_sl_tiktok').value = sl.tiktok || '';
+  document.getElementById('em_sl_youtube').value = sl.youtube || '';
+  document.getElementById('em_sl_whatsapp').value = sl.whatsapp || '';
+  document.getElementById('editMerchantModal').style.display = 'flex';
+}
+
+async function saveEditMerchant() {
+  const id = document.getElementById('em_id').value;
+  if (!id) { toast('ID manquant', 'err'); return; }
+  const name = document.getElementById('em_name').value.trim();
+  if (!name) { toast('Le nom est requis', 'err'); return; }
+  const btn = document.getElementById('em_save_btn');
+  btn.classList.add('loading');
+  const patch = {
+    name,
+    category: document.getElementById('em_category').value.trim() || 'Commerce',
+    city: document.getElementById('em_city').value.trim() || 'Perpignan',
+    address: document.getElementById('em_address').value.trim() || null,
+    phone: document.getElementById('em_phone').value.trim() || null,
+    email: document.getElementById('em_email').value.trim() || null,
+    hours: document.getElementById('em_hours').value.trim() || null,
+    description: document.getElementById('em_description').value.trim() || null,
+    image_url: document.getElementById('em_image_url').value.trim() || null,
+    status: document.getElementById('em_status').value,
+    source_url: document.getElementById('em_source_url').value.trim() || null,
+    rating: parseFloat(document.getElementById('em_rating').value) || 0,
+    avis: parseInt(document.getElementById('em_avis').value) || 0,
+    social_links: {
+      facebook: document.getElementById('em_sl_facebook').value.trim() || null,
+      instagram: document.getElementById('em_sl_instagram').value.trim() || null,
+      twitter: document.getElementById('em_sl_twitter').value.trim() || null,
+      tiktok: document.getElementById('em_sl_tiktok').value.trim() || null,
+      youtube: document.getElementById('em_sl_youtube').value.trim() || null,
+      whatsapp: document.getElementById('em_sl_whatsapp').value.trim() || null
+    },
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await sb.from('merchants').update(patch).eq('id', id);
+  btn.classList.remove('loading');
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Fiche enregistrée ✓');
+  document.getElementById('editMerchantModal').style.display = 'none';
+  loadMerchants();
+  refreshPreview();
+}
+
+async function deleteMerchant(id, name) {
+  if (!confirm(`Supprimer définitivement « ${name} » ?\n\nCette action est irréversible. Les offres et autres données liées pourraient aussi être affectées.`)) return;
+  const { error } = await sb.from('merchants').delete().eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Commerçant supprimé ✓');
+  loadMerchants();
+  refreshPreview();
+}
+
+function deleteMerchantFromModal() {
+  const id = document.getElementById('em_id').value;
+  const name = document.getElementById('em_name').value;
+  if (!id) return;
+  deleteMerchant(id, name).then(() => {
+    document.getElementById('editMerchantModal').style.display = 'none';
+  });
+}
+
+// ===== LIVE PREVIEW =====
+const PREVIEW_ORIGIN = 'https://monbonagent.vercel.app';
+
+function togglePreview() {
+  const drawer = document.getElementById('previewDrawer');
+  const fab = document.getElementById('previewFab');
+  const headerBtn = document.getElementById('previewHeaderBtn');
+  const frame = document.getElementById('previewFrame');
+  const open = !drawer.classList.contains('open');
+  drawer.classList.toggle('open', open);
+  fab.classList.toggle('active', open);
+  if (headerBtn) headerBtn.classList.toggle('active', open);
+  if (open && !frame.src) {
+    const path = document.getElementById('previewUrl').value || '/';
+    frame.src = PREVIEW_ORIGIN + (path.startsWith('/') ? path : '/' + path) + (path.includes('?') ? '&' : '?') + '_t=' + Date.now();
+  }
+}
+
+function refreshPreview() {
+  const drawer = document.getElementById('previewDrawer');
+  if (!drawer.classList.contains('open')) return;
+  const frame = document.getElementById('previewFrame');
+  const path = document.getElementById('previewUrl').value || '/';
+  frame.src = PREVIEW_ORIGIN + (path.startsWith('/') ? path : '/' + path) + (path.includes('?') ? '&' : '?') + '_t=' + Date.now();
+}
+
+function openPreviewInTab() {
+  const path = document.getElementById('previewUrl').value || '/';
+  window.open(PREVIEW_ORIGIN + (path.startsWith('/') ? path : '/' + path), '_blank');
 }
 
 async function loadStats() {
@@ -771,6 +1663,501 @@ async function loadStats() {
   `;
 }
 
+// ============================================================
+// V3 — Prospects, Outreach (admin templates + campaigns), Signature
+// ============================================================
+let prospects = [];
+let allProspects = [];
+let adminTemplates = [];
+let adminCampaigns = [];
+const ADMIN_TPL_ICONS = { outreach:'📨', upsell:'⬆️', welcome:'🎉', followup:'📞', newsletter:'📰', announcement:'📢', other:'✉️' };
+
+// ---------- PROSPECTS ----------
+async function loadProspects() {
+  const { data, error } = await sb.from('prospects').select('*').order('created_at', { ascending: false });
+  if (error) { console.warn('Prospects:', error.message); document.getElementById('prospects_list').innerHTML = '<div class="empty">Erreur: '+error.message+'</div>'; return; }
+  allProspects = data || [];
+  prospects = allProspects;
+  renderProspects();
+}
+function renderProspects() {
+  const host = document.getElementById('prospects_list');
+  document.getElementById('prospects_count').textContent = `${prospects.length} prospect${prospects.length>1?'s':''}`;
+  if (!prospects.length) { host.innerHTML = '<div class="empty"><i class="fas fa-user-plus empty-icon"></i><div>Aucun prospect. Importez un CSV ou ajoutez-en manuellement.</div></div>'; return; }
+  host.innerHTML = prospects.map(p => `
+    <div class="prospect-row">
+      <input type="checkbox" data-pid="${p.id}" class="prospect-cb">
+      <div><div class="name">${escapeHtmlText(p.name)}</div><div class="col-cat">${escapeHtmlText(p.category||'')}</div></div>
+      <div class="col-email">${escapeHtmlText(p.email||p.phone||'-')}</div>
+      <div class="col-cat">${escapeHtmlText(p.city||'')}</div>
+      <div class="col-status"><span class="pill-status ${p.status}">${p.status}</span></div>
+      <div style="display:flex;gap:4px">
+        <button class="btn sm" onclick="editProspect('${p.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn sm danger" onclick="deleteProspect('${p.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+function filterProspects(q) {
+  const s = (q||'').toLowerCase();
+  prospects = allProspects.filter(p => !s
+    || (p.name||'').toLowerCase().includes(s)
+    || (p.category||'').toLowerCase().includes(s)
+    || (p.city||'').toLowerCase().includes(s)
+    || (p.email||'').toLowerCase().includes(s)
+  );
+  renderProspects();
+}
+function filterProspectsByStatus(status) {
+  prospects = status ? allProspects.filter(p => p.status === status) : allProspects;
+  renderProspects();
+}
+function openProspectModal() {
+  document.getElementById('prospectModalTitle').innerHTML = '<i class="fas fa-user-plus" style="color:#f82032"></i> Nouveau prospect';
+  ['p_name','p_category','p_address','p_phone','p_email','p_website','p_notes','p_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('p_city').value = 'Perpignan';
+  document.getElementById('p_status').value = 'new';
+  document.getElementById('p_plan').value = 'free';
+  document.getElementById('p_source').value = 'manual';
+  document.getElementById('prospectModal').style.display = 'flex';
+}
+function editProspect(id) {
+  const p = allProspects.find(x => x.id === id); if (!p) return;
+  document.getElementById('prospectModalTitle').innerHTML = '<i class="fas fa-edit" style="color:#f82032"></i> Éditer prospect';
+  document.getElementById('p_id').value = p.id;
+  document.getElementById('p_name').value = p.name || '';
+  document.getElementById('p_category').value = p.category || '';
+  document.getElementById('p_city').value = p.city || '';
+  document.getElementById('p_address').value = p.address || '';
+  document.getElementById('p_phone').value = p.phone || '';
+  document.getElementById('p_email').value = p.email || '';
+  document.getElementById('p_website').value = p.website || '';
+  document.getElementById('p_status').value = p.status || 'new';
+  document.getElementById('p_plan').value = p.plan_suggested || 'free';
+  document.getElementById('p_source').value = p.source || 'manual';
+  document.getElementById('p_notes').value = p.notes || '';
+  document.getElementById('prospectModal').style.display = 'flex';
+}
+async function saveProspect() {
+  const id = document.getElementById('p_id').value;
+  const payload = {
+    name: document.getElementById('p_name').value.trim(),
+    category: document.getElementById('p_category').value.trim() || null,
+    city: document.getElementById('p_city').value.trim() || 'Perpignan',
+    address: document.getElementById('p_address').value.trim() || null,
+    phone: document.getElementById('p_phone').value.trim() || null,
+    email: document.getElementById('p_email').value.trim() || null,
+    website: document.getElementById('p_website').value.trim() || null,
+    status: document.getElementById('p_status').value,
+    plan_suggested: document.getElementById('p_plan').value,
+    source: document.getElementById('p_source').value,
+    notes: document.getElementById('p_notes').value.trim() || null,
+    updated_at: new Date().toISOString()
+  };
+  if (!payload.name) { toast('Le nom est requis', 'err'); return; }
+  const { error } = id
+    ? await sb.from('prospects').update(payload).eq('id', id)
+    : await sb.from('prospects').insert(payload);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Prospect enregistré ✓');
+  document.getElementById('prospectModal').style.display = 'none';
+  loadProspects();
+}
+async function deleteProspect(id) {
+  if (!confirm('Supprimer ce prospect ?')) return;
+  await sb.from('prospects').delete().eq('id', id);
+  toast('Prospect supprimé ✓');
+  loadProspects();
+}
+function deleteProspectFromModal() {
+  const id = document.getElementById('p_id').value;
+  if (!id) return;
+  deleteProspect(id).then(() => document.getElementById('prospectModal').style.display='none');
+}
+
+// CSV import / export prospects
+function parseCSV(text) {
+  const rows = []; let cur = [], buf = '', inQ = false;
+  for (let i=0; i<text.length; i++) {
+    const ch = text[i];
+    if (inQ) { if (ch==='"'&&text[i+1]==='"'){buf+='"';i++;} else if (ch==='"'){inQ=false;} else buf+=ch; }
+    else { if (ch==='"') inQ=true;
+      else if (ch===','||ch===';') { cur.push(buf); buf=''; }
+      else if (ch==='\n'||ch==='\r') { if (buf||cur.length){cur.push(buf);rows.push(cur);cur=[];buf='';} if (ch==='\r'&&text[i+1]==='\n') i++; }
+      else buf+=ch; }
+  }
+  if (buf||cur.length) { cur.push(buf); rows.push(cur); }
+  return rows.filter(r => r.some(c => c && c.trim()));
+}
+async function importProspectsCsv(file) {
+  const text = await file.text();
+  const rows = parseCSV(text);
+  if (rows.length < 2) { toast('CSV vide', 'err'); return; }
+  const h = rows[0].map(x => x.trim().toLowerCase());
+  const idx = {
+    name: h.findIndex(x=>/^(name|nom|commerce|enseigne)$/i.test(x)),
+    category: h.findIndex(x=>/^(category|cat|catégorie|categorie|type)$/i.test(x)),
+    city: h.findIndex(x=>/^(city|ville)$/i.test(x)),
+    address: h.findIndex(x=>/^(address|adresse|addr)$/i.test(x)),
+    phone: h.findIndex(x=>/^(phone|tel|téléphone|telephone)$/i.test(x)),
+    email: h.findIndex(x=>/^(email|mail|e-mail)$/i.test(x)),
+    website: h.findIndex(x=>/^(website|site|url|web)$/i.test(x)),
+    notes: h.findIndex(x=>/^(notes?|comment)/i.test(x))
+  };
+  const records = rows.slice(1).map(r => ({
+    name: idx.name>=0 ? (r[idx.name]||'').trim() : '',
+    category: idx.category>=0 ? (r[idx.category]||'').trim()||null : null,
+    city: idx.city>=0 ? (r[idx.city]||'').trim()||'Perpignan' : 'Perpignan',
+    address: idx.address>=0 ? (r[idx.address]||'').trim()||null : null,
+    phone: idx.phone>=0 ? (r[idx.phone]||'').trim()||null : null,
+    email: idx.email>=0 ? (r[idx.email]||'').trim()||null : null,
+    website: idx.website>=0 ? (r[idx.website]||'').trim()||null : null,
+    notes: idx.notes>=0 ? (r[idx.notes]||'').trim()||null : null,
+    source: 'csv', status: 'new'
+  })).filter(r => r.name);
+  if (!records.length) { toast('Aucun prospect valide', 'err'); return; }
+  let inserted = 0, failed = 0;
+  for (let i=0; i<records.length; i+=100) {
+    const chunk = records.slice(i, i+100);
+    const { error } = await sb.from('prospects').insert(chunk);
+    if (error) failed += chunk.length; else inserted += chunk.length;
+  }
+  const box = document.getElementById('import_result_prospects');
+  box.textContent = `✓ ${inserted} prospect(s) importé(s)${failed?` — ${failed} échec(s)`:''}`;
+  box.classList.add('show');
+  setTimeout(() => box.classList.remove('show'), 6000);
+  loadProspects();
+}
+function exportProspectsCsv() {
+  if (!allProspects.length) { toast('Aucun prospect', 'err'); return; }
+  const header = 'name,category,city,address,phone,email,website,status,plan_suggested,notes\n';
+  const csv = header + allProspects.map(p => [
+    p.name, p.category||'', p.city||'', p.address||'', p.phone||'', p.email||'', p.website||'', p.status, p.plan_suggested, (p.notes||'').replace(/[\r\n]/g,' ')
+  ].map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], { type:'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'prospects-'+(new Date().toISOString().slice(0,10))+'.csv';
+  a.click();
+}
+
+// ---------- ADMIN TEMPLATES ----------
+async function loadAdminTemplates() {
+  const { data, error } = await sb.from('admin_email_templates').select('*').order('category, name');
+  if (error) { console.warn('Admin templates:', error.message); adminTemplates = []; renderAdminTemplates(); return; }
+  adminTemplates = data || [];
+  renderAdminTemplates();
+}
+function renderAdminTemplates() {
+  const host = document.getElementById('admin_templates_list');
+  if (!adminTemplates.length) { host.innerHTML = '<div class="empty">Aucun modèle. Exécutez le SQL Phase 3.</div>'; return; }
+  host.innerHTML = adminTemplates.map(t => `
+    <div class="tpl-card">
+      <div class="icon">${ADMIN_TPL_ICONS[t.category]||'✉️'}</div>
+      <div class="name">${escapeHtmlText(t.name)} ${t.is_system?'<span class="badge-sys">Système</span>':''}</div>
+      <div class="meta">${escapeHtmlText(t.subject||'')}</div>
+      <div class="acts">
+        <button class="btn sm" onclick="editAdminTemplate('${t.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn sm ghost" onclick="previewAdminTemplate('${t.id}')"><i class="fas fa-eye"></i></button>
+        ${!t.is_system ? `<button class="btn sm danger" onclick="deleteAdminTemplate('${t.id}')"><i class="fas fa-trash"></i></button>` : ''}
+      </div>
+    </div>`).join('');
+}
+function openAdminTemplateModal() {
+  document.getElementById('adminTemplateModalTitle').innerHTML = '<i class="fas fa-file-alt" style="color:#f82032"></i> Nouveau modèle d\'outreach';
+  ['at_name','at_subject','at_body','at_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('at_category').value = 'outreach';
+  document.getElementById('adminTemplateModal').style.display = 'flex';
+}
+function editAdminTemplate(id) {
+  const t = adminTemplates.find(x => x.id === id); if (!t) return;
+  document.getElementById('adminTemplateModalTitle').innerHTML = '<i class="fas fa-edit" style="color:#f82032"></i> Éditer modèle';
+  document.getElementById('at_id').value = t.id;
+  document.getElementById('at_name').value = t.name || '';
+  document.getElementById('at_category').value = t.category || 'other';
+  document.getElementById('at_subject').value = t.subject || '';
+  document.getElementById('at_body').value = t.body_html || '';
+  document.getElementById('adminTemplateModal').style.display = 'flex';
+}
+async function saveAdminTemplate() {
+  const id = document.getElementById('at_id').value;
+  const payload = {
+    name: document.getElementById('at_name').value.trim(),
+    category: document.getElementById('at_category').value,
+    subject: document.getElementById('at_subject').value.trim(),
+    body_html: document.getElementById('at_body').value,
+    is_system: false,
+    updated_at: new Date().toISOString()
+  };
+  if (!payload.name || !payload.subject) { toast('Nom et sujet requis', 'err'); return; }
+  const { error } = id
+    ? await sb.from('admin_email_templates').update(payload).eq('id', id)
+    : await sb.from('admin_email_templates').insert(payload);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Modèle enregistré ✓');
+  document.getElementById('adminTemplateModal').style.display = 'none';
+  loadAdminTemplates();
+}
+async function deleteAdminTemplate(id) {
+  if (!confirm('Supprimer ce modèle ?')) return;
+  await sb.from('admin_email_templates').delete().eq('id', id);
+  toast('Modèle supprimé ✓');
+  loadAdminTemplates();
+}
+function previewAdminTemplate(id) {
+  const t = adminTemplates.find(x => x.id === id); if (!t) return;
+  const html = renderAdminVars(t.body_html || '', { commerce:'[Nom commerce]', nom:'[Prénom]', email:'[email]', ville:'[ville]', categorie:'[catégorie]' });
+  const w = window.open('', '_blank', 'width=640,height=720');
+  w.document.write(`<html><head><title>${escapeHtmlText(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
+}
+function renderAdminVars(html, ctx) {
+  ctx = ctx || {};
+  return (html||'')
+    .replace(/\{\{nom\}\}/g, ctx.nom || '')
+    .replace(/\{\{commerce\}\}/g, ctx.commerce || '')
+    .replace(/\{\{email\}\}/g, ctx.email || '')
+    .replace(/\{\{ville\}\}/g, ctx.ville || '')
+    .replace(/\{\{categorie\}\}/g, ctx.categorie || '');
+}
+function appendAdminSignature(html) {
+  const sigImg = settings?.admin_signature_image_url ? `<br><img src="${settings.admin_signature_image_url}" style="max-height:60px"><br>` : '<br>';
+  const sigHtml = settings?.admin_signature_html ? settings.admin_signature_html.replace(/\n/g,'<br>') : '';
+  return html + sigImg + sigHtml;
+}
+
+// ---------- ADMIN CAMPAIGNS ----------
+async function loadAdminCampaigns() {
+  const { data, error } = await sb.from('campaigns').select('*').eq('owner_type','admin').order('created_at', { ascending: false }).limit(50);
+  if (error) { console.warn(error.message); adminCampaigns = []; renderAdminCampaigns(); return; }
+  adminCampaigns = data || [];
+  renderAdminCampaigns();
+}
+function renderAdminCampaigns() {
+  const host = document.getElementById('admin_campaigns_list');
+  if (!adminCampaigns.length) { host.innerHTML = '<div class="empty">Aucune campagne envoyée pour le moment.</div>'; return; }
+  host.innerHTML = adminCampaigns.map(c => `
+    <div class="merchant-row">
+      <div style="flex:1;min-width:200px">
+        <strong>${escapeHtmlText(c.name)}</strong>
+        <div class="tiny">${escapeHtmlText(c.subject||'')}</div>
+        <div class="tiny">${c.recipient_count||0} destinataires • ${c.status} • ${new Date(c.created_at).toLocaleDateString('fr-FR')}</div>
+      </div>
+      <div class="actions">
+        <button class="btn sm ghost" onclick="editAdminCampaign('${c.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn sm danger" onclick="deleteAdminCampaign('${c.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+async function deleteAdminCampaign(id) {
+  if (!confirm('Supprimer cette campagne ?')) return;
+  await sb.from('campaigns').delete().eq('id', id);
+  loadAdminCampaigns();
+}
+function openAdminCampaignWizard() {
+  document.getElementById('adminCampaignModalTitle').innerHTML = '<i class="fas fa-paper-plane" style="color:#f82032"></i> Nouvelle campagne d\'outreach';
+  ['acmp_name','acmp_subject','acmp_body','acmp_id','acmp_custom_emails'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('acmp_target_type').value = 'all_prospects';
+  document.querySelectorAll('#adminCampaignModal .segment-pill').forEach(p => p.classList.toggle('active', p.dataset.target === 'all_prospects'));
+  document.getElementById('acmp_selection_picker').style.display = 'none';
+  document.getElementById('acmp_custom_picker').style.display = 'none';
+  const sel = document.getElementById('acmp_template_id');
+  sel.innerHTML = '<option value="">— Choisir un modèle —</option>'
+    + adminTemplates.map(t => `<option value="${t.id}">${escapeHtmlText(t.name)}</option>`).join('');
+  document.getElementById('acmp_preview').innerHTML = 'Choisissez un modèle pour voir l\'aperçu…';
+  updateAdminRecipientCount();
+  document.getElementById('adminCampaignModal').style.display = 'flex';
+}
+function loadAdminCampaignTemplate() {
+  const id = document.getElementById('acmp_template_id').value;
+  const t = adminTemplates.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('acmp_subject').value = t.subject || '';
+  document.getElementById('acmp_body').value = t.body_html || '';
+  updateAdminCampaignPreview();
+}
+function updateAdminCampaignPreview() {
+  const subj = document.getElementById('acmp_subject').value;
+  const body = document.getElementById('acmp_body').value;
+  const ctx = { commerce:'[commerce]', nom:'[prénom]', email:'[email]', ville:'[ville]' };
+  document.getElementById('acmp_preview').innerHTML = `
+    <div class="from">De : Nordine Mouaouia • À : [destinataire]</div>
+    <div class="subject">${escapeHtmlText(renderAdminVars(subj, ctx))}</div>
+    <div>${appendAdminSignature(renderAdminVars(body, ctx))}</div>`;
+}
+document.addEventListener('input', e => {
+  if (e.target && (e.target.id === 'acmp_subject' || e.target.id === 'acmp_body')) updateAdminCampaignPreview();
+});
+function adminSelectTarget(type, el) {
+  document.querySelectorAll('#adminCampaignModal .segment-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('acmp_target_type').value = type;
+  document.getElementById('acmp_selection_picker').style.display = (type === 'selected_prospects' || type === 'selected_merchants') ? 'block' : 'none';
+  document.getElementById('acmp_custom_picker').style.display = type === 'custom' ? 'block' : 'none';
+  if (type === 'selected_prospects') populateAdminRecipientCheckboxes(allProspects, 'prospect');
+  if (type === 'selected_merchants') populateAdminRecipientCheckboxes(merchantsCache, 'merchant');
+  updateAdminRecipientCount();
+}
+function populateAdminRecipientCheckboxes(list, kind) {
+  const host = document.getElementById('acmp_recipient_checkboxes');
+  if (!list || !list.length) { host.innerHTML = '<em>Aucun</em>'; return; }
+  host.innerHTML = list.map(x => `
+    <label><input type="checkbox" data-id="${x.id}" data-kind="${kind}" onchange="updateAdminRecipientCount()"> <span>${escapeHtmlText(x.name||x.email||'')}</span> <span style="color:#6c757d;font-size:11px">${escapeHtmlText(x.email||x.city||'')}</span></label>
+  `).join('');
+}
+function getAdminCampaignRecipients() {
+  const type = document.getElementById('acmp_target_type').value;
+  if (type === 'all_prospects') return allProspects.filter(p => p.email);
+  if (type === 'all_merchants') return (merchantsCache || []).filter(m => m.email);
+  if (type === 'selected_prospects' || type === 'selected_merchants') {
+    const ids = [...document.querySelectorAll('#acmp_recipient_checkboxes input:checked')].map(i => i.dataset.id);
+    const src = type === 'selected_prospects' ? allProspects : (merchantsCache || []);
+    return src.filter(x => ids.includes(x.id) && x.email);
+  }
+  if (type === 'custom') {
+    const raw = document.getElementById('acmp_custom_emails').value;
+    return raw.split(/[,;\n]/).map(e => e.trim()).filter(e => /@/.test(e)).map(e => ({ email: e, name: '' }));
+  }
+  return [];
+}
+function updateAdminRecipientCount() {
+  const r = getAdminCampaignRecipients();
+  document.getElementById('acmp_recipient_count').textContent = `${r.length} destinataire${r.length>1?'s':''}`;
+}
+async function saveAdminCampaignDraft() {
+  const recipients = getAdminCampaignRecipients();
+  const payload = {
+    owner_type:'admin',
+    name: document.getElementById('acmp_name').value || 'Campagne sans nom',
+    subject: document.getElementById('acmp_subject').value || null,
+    body_html: document.getElementById('acmp_body').value || null,
+    target_type: document.getElementById('acmp_target_type').value,
+    recipient_count: recipients.length,
+    status: 'draft',
+    created_by: currentUser?.id
+  };
+  const id = document.getElementById('acmp_id').value;
+  const { error } = id
+    ? await sb.from('campaigns').update(payload).eq('id', id)
+    : await sb.from('campaigns').insert(payload);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Brouillon enregistré ✓');
+  document.getElementById('adminCampaignModal').style.display = 'none';
+  loadAdminCampaigns();
+}
+async function sendAdminCampaign() {
+  const recipients = getAdminCampaignRecipients();
+  if (!recipients.length) { toast('Aucun destinataire', 'err'); return; }
+  const subject = document.getElementById('acmp_subject').value;
+  const bodyHtml = appendAdminSignature(document.getElementById('acmp_body').value);
+  const bodyText = bodyHtml.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ');
+  const bcc = recipients.map(r => r.email).join(',');
+  await sb.from('campaigns').insert({
+    owner_type:'admin',
+    name: document.getElementById('acmp_name').value || 'Campagne '+new Date().toLocaleDateString(),
+    subject, body_html: bodyHtml,
+    target_type: document.getElementById('acmp_target_type').value,
+    recipient_count: recipients.length, status: 'sent',
+    sent_at: new Date().toISOString(), created_by: currentUser?.id
+  });
+  // Mark prospects as contacted
+  const targetType = document.getElementById('acmp_target_type').value;
+  if (targetType === 'all_prospects' || targetType === 'selected_prospects') {
+    const ids = recipients.map(r => r.id).filter(Boolean);
+    if (ids.length) {
+      await sb.from('prospects').update({ status:'contacted', last_contacted_at: new Date().toISOString() }).in('id', ids);
+    }
+  }
+  if (bcc.length > 1800) {
+    if (!confirm(`Liste très longue (${recipients.length}). Téléchargement d'un .eml à glisser dans votre client mail ?`)) return;
+    const eml = `From: n.mouaouia@guyhoquet.com\nBcc: ${bcc}\nSubject: ${subject}\nMIME-Version: 1.0\nContent-Type: text/html; charset=utf-8\n\n${bodyHtml}`;
+    const blob = new Blob([eml], { type:'message/rfc822' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `outreach-${Date.now()}.eml`; a.click();
+  } else {
+    window.location.href = `mailto:?bcc=${encodeURIComponent(bcc)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+  }
+  toast(`Campagne ouverte (${recipients.length} destinataires) ✓`);
+  document.getElementById('adminCampaignModal').style.display = 'none';
+  loadAdminCampaigns();
+  loadProspects();
+}
+function editAdminCampaign(id) {
+  const c = adminCampaigns.find(x => x.id === id); if (!c) return;
+  openAdminCampaignWizard();
+  document.getElementById('acmp_id').value = c.id;
+  document.getElementById('acmp_name').value = c.name || '';
+  document.getElementById('acmp_subject').value = c.subject || '';
+  document.getElementById('acmp_body').value = c.body_html || '';
+  updateAdminCampaignPreview();
+}
+
+// ---------- ADMIN SIGNATURE ----------
+function loadAdminSignature() {
+  if (!settings) return;
+  document.getElementById('adm_sig_html').value = settings.admin_signature_html || '';
+  document.getElementById('adm_sig_image_url').value = settings.admin_signature_image_url || '';
+  renderAdminSigPreview();
+}
+function renderAdminSigPreview() {
+  const html = document.getElementById('adm_sig_html').value || '';
+  const img = document.getElementById('adm_sig_image_url').value || '';
+  document.getElementById('adm_sig_preview').innerHTML = (img ? `<img src="${img}">` : '') + '<div>' + html.replace(/\n/g,'<br>') + '</div>';
+}
+function loadAdminSignaturePreset() {
+  document.getElementById('adm_sig_html').value =
+`Cordialement,
+<strong>Nordine Mouaouia</strong>
+Conseiller — Guy Hoquet Perpignan
+04 68 00 00 00 — <a href="mailto:n.mouaouia@guyhoquet.com">n.mouaouia@guyhoquet.com</a>
+<a href="https://monbonagent.vercel.app">monbonagent.vercel.app</a>`;
+  renderAdminSigPreview();
+}
+async function uploadAdminSigImage(file) {
+  if (file.size > 1024*1024) { toast('Image > 1 Mo', 'err'); return; }
+  const ext = (file.name.split('.').pop()||'png').toLowerCase();
+  const path = `signatures/admin-${Date.now()}.${ext}`;
+  const { error } = await sb.storage.from(STORAGE_BUCKET).upload(path, file, { upsert: true });
+  if (error) { toast('Upload: '+error.message, 'err'); return; }
+  const { data } = sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+  document.getElementById('adm_sig_image_url').value = data.publicUrl;
+  renderAdminSigPreview();
+  toast('Logo téléversé ✓');
+}
+async function saveAdminSignature() {
+  const patch = {
+    admin_signature_html: document.getElementById('adm_sig_html').value || null,
+    admin_signature_image_url: document.getElementById('adm_sig_image_url').value || null,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = await sb.from('site_settings').update(patch).eq('id', settings.id);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  Object.assign(settings, patch);
+  toast('Signature admin enregistrée ✓');
+}
+
+// expose
+window.openProspectModal = openProspectModal;
+window.editProspect = editProspect;
+window.saveProspect = saveProspect;
+window.deleteProspect = deleteProspect;
+window.deleteProspectFromModal = deleteProspectFromModal;
+window.filterProspects = filterProspects;
+window.filterProspectsByStatus = filterProspectsByStatus;
+window.exportProspectsCsv = exportProspectsCsv;
+window.openAdminTemplateModal = openAdminTemplateModal;
+window.editAdminTemplate = editAdminTemplate;
+window.saveAdminTemplate = saveAdminTemplate;
+window.deleteAdminTemplate = deleteAdminTemplate;
+window.previewAdminTemplate = previewAdminTemplate;
+window.openAdminCampaignWizard = openAdminCampaignWizard;
+window.loadAdminCampaignTemplate = loadAdminCampaignTemplate;
+window.adminSelectTarget = adminSelectTarget;
+window.updateAdminRecipientCount = updateAdminRecipientCount;
+window.saveAdminCampaignDraft = saveAdminCampaignDraft;
+window.sendAdminCampaign = sendAdminCampaign;
+window.editAdminCampaign = editAdminCampaign;
+window.deleteAdminCampaign = deleteAdminCampaign;
+window.saveAdminSignature = saveAdminSignature;
+window.loadAdminSignaturePreset = loadAdminSignaturePreset;
+
 // Tabs
 document.querySelectorAll('.tab').forEach(t => {
   t.addEventListener('click', () => {
@@ -778,9 +2165,12 @@ document.querySelectorAll('.tab').forEach(t => {
     document.querySelectorAll('.panel').forEach(x => x.classList.remove('active'));
     t.classList.add('active');
     const panel = document.getElementById('panel-' + t.dataset.tab);
-    panel.classList.add('active');
+    if (panel) panel.classList.add('active');
     if (t.dataset.tab === 'merchants') loadMerchants();
     if (t.dataset.tab === 'stats') loadStats();
+    if (t.dataset.tab === 'prospects') loadProspects();
+    if (t.dataset.tab === 'outreach') { loadAdminTemplates(); loadAdminCampaigns(); }
+    if (t.dataset.tab === 'signature') loadAdminSignature();
   });
 });
 
@@ -788,6 +2178,43 @@ document.querySelectorAll('.tab').forEach(t => {
   const user = await checkAuth();
   if (user) {
     await loadSettings();
+    wireFileUpload('logo_url', 'logo_url_file', 'logo_url_preview', 'branding/logo');
+    wireFileUpload('favicon_url', 'favicon_url_file', 'favicon_url_preview', 'branding/favicon');
+    wireFileUpload('agent_photo_url', 'agent_photo_url_file', 'agent_photo_url_preview', 'agent/photo');
+    wireFileUpload('nm_image_url', 'nm_image_url_file', 'nm_image_url_preview', 'merchants');
+    wireFileUpload('em_image_url', 'em_image_url_file', 'em_image_url_preview', 'merchants');
+    initCharteDropzone();
+    // V3 — Wire prospects CSV import
+    const prospectsCsvFile = document.getElementById('prospectsCsvFile');
+    if (prospectsCsvFile) prospectsCsvFile.addEventListener('change', e => { if (e.target.files[0]) importProspectsCsv(e.target.files[0]); });
+    // V3 — Wire admin signature uploader
+    const admSigFile = document.getElementById('adm_sig_file');
+    if (admSigFile) admSigFile.addEventListener('change', e => { if (e.target.files[0]) uploadAdminSigImage(e.target.files[0]); });
+    const admSigDrop = document.getElementById('adm_sig_dropzone');
+    if (admSigDrop) {
+      ['dragenter','dragover'].forEach(ev => admSigDrop.addEventListener(ev, e => { e.preventDefault(); admSigDrop.classList.add('dragover'); }));
+      ['dragleave','drop'].forEach(ev => admSigDrop.addEventListener(ev, e => { e.preventDefault(); admSigDrop.classList.remove('dragover'); }));
+      admSigDrop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) uploadAdminSigImage(e.dataTransfer.files[0]); });
+    }
+    const admSigHtml = document.getElementById('adm_sig_html');
+    if (admSigHtml) admSigHtml.addEventListener('input', renderAdminSigPreview);
+    // Close modals on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        ['editMerchantModal','newMerchantModal','prospectModal','adminTemplateModal','adminCampaignModal'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el && el.style.display !== 'none') el.style.display = 'none';
+        });
+      }
+      // Ctrl/Cmd + S = save current tab
+      if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        const activeTab = document.querySelector('.tab.active')?.dataset.tab;
+        const saveMap = { branding: 'saveBranding', sections: 'saveSections', agent: 'saveAgent', footer: 'saveFooter', cookies: 'saveCookies', contact: 'saveContact', signature: 'saveAdminSignature' };
+        const fn = saveMap[activeTab];
+        if (fn && typeof window[fn] === 'function') window[fn]();
+      }
+    });
   }
 })();
 </script>

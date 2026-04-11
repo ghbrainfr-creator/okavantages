@@ -7,7 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
@@ -88,6 +87,79 @@ tr:hover{background:#fafbfc}
 .switch::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
 .switch.on{background:#198754}
 .switch.on::after{left:20px}
+
+/* ===== V3 — Mobile-first + nouvelles sections ===== */
+.tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{height:0}
+@media(max-width:720px){
+  header{padding:10px 14px;flex-wrap:wrap;gap:8px}
+  header .brand{font-size:16px}
+  header .brand span:nth-child(2){display:none}
+  header .right{gap:6px;flex:1;justify-content:flex-end}
+  header .user-email{display:none}
+  header a{font-size:12px}
+  header button{padding:7px 12px;font-size:12px}
+  .wrap{margin:14px auto;padding:0 12px}
+  .panel{padding:18px 14px}
+  .tabs{padding:4px;gap:2px}
+  .tab{padding:9px 12px;font-size:12px}
+  .row-between{flex-direction:column;align-items:stretch}
+  .row-between .btn{width:100%;justify-content:center}
+  .search{min-width:0;width:100%}
+  table{font-size:11px}
+  th,td{padding:8px 6px}
+  .modal{padding:18px;border-radius:12px;max-height:94vh}
+  h2{font-size:17px}
+  .stat-card{padding:16px}
+  .stat-card .value{font-size:24px}
+}
+.section-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.section-toolbar .btn{padding:8px 14px;font-size:13px}
+.contact-row{display:grid;grid-template-columns:30px 1fr 1fr 130px auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid #f0f1f3;border-radius:8px;margin-bottom:6px;background:#fff}
+@media(max-width:720px){.contact-row{grid-template-columns:30px 1fr auto;gap:6px}.contact-row .col-email,.contact-row .col-phone{display:none}}
+.contact-row .name{font-weight:600;font-size:13px}
+.contact-row .col-email,.contact-row .col-phone{font-size:12px;color:#6c757d;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contact-row .tag{display:inline-block;background:#e7f5ff;color:#1971c2;padding:2px 8px;border-radius:10px;font-size:10px;margin-right:3px}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
+.tpl-card{border:1.5px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s;background:#fff;position:relative}
+.tpl-card:hover{border-color:#f82032;box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
+.tpl-card .icon{font-size:22px;margin-bottom:6px}
+.tpl-card .name{font-weight:600;font-size:14px;margin-bottom:4px}
+.tpl-card .meta{font-size:11px;color:#6c757d}
+.tpl-card .badge-sys{display:inline-block;background:#fff3cd;color:#856404;padding:2px 7px;border-radius:8px;font-size:9px;text-transform:uppercase;margin-left:6px;font-weight:600;letter-spacing:.3px}
+.tpl-card .acts{margin-top:8px;display:flex;gap:6px}
+.tpl-card .acts .btn{padding:5px 9px;font-size:11px}
+.upload-zone{border:2px dashed #dee2e6;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:.2s}
+.upload-zone:hover,.upload-zone.dragover{border-color:#f82032;background:#fff5f6}
+.upload-zone i{font-size:30px;color:#adb5bd;margin-bottom:8px;display:block}
+.upload-zone .hint{font-size:12px;color:#6c757d;margin-top:6px}
+.signature-preview{border:1px solid #e9ecef;border-radius:8px;padding:14px;background:#fafbfc;margin-top:8px;font-size:13px;line-height:1.5}
+.signature-preview img{max-height:60px;display:block;margin-top:8px}
+.campaign-card{border:1.5px solid #e9ecef;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;background:#fff}
+.campaign-card .info{flex:1;min-width:200px}
+.campaign-card .stat{font-size:12px;color:#6c757d}
+.campaign-card .acts{display:flex;gap:6px;flex-wrap:wrap}
+.segment-pill{display:inline-block;padding:5px 12px;background:#f1f3f5;color:#495057;border-radius:14px;font-size:12px;margin:3px;cursor:pointer;border:1.5px solid #e9ecef;user-select:none;transition:.2s}
+.segment-pill:hover{border-color:#f82032}
+.segment-pill.active{background:#f82032;color:#fff;border-color:#f82032}
+.checkbox-list{max-height:280px;overflow-y:auto;border:1px solid #e9ecef;border-radius:8px;padding:10px;background:#fafbfc}
+.checkbox-list label{display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f1f3}
+.checkbox-list label:last-child{border-bottom:none}
+.checkbox-list label:hover{background:#fff}
+.preview-mail{background:#f8f9fa;border:1px solid #e9ecef;border-radius:10px;padding:18px;font-size:13px;line-height:1.6;max-height:380px;overflow-y:auto}
+.preview-mail .from{font-size:11px;color:#6c757d;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e9ecef}
+.preview-mail .subject{font-weight:600;font-size:15px;margin-bottom:10px}
+.tab i{margin-right:4px}
+@media(max-width:720px){.tab i{margin-right:2px}.tab span{display:none}.tab i{margin-right:0;font-size:14px}}
+.btn.full{width:100%;justify-content:center}
+.btn.loading{opacity:.7;cursor:wait}
+.btn.loading i{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.help-banner{background:#e7f5ff;color:#1971c2;border-left:3px solid #1971c2;padding:12px 14px;border-radius:6px;font-size:13px;margin-bottom:14px}
+.help-banner i{margin-right:6px}
+.import-result{background:#d3f9d8;color:#2b8a3e;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
+.import-result.show{display:block}
+.empty-icon{font-size:48px;color:#dee2e6;margin-bottom:10px;display:block}
 </style>
 </head>
 <body>
@@ -107,12 +179,15 @@ tr:hover{background:#fafbfc}
 
 <div class="wrap">
   <div class="tabs">
-    <div class="tab active" data-tab="dashboard"><i class="fas fa-chart-line"></i> Dashboard</div>
-    <div class="tab" data-tab="offers"><i class="fas fa-tags"></i> Offres</div>
-    <div class="tab" data-tab="leads"><i class="fas fa-users"></i> Leads</div>
-    <div class="tab" data-tab="templates"><i class="fas fa-file-alt"></i> Modèles email</div>
-    <div class="tab" data-tab="sequences"><i class="fas fa-clock"></i> Séquences</div>
-    <div class="tab" data-tab="profile"><i class="fas fa-store"></i> Ma fiche</div>
+    <div class="tab active" data-tab="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></div>
+    <div class="tab" data-tab="offers"><i class="fas fa-tags"></i> <span>Offres</span></div>
+    <div class="tab" data-tab="leads"><i class="fas fa-users"></i> <span>Leads</span></div>
+    <div class="tab" data-tab="contacts"><i class="fas fa-address-book"></i> <span>Contacts</span></div>
+    <div class="tab" data-tab="campaigns"><i class="fas fa-paper-plane"></i> <span>Campagnes</span></div>
+    <div class="tab" data-tab="templates"><i class="fas fa-file-alt"></i> <span>Modèles</span></div>
+    <div class="tab" data-tab="sequences"><i class="fas fa-clock"></i> <span>Séquences</span></div>
+    <div class="tab" data-tab="signature"><i class="fas fa-signature"></i> <span>Signature</span></div>
+    <div class="tab" data-tab="profile"><i class="fas fa-store"></i> <span>Ma fiche</span></div>
   </div>
 
   <!-- DASHBOARD -->
@@ -155,17 +230,21 @@ tr:hover{background:#fafbfc}
     <div class="row-between">
       <div>
         <h2>Modèles d'emails</h2>
-        <p class="sub">Ces emails sont envoyés <strong>en votre nom</strong> à vos leads.</p>
+        <p class="sub">Modèles prêts à l'emploi + vos modèles personnalisés.</p>
       </div>
       <button class="btn" onclick="openTemplateModal()"><i class="fas fa-plus"></i> Nouveau modèle</button>
     </div>
     <div class="vars-list">
-      <strong>Variables disponibles :</strong>
+      <strong>Variables :</strong>
       <code>{{nom}}</code><code>{{email}}</code><code>{{commerce}}</code><code>{{adresse}}</code>
-      <code>{{offre}}</code><code>{{prix}}</code><code>{{gift}}</code>
+      <code>{{phone}}</code><code>{{offre}}</code><code>{{prix}}</code><code>{{gift}}</code>
       <code>{{agent_nom}}</code><code>{{agent_tel}}</code>
     </div>
-    <div id="templates_list"><div class="loader">Chargement…</div></div>
+    <h3 style="font-size:14px;margin-top:18px;color:#495057">Modèles prêts à l'emploi</h3>
+    <p class="sub" style="margin-bottom:10px">Cliquez "Utiliser" pour cloner un modèle dans vos modèles personnels.</p>
+    <div id="system_templates_list" class="tpl-grid"><div class="loader">Chargement…</div></div>
+    <h3 style="font-size:14px;margin-top:24px;color:#495057">Mes modèles personnels</h3>
+    <div id="templates_list" class="tpl-grid"><div class="loader">Chargement…</div></div>
   </div>
 
   <!-- SEQUENCES -->
@@ -178,6 +257,80 @@ tr:hover{background:#fafbfc}
       <button class="btn" onclick="openSequenceModal()"><i class="fas fa-plus"></i> Nouvelle séquence</button>
     </div>
     <div id="sequences_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="panel" id="panel-contacts">
+    <div class="row-between">
+      <div>
+        <h2>Mon carnet de contacts</h2>
+        <p class="sub">Vos clients à qui vous pouvez envoyer des campagnes ciblées.</p>
+      </div>
+      <div class="section-toolbar">
+        <button class="btn ghost" onclick="exportContactsCsv()"><i class="fas fa-download"></i> Exporter</button>
+        <button class="btn ghost" onclick="document.getElementById('contactsCsvFile').click()"><i class="fas fa-upload"></i> Importer CSV</button>
+        <input type="file" id="contactsCsvFile" accept=".csv,.txt" style="display:none">
+        <button class="btn" onclick="openContactModal()"><i class="fas fa-plus"></i> Nouveau</button>
+      </div>
+    </div>
+    <div class="help-banner">
+      <i class="fas fa-info-circle"></i> Le fichier CSV doit contenir les colonnes : <code>name,email,phone,tags,birthday,notes</code>. Une ligne par contact, première ligne = en-têtes. Les tags sont séparés par des points-virgules (ex: <code>VIP;Anniversaire</code>).
+    </div>
+    <div id="import_result_contacts" class="import-result"></div>
+    <div class="row" style="gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <input type="search" class="search" id="contacts_search" placeholder="Rechercher nom, email, tag…" oninput="filterContacts(this.value)" style="flex:1">
+      <span class="tiny" id="contacts_count" style="color:#6c757d;font-size:12px"></span>
+    </div>
+    <div id="contacts_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- CAMPAGNES -->
+  <div class="panel" id="panel-campaigns">
+    <div class="row-between">
+      <div>
+        <h2>Campagnes email</h2>
+        <p class="sub">Envoyez un message à tous vos contacts ou à un segment précis.</p>
+      </div>
+      <button class="btn" onclick="openCampaignWizard()"><i class="fas fa-plus"></i> Nouvelle campagne</button>
+    </div>
+    <div class="help-banner">
+      <i class="fas fa-paper-plane"></i> Les campagnes sont préparées dans MonBonAgent puis ouvertes dans votre client mail (Gmail / Outlook / Mail) avec destinataires en BCC pour préserver la confidentialité. La signature et les variables ({{nom}}, {{commerce}}…) sont remplacées automatiquement.
+    </div>
+    <div id="campaigns_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="panel" id="panel-signature">
+    <h2>Ma signature email</h2>
+    <p class="sub">Cette signature est ajoutée automatiquement à la fin de tous vos emails et campagnes.</p>
+    <div class="grid-2">
+      <div>
+        <div class="field">
+          <label>Logo / Photo (PNG/JPG, max 1 Mo)</label>
+          <div class="upload-zone" id="sig_dropzone" onclick="document.getElementById('sig_file').click()">
+            <i class="fas fa-image"></i>
+            <div>Glissez votre logo ici ou cliquez pour parcourir</div>
+            <div class="hint">Format recommandé : 200×60 px</div>
+            <input type="file" id="sig_file" accept="image/*" style="display:none">
+          </div>
+          <input type="hidden" id="sig_image_url">
+        </div>
+        <div class="field">
+          <label>Texte HTML de la signature (variables OK)</label>
+          <textarea id="sig_html" rows="8" placeholder="Cordialement,&#10;{{commerce}}&#10;{{adresse}} — {{phone}}"></textarea>
+        </div>
+        <div class="field" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn ghost" onclick="loadSignaturePresets()"><i class="fas fa-magic"></i> Modèles tout faits</button>
+          <button class="btn" onclick="saveSignature()"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Aperçu</label>
+        <div class="signature-preview" id="sig_preview">
+          <em>Votre signature apparaîtra ici…</em>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- PROFILE -->
@@ -225,62 +378,6 @@ tr:hover{background:#fafbfc}
   </div>
 </div>
 
-<!-- QR CODE MODAL -->
-<div class="modal-overlay" id="qrModal">
-  <div class="modal" style="max-width:720px">
-    <h3><i class="fas fa-qrcode" style="color:#f82032"></i> QR code du bon</h3>
-    <p class="sub">Personnalisez l'apparence du QR code pour votre offre et téléchargez-le en haute définition pour l'imprimer, l'afficher en vitrine ou l'envoyer à vos clients.</p>
-    <div class="grid-2" style="gap:24px">
-      <div>
-        <div class="field">
-          <label>Titre affiché sur le bon</label>
-          <input id="qr_label" placeholder="Ex: 10€ offerts chez Ma Boulangerie">
-        </div>
-        <div class="field">
-          <label>Instructions (affiché sous le QR)</label>
-          <textarea id="qr_instructions" rows="2" placeholder="Ex: Présentez ce bon en caisse pour profiter de l'offre."></textarea>
-        </div>
-        <div class="grid-2">
-          <div class="field">
-            <label>Couleur QR</label>
-            <input type="color" id="qr_color_fg" value="#1a1a2e">
-          </div>
-          <div class="field">
-            <label>Couleur fond</label>
-            <input type="color" id="qr_color_bg" value="#ffffff">
-          </div>
-        </div>
-        <div class="field">
-          <label>URL encodée dans le QR</label>
-          <input id="qr_url" readonly style="background:#f8f9fa;font-size:12px;color:#6c757d">
-        </div>
-        <div class="field">
-          <label>Taille à télécharger</label>
-          <select id="qr_size">
-            <option value="600">Standard (600×600)</option>
-            <option value="1200" selected>Haute déf. (1200×1200)</option>
-            <option value="2400">Ultra HD (2400×2400)</option>
-          </select>
-        </div>
-        <div class="row" style="gap:10px;flex-wrap:wrap">
-          <button class="btn" onclick="saveQrConfig()"><i class="fas fa-save"></i> Enregistrer</button>
-          <button class="btn ghost" onclick="downloadQr('png')"><i class="fas fa-download"></i> PNG</button>
-          <button class="btn ghost" onclick="downloadQr('svg')"><i class="fas fa-download"></i> SVG</button>
-          <button class="btn ghost" onclick="closeModal('qrModal')">Fermer</button>
-        </div>
-      </div>
-      <div>
-        <div id="qrPreview" style="background:#fff;border:2px dashed #dee2e6;border-radius:12px;padding:20px;text-align:center">
-          <div id="qrLabelTop" style="font-weight:700;font-size:15px;margin-bottom:10px;color:#1a1a2e">—</div>
-          <canvas id="qrCanvas" style="max-width:100%;height:auto"></canvas>
-          <div id="qrInstructions" style="font-size:12px;color:#6c757d;margin-top:10px;line-height:1.5">—</div>
-          <div style="font-size:10px;color:#999;margin-top:8px;text-transform:uppercase;letter-spacing:.5px">MonBonAgent</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- TEMPLATE MODAL -->
 <div class="modal-overlay" id="templateModal">
   <div class="modal">
@@ -321,6 +418,83 @@ tr:hover{background:#fafbfc}
     <div class="modal-actions">
       <button class="btn ghost" onclick="closeModal('sequenceModal')">Annuler</button>
       <button class="btn" onclick="saveSequence()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <h3 id="contactModalTitle">Nouveau contact</h3>
+    <div class="grid-2">
+      <div class="field"><label>Nom complet</label><input id="c_name"></div>
+      <div class="field"><label>Email</label><input type="email" id="c_email"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone</label><input id="c_phone"></div>
+      <div class="field"><label>Anniversaire</label><input type="date" id="c_birthday"></div>
+    </div>
+    <div class="field"><label>Tags (séparés par des virgules)</label><input id="c_tags" placeholder="VIP, Anniversaire, Famille…"></div>
+    <div class="field"><label>Notes</label><textarea id="c_notes" rows="3"></textarea></div>
+    <input type="hidden" id="c_id">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('contactModal')">Annuler</button>
+      <button class="btn" onclick="saveContact()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CAMPAIGN WIZARD MODAL -->
+<div class="modal-overlay" id="campaignModal">
+  <div class="modal" style="max-width:780px">
+    <h3 id="campaignModalTitle">Nouvelle campagne</h3>
+    <div class="field"><label>Nom interne (visible uniquement par vous)</label><input id="cmp_name" placeholder="Ex: Promo printemps 2026"></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">1. Choisir le modèle</h4>
+    <div class="field"><select id="cmp_template_id" onchange="loadCampaignTemplate()"><option value="">— Choisir un modèle —</option></select></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">2. Personnaliser</h4>
+    <div class="field"><label>Sujet</label><input id="cmp_subject" placeholder="{{nom}}, votre offre exclusive"></div>
+    <div class="field"><label>Corps du message (HTML)</label><textarea id="cmp_body" rows="8"></textarea></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">3. Destinataires</h4>
+    <div class="field">
+      <div>
+        <span class="segment-pill active" data-target="all_customers" onclick="selectTarget('all_customers', this)"><i class="fas fa-users"></i> Tous mes contacts</span>
+        <span class="segment-pill" data-target="segment" onclick="selectTarget('segment', this)"><i class="fas fa-tag"></i> Par tag</span>
+        <span class="segment-pill" data-target="selected_customers" onclick="selectTarget('selected_customers', this)"><i class="fas fa-check-square"></i> Sélection manuelle</span>
+        <span class="segment-pill" data-target="custom" onclick="selectTarget('custom', this)"><i class="fas fa-plus"></i> Saisie libre</span>
+      </div>
+    </div>
+
+    <div id="cmp_segment_picker" style="display:none">
+      <div class="field"><label>Sélectionnez un ou plusieurs tags</label><div id="cmp_tags_pills"></div></div>
+    </div>
+
+    <div id="cmp_selection_picker" style="display:none">
+      <div class="field">
+        <label>Cochez les contacts</label>
+        <div class="checkbox-list" id="cmp_contacts_checkboxes"></div>
+      </div>
+    </div>
+
+    <div id="cmp_custom_picker" style="display:none">
+      <div class="field"><label>Emails (un par ligne ou séparés par des virgules)</label><textarea id="cmp_custom_emails" rows="4" placeholder="alice@exemple.fr&#10;bob@exemple.fr"></textarea></div>
+    </div>
+
+    <div style="background:#fff3cd;color:#664d03;padding:10px 14px;border-radius:8px;font-size:13px;margin:12px 0">
+      <i class="fas fa-info-circle"></i> <strong id="cmp_recipient_count">0 destinataire(s)</strong>
+    </div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">4. Aperçu</h4>
+    <div class="preview-mail" id="cmp_preview">Choisissez un modèle pour voir l'aperçu…</div>
+
+    <input type="hidden" id="cmp_id">
+    <input type="hidden" id="cmp_target_type" value="all_customers">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('campaignModal')">Annuler</button>
+      <button class="btn ghost" onclick="saveCampaignDraft()"><i class="fas fa-save"></i> Brouillon</button>
+      <button class="btn" onclick="sendCampaign()"><i class="fas fa-paper-plane"></i> Envoyer</button>
     </div>
   </div>
 </div>
@@ -458,9 +632,8 @@ function renderOffers() {
         <td>${o.sales_count || 0}</td>
         <td><span class="pill ${o.status==='active'?'ok':(o.status==='paused'?'warn':'muted')}">${o.status||'-'}</span></td>
         <td>
-          <button class="btn sm ghost" onclick="editOffer('${o.id}')" title="Éditer"><i class="fas fa-edit"></i></button>
-          <button class="btn sm ghost" onclick="openQrModal('${o.id}')" title="QR code du bon" style="background:#e7f5ff;color:#1971c2"><i class="fas fa-qrcode"></i></button>
-          <button class="btn sm danger" onclick="deleteOffer('${o.id}')" title="Supprimer"><i class="fas fa-trash"></i></button>
+          <button class="btn sm ghost" onclick="editOffer('${o.id}')"><i class="fas fa-edit"></i></button>
+          <button class="btn sm danger" onclick="deleteOffer('${o.id}')"><i class="fas fa-trash"></i></button>
         </td>
       </tr>`).join('')}
     </tbody></table>`;
@@ -514,176 +687,6 @@ async function deleteOffer(id) {
   loadOffers();
   loadStats();
 }
-
-// ---------- QR CODE PAR OFFRE ----------
-let qrCurrentOffer = null;
-const QR_BASE_URL = 'https://monbonagent.vercel.app/bon';
-
-function openQrModal(offerId) {
-  const o = offers.find(x => x.id === offerId);
-  if (!o) return;
-  qrCurrentOffer = o;
-  const cfg = o.qr_config || {};
-  const defaultLabel = (o.name || 'Bon MonBonAgent') + ' • ' + (o.price+'€ → '+(o.price+(o.gift||0))+'€');
-  document.getElementById('qr_label').value = cfg.label || defaultLabel;
-  document.getElementById('qr_instructions').value = cfg.instructions || "Présentez ce bon en caisse pour profiter de l'offre.";
-  document.getElementById('qr_color_fg').value = cfg.color_fg || '#1a1a2e';
-  document.getElementById('qr_color_bg').value = cfg.color_bg || '#ffffff';
-  const redeemUrl = QR_BASE_URL + '?offer=' + encodeURIComponent(o.id) + (o.redemption_code ? '&code='+encodeURIComponent(o.redemption_code) : '');
-  document.getElementById('qr_url').value = redeemUrl;
-  document.getElementById('qrModal').classList.add('show');
-  renderQrPreview();
-  ['qr_label','qr_instructions','qr_color_fg','qr_color_bg'].forEach(id => {
-    const el = document.getElementById(id);
-    el.oninput = renderQrPreview;
-    el.onchange = renderQrPreview;
-  });
-}
-
-function renderQrPreview() {
-  if (!qrCurrentOffer) return;
-  const url = document.getElementById('qr_url').value;
-  const fg = document.getElementById('qr_color_fg').value;
-  const bg = document.getElementById('qr_color_bg').value;
-  const label = document.getElementById('qr_label').value;
-  const instr = document.getElementById('qr_instructions').value;
-  document.getElementById('qrLabelTop').textContent = label || '—';
-  document.getElementById('qrLabelTop').style.color = fg;
-  document.getElementById('qrInstructions').textContent = instr || '—';
-  document.getElementById('qrPreview').style.background = bg;
-  const canvas = document.getElementById('qrCanvas');
-  QRCode.toCanvas(canvas, url, {
-    width: 280,
-    margin: 2,
-    color: { dark: fg, light: bg },
-    errorCorrectionLevel: 'H'
-  }, (err) => {
-    if (err) console.warn('QR error', err);
-  });
-}
-
-async function saveQrConfig() {
-  if (!qrCurrentOffer) return;
-  const payload = {
-    qr_config: {
-      label: document.getElementById('qr_label').value,
-      instructions: document.getElementById('qr_instructions').value,
-      color_fg: document.getElementById('qr_color_fg').value,
-      color_bg: document.getElementById('qr_color_bg').value,
-      logo_in_center: true
-    }
-  };
-  const { error } = await sb.from('offers').update(payload).eq('id', qrCurrentOffer.id);
-  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
-  toast('Configuration QR enregistrée', 'ok');
-  qrCurrentOffer.qr_config = payload.qr_config;
-  loadOffers();
-}
-
-async function downloadQr(format) {
-  if (!qrCurrentOffer) return;
-  const url = document.getElementById('qr_url').value;
-  const fg = document.getElementById('qr_color_fg').value;
-  const bg = document.getElementById('qr_color_bg').value;
-  const label = document.getElementById('qr_label').value;
-  const instr = document.getElementById('qr_instructions').value;
-  const size = parseInt(document.getElementById('qr_size').value, 10) || 1200;
-  const safeName = (qrCurrentOffer.name || 'bon').replace(/[^a-z0-9\-]+/gi,'_').toLowerCase();
-
-  if (format === 'svg') {
-    QRCode.toString(url, {
-      type:'svg', width:size, margin:2,
-      color: { dark: fg, light: bg },
-      errorCorrectionLevel:'H'
-    }, (err, svgQr) => {
-      if (err) { toast('Erreur SVG: '+err.message, 'err'); return; }
-      // Wrap the QR SVG inside a labeled poster SVG
-      const W = size, H = size + 240;
-      const poster = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="${bg}"/>
-  <text x="${W/2}" y="80" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(size/20)}" font-weight="700" fill="${fg}">${escapeXml(label)}</text>
-  <g transform="translate(0, 120)">${svgQr.replace(/<\?xml[^>]*\?>/,'').replace(/<svg[^>]*>/,'<g>').replace(/<\/svg>/,'</g>')}</g>
-  <text x="${W/2}" y="${H-90}" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(size/36)}" fill="${fg}">${escapeXml(instr)}</text>
-  <text x="${W/2}" y="${H-40}" text-anchor="middle" font-family="Arial, sans-serif" font-size="${Math.round(size/48)}" font-weight="600" letter-spacing="4" fill="#999">MONBONAGENT</text>
-</svg>`;
-      const blob = new Blob([poster], {type:'image/svg+xml'});
-      triggerDownload(blob, 'bon-'+safeName+'.svg');
-    });
-    return;
-  }
-
-  // PNG export: composite label + QR + instructions on a canvas
-  QRCode.toCanvas(url, {
-    width: size, margin: 2,
-    color: { dark: fg, light: bg },
-    errorCorrectionLevel: 'H'
-  }, (err, qrCanvas) => {
-    if (err) { toast('Erreur PNG: '+err.message, 'err'); return; }
-    const W = size;
-    const H = size + Math.round(size/2.5);
-    const canvas = document.createElement('canvas');
-    canvas.width = W; canvas.height = H;
-    const ctx = canvas.getContext('2d');
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-
-    // Label top
-    ctx.fillStyle = fg;
-    ctx.textAlign = 'center';
-    ctx.font = 'bold ' + Math.round(size/22) + 'px Rubik, Arial, sans-serif';
-    wrapText(ctx, label, W/2, Math.round(size/12), W - 80, Math.round(size/18));
-
-    // QR in middle
-    ctx.drawImage(qrCanvas, 0, Math.round(size/5));
-
-    // Instructions bottom
-    ctx.font = Math.round(size/32) + 'px Rubik, Arial, sans-serif';
-    ctx.fillStyle = fg;
-    wrapText(ctx, instr, W/2, size + Math.round(size/6), W - 80, Math.round(size/26));
-
-    // Brand line
-    ctx.font = '600 ' + Math.round(size/40) + 'px Rubik, Arial, sans-serif';
-    ctx.fillStyle = '#999';
-    ctx.fillText('MonBonAgent', W/2, H - Math.round(size/28));
-
-    canvas.toBlob(blob => {
-      if (!blob) { toast('Erreur export PNG', 'err'); return; }
-      triggerDownload(blob, 'bon-'+safeName+'.png');
-    }, 'image/png');
-  });
-}
-
-function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
-  const words = (text || '').split(/\s+/);
-  let line = '';
-  for (let i = 0; i < words.length; i++) {
-    const test = line + words[i] + ' ';
-    if (ctx.measureText(test).width > maxWidth && i > 0) {
-      ctx.fillText(line.trim(), x, y);
-      line = words[i] + ' ';
-      y += lineHeight;
-    } else line = test;
-  }
-  ctx.fillText(line.trim(), x, y);
-}
-
-function triggerDownload(blob, filename) {
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => { document.body.removeChild(a); URL.revokeObjectURL(url); }, 100);
-  toast('Téléchargement lancé', 'ok');
-}
-
-function escapeXml(s) {
-  return String(s||'').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&apos;'})[c]);
-}
-
-window.openQrModal = openQrModal;
-window.saveQrConfig = saveQrConfig;
-window.downloadQr = downloadQr;
 
 // ---------- leads ----------
 let allLeads = [];
@@ -879,6 +882,562 @@ async function loadStats() {
     : '<div class="empty">Aucun lead récent.</div>';
 }
 
+// ============================================================
+// V3 — Contacts, Campagnes, Signature, Templates système
+// ============================================================
+const STORAGE_BUCKET = 'site-assets';
+let contacts = [];
+let allContacts = [];
+let systemTemplates = [];
+let campaigns = [];
+let currentSegment = 'all_customers';
+
+// ---------- TEMPLATES SYSTÈME ----------
+async function loadSystemTemplates() {
+  const { data, error } = await sb.from('email_templates')
+    .select('*')
+    .eq('is_system', true)
+    .order('category');
+  if (error) { console.warn('Templates système:', error.message); systemTemplates = []; renderSystemTemplates(); return; }
+  systemTemplates = data || [];
+  renderSystemTemplates();
+}
+const TPL_ICONS = { welcome:'🎁', birthday:'🎂', promo:'📣', newsletter:'💌', followup:'👋', thankyou:'🙏', other:'✉️' };
+function renderSystemTemplates() {
+  const host = document.getElementById('system_templates_list');
+  if (!systemTemplates.length) { host.innerHTML = '<div class="empty">Aucun modèle système. Exécutez le SQL Phase 3.</div>'; return; }
+  host.innerHTML = systemTemplates.map(t => `
+    <div class="tpl-card">
+      <div class="icon">${TPL_ICONS[t.category] || '✉️'}</div>
+      <div class="name">${esc(t.name)} <span class="badge-sys">Système</span></div>
+      <div class="meta">${esc(t.subject || '')}</div>
+      <div class="acts">
+        <button class="btn sm" onclick="cloneSystemTemplate('${t.id}')"><i class="fas fa-copy"></i> Utiliser</button>
+        <button class="btn sm ghost" onclick="previewSystemTemplate('${t.id}')"><i class="fas fa-eye"></i> Aperçu</button>
+      </div>
+    </div>`).join('');
+}
+async function cloneSystemTemplate(id) {
+  const t = systemTemplates.find(x => x.id === id);
+  if (!t) return;
+  const { error } = await sb.from('email_templates').insert({
+    merchant_id: merchantId,
+    name: t.name + ' (mon copie)',
+    category: t.category,
+    subject: t.subject,
+    body_html: t.body_html,
+    body: t.body || t.body_html,
+    is_system: false
+  });
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Modèle ajouté à vos modèles ✓');
+  loadTemplates();
+}
+function previewSystemTemplate(id) {
+  const t = systemTemplates.find(x => x.id === id);
+  if (!t) return;
+  const html = renderTemplateVars(t.body_html || t.body || '');
+  const preview = window.open('', '_blank', 'width=640,height=720');
+  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
+}
+
+// Override original renderTemplates to use card grid
+function renderTemplates() {
+  const host = document.getElementById('templates_list');
+  if (!templates.length) { host.innerHTML = '<div class="empty">Aucun modèle personnel. Cliquez "Utiliser" sur un modèle système ou créez le vôtre.</div>'; return; }
+  host.innerHTML = templates.map(t => `
+    <div class="tpl-card">
+      <div class="icon">${TPL_ICONS[t.category] || '✉️'}</div>
+      <div class="name">${esc(t.name)}</div>
+      <div class="meta">${esc(t.subject || '(pas de sujet)')}</div>
+      <div class="acts">
+        <button class="btn sm" onclick="editTemplate('${t.id}')"><i class="fas fa-edit"></i> Éditer</button>
+        <button class="btn sm ghost" onclick="previewMyTemplate('${t.id}')"><i class="fas fa-eye"></i></button>
+        <button class="btn sm danger" onclick="deleteTemplate('${t.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+function previewMyTemplate(id) {
+  const t = templates.find(x => x.id === id); if (!t) return;
+  const html = renderTemplateVars(t.body_html || t.body || '');
+  const preview = window.open('', '_blank', 'width=640,height=720');
+  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
+}
+
+// Patch saveTemplate to also write body_html
+async function saveTemplate() {
+  const id = document.getElementById('t_id').value;
+  const body = document.getElementById('t_body').value;
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('t_name').value,
+    subject: document.getElementById('t_subject').value,
+    body_html: body,
+    body: body,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = id
+    ? await sb.from('email_templates').update(payload).eq('id', id)
+    : await sb.from('email_templates').insert(payload);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Modèle enregistré ✓');
+  closeModal('templateModal');
+  loadTemplates();
+}
+
+// ---------- CONTACTS ----------
+async function loadContacts() {
+  const { data, error } = await sb.from('merchant_customers')
+    .select('*')
+    .eq('merchant_id', merchantId)
+    .order('created_at', { ascending: false });
+  if (error) { toast('Erreur contacts: '+error.message, 'err'); return; }
+  allContacts = data || [];
+  contacts = allContacts;
+  renderContacts();
+}
+function renderContacts() {
+  const host = document.getElementById('contacts_list');
+  document.getElementById('contacts_count').textContent = `${contacts.length} contact${contacts.length>1?'s':''}`;
+  if (!contacts.length) { host.innerHTML = '<div class="empty"><i class="fas fa-address-book empty-icon"></i><div>Aucun contact. Ajoutez-en un ou importez un fichier CSV.</div></div>'; return; }
+  host.innerHTML = contacts.map((c, i) => {
+    const tags = (c.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('');
+    return `<div class="contact-row">
+      <input type="checkbox" data-cid="${c.id}" class="contact-cb">
+      <div><div class="name">${esc(c.name || '(sans nom)')}</div><div>${tags}</div></div>
+      <div class="col-email">${esc(c.email||'-')}</div>
+      <div class="col-phone">${esc(c.phone||'-')}</div>
+      <div style="display:flex;gap:4px">
+        <button class="btn sm ghost" onclick="editContact('${c.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn sm danger" onclick="deleteContact('${c.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterContacts(q) {
+  const s = (q||'').toLowerCase();
+  contacts = allContacts.filter(c => !s
+    || (c.name||'').toLowerCase().includes(s)
+    || (c.email||'').toLowerCase().includes(s)
+    || (c.tags||[]).some(t => t.toLowerCase().includes(s))
+  );
+  renderContacts();
+}
+function openContactModal() {
+  document.getElementById('contactModalTitle').textContent = 'Nouveau contact';
+  ['c_name','c_email','c_phone','c_birthday','c_tags','c_notes','c_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('contactModal').classList.add('show');
+}
+function editContact(id) {
+  const c = allContacts.find(x => x.id === id); if (!c) return;
+  document.getElementById('contactModalTitle').textContent = 'Éditer le contact';
+  document.getElementById('c_id').value = c.id;
+  document.getElementById('c_name').value = c.name || '';
+  document.getElementById('c_email').value = c.email || '';
+  document.getElementById('c_phone').value = c.phone || '';
+  document.getElementById('c_birthday').value = c.birthday || '';
+  document.getElementById('c_tags').value = (c.tags || []).join(', ');
+  document.getElementById('c_notes').value = c.notes || '';
+  document.getElementById('contactModal').classList.add('show');
+}
+async function saveContact() {
+  const id = document.getElementById('c_id').value;
+  const tags = document.getElementById('c_tags').value.split(',').map(t => t.trim()).filter(Boolean);
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('c_name').value.trim() || null,
+    email: document.getElementById('c_email').value.trim() || null,
+    phone: document.getElementById('c_phone').value.trim() || null,
+    birthday: document.getElementById('c_birthday').value || null,
+    tags,
+    notes: document.getElementById('c_notes').value.trim() || null
+  };
+  const { error } = id
+    ? await sb.from('merchant_customers').update(payload).eq('id', id)
+    : await sb.from('merchant_customers').insert(payload);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Contact enregistré ✓');
+  closeModal('contactModal');
+  loadContacts();
+}
+async function deleteContact(id) {
+  if (!confirm('Supprimer ce contact ?')) return;
+  const { error } = await sb.from('merchant_customers').delete().eq('id', id);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Contact supprimé ✓');
+  loadContacts();
+}
+
+// ---------- CSV import / export ----------
+function parseCSV(text) {
+  const rows = [];
+  let cur = [], buf = '', inQ = false;
+  for (let i=0; i<text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"' && text[i+1] === '"') { buf += '"'; i++; }
+      else if (ch === '"') { inQ = false; }
+      else { buf += ch; }
+    } else {
+      if (ch === '"') inQ = true;
+      else if (ch === ',' || ch === ';') { cur.push(buf); buf=''; }
+      else if (ch === '\n' || ch === '\r') {
+        if (buf || cur.length) { cur.push(buf); rows.push(cur); cur=[]; buf=''; }
+        if (ch==='\r' && text[i+1]==='\n') i++;
+      } else buf += ch;
+    }
+  }
+  if (buf || cur.length) { cur.push(buf); rows.push(cur); }
+  return rows.filter(r => r.some(c => c && c.trim()));
+}
+async function importContactsCsv(file) {
+  const text = await file.text();
+  const rows = parseCSV(text);
+  if (rows.length < 2) { toast('CSV vide ou invalide', 'err'); return; }
+  const header = rows[0].map(h => h.trim().toLowerCase());
+  const idx = {
+    name: header.findIndex(h => /^(name|nom|prenom|prénom|fullname|full ?name)$/i.test(h)),
+    email: header.findIndex(h => /^(email|mail|e-mail)$/i.test(h)),
+    phone: header.findIndex(h => /^(phone|tel|téléphone|telephone|mobile)$/i.test(h)),
+    tags: header.findIndex(h => /^(tags?|categori|segment)/i.test(h)),
+    birthday: header.findIndex(h => /^(birthday|anniversaire|naissance|dob)$/i.test(h)),
+    notes: header.findIndex(h => /^(notes?|comment)/i.test(h))
+  };
+  const records = rows.slice(1).map(r => ({
+    merchant_id: merchantId,
+    name: idx.name >= 0 ? (r[idx.name] || '').trim() || null : null,
+    email: idx.email >= 0 ? (r[idx.email] || '').trim() || null : null,
+    phone: idx.phone >= 0 ? (r[idx.phone] || '').trim() || null : null,
+    tags: idx.tags >= 0 && r[idx.tags] ? r[idx.tags].split(/[;,]/).map(t => t.trim()).filter(Boolean) : [],
+    birthday: idx.birthday >= 0 && r[idx.birthday] ? r[idx.birthday].trim() : null,
+    notes: idx.notes >= 0 ? (r[idx.notes] || '').trim() || null : null,
+    source: 'csv'
+  })).filter(r => r.name || r.email);
+  if (!records.length) { toast('Aucune ligne valide dans le CSV', 'err'); return; }
+  // Insert by chunks of 100
+  let inserted = 0, failed = 0;
+  for (let i=0; i<records.length; i+=100) {
+    const chunk = records.slice(i, i+100);
+    const { error } = await sb.from('merchant_customers').insert(chunk);
+    if (error) failed += chunk.length;
+    else inserted += chunk.length;
+  }
+  const box = document.getElementById('import_result_contacts');
+  box.textContent = `✓ ${inserted} contact(s) importé(s)${failed?` — ${failed} échec(s)`:''}`;
+  box.classList.add('show');
+  setTimeout(() => box.classList.remove('show'), 6000);
+  loadContacts();
+}
+function exportContactsCsv() {
+  if (!allContacts.length) { toast('Aucun contact à exporter', 'err'); return; }
+  const header = 'name,email,phone,tags,birthday,notes\n';
+  const csv = header + allContacts.map(c => [
+    c.name||'', c.email||'', c.phone||'',
+    (c.tags||[]).join(';'),
+    c.birthday||'', (c.notes||'').replace(/[\r\n]/g,' ')
+  ].map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'contacts-'+(new Date().toISOString().slice(0,10))+'.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ---------- SIGNATURE ----------
+async function loadSignature() {
+  if (!merchantData) await loadProfile();
+  document.getElementById('sig_html').value = merchantData?.email_signature_html || '';
+  document.getElementById('sig_image_url').value = merchantData?.email_signature_image_url || '';
+  renderSignaturePreview();
+}
+function renderSignaturePreview() {
+  const html = document.getElementById('sig_html').value || '';
+  const img = document.getElementById('sig_image_url').value || '';
+  const rendered = renderTemplateVars(html).replace(/\n/g, '<br>');
+  document.getElementById('sig_preview').innerHTML = (img ? `<img src="${esc(img)}" alt="logo">` : '') + '<div>' + rendered + '</div>' || '<em>Votre signature apparaîtra ici…</em>';
+}
+function loadSignaturePresets() {
+  const c = merchantData?.name || 'Mon commerce';
+  const a = merchantData?.address || '';
+  const p = merchantData?.phone || '';
+  const tpl = `Cordialement,\n<strong>${c}</strong>\n${a}\n${p}\n<a href="mailto:${merchantData?.email||''}">${merchantData?.email||''}</a>`;
+  document.getElementById('sig_html').value = tpl;
+  renderSignaturePreview();
+}
+async function uploadSignatureImage(file) {
+  if (file.size > 1024*1024) { toast('Image trop lourde (max 1 Mo)', 'err'); return; }
+  const ext = (file.name.split('.').pop() || 'png').toLowerCase();
+  const path = `signatures/${merchantId}-${Date.now()}.${ext}`;
+  const { error } = await sb.storage.from(STORAGE_BUCKET).upload(path, file, { upsert: true });
+  if (error) { toast('Upload: '+error.message, 'err'); return; }
+  const { data } = sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+  document.getElementById('sig_image_url').value = data.publicUrl;
+  renderSignaturePreview();
+  toast('Logo téléversé ✓');
+}
+async function saveSignature() {
+  const payload = {
+    email_signature_html: document.getElementById('sig_html').value || null,
+    email_signature_image_url: document.getElementById('sig_image_url').value || null
+  };
+  const { error } = await sb.from('merchants').update(payload).eq('id', merchantId);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Signature enregistrée ✓');
+  loadProfile();
+}
+
+// ---------- VARIABLES ----------
+function renderTemplateVars(html, contact) {
+  const m = merchantData || {};
+  const c = contact || {};
+  return (html || '')
+    .replace(/\{\{nom\}\}/g, c.name || 'Bonjour')
+    .replace(/\{\{email\}\}/g, c.email || '')
+    .replace(/\{\{phone\}\}/g, m.phone || '')
+    .replace(/\{\{commerce\}\}/g, m.name || '')
+    .replace(/\{\{adresse\}\}/g, m.address || '')
+    .replace(/\{\{offre\}\}/g, '[votre offre]')
+    .replace(/\{\{prix\}\}/g, '[prix]')
+    .replace(/\{\{gift\}\}/g, '[cadeau]')
+    .replace(/\{\{agent_nom\}\}/g, 'Nordine Mouaouia')
+    .replace(/\{\{agent_tel\}\}/g, '04 68 00 00 00');
+}
+function appendSignature(html) {
+  const m = merchantData || {};
+  const sigImg = m.email_signature_image_url ? `<br><img src="${m.email_signature_image_url}" alt="" style="max-height:60px"><br>` : '<br>';
+  const sigHtml = m.email_signature_html ? renderTemplateVars(m.email_signature_html).replace(/\n/g,'<br>') : '';
+  return html + sigImg + sigHtml;
+}
+
+// ---------- CAMPAGNES ----------
+async function loadCampaigns() {
+  const { data, error } = await sb.from('campaigns')
+    .select('*')
+    .eq('owner_type','merchant')
+    .eq('merchant_id', merchantId)
+    .order('created_at', { ascending: false });
+  if (error) { console.warn('Campagnes:', error.message); campaigns = []; renderCampaigns(); return; }
+  campaigns = data || [];
+  renderCampaigns();
+}
+function renderCampaigns() {
+  const host = document.getElementById('campaigns_list');
+  if (!campaigns.length) { host.innerHTML = '<div class="empty"><i class="fas fa-paper-plane empty-icon"></i><div>Aucune campagne. Cliquez "Nouvelle campagne" pour démarrer.</div></div>'; return; }
+  const STATUS_LABELS = { draft:'Brouillon', sent:'Envoyée', scheduled:'Programmée', sending:'En cours', failed:'Échec' };
+  host.innerHTML = campaigns.map(c => `
+    <div class="campaign-card">
+      <div class="info">
+        <div style="font-weight:600;font-size:14px">${esc(c.name)}</div>
+        <div class="stat"><i class="fas fa-envelope"></i> ${esc(c.subject || '(pas de sujet)')}</div>
+        <div class="stat"><i class="fas fa-users"></i> ${c.recipient_count||0} destinataires • <span class="pill ${c.status==='sent'?'ok':'muted'}">${STATUS_LABELS[c.status]||c.status}</span></div>
+      </div>
+      <div class="acts">
+        <button class="btn sm ghost" onclick="editCampaign('${c.id}')"><i class="fas fa-edit"></i></button>
+        ${c.status==='draft' ? `<button class="btn sm" onclick="resendCampaign('${c.id}')"><i class="fas fa-paper-plane"></i></button>` : ''}
+        <button class="btn sm danger" onclick="deleteCampaign('${c.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+async function deleteCampaign(id) {
+  if (!confirm('Supprimer cette campagne ?')) return;
+  await sb.from('campaigns').delete().eq('id', id);
+  loadCampaigns();
+}
+function openCampaignWizard() {
+  document.getElementById('campaignModalTitle').textContent = 'Nouvelle campagne';
+  ['cmp_name','cmp_subject','cmp_body','cmp_id','cmp_custom_emails'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('cmp_target_type').value = 'all_customers';
+  document.querySelectorAll('#campaignModal .segment-pill').forEach(p => p.classList.toggle('active', p.dataset.target === 'all_customers'));
+  document.getElementById('cmp_segment_picker').style.display = 'none';
+  document.getElementById('cmp_selection_picker').style.display = 'none';
+  document.getElementById('cmp_custom_picker').style.display = 'none';
+  // populate template select with system + personal
+  const sel = document.getElementById('cmp_template_id');
+  sel.innerHTML = '<option value="">— Choisir un modèle —</option>'
+    + (templates.length ? '<optgroup label="Mes modèles">' + templates.map(t => `<option value="${t.id}" data-source="mine">${esc(t.name)}</option>`).join('') + '</optgroup>' : '')
+    + (systemTemplates.length ? '<optgroup label="Modèles système">' + systemTemplates.map(t => `<option value="${t.id}" data-source="sys">${esc(t.name)}</option>`).join('') + '</optgroup>' : '');
+  populateContactCheckboxes();
+  populateTagPills();
+  updateRecipientCount();
+  document.getElementById('cmp_preview').innerHTML = 'Choisissez un modèle pour voir l\'aperçu…';
+  document.getElementById('campaignModal').classList.add('show');
+}
+function loadCampaignTemplate() {
+  const id = document.getElementById('cmp_template_id').value;
+  if (!id) return;
+  const t = [...templates, ...systemTemplates].find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('cmp_subject').value = t.subject || '';
+  document.getElementById('cmp_body').value = t.body_html || t.body || '';
+  updateCampaignPreview();
+}
+function updateCampaignPreview() {
+  const subj = document.getElementById('cmp_subject').value;
+  const body = document.getElementById('cmp_body').value;
+  const fullHtml = appendSignature(renderTemplateVars(body));
+  document.getElementById('cmp_preview').innerHTML = `
+    <div class="from">De : ${esc(merchantData?.email||'votre@email.com')} • À : [destinataire]</div>
+    <div class="subject">${esc(renderTemplateVars(subj))}</div>
+    <div>${fullHtml}</div>`;
+}
+['cmp_subject','cmp_body'].forEach(id => {
+  document.addEventListener('input', e => { if (e.target && e.target.id === id) updateCampaignPreview(); });
+});
+function selectTarget(type, el) {
+  document.querySelectorAll('#campaignModal .segment-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cmp_target_type').value = type;
+  document.getElementById('cmp_segment_picker').style.display = type === 'segment' ? 'block' : 'none';
+  document.getElementById('cmp_selection_picker').style.display = type === 'selected_customers' ? 'block' : 'none';
+  document.getElementById('cmp_custom_picker').style.display = type === 'custom' ? 'block' : 'none';
+  updateRecipientCount();
+}
+function populateContactCheckboxes() {
+  const host = document.getElementById('cmp_contacts_checkboxes');
+  if (!allContacts.length) { host.innerHTML = '<em>Aucun contact.</em>'; return; }
+  host.innerHTML = allContacts.map(c => `
+    <label><input type="checkbox" data-cid="${c.id}" onchange="updateRecipientCount()"> <span>${esc(c.name||c.email||'(sans nom)')}</span> <span style="color:#6c757d;font-size:11px">${esc(c.email||'')}</span></label>
+  `).join('');
+}
+function populateTagPills() {
+  const tags = new Set();
+  allContacts.forEach(c => (c.tags||[]).forEach(t => tags.add(t)));
+  const host = document.getElementById('cmp_tags_pills');
+  if (!tags.size) { host.innerHTML = '<em>Aucun tag défini sur vos contacts.</em>'; return; }
+  host.innerHTML = [...tags].map(t => `<span class="segment-pill" data-tag="${esc(t)}" onclick="this.classList.toggle('active');updateRecipientCount()">${esc(t)}</span>`).join('');
+}
+function getCampaignRecipients() {
+  const type = document.getElementById('cmp_target_type').value;
+  if (type === 'all_customers') return allContacts.filter(c => c.email);
+  if (type === 'selected_customers') {
+    const ids = [...document.querySelectorAll('#cmp_contacts_checkboxes input:checked')].map(i => i.dataset.cid);
+    return allContacts.filter(c => ids.includes(c.id) && c.email);
+  }
+  if (type === 'segment') {
+    const tags = [...document.querySelectorAll('#cmp_tags_pills .segment-pill.active')].map(p => p.dataset.tag);
+    if (!tags.length) return [];
+    return allContacts.filter(c => c.email && (c.tags||[]).some(t => tags.includes(t)));
+  }
+  if (type === 'custom') {
+    const raw = document.getElementById('cmp_custom_emails').value;
+    return raw.split(/[,;\n]/).map(e => e.trim()).filter(e => /@/.test(e)).map(e => ({ email: e, name: '' }));
+  }
+  return [];
+}
+function updateRecipientCount() {
+  const r = getCampaignRecipients();
+  document.getElementById('cmp_recipient_count').textContent = `${r.length} destinataire${r.length>1?'s':''}`;
+}
+async function saveCampaignDraft() {
+  const recipients = getCampaignRecipients();
+  const payload = {
+    owner_type: 'merchant',
+    merchant_id: merchantId,
+    name: document.getElementById('cmp_name').value || 'Campagne sans nom',
+    subject: document.getElementById('cmp_subject').value || null,
+    body_html: document.getElementById('cmp_body').value || null,
+    target_type: document.getElementById('cmp_target_type').value,
+    recipient_count: recipients.length,
+    status: 'draft',
+    created_by: currentUser?.id
+  };
+  const id = document.getElementById('cmp_id').value;
+  const { error } = id
+    ? await sb.from('campaigns').update(payload).eq('id', id)
+    : await sb.from('campaigns').insert(payload);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Brouillon enregistré ✓');
+  closeModal('campaignModal');
+  loadCampaigns();
+}
+async function sendCampaign() {
+  const recipients = getCampaignRecipients();
+  if (!recipients.length) { toast('Aucun destinataire avec email valide', 'err'); return; }
+  const subject = renderTemplateVars(document.getElementById('cmp_subject').value || '');
+  // Strip HTML for mailto body (most clients prefer text)
+  const bodyHtml = appendSignature(renderTemplateVars(document.getElementById('cmp_body').value || ''));
+  const body = bodyHtml.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ');
+  const bcc = recipients.map(r => r.email).filter(Boolean).join(',');
+  // Save as sent
+  await sb.from('campaigns').insert({
+    owner_type:'merchant', merchant_id: merchantId,
+    name: document.getElementById('cmp_name').value || 'Campagne '+new Date().toLocaleDateString(),
+    subject, body_html: bodyHtml,
+    target_type: document.getElementById('cmp_target_type').value,
+    recipient_count: recipients.length, status: 'sent',
+    sent_at: new Date().toISOString(), created_by: currentUser?.id
+  });
+  // mailto: limit ~2000 chars; if too many BCC, split into batches and warn
+  if (bcc.length > 1800) {
+    if (!confirm(`Liste trop longue pour mailto: (${recipients.length} destinataires).\n\nUn fichier .eml va être téléchargé. Glissez-le dans votre client mail (Gmail / Outlook / Mail) pour l'ouvrir comme brouillon.`)) return;
+    downloadEml(recipients, subject, bodyHtml);
+  } else {
+    const url = `mailto:?bcc=${encodeURIComponent(bcc)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = url;
+  }
+  toast(`Campagne ouverte dans votre client mail (${recipients.length} destinataires) ✓`);
+  closeModal('campaignModal');
+  loadCampaigns();
+}
+function downloadEml(recipients, subject, bodyHtml) {
+  const bcc = recipients.map(r => r.email).join(', ');
+  const eml = `From: ${merchantData?.email||''}\nBcc: ${bcc}\nSubject: ${subject}\nMIME-Version: 1.0\nContent-Type: text/html; charset=utf-8\n\n${bodyHtml}`;
+  const blob = new Blob([eml], { type: 'message/rfc822' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `campagne-${Date.now()}.eml`;
+  a.click();
+}
+function editCampaign(id) {
+  const c = campaigns.find(x => x.id === id); if (!c) return;
+  openCampaignWizard();
+  document.getElementById('campaignModalTitle').textContent = 'Éditer la campagne';
+  document.getElementById('cmp_id').value = c.id;
+  document.getElementById('cmp_name').value = c.name || '';
+  document.getElementById('cmp_subject').value = c.subject || '';
+  document.getElementById('cmp_body').value = c.body_html || '';
+  updateCampaignPreview();
+}
+function resendCampaign(id) { editCampaign(id); }
+
+// ---------- WIRE FILE INPUTS ----------
+function wireMerchantFiles() {
+  const sigFile = document.getElementById('sig_file');
+  if (sigFile) sigFile.addEventListener('change', e => { if (e.target.files[0]) uploadSignatureImage(e.target.files[0]); });
+  const sigDrop = document.getElementById('sig_dropzone');
+  if (sigDrop) {
+    ['dragenter','dragover'].forEach(ev => sigDrop.addEventListener(ev, e => { e.preventDefault(); sigDrop.classList.add('dragover'); }));
+    ['dragleave','drop'].forEach(ev => sigDrop.addEventListener(ev, e => { e.preventDefault(); sigDrop.classList.remove('dragover'); }));
+    sigDrop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) uploadSignatureImage(e.dataTransfer.files[0]); });
+  }
+  const sigHtml = document.getElementById('sig_html');
+  if (sigHtml) sigHtml.addEventListener('input', renderSignaturePreview);
+  const csv = document.getElementById('contactsCsvFile');
+  if (csv) csv.addEventListener('change', e => { if (e.target.files[0]) importContactsCsv(e.target.files[0]); });
+}
+
+// expose
+window.openContactModal = openContactModal;
+window.editContact = editContact;
+window.saveContact = saveContact;
+window.deleteContact = deleteContact;
+window.filterContacts = filterContacts;
+window.exportContactsCsv = exportContactsCsv;
+window.cloneSystemTemplate = cloneSystemTemplate;
+window.previewSystemTemplate = previewSystemTemplate;
+window.previewMyTemplate = previewMyTemplate;
+window.openCampaignWizard = openCampaignWizard;
+window.loadCampaignTemplate = loadCampaignTemplate;
+window.selectTarget = selectTarget;
+window.updateRecipientCount = updateRecipientCount;
+window.saveCampaignDraft = saveCampaignDraft;
+window.sendCampaign = sendCampaign;
+window.editCampaign = editCampaign;
+window.resendCampaign = resendCampaign;
+window.deleteCampaign = deleteCampaign;
+window.saveSignature = saveSignature;
+window.loadSignaturePresets = loadSignaturePresets;
+
 // ---------- init ----------
 (async () => {
   await checkAuth();
@@ -888,9 +1447,14 @@ async function loadStats() {
     loadOffers(),
     loadLeads(),
     loadTemplates(),
+    loadSystemTemplates(),
     loadSequences(),
-    loadStats()
+    loadStats(),
+    loadContacts(),
+    loadCampaigns()
   ]);
+  loadSignature();
+  wireMerchantFiles();
 })();
 </script>
 </body>
