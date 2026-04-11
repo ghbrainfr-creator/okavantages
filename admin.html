@@ -25,7 +25,12 @@ header .user-email{font-size:13px;color:#6c757d}
 header button{background:#f82032;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
 header button:hover{background:#d91a2b}
 header button.ghost{background:#e9ecef;color:#495057}
-.wrap{max-width:1100px;margin:24px auto;padding:0 20px}
+.wrap{max-width:1100px;margin:24px auto;padding:0 20px;transition:padding-right .3s ease, max-width .3s ease}
+body.preview-open .wrap{max-width:none;margin-left:max(20px, calc((100vw - 520px - 1100px)/2));margin-right:calc(520px + 20px);padding-right:0}
+body.preview-open header{padding-right:calc(520px + 24px)}
+@media(max-width:1400px){body.preview-open .wrap{margin-left:20px;margin-right:calc(520px + 20px)}}
+@media(max-width:1100px){body.preview-open .wrap{max-width:calc(100vw - 540px);margin-right:520px;margin-left:20px}}
+@media(max-width:900px){body.preview-open .wrap{max-width:100%;margin:24px auto;padding:0 20px}body.preview-open header{padding-right:24px}}
 .tabs{display:flex;gap:4px;background:#fff;border-radius:12px;padding:6px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow-x:auto}
 .tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#6c757d;white-space:nowrap;transition:.2s}
 .tab:hover{background:#f8f9fa}
@@ -105,7 +110,7 @@ tr:hover{background:#fafbfc}
 .pdf-canvas-preview{max-width:100%;border:1px solid #e9ecef;border-radius:8px;margin-top:10px}
 
 /* ===== Live preview drawer ===== */
-.preview-drawer{position:fixed;top:0;right:-520px;width:500px;max-width:92vw;height:100vh;background:#fff;box-shadow:-6px 0 32px rgba(0,0,0,.18);z-index:400;transition:right .3s ease;display:flex;flex-direction:column}
+.preview-drawer{position:fixed;top:0;right:-540px;width:500px;max-width:92vw;height:100vh;background:#fff;box-shadow:-6px 0 32px rgba(0,0,0,.18);z-index:400;transition:right .3s ease;display:flex;flex-direction:column}
 .preview-drawer.open{right:0}
 .preview-drawer header{padding:12px 16px;border-bottom:1px solid #e9ecef;display:flex;align-items:center;gap:10px;position:static}
 .preview-drawer .url-input{flex:1;padding:7px 10px;border:1px solid #dee2e6;border-radius:6px;font-family:inherit;font-size:12px}
@@ -224,6 +229,9 @@ tr:hover{background:#fafbfc}
     <div class="tab" data-tab="outreach"><i class="fas fa-paper-plane"></i> <span>Outreach</span></div>
     <div class="tab" data-tab="signature"><i class="fas fa-signature"></i> <span>Signature</span></div>
     <div class="tab" data-tab="blog"><i class="fas fa-newspaper"></i> <span>Le Mag</span></div>
+    <div class="tab" data-tab="cities"><i class="fas fa-city"></i> <span>Villes</span></div>
+    <div class="tab" data-tab="agents"><i class="fas fa-user-tie"></i> <span>Agents</span></div>
+    <div class="tab" data-tab="contests"><i class="fas fa-gift"></i> <span>Jeux</span></div>
     <div class="tab" data-tab="stats"><i class="fas fa-chart-bar"></i> <span>Stats</span></div>
   </div>
 
@@ -312,7 +320,12 @@ tr:hover{background:#fafbfc}
   <!-- SECTIONS (Pourquoi MonBonAgent) -->
   <div class="panel" id="panel-sections">
     <h2>Sections "Pourquoi MonBonAgent"</h2>
-    <p class="sub">Ajoutez, modifiez ou supprimez les blocs image + texte affichés sur la page d'accueil.</p>
+    <p class="sub">Chaque bloc est entièrement personnalisable (titre, texte, image, bouton). L'IA peut générer les 6 blocs d'un coup pour démarrer.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:10px">
+      <button class="btn" onclick="openAIStudio('section')"><i class="fas fa-wand-magic-sparkles"></i> Générer 6 blocs avec l'IA</button>
+      <button class="btn ghost" onclick="seedSectionsFromTemplate()"><i class="fas fa-star"></i> Charger le modèle type</button>
+      <div style="flex:1;font-size:12px;color:#6c757d;align-self:center;min-width:200px">Le modèle type reprend l'architecture éprouvée (6 blocs progressifs), ensuite tu peux tout modifier manuellement ou avec l'IA.</div>
+    </div>
     <div id="sections_list"></div>
     <button class="btn ghost" onclick="addAboutSection()" style="margin-top:10px"><i class="fas fa-plus"></i> Ajouter un bloc</button>
     <div class="save-bar">
@@ -608,6 +621,161 @@ tr:hover{background:#fafbfc}
       <div class="loader">Chargement…</div>
     </div>
   </div>
+
+  <!-- ========== VILLES ========== -->
+  <div class="panel" id="panel-cities">
+    <h2><i class="fas fa-city" style="color:#f82032"></i> Villes</h2>
+    <p class="sub">Gérez les villes couvertes par MonBonAgent. Les commerçants et agents sont rattachés à une ville.</p>
+    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+      <input id="city_search" placeholder="Rechercher une ville…" style="flex:1;min-width:200px;padding:10px;border:1px solid #e5e5e5;border-radius:8px">
+      <button class="btn" onclick="openCityModal()"><i class="fas fa-plus"></i> Ajouter une ville</button>
+    </div>
+    <div id="cities_stats" style="margin-bottom:12px;color:#6c757d;font-size:13px">—</div>
+    <div id="cities_list" class="loader">Chargement…</div>
+  </div>
+
+  <!-- ========== AGENTS ========== -->
+  <div class="panel" id="panel-agents">
+    <h2><i class="fas fa-user-tie" style="color:#f82032"></i> Agents immobiliers</h2>
+    <p class="sub">Réseau d'agents partenaires. Chaque agent peut couvrir plusieurs villes.</p>
+    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+      <input id="agent_search" placeholder="Rechercher un agent…" style="flex:1;min-width:200px;padding:10px;border:1px solid #e5e5e5;border-radius:8px">
+      <button class="btn" onclick="openAgentModal()"><i class="fas fa-plus"></i> Ajouter un agent</button>
+    </div>
+    <div id="agents_list" class="loader">Chargement…</div>
+  </div>
+
+  <!-- ========== JEUX / CONCOURS ========== -->
+  <div class="panel" id="panel-contests">
+    <h2><i class="fas fa-gift" style="color:#f82032"></i> Jeux du mois</h2>
+    <p class="sub">Concours avec roue de la chance. Un gagnant automatique toutes les N participations.</p>
+    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+      <select id="contest_filter" style="padding:10px;border:1px solid #e5e5e5;border-radius:8px">
+        <option value="">Tous statuts</option>
+        <option value="active">Actifs</option>
+        <option value="draft">Brouillons</option>
+        <option value="won">Gagnés</option>
+        <option value="ended">Terminés</option>
+      </select>
+      <button class="btn" onclick="openContestModal()"><i class="fas fa-plus"></i> Créer un jeu</button>
+    </div>
+    <div id="contests_list" class="loader">Chargement…</div>
+  </div>
+</div>
+
+<!-- ========== CITY MODAL ========== -->
+<div class="modal-overlay" id="cityModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:640px;width:100%;max-height:92vh;overflow-y:auto">
+    <h3 style="margin-bottom:4px"><i class="fas fa-city" style="color:#f82032"></i> Ville</h3>
+    <p class="sub">Ajoutez ou modifiez une ville du réseau.</p>
+    <input type="hidden" id="city_id_hidden">
+    <div class="grid-2">
+      <div class="field"><label>Nom *</label><input id="city_name_in" placeholder="Perpignan"></div>
+      <div class="field"><label>Slug (url)</label><input id="city_slug_in" placeholder="perpignan"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Code postal</label><input id="city_postal"></div>
+      <div class="field"><label>Département (code)</label><input id="city_dept" placeholder="66"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Région</label><input id="city_region" placeholder="Occitanie"></div>
+      <div class="field"><label>Population</label><input id="city_pop" type="number"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Latitude</label><input id="city_lat" type="number" step="0.0001"></div>
+      <div class="field"><label>Longitude</label><input id="city_lng" type="number" step="0.0001"></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="document.getElementById('cityModal').style.display='none'">Annuler</button>
+      <button class="btn" onclick="saveCity()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== AGENT MODAL ========== -->
+<div class="modal-overlay" id="agentModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto">
+    <h3 style="margin-bottom:4px"><i class="fas fa-user-tie" style="color:#f82032"></i> Agent immobilier</h3>
+    <p class="sub">Fiche complète de l'agent, ses coordonnées et les villes qu'il couvre.</p>
+    <input type="hidden" id="agent_id_hidden">
+    <div class="grid-2">
+      <div class="field"><label>Prénom *</label><input id="agent_first"></div>
+      <div class="field"><label>Nom *</label><input id="agent_last"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Rôle / Titre</label><input id="agent_role" placeholder="Conseiller immobilier"></div>
+      <div class="field"><label>Agence</label><input id="agent_agency" placeholder="Guy Hoquet Perpignan"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Email</label><input id="agent_email"></div>
+      <div class="field"><label>Téléphone</label><input id="agent_phone"></div>
+    </div>
+    <div class="field"><label>Site web</label><input id="agent_site" placeholder="https://…"></div>
+    <div class="field"><label>Photo (URL)</label><input id="agent_photo" placeholder="https://…"></div>
+    <div class="field"><label>Bio</label><textarea id="agent_bio" rows="4" placeholder="Expert local à l'écoute de votre projet…"></textarea></div>
+    <div class="field">
+      <label>Villes couvertes (séparées par des virgules, slug)</label>
+      <input id="agent_cities_in" placeholder="perpignan, canet-en-roussillon, argeles-sur-mer">
+      <small style="color:#6c757d">La 1ʳᵉ ville indiquée sera marquée comme principale.</small>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="document.getElementById('agentModal').style.display='none'">Annuler</button>
+      <button class="btn" onclick="saveP6Agent()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== CONTEST MODAL ========== -->
+<div class="modal-overlay" id="contestModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto">
+    <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#f82032"></i> Jeu du mois</h3>
+    <p class="sub">Concours avec roue de la chance. Sélection automatique toutes les N participations.</p>
+    <input type="hidden" id="ct_id_hidden">
+    <div class="field"><label>Titre *</label><input id="ct_title" placeholder="Gagnez un weekend à Barcelone"></div>
+    <div class="field"><label>Description</label><textarea id="ct_desc" rows="3"></textarea></div>
+    <div class="grid-2">
+      <div class="field"><label>Lot (description)</label><input id="ct_prize" placeholder="Weekend pour 2 personnes"></div>
+      <div class="field"><label>Valeur (€)</label><input id="ct_value" type="number"></div>
+    </div>
+    <div class="field"><label>Image du lot (URL)</label><input id="ct_prize_img"></div>
+    <div class="field"><label>Image de couverture (URL)</label><input id="ct_cover"></div>
+    <div class="grid-2">
+      <div class="field"><label>Commerçant partenaire (id)</label><input id="ct_merchant" placeholder="UUID ou laisser vide"></div>
+      <div class="field"><label>Ville (slug)</label><input id="ct_city" placeholder="perpignan"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Début</label><input id="ct_start" type="datetime-local"></div>
+      <div class="field"><label>Fin</label><input id="ct_end" type="datetime-local"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Gagnant toutes les N participations</label><input id="ct_interval" type="number" value="50"></div>
+      <div class="field"><label>Statut</label>
+        <select id="ct_status">
+          <option value="draft">Brouillon</option>
+          <option value="active">Actif</option>
+          <option value="ended">Terminé</option>
+        </select>
+      </div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Tours à l'inscription</label><input id="ct_spins_signup" type="number" value="1"></div>
+      <div class="field"><label>Tours par partage</label><input id="ct_spins_share" type="number" value="1"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Tours max / utilisateur</label><input id="ct_spins_max" type="number" value="10"></div>
+      <div class="field"><label>Texte du CTA</label><input id="ct_cta" placeholder="Tenter ma chance"></div>
+    </div>
+    <div class="field">
+      <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="ct_req_newsletter" checked> Consentement newsletter obligatoire</label>
+    </div>
+    <div class="field">
+      <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="ct_req_agent" checked> Consentement contact agent obligatoire</label>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="document.getElementById('contestModal').style.display='none'">Annuler</button>
+      <button class="btn" onclick="saveContest()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
 </div>
 
 <!-- EDIT MERCHANT MODAL (full fields, same as merchant.html profile) -->
@@ -845,7 +1013,15 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Auteur</label><input id="bp_author" placeholder="Rédaction MonBonAgent"></div>
     </div>
     <div class="field"><label>Chapô / extrait (2 phrases)</label><textarea id="bp_excerpt" rows="2"></textarea></div>
-    <div class="field"><label>Image de couverture (URL)</label><input id="bp_image_url" placeholder="https://images.unsplash.com/…"></div>
+    <div class="field">
+      <label>Image de couverture</label>
+      <div class="file-upload">
+        <img class="preview" id="bp_image_prev" style="display:none">
+        <input type="text" id="bp_image_url" placeholder="https://… ou téléverser un fichier" oninput="bpSyncImagePreview()">
+        <input type="file" id="bp_image_file" accept="image/png,image/jpeg,image/webp,image/gif" style="display:none" onchange="bpUploadImage(this)">
+        <button type="button" class="upbtn" onclick="document.getElementById('bp_image_file').click()"><i class="fas fa-upload"></i> Fichier</button>
+      </div>
+    </div>
     <div class="field">
       <label>Contenu HTML</label>
       <textarea id="bp_content_html" rows="14" style="font-family:monospace;font-size:12px"></textarea>
@@ -853,6 +1029,25 @@ tr:hover{background:#fafbfc}
     <div class="grid-2">
       <div class="field"><label>Tags (séparés par des virgules)</label><input id="bp_tags" placeholder="Perpignan, Catalogne, recette"></div>
       <div class="field"><label>Statut</label><select id="bp_status"><option value="published">Publié</option><option value="draft">Brouillon</option></select></div>
+    </div>
+    <div style="background:#fff0f1;border:1px solid #ffcdd2;border-radius:10px;padding:14px;margin-top:10px">
+      <p style="font-size:12px;color:#6c757d;margin-bottom:10px"><i class="fas fa-link"></i> <strong>Source & mise en avant</strong> — lien d'action contextuel pour la carte (billetterie pour un événement, site d'un commerçant vedette pour une recette).</p>
+      <div class="grid-2">
+        <div class="field"><label>Libellé du lien source</label><input id="bp_source_label" placeholder="Ex : Acheter les billets / Voir le site"></div>
+        <div class="field"><label>URL source</label><input id="bp_source_url" placeholder="https://…"></div>
+      </div>
+      <div class="field">
+        <label>Commerçant vedette (optionnel)</label>
+        <select id="bp_featured_merchant_id"><option value="">— Aucun —</option></select>
+      </div>
+      <div class="field">
+        <label>PJ additionnelle (PDF, image)</label>
+        <div class="file-upload">
+          <input type="text" id="bp_attachment_url" placeholder="URL ou téléverser">
+          <input type="file" id="bp_attachment_file" accept="application/pdf,image/*" style="display:none" onchange="bpUploadAttachment(this)">
+          <button type="button" class="upbtn" onclick="document.getElementById('bp_attachment_file').click()"><i class="fas fa-paperclip"></i> Téléverser</button>
+        </div>
+      </div>
     </div>
     <div style="display:flex;gap:10px;justify-content:space-between;margin-top:18px;padding-top:16px;border-top:1px solid #f0f1f3;flex-wrap:wrap">
       <button class="btn danger" id="bp_delete_btn" onclick="deleteBlogPostFromModal()" style="display:none"><i class="fas fa-trash"></i> Supprimer</button>
@@ -1314,6 +1509,35 @@ async function saveSections() {
   else { toast('Sections enregistrées ✓'); loadSettings(); }
 }
 
+/* Charge le modèle type "rabaischocs" (6 blocs progressifs) via l'IA */
+async function seedSectionsFromTemplate() {
+  if (aboutSections.length && !confirm('Cela remplace les blocs existants. Continuer ?')) return;
+  toast('Génération du modèle type…');
+  try {
+    const r = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ type: 'seed_sections', inputs: {} })
+    });
+    const data = await r.json();
+    if (!r.ok || !data.ok) throw new Error(data.error || 'Erreur IA');
+    const secs = Array.isArray(data.result && data.result.sections) ? data.result.sections : [];
+    if (!secs.length) throw new Error('Aucune section retournée');
+    aboutSections = secs.map(s => ({
+      title: s.title || '',
+      text: s.text || '',
+      image: s.image || '',
+      cta_label: s.cta_label || '',
+      cta_url: s.cta_url || '#'
+    }));
+    renderSectionsEditor();
+    toast('Modèle type chargé ✓ — pense à enregistrer');
+  } catch (e) {
+    toast('Erreur modèle : ' + (e.message || e), 'err');
+  }
+}
+window.seedSectionsFromTemplate = seedSectionsFromTemplate;
+
 /* =========================================================
    Footer editor
    ========================================================= */
@@ -1758,6 +1982,7 @@ function togglePreview() {
   const frame = document.getElementById('previewFrame');
   const open = !drawer.classList.contains('open');
   drawer.classList.toggle('open', open);
+  document.body.classList.toggle('preview-open', open);
   fab.classList.toggle('active', open);
   if (headerBtn) headerBtn.classList.toggle('active', open);
   if (open && !frame.src) {
@@ -2329,6 +2554,28 @@ const AI_MODES = {
     ],
     applyLabel: 'Créer le template',
     hint: 'Variables : {{nom}} {{commerce}} {{ville}} {{categorie}}.'
+  },
+  section: {
+    title: 'Générer 6 blocs "Pourquoi MonBonAgent"',
+    intro: "L'IA rédige 6 blocs progressifs pour la section de la page d'accueil.",
+    fields: [
+      { id: 'angle', label: 'Angle éditorial souhaité (optionnel)', type: 'textarea', placeholder: 'Ex: mettre en avant l\'engagement local et la dimension humaine' }
+    ],
+    applyLabel: 'Remplacer les 6 blocs',
+    hint: "Les blocs existants seront remplacés — pense à enregistrer ensuite."
+  },
+  merchant_enrich: {
+    title: "Améliorer une fiche avec l'IA (version Premium)",
+    intro: "L'IA enrichit la fiche avec portrait long, signature, FAQ et SEO.",
+    fields: [
+      { id: 'name', label: 'Nom', required: true },
+      { id: 'category', label: 'Catégorie', required: true },
+      { id: 'description', label: 'Description actuelle', type: 'textarea' },
+      { id: 'address', label: 'Adresse' },
+      { id: 'facts', label: 'Faits connus supplémentaires', type: 'textarea' }
+    ],
+    applyLabel: 'Appliquer à la fiche',
+    hint: "La fiche sera enrichie (description, portrait long, FAQ, SEO, signature)."
   }
 };
 
@@ -2470,6 +2717,30 @@ function aiStudioShowResult() {
       '<h4 style="margin:6px 0">' + escapeHtmlText(r.name || '') + '</h4>' +
       '<p style="font-size:13px;margin:10px 0"><strong>Sujet :</strong> ' + escapeHtmlText(r.subject || '') + '</p>' +
       '<div style="background:#fff;padding:14px;border-radius:8px;font-size:13px;line-height:1.6;max-height:280px;overflow-y:auto">' + (r.body_html || '') + '</div>' +
+      (r.ps ? '<p style="margin-top:10px;font-size:12px;color:#6c757d;font-style:italic">PS: ' + escapeHtmlText(r.ps) + '</p>' : '') +
+      '</div>';
+  } else if (mode === 'section' || mode === 'seed_sections') {
+    const secs = r.sections || [];
+    html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
+      '<p style="font-size:13px;color:#495057;margin-bottom:12px">6 blocs générés — prêts à remplacer la section actuelle :</p>' +
+      '<div style="display:grid;gap:10px">' +
+      secs.map((s, i) => '<div style="background:#fff;border:1px solid #e9ecef;border-radius:8px;padding:12px">' +
+        '<div style="font-size:11px;color:#6c757d;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">Bloc ' + (i+1) + ' · ' + escapeHtmlText(s.cta_url || '#') + '</div>' +
+        '<strong style="display:block;margin-bottom:4px">' + escapeHtmlText(s.title || '') + '</strong>' +
+        '<p style="font-size:13px;color:#495057;margin:0 0 6px">' + escapeHtmlText(s.text || '') + '</p>' +
+        (s.cta_label ? '<span style="display:inline-block;background:#f82032;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px">' + escapeHtmlText(s.cta_label) + '</span>' : '') +
+        '</div>').join('') +
+      '</div></div>';
+  } else if (mode === 'merchant_enrich') {
+    html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
+      (r.tagline_premium ? '<p style="font-style:italic;color:#f82032;font-size:14px;margin-bottom:10px">« ' + escapeHtmlText(r.tagline_premium) + ' »</p>' : '') +
+      (r.description_premium ? '<p style="font-size:13px;margin-bottom:10px">' + escapeHtmlText(r.description_premium) + '</p>' : '') +
+      (r.portrait_long ? '<details open><summary style="cursor:pointer;font-size:13px;color:#495057;font-weight:600">Portrait long</summary><p style="font-size:13px;margin-top:8px;color:#495057;line-height:1.6">' + escapeHtmlText(r.portrait_long) + '</p></details>' : '') +
+      (r.signature_sentence ? '<p style="margin-top:10px;font-size:13px;font-style:italic;color:#868e96">Signature : « ' + escapeHtmlText(r.signature_sentence) + ' »</p>' : '') +
+      (r.why_now ? '<p style="margin-top:10px;background:#fff0f1;padding:10px;border-radius:8px;font-size:13px">⏱ ' + escapeHtmlText(r.why_now) + '</p>' : '') +
+      (Array.isArray(r.three_reasons) && r.three_reasons.length ? '<ul style="margin:10px 0 0;padding-left:20px;font-size:13px">' + r.three_reasons.map(x => '<li>' + escapeHtmlText(x) + '</li>').join('') + '</ul>' : '') +
+      (Array.isArray(r.faq) && r.faq.length ? '<details style="margin-top:12px"><summary style="cursor:pointer;font-size:13px;color:#495057;font-weight:600">FAQ (' + r.faq.length + ')</summary>' + r.faq.map(q => '<div style="margin-top:8px"><strong style="font-size:13px">' + escapeHtmlText(q.q || '') + '</strong><p style="font-size:12px;color:#6c757d;margin:4px 0 0">' + escapeHtmlText(q.a || '') + '</p></div>').join('') + '</details>' : '') +
+      (r.instagram_caption ? '<p style="margin-top:10px;background:#fff;padding:10px;border:1px dashed #ced4da;border-radius:8px;font-size:12px;color:#495057"><strong>Instagram :</strong> ' + escapeHtmlText(r.instagram_caption) + '</p>' : '') +
       '</div>';
   }
   host.innerHTML = html;
@@ -2501,6 +2772,14 @@ async function aiStudioApply() {
       toast('Fiche IA pré-remplie — ajuste puis enregistre ✓');
     }
     else if (mode === 'blog') {
+      // Match IA suggestion vs cache merchants (featured_merchant_hint)
+      let featured_merchant_id = null;
+      const hint = (r.featured_merchant_hint || '').toLowerCase().trim();
+      if (hint && Array.isArray(merchantsCache)) {
+        const found = merchantsCache.find(m => (m.name || '').toLowerCase().includes(hint) || hint.includes((m.name || '').toLowerCase()));
+        if (found) featured_merchant_id = found.id;
+      }
+      const src = r.source_suggestion || {};
       const payload = {
         title: r.title || '',
         excerpt: r.excerpt || '',
@@ -2510,12 +2789,15 @@ async function aiStudioApply() {
         image_keyword: r.image_keyword || '',
         tags: r.tags || [],
         status: 'draft',
-        published_at: new Date().toISOString()
+        published_at: new Date().toISOString(),
+        source_label: src.label || null,
+        source_url: src.url_hint || null,
+        featured_merchant_id: featured_merchant_id
       };
       const { data, error } = await sb.from('blog_posts').insert(payload).select().single();
       if (error) throw error;
       closeAIStudio();
-      toast('Article créé en brouillon ✓');
+      toast('Article créé en brouillon ✓' + (featured_merchant_id ? ' · commerçant associé' : ''));
       await loadBlogPosts();
       if (data) openBlogModal(data.id);
     }
@@ -2558,6 +2840,34 @@ async function aiStudioApply() {
       closeAIStudio();
       toast('Template créé ✓');
       if (typeof loadAdminTemplates === 'function') loadAdminTemplates();
+    }
+    else if (mode === 'section' || mode === 'seed_sections') {
+      const secs = Array.isArray(r.sections) ? r.sections : [];
+      if (!secs.length) { toast('Aucune section générée', 'err'); return; }
+      aboutSections = secs.map(s => ({
+        title: s.title || '',
+        text: s.text || '',
+        image: s.image || '',
+        cta_label: s.cta_label || '',
+        cta_url: s.cta_url || '#'
+      }));
+      if (typeof renderSectionsEditor === 'function') renderSectionsEditor();
+      closeAIStudio();
+      toast('6 blocs générés — pense à enregistrer ✓');
+    }
+    else if (mode === 'merchant_enrich') {
+      const desc = document.getElementById('em_description');
+      if (desc) {
+        const parts = [];
+        if (r.description_premium) parts.push(r.description_premium);
+        if (r.portrait_long) parts.push('\n\n' + r.portrait_long);
+        if (r.signature_sentence) parts.push('\n\n— ' + r.signature_sentence);
+        desc.value = parts.join('');
+      }
+      // Stash enrichment for premium fields (to be persisted in merchants.premium_content jsonb)
+      window.__pendingMerchantEnrich = r;
+      closeAIStudio();
+      toast('Fiche enrichie — pense à enregistrer ✓');
     }
   } catch (e) {
     toast('Erreur: ' + (e.message || String(e)), 'err');
@@ -2641,10 +2951,60 @@ function filterBlogPostsByCategory(cat) {
   renderBlogPosts(allBlogPosts.filter(p => p.category === cat));
 }
 
-function openBlogModal(id) {
+function bpPopulateFeaturedMerchants(selectedId) {
+  const sel = document.getElementById('bp_featured_merchant_id');
+  if (!sel) return;
+  const list = Array.isArray(merchantsCache) ? merchantsCache : [];
+  sel.innerHTML = '<option value="">— Aucun —</option>' + list.map(m =>
+    '<option value="' + escapeAttr(m.id) + '"' + (m.id === selectedId ? ' selected' : '') + '>' +
+    escapeHtmlText(m.name) + (m.category ? ' · ' + escapeHtmlText(m.category) : '') +
+    '</option>'
+  ).join('');
+}
+window.bpPopulateFeaturedMerchants = bpPopulateFeaturedMerchants;
+
+function bpSyncImagePreview() {
+  const txt = document.getElementById('bp_image_url');
+  const prev = document.getElementById('bp_image_prev');
+  if (!txt || !prev) return;
+  if (txt.value) { prev.src = txt.value; prev.style.display = 'inline-block'; }
+  else prev.style.display = 'none';
+}
+window.bpSyncImagePreview = bpSyncImagePreview;
+
+async function bpUploadImage(input) {
+  const f = input.files && input.files[0];
+  if (!f) return;
+  try {
+    const url = await uploadToStorage(f, 'blog-covers');
+    document.getElementById('bp_image_url').value = url;
+    bpSyncImagePreview();
+    toast('Image téléversée ✓');
+  } catch (e) { toast('Erreur upload : ' + (e.message || e), 'err'); }
+  finally { input.value = ''; }
+}
+window.bpUploadImage = bpUploadImage;
+
+async function bpUploadAttachment(input) {
+  const f = input.files && input.files[0];
+  if (!f) return;
+  try {
+    const url = await uploadToStorage(f, 'blog-attachments');
+    document.getElementById('bp_attachment_url').value = url;
+    toast('Pièce jointe téléversée ✓');
+  } catch (e) { toast('Erreur upload : ' + (e.message || e), 'err'); }
+  finally { input.value = ''; }
+}
+window.bpUploadAttachment = bpUploadAttachment;
+
+async function openBlogModal(id) {
   document.getElementById('bp_modal_title').innerHTML = id
     ? '<i class="fas fa-newspaper" style="color:#f82032"></i> Éditer l\'article'
     : '<i class="fas fa-newspaper" style="color:#f82032"></i> Nouvel article';
+  // Assure qu'on a la liste à jour des commerçants
+  if (!Array.isArray(merchantsCache) || !merchantsCache.length) {
+    try { const { data } = await sb.from('merchants').select('id,name,category').order('name'); if (data) merchantsCache = data; } catch (_) {}
+  }
   if (id) {
     const p = allBlogPosts.find(x => x.id === id);
     if (!p) return;
@@ -2657,13 +3017,19 @@ function openBlogModal(id) {
     document.getElementById('bp_content_html').value = p.content_html || '';
     document.getElementById('bp_tags').value = (p.tags || []).join(', ');
     document.getElementById('bp_status').value = p.status || 'published';
+    document.getElementById('bp_source_label').value = p.source_label || '';
+    document.getElementById('bp_source_url').value = p.source_url || '';
+    document.getElementById('bp_attachment_url').value = p.attachment_url || '';
+    bpPopulateFeaturedMerchants(p.featured_merchant_id || '');
     document.getElementById('bp_delete_btn').style.display = '';
   } else {
-    ['bp_id', 'bp_title', 'bp_author', 'bp_excerpt', 'bp_image_url', 'bp_content_html', 'bp_tags'].forEach(f => document.getElementById(f).value = '');
+    ['bp_id', 'bp_title', 'bp_author', 'bp_excerpt', 'bp_image_url', 'bp_content_html', 'bp_tags', 'bp_source_label', 'bp_source_url', 'bp_attachment_url'].forEach(f => { const el = document.getElementById(f); if (el) el.value = ''; });
     document.getElementById('bp_category').value = 'Vie locale';
     document.getElementById('bp_status').value = 'published';
+    bpPopulateFeaturedMerchants('');
     document.getElementById('bp_delete_btn').style.display = 'none';
   }
+  bpSyncImagePreview();
   document.getElementById('blogModal').style.display = 'flex';
 }
 
@@ -2677,7 +3043,11 @@ async function saveBlogPost() {
     image_url: document.getElementById('bp_image_url').value.trim() || null,
     content_html: document.getElementById('bp_content_html').value,
     tags: document.getElementById('bp_tags').value.split(',').map(s => s.trim()).filter(Boolean),
-    status: document.getElementById('bp_status').value
+    status: document.getElementById('bp_status').value,
+    source_label: document.getElementById('bp_source_label').value.trim() || null,
+    source_url: document.getElementById('bp_source_url').value.trim() || null,
+    featured_merchant_id: document.getElementById('bp_featured_merchant_id').value || null,
+    attachment_url: document.getElementById('bp_attachment_url').value.trim() || null
   };
   if (!payload.title) { toast('Titre requis', 'err'); return; }
   let error;
@@ -2759,6 +3129,9 @@ document.querySelectorAll('.tab').forEach(t => {
     if (t.dataset.tab === 'outreach') { loadAdminTemplates(); loadAdminCampaigns(); }
     if (t.dataset.tab === 'signature') loadAdminSignature();
     if (t.dataset.tab === 'blog') loadBlogPosts();
+    if (t.dataset.tab === 'cities') loadAdminCities();
+    if (t.dataset.tab === 'agents') loadAdminAgents();
+    if (t.dataset.tab === 'contests') loadAdminContests();
   });
 });
 
@@ -2805,6 +3178,299 @@ document.querySelectorAll('.tab').forEach(t => {
     });
   }
 })();
+
+// ============================================================================
+// PHASE 6 — Cities / Agents / Contests managers
+// ============================================================================
+
+let _p6Cities = [];
+let _p6Agents = [];
+let _p6Contests = [];
+
+function _p6Esc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function _p6Slugify(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,''); }
+
+// ---------- CITIES ----------
+async function loadAdminCities(){
+  const el = document.getElementById('cities_list');
+  el.innerHTML = '<div class="loader">Chargement…</div>';
+  try{
+    const { data, error } = await sb.from('cities').select('*').order('population', {ascending:false}).limit(500);
+    if(error) throw error;
+    _p6Cities = data || [];
+    document.getElementById('cities_stats').textContent = _p6Cities.length + ' ville(s) référencée(s)';
+    renderAdminCities();
+  }catch(e){ el.innerHTML = '<div class="error">Erreur: ' + _p6Esc(e.message) + '</div>'; }
+}
+function renderAdminCities(){
+  const q = (document.getElementById('city_search').value || '').toLowerCase();
+  const list = q ? _p6Cities.filter(c => (c.name+' '+(c.department_code||'')+' '+(c.region||'')).toLowerCase().includes(q)) : _p6Cities;
+  const el = document.getElementById('cities_list');
+  if(!list.length){ el.innerHTML = '<div class="empty">Aucune ville.</div>'; return; }
+  el.innerHTML = '<table style="width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden">' +
+    '<thead><tr style="background:#f8f9fa;text-align:left"><th style="padding:10px">Ville</th><th style="padding:10px">Dépt</th><th style="padding:10px">Région</th><th style="padding:10px">Population</th><th style="padding:10px">Slug</th><th style="padding:10px"></th></tr></thead><tbody>' +
+    list.map(c => '<tr style="border-top:1px solid #f0f0f0">' +
+      '<td style="padding:10px"><strong>'+_p6Esc(c.name)+'</strong></td>' +
+      '<td style="padding:10px">'+_p6Esc(c.department_code||'')+'</td>' +
+      '<td style="padding:10px">'+_p6Esc(c.region||'')+'</td>' +
+      '<td style="padding:10px">'+(c.population ? Number(c.population).toLocaleString('fr-FR') : '—')+'</td>' +
+      '<td style="padding:10px"><code>'+_p6Esc(c.slug)+'</code></td>' +
+      '<td style="padding:10px;text-align:right"><button class="btn btn-sm" onclick="openCityModal(\''+c.id+'\')"><i class="fas fa-edit"></i></button></td>' +
+    '</tr>').join('') + '</tbody></table>';
+}
+function openCityModal(id){
+  const c = id ? _p6Cities.find(x=>x.id===id) : null;
+  document.getElementById('city_id_hidden').value = c ? c.id : '';
+  document.getElementById('city_name_in').value = c ? c.name : '';
+  document.getElementById('city_slug_in').value = c ? c.slug : '';
+  document.getElementById('city_postal').value = c ? (c.postal_code||'') : '';
+  document.getElementById('city_dept').value = c ? (c.department_code||'') : '';
+  document.getElementById('city_region').value = c ? (c.region||'') : '';
+  document.getElementById('city_pop').value = c ? (c.population||'') : '';
+  document.getElementById('city_lat').value = c ? (c.lat||'') : '';
+  document.getElementById('city_lng').value = c ? (c.lng||'') : '';
+  document.getElementById('cityModal').style.display = 'flex';
+}
+async function saveCity(){
+  const id = document.getElementById('city_id_hidden').value;
+  const name = document.getElementById('city_name_in').value.trim();
+  if(!name) return alert('Le nom est requis');
+  const payload = {
+    name,
+    slug: document.getElementById('city_slug_in').value.trim() || _p6Slugify(name),
+    postal_code: document.getElementById('city_postal').value.trim() || null,
+    department_code: document.getElementById('city_dept').value.trim() || null,
+    region: document.getElementById('city_region').value.trim() || null,
+    population: parseInt(document.getElementById('city_pop').value,10) || null,
+    lat: parseFloat(document.getElementById('city_lat').value) || null,
+    lng: parseFloat(document.getElementById('city_lng').value) || null
+  };
+  try{
+    if(id){
+      const { error } = await sb.from('cities').update(payload).eq('id', id);
+      if(error) throw error;
+    } else {
+      const { error } = await sb.from('cities').insert(payload);
+      if(error) throw error;
+    }
+    document.getElementById('cityModal').style.display = 'none';
+    loadAdminCities();
+  }catch(e){ alert('Erreur : ' + e.message); }
+}
+
+// ---------- AGENTS ----------
+async function loadAdminAgents(){
+  const el = document.getElementById('agents_list');
+  el.innerHTML = '<div class="loader">Chargement…</div>';
+  try{
+    const { data, error } = await sb.from('agents').select('*, agent_cities(city_id, is_primary, cities(name,slug))').order('last_name');
+    if(error) throw error;
+    _p6Agents = data || [];
+    renderAdminAgents();
+  }catch(e){ el.innerHTML = '<div class="error">Erreur: ' + _p6Esc(e.message) + '</div>'; }
+}
+function renderAdminAgents(){
+  const q = (document.getElementById('agent_search').value || '').toLowerCase();
+  const list = q ? _p6Agents.filter(a => (a.first_name+' '+a.last_name+' '+(a.agency_name||'')).toLowerCase().includes(q)) : _p6Agents;
+  const el = document.getElementById('agents_list');
+  if(!list.length){ el.innerHTML = '<div class="empty">Aucun agent. Cliquez sur « Ajouter un agent ».</div>'; return; }
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px">' +
+    list.map(a => {
+      const photo = a.photo_url || 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&w=300';
+      const cities = (a.agent_cities||[]).map(ac => ac.cities && ac.cities.name).filter(Boolean).join(', ') || 'Aucune ville';
+      return '<div style="background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;gap:14px">' +
+        '<div style="width:72px;height:72px;border-radius:50%;background-image:url('+JSON.stringify(photo)+');background-size:cover;background-position:center;flex-shrink:0"></div>' +
+        '<div style="flex:1;min-width:0">' +
+          '<strong>'+_p6Esc(a.first_name+' '+a.last_name)+'</strong>' +
+          '<div style="font-size:12px;color:#6c757d">'+_p6Esc(a.role||'Conseiller')+(a.agency_name?' · '+_p6Esc(a.agency_name):'')+'</div>' +
+          '<div style="font-size:11px;color:#999;margin-top:4px"><i class="fas fa-map-marker-alt"></i> '+_p6Esc(cities)+'</div>' +
+          '<div style="margin-top:8px;display:flex;gap:6px">' +
+            '<button class="btn btn-sm" onclick="openAgentModal(\''+a.id+'\')"><i class="fas fa-edit"></i></button>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+}
+function openAgentModal(id){
+  const a = id ? _p6Agents.find(x=>x.id===id) : null;
+  document.getElementById('agent_id_hidden').value = a ? a.id : '';
+  document.getElementById('agent_first').value = a ? a.first_name : '';
+  document.getElementById('agent_last').value = a ? a.last_name : '';
+  document.getElementById('agent_role').value = a ? (a.role||'') : '';
+  document.getElementById('agent_agency').value = a ? (a.agency_name||'') : '';
+  document.getElementById('agent_email').value = a ? (a.email||'') : '';
+  document.getElementById('agent_phone').value = a ? (a.phone||'') : '';
+  document.getElementById('agent_site').value = a ? (a.website||'') : '';
+  document.getElementById('agent_photo').value = a ? (a.photo_url||'') : '';
+  document.getElementById('agent_bio').value = a ? (a.bio||'') : '';
+  const slugs = a && a.agent_cities ? a.agent_cities.sort((x,y)=>(y.is_primary?1:0)-(x.is_primary?1:0)).map(ac => ac.cities && ac.cities.slug).filter(Boolean).join(', ') : '';
+  document.getElementById('agent_cities_in').value = slugs;
+  document.getElementById('agentModal').style.display = 'flex';
+}
+async function saveP6Agent(){
+  const id = document.getElementById('agent_id_hidden').value;
+  const first = document.getElementById('agent_first').value.trim();
+  const last = document.getElementById('agent_last').value.trim();
+  if(!first || !last) return alert('Prénom et nom sont requis');
+  const payload = {
+    first_name: first, last_name: last,
+    role: document.getElementById('agent_role').value.trim() || null,
+    agency_name: document.getElementById('agent_agency').value.trim() || null,
+    email: document.getElementById('agent_email').value.trim() || null,
+    phone: document.getElementById('agent_phone').value.trim() || null,
+    website: document.getElementById('agent_site').value.trim() || null,
+    photo_url: document.getElementById('agent_photo').value.trim() || null,
+    bio: document.getElementById('agent_bio').value.trim() || null
+  };
+  try{
+    let agentId = id;
+    if(id){
+      const { error } = await sb.from('agents').update(payload).eq('id', id);
+      if(error) throw error;
+    } else {
+      const { data, error } = await sb.from('agents').insert(payload).select().single();
+      if(error) throw error;
+      agentId = data.id;
+    }
+
+    // Sync cities : wipe + reinsert
+    await sb.from('agent_cities').delete().eq('agent_id', agentId);
+    const slugs = (document.getElementById('agent_cities_in').value || '').split(',').map(s=>s.trim()).filter(Boolean);
+    if(slugs.length){
+      const { data: cityRows } = await sb.from('cities').select('id, slug').in('slug', slugs);
+      if(cityRows && cityRows.length){
+        const byslug = {}; cityRows.forEach(r => byslug[r.slug] = r.id);
+        const rows = slugs.map((s, idx) => byslug[s] ? { agent_id: agentId, city_id: byslug[s], is_primary: idx === 0 } : null).filter(Boolean);
+        if(rows.length) await sb.from('agent_cities').insert(rows);
+      }
+    }
+    document.getElementById('agentModal').style.display = 'none';
+    loadAdminAgents();
+  }catch(e){ alert('Erreur : ' + e.message); }
+}
+
+// ---------- CONTESTS ----------
+async function loadAdminContests(){
+  const el = document.getElementById('contests_list');
+  el.innerHTML = '<div class="loader">Chargement…</div>';
+  try{
+    let q = sb.from('contests').select('*, merchant:merchants(name), city:cities(name,slug)').order('created_at', {ascending:false});
+    const f = document.getElementById('contest_filter').value;
+    if(f) q = q.eq('status', f);
+    const { data, error } = await q;
+    if(error) throw error;
+    _p6Contests = data || [];
+    renderAdminContests();
+  }catch(e){ el.innerHTML = '<div class="error">Erreur: ' + _p6Esc(e.message) + '</div>'; }
+}
+function renderAdminContests(){
+  const el = document.getElementById('contests_list');
+  if(!_p6Contests.length){ el.innerHTML = '<div class="empty">Aucun jeu. Cliquez sur « Créer un jeu ».</div>'; return; }
+  el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px">' +
+    _p6Contests.map(c => {
+      const pct = c.selection_interval ? Math.min(100, ((c.total_spins||0) % c.selection_interval) / c.selection_interval * 100) : 0;
+      const statusBadge = {draft:'#999', active:'#28a745', won:'#ff8c00', ended:'#6c757d'}[c.status] || '#999';
+      return '<div style="background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06)">' +
+        '<div style="display:flex;justify-content:space-between;align-items:start;gap:10px"><strong>'+_p6Esc(c.title)+'</strong>' +
+        '<span style="background:'+statusBadge+';color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase">'+_p6Esc(c.status)+'</span></div>' +
+        '<div style="font-size:12px;color:#6c757d;margin-top:4px">'+_p6Esc(c.prize_description||'')+'</div>' +
+        '<div style="font-size:11px;color:#999;margin-top:4px">'+(c.merchant && c.merchant.name ? _p6Esc(c.merchant.name) : '—')+' · '+(c.city && c.city.name ? _p6Esc(c.city.name) : '—')+'</div>' +
+        '<div style="margin-top:12px;font-size:12px"><strong>'+(c.total_participants||0)+'</strong> participants · <strong>'+(c.total_spins||0)+'</strong> tours · <strong>'+(c.total_shares||0)+'</strong> partages</div>' +
+        '<div style="margin-top:8px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#f82032;height:100%;width:'+pct+'%"></div></div>' +
+        '<div style="font-size:11px;color:#6c757d;margin-top:4px">Prochain gagnant dans '+(c.selection_interval - ((c.total_spins||0) % c.selection_interval))+' tours</div>' +
+        '<div style="margin-top:12px;display:flex;gap:6px">' +
+          '<button class="btn btn-sm" onclick="openContestModal(\''+c.id+'\')"><i class="fas fa-edit"></i></button>' +
+          '<a class="btn btn-sm btn-ghost" target="_blank" href="contest.html?id='+c.id+'"><i class="fas fa-external-link-alt"></i></a>' +
+        '</div>' +
+      '</div>';
+    }).join('') + '</div>';
+}
+function _p6ToLocalInput(iso){ if(!iso) return ''; const d = new Date(iso); const p = n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes()); }
+async function openContestModal(id){
+  const c = id ? _p6Contests.find(x=>x.id===id) : null;
+  document.getElementById('ct_id_hidden').value = c ? c.id : '';
+  document.getElementById('ct_title').value = c ? c.title : '';
+  document.getElementById('ct_desc').value = c ? (c.description||'') : '';
+  document.getElementById('ct_prize').value = c ? (c.prize_description||'') : '';
+  document.getElementById('ct_value').value = c ? (c.prize_value||'') : '';
+  document.getElementById('ct_prize_img').value = c ? (c.prize_image||'') : '';
+  document.getElementById('ct_cover').value = c ? (c.cover_image||'') : '';
+  document.getElementById('ct_merchant').value = c ? (c.merchant_id||'') : '';
+  document.getElementById('ct_city').value = c && c.city ? (c.city.slug||'') : '';
+  document.getElementById('ct_start').value = c ? _p6ToLocalInput(c.starts_at) : '';
+  document.getElementById('ct_end').value = c ? _p6ToLocalInput(c.ends_at) : '';
+  document.getElementById('ct_interval').value = c ? c.selection_interval : 50;
+  document.getElementById('ct_status').value = c ? c.status : 'draft';
+  document.getElementById('ct_spins_signup').value = c ? c.spins_per_signup : 1;
+  document.getElementById('ct_spins_share').value = c ? c.spins_per_share : 1;
+  document.getElementById('ct_spins_max').value = c ? c.max_spins_per_user : 10;
+  document.getElementById('ct_cta').value = c ? (c.cta_text||'Tenter ma chance') : 'Tenter ma chance';
+  document.getElementById('ct_req_newsletter').checked = c ? !!c.require_consent_newsletter : true;
+  document.getElementById('ct_req_agent').checked = c ? !!c.require_consent_agent : true;
+  document.getElementById('contestModal').style.display = 'flex';
+}
+async function saveContest(){
+  const id = document.getElementById('ct_id_hidden').value;
+  const title = document.getElementById('ct_title').value.trim();
+  if(!title) return alert('Le titre est requis');
+  // Resolve city slug -> id
+  let cityId = null;
+  const citySlug = document.getElementById('ct_city').value.trim();
+  if(citySlug){
+    const { data } = await sb.from('cities').select('id').eq('slug', citySlug).maybeSingle();
+    if(data) cityId = data.id;
+  }
+  const payload = {
+    title,
+    description: document.getElementById('ct_desc').value.trim() || null,
+    prize_description: document.getElementById('ct_prize').value.trim() || null,
+    prize_value: parseFloat(document.getElementById('ct_value').value) || null,
+    prize_image: document.getElementById('ct_prize_img').value.trim() || null,
+    cover_image: document.getElementById('ct_cover').value.trim() || null,
+    merchant_id: document.getElementById('ct_merchant').value.trim() || null,
+    city_id: cityId,
+    starts_at: document.getElementById('ct_start').value ? new Date(document.getElementById('ct_start').value).toISOString() : null,
+    ends_at: document.getElementById('ct_end').value ? new Date(document.getElementById('ct_end').value).toISOString() : null,
+    selection_interval: parseInt(document.getElementById('ct_interval').value, 10) || 50,
+    status: document.getElementById('ct_status').value,
+    spins_per_signup: parseInt(document.getElementById('ct_spins_signup').value, 10) || 1,
+    spins_per_share: parseInt(document.getElementById('ct_spins_share').value, 10) || 1,
+    max_spins_per_user: parseInt(document.getElementById('ct_spins_max').value, 10) || 10,
+    cta_text: document.getElementById('ct_cta').value.trim() || 'Tenter ma chance',
+    require_consent_newsletter: document.getElementById('ct_req_newsletter').checked,
+    require_consent_agent: document.getElementById('ct_req_agent').checked
+  };
+  try{
+    if(id){
+      const { error } = await sb.from('contests').update(payload).eq('id', id);
+      if(error) throw error;
+    } else {
+      const { error } = await sb.from('contests').insert(payload);
+      if(error) throw error;
+    }
+    document.getElementById('contestModal').style.display = 'none';
+    loadAdminContests();
+  }catch(e){ alert('Erreur : ' + e.message); }
+}
+
+// Live search wiring
+document.addEventListener('DOMContentLoaded', () => {
+  const cs = document.getElementById('city_search');
+  if(cs) cs.addEventListener('input', renderAdminCities);
+  const as = document.getElementById('agent_search');
+  if(as) as.addEventListener('input', renderAdminAgents);
+  const cf = document.getElementById('contest_filter');
+  if(cf) cf.addEventListener('change', loadAdminContests);
+});
+
+// Expose globals for inline onclick handlers
+window.openCityModal = openCityModal;
+window.saveCity = saveCity;
+window.openAgentModal = openAgentModal;
+window.saveP6Agent = saveP6Agent;
+window.openContestModal = openContestModal;
+window.saveContest = saveContest;
+
 </script>
 </body>
 </html>

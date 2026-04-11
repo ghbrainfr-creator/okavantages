@@ -187,6 +187,7 @@ tr:hover{background:#fafbfc}
     <div class="tab" data-tab="templates"><i class="fas fa-file-alt"></i> <span>Modèles</span></div>
     <div class="tab" data-tab="sequences"><i class="fas fa-clock"></i> <span>Séquences</span></div>
     <div class="tab" data-tab="signature"><i class="fas fa-signature"></i> <span>Signature</span></div>
+    <div class="tab" data-tab="contests"><i class="fas fa-gift"></i> <span>Jeu du mois</span></div>
     <div class="tab" data-tab="profile"><i class="fas fa-store"></i> <span>Ma fiche</span></div>
   </div>
 
@@ -333,6 +334,59 @@ tr:hover{background:#fafbfc}
     </div>
   </div>
 
+  <!-- ========== CONTESTS (Jeu du mois) ========== -->
+  <div class="panel" id="panel-contests">
+    <h2><i class="fas fa-gift" style="color:#f82032"></i> Mon Jeu du mois</h2>
+    <p class="sub">Créez un concours avec roue de la chance pour dynamiser votre fichier client et récupérer des leads qualifiés. Sélection automatique toutes les 50 participations.</p>
+    <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:20px">
+      <strong><i class="fas fa-lightbulb" style="color:#f82032"></i> Comment ça marche</strong>
+      <ol style="margin:8px 0 0 20px;font-size:13px;color:#6c757d;line-height:1.7">
+        <li>Créez un jeu avec un beau lot (ex : bon d'achat de 100€, coffret cadeau, prestation premium).</li>
+        <li>Vos clients s'inscrivent (email + consentement RGPD) et reçoivent 1 tour de roue.</li>
+        <li>Ils gagnent un tour bonus à chaque partage.</li>
+        <li>Un gagnant est automatiquement tiré toutes les 50 participations. Vous récupérez tous les emails.</li>
+      </ol>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+      <button class="btn" onclick="openMerchantContestModal()"><i class="fas fa-plus"></i> Créer un nouveau jeu</button>
+    </div>
+    <div id="m_contests_list" class="loader">Chargement…</div>
+  </div>
+
+  <!-- Merchant contest modal -->
+  <div class="modal-overlay" id="mContestModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+    <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
+      <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#f82032"></i> Nouveau jeu du mois</h3>
+      <p class="sub">Remplissez les champs ci-dessous. Le jeu sera créé en statut « Brouillon » et pourra être activé ensuite.</p>
+      <input type="hidden" id="mct_id">
+      <div class="field"><label>Titre *</label><input id="mct_title" placeholder="Gagnez un bon d'achat de 100€"></div>
+      <div class="field"><label>Description courte</label><textarea id="mct_desc" rows="2"></textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Lot à gagner *</label><input id="mct_prize" placeholder="Bon d'achat 100€"></div>
+        <div class="field"><label>Valeur (€)</label><input id="mct_value" type="number"></div>
+      </div>
+      <div class="field"><label>Image du lot (URL)</label><input id="mct_prize_img" placeholder="https://…"></div>
+      <div class="grid-2">
+        <div class="field"><label>Début</label><input id="mct_start" type="datetime-local"></div>
+        <div class="field"><label>Fin</label><input id="mct_end" type="datetime-local"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Gagnant toutes les N participations</label><input id="mct_interval" type="number" value="50"></div>
+        <div class="field"><label>Tours à l'inscription</label><input id="mct_spins" type="number" value="1"></div>
+      </div>
+      <div class="field">
+        <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="mct_newsletter" checked> Inscrire les participants à ma newsletter (recommandé)</label>
+      </div>
+      <div class="field">
+        <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="mct_agent"> Proposer le contact agent immobilier partenaire</label>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
+        <button class="btn ghost" onclick="document.getElementById('mContestModal').style.display='none'">Annuler</button>
+        <button class="btn" onclick="saveMerchantContest()"><i class="fas fa-save"></i> Créer le jeu</button>
+      </div>
+    </div>
+  </div>
+
   <!-- PROFILE -->
   <div class="panel" id="panel-profile">
     <h2>Ma fiche commerce</h2>
@@ -346,8 +400,27 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Téléphone</label><input id="m_phone"></div>
       <div class="field"><label>Horaires</label><input id="m_hours" placeholder="Ex: Lun-Sam 9h-19h"></div>
     </div>
-    <div class="field"><label>Description</label><textarea id="m_description" rows="4"></textarea></div>
-    <div class="field"><label>URL de l'image (upload Supabase Storage bientôt)</label><input id="m_image_url"></div>
+    <div class="field">
+      <label>Description</label>
+      <textarea id="m_description" rows="4"></textarea>
+    </div>
+    <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:16px">
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <div style="font-size:13px;font-weight:700;color:#f82032;margin-bottom:4px"><i class="fas fa-wand-magic-sparkles"></i> Améliorer ma fiche avec l'IA</div>
+          <div style="font-size:12px;color:#6c757d">Portrait long, signature, FAQ, mots-clés SEO — la version Premium.</div>
+        </div>
+        <button class="btn" onclick="enrichWithAI()" style="white-space:nowrap"><i class="fas fa-gem"></i> Générer la version Premium</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Image de couverture</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <input id="m_image_url" placeholder="URL ou téléverser" style="flex:1;min-width:200px">
+        <input type="file" id="m_image_file" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="uploadMerchantImage(this)">
+        <button class="btn ghost" type="button" onclick="document.getElementById('m_image_file').click()"><i class="fas fa-upload"></i> Téléverser</button>
+      </div>
+    </div>
     <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
       <button class="btn ghost" onclick="loadProfile()">Annuler</button>
       <button class="btn" onclick="saveProfile()"><i class="fas fa-save"></i> Enregistrer</button>
@@ -579,6 +652,7 @@ document.querySelectorAll('.tab').forEach(tab => {
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'contests') loadMerchantContests();
   });
 });
 
@@ -605,11 +679,76 @@ async function saveProfile() {
     description: document.getElementById('m_description').value,
     image_url: document.getElementById('m_image_url').value
   };
+  // Persist enrichment premium s'il existe (stash)
+  if (window.__pendingMerchantEnrich) {
+    payload.premium_content = window.__pendingMerchantEnrich;
+    delete window.__pendingMerchantEnrich;
+  }
   const { error } = await sb.from('merchants').update(payload).eq('id', merchantId);
   if (error) { toast('Erreur: ' + error.message, 'err'); return; }
   toast('Fiche enregistrée');
   loadProfile();
 }
+
+async function uploadMerchantImage(input) {
+  const f = input.files && input.files[0];
+  if (!f) return;
+  try {
+    const ext = (f.name.split('.').pop() || 'jpg').toLowerCase();
+    const path = 'merchants/' + merchantId + '/' + Date.now() + '.' + ext;
+    const { error } = await sb.storage.from('site-assets').upload(path, f, { upsert: true, contentType: f.type });
+    if (error) throw error;
+    const { data } = sb.storage.from('site-assets').getPublicUrl(path);
+    document.getElementById('m_image_url').value = data.publicUrl;
+    toast('Image téléversée ✓');
+  } catch (e) {
+    toast('Erreur upload : ' + (e.message || e), 'err');
+  } finally {
+    input.value = '';
+  }
+}
+window.uploadMerchantImage = uploadMerchantImage;
+
+async function enrichWithAI() {
+  const name = document.getElementById('m_name').value.trim();
+  const category = document.getElementById('m_category').value.trim();
+  if (!name || !category) { toast('Nom et catégorie requis', 'err'); return; }
+  toast('Génération Premium en cours…');
+  try {
+    const r = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        type: 'merchant_enrich',
+        inputs: {
+          name,
+          category,
+          description: document.getElementById('m_description').value,
+          address: document.getElementById('m_address').value,
+          facts: ''
+        }
+      })
+    });
+    const data = await r.json();
+    if (!r.ok || !data.ok) throw new Error(data.error || 'Erreur IA');
+    const res = data.result || {};
+    // Applique aux champs visibles
+    const parts = [];
+    if (res.description_premium) parts.push(res.description_premium);
+    if (res.portrait_long) parts.push('\n\n' + res.portrait_long);
+    if (res.signature_sentence) parts.push('\n\n— ' + res.signature_sentence);
+    document.getElementById('m_description').value = parts.join('');
+    window.__pendingMerchantEnrich = res;
+    toast('Version Premium générée ✓ — enregistre pour l\'appliquer');
+    // Affiche un aperçu rapide
+    if (res.faq && res.faq.length) {
+      console.log('FAQ suggérée:', res.faq);
+    }
+  } catch (e) {
+    toast('Erreur IA : ' + (e.message || e), 'err');
+  }
+}
+window.enrichWithAI = enrichWithAI;
 
 // ---------- offers ----------
 async function loadOffers() {
@@ -1456,6 +1595,122 @@ window.loadSignaturePresets = loadSignaturePresets;
   loadSignature();
   wireMerchantFiles();
 })();
+
+// ============================================================================
+// PHASE 6 — Merchant contests (Jeu du mois)
+// ============================================================================
+let _mContests = [];
+
+function _mctEsc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function _mctLocal(iso){ if(!iso) return ''; const d=new Date(iso); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes()); }
+
+async function loadMerchantContests(){
+  const el = document.getElementById('m_contests_list');
+  if (!el) return;
+  el.innerHTML = '<div class="loader">Chargement…</div>';
+  try{
+    const { data, error } = await sb.from('contests').select('*').eq('merchant_id', merchantId).order('created_at', {ascending:false});
+    if(error) throw error;
+    _mContests = data || [];
+    if(!_mContests.length){
+      el.innerHTML = '<div style="background:#fff;border:2px dashed #e5e5e5;border-radius:12px;padding:40px;text-align:center;color:#6c757d"><i class="fas fa-gift" style="font-size:42px;color:#f82032;margin-bottom:12px;display:block"></i><strong style="color:#212529">Aucun jeu créé</strong><p style="margin-top:6px">Lancez votre premier concours pour collecter des leads qualifiés.</p></div>';
+      return;
+    }
+    el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px">' +
+      _mContests.map(c => {
+        const statusColor = {draft:'#999', active:'#28a745', won:'#ff8c00', ended:'#6c757d'}[c.status] || '#999';
+        const pct = c.selection_interval ? Math.min(100, ((c.total_spins||0) % c.selection_interval) / c.selection_interval * 100) : 0;
+        const nextIn = c.selection_interval - ((c.total_spins||0) % c.selection_interval);
+        return '<div style="background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.06)">' +
+          '<div style="display:flex;justify-content:space-between;align-items:start;gap:10px"><strong style="font-size:15px">'+_mctEsc(c.title)+'</strong>' +
+          '<span style="background:'+statusColor+';color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase">'+_mctEsc(c.status)+'</span></div>' +
+          '<div style="font-size:12px;color:#6c757d;margin-top:4px">'+_mctEsc(c.prize_description||'')+'</div>' +
+          '<div style="margin-top:12px;font-size:12px"><strong>'+(c.total_participants||0)+'</strong> participants · <strong>'+(c.total_spins||0)+'</strong> tours</div>' +
+          '<div style="margin-top:6px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#f82032;height:100%;width:'+pct+'%"></div></div>' +
+          '<div style="font-size:11px;color:#6c757d;margin-top:4px">Prochain gagnant dans '+nextIn+' tours</div>' +
+          '<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">' +
+            '<button class="btn btn-sm" onclick="openMerchantContestModal(\''+c.id+'\')"><i class="fas fa-edit"></i> Modifier</button>' +
+            (c.status==='draft' ? '<button class="btn btn-sm" style="background:#28a745" onclick="activateMerchantContest(\''+c.id+'\')"><i class="fas fa-play"></i> Activer</button>' : '') +
+            '<a class="btn btn-sm ghost" target="_blank" href="contest.html?id='+c.id+'"><i class="fas fa-eye"></i> Voir</a>' +
+            '<button class="btn btn-sm ghost" onclick="copyContestLink(\''+c.id+'\')"><i class="fas fa-link"></i></button>' +
+          '</div>' +
+        '</div>';
+      }).join('') + '</div>';
+  }catch(e){ el.innerHTML = '<div class="error">Erreur: ' + _mctEsc(e.message) + '</div>'; }
+}
+
+function openMerchantContestModal(id){
+  const c = id ? _mContests.find(x=>x.id===id) : null;
+  document.getElementById('mct_id').value = c ? c.id : '';
+  document.getElementById('mct_title').value = c ? c.title : '';
+  document.getElementById('mct_desc').value = c ? (c.description||'') : '';
+  document.getElementById('mct_prize').value = c ? (c.prize_description||'') : '';
+  document.getElementById('mct_value').value = c ? (c.prize_value||'') : '';
+  document.getElementById('mct_prize_img').value = c ? (c.prize_image||'') : '';
+  document.getElementById('mct_start').value = c ? _mctLocal(c.starts_at) : '';
+  document.getElementById('mct_end').value = c ? _mctLocal(c.ends_at) : '';
+  document.getElementById('mct_interval').value = c ? c.selection_interval : 50;
+  document.getElementById('mct_spins').value = c ? c.spins_per_signup : 1;
+  document.getElementById('mct_newsletter').checked = c ? !!c.require_consent_newsletter : true;
+  document.getElementById('mct_agent').checked = c ? !!c.require_consent_agent : false;
+  document.getElementById('mContestModal').style.display = 'flex';
+}
+
+async function saveMerchantContest(){
+  const id = document.getElementById('mct_id').value;
+  const title = document.getElementById('mct_title').value.trim();
+  const prize = document.getElementById('mct_prize').value.trim();
+  if(!title) return toast('Le titre est requis', 'err');
+  if(!prize) return toast('Le lot est requis', 'err');
+  const payload = {
+    merchant_id: merchantId,
+    title,
+    description: document.getElementById('mct_desc').value.trim() || null,
+    prize_description: prize,
+    prize_value: parseFloat(document.getElementById('mct_value').value) || null,
+    prize_image: document.getElementById('mct_prize_img').value.trim() || null,
+    starts_at: document.getElementById('mct_start').value ? new Date(document.getElementById('mct_start').value).toISOString() : null,
+    ends_at: document.getElementById('mct_end').value ? new Date(document.getElementById('mct_end').value).toISOString() : null,
+    selection_interval: parseInt(document.getElementById('mct_interval').value, 10) || 50,
+    spins_per_signup: parseInt(document.getElementById('mct_spins').value, 10) || 1,
+    require_consent_newsletter: document.getElementById('mct_newsletter').checked,
+    require_consent_agent: document.getElementById('mct_agent').checked,
+    status: id ? undefined : 'draft'
+  };
+  try{
+    if(id){
+      delete payload.status;
+      const { error } = await sb.from('contests').update(payload).eq('id', id).eq('merchant_id', merchantId);
+      if(error) throw error;
+    } else {
+      const { error } = await sb.from('contests').insert(payload);
+      if(error) throw error;
+    }
+    document.getElementById('mContestModal').style.display = 'none';
+    toast('Jeu enregistré ✓', 'ok');
+    loadMerchantContests();
+  }catch(e){ toast('Erreur : '+e.message, 'err'); }
+}
+
+async function activateMerchantContest(id){
+  if(!confirm('Activer ce jeu ? Il sera visible publiquement.')) return;
+  try{
+    const { error } = await sb.from('contests').update({ status: 'active' }).eq('id', id).eq('merchant_id', merchantId);
+    if(error) throw error;
+    toast('Jeu activé ✓', 'ok');
+    loadMerchantContests();
+  }catch(e){ toast('Erreur : '+e.message, 'err'); }
+}
+
+function copyContestLink(id){
+  const url = location.origin + location.pathname.replace(/merchant\.html$/, 'contest.html') + '?id=' + id;
+  navigator.clipboard.writeText(url).then(() => toast('Lien copié ✓', 'ok')).catch(() => prompt('Copiez le lien :', url));
+}
+
+window.openMerchantContestModal = openMerchantContestModal;
+window.saveMerchantContest = saveMerchantContest;
+window.activateMerchantContest = activateMerchantContest;
+window.copyContestLink = copyContestLink;
 </script>
 </body>
 </html>
