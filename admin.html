@@ -6,24 +6,30 @@
 <title>Admin — MonBonAgent</title>
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  document.addEventListener("DOMContentLoaded",function(){setTimeout(applyBrandFromInputs,1500);["color_primary","color_accent","color_dark","color_bg"].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener("input",applyBrandFromInputs);});});
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>
+  function applyBrandFromInputs(){var p=document.getElementById("color_primary");var a=document.getElementById("color_accent");var d=document.getElementById("color_dark");var bg=document.getElementById("color_bg");if(p&&p.value)document.documentElement.style.setProperty("--primary",p.value);if(a&&a.value)document.documentElement.style.setProperty("--primary-hover",a.value);if(d&&d.value)document.documentElement.style.setProperty("--dark",d.value);if(bg&&bg.value)document.documentElement.style.setProperty("--bg",bg.value);}
+
   if (window['pdfjsLib']) {
     window['pdfjsLib'].GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
 </script>
 <style>
+:root{--primary:var(--primary);--primary-hover:var(--primary-hover);--dark:#212529;--bg:#f5f6f8;--accent:var(--primary);--gold:#FFD700}
+
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
+body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
 header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-header .brand{font-size:20px;font-weight:700;color:#f82032}
-header .brand span{color:#212529}
+header .brand{font-size:20px;font-weight:700;color:var(--primary)}
+header .brand span{color:var(--dark)}
 header .right{display:flex;align-items:center;gap:16px}
 header .user-email{font-size:13px;color:#6c757d}
-header button{background:#f82032;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
-header button:hover{background:#d91a2b}
+header button{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
+header button:hover{background:var(--primary-hover)}
 header button.ghost{background:#e9ecef;color:#495057}
 .wrap{max-width:1100px;margin:24px auto;padding:0 20px;transition:padding-right .3s ease, max-width .3s ease}
 body.preview-open .wrap{max-width:none;margin-left:max(20px, calc((100vw - 520px - 1100px)/2));margin-right:calc(520px + 20px);padding-right:0}
@@ -34,7 +40,7 @@ body.preview-open header{padding-right:calc(520px + 24px)}
 .tabs{display:flex;gap:4px;background:#fff;border-radius:12px;padding:6px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow-x:auto}
 .tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#6c757d;white-space:nowrap;transition:.2s}
 .tab:hover{background:#f8f9fa}
-.tab.active{background:#f82032;color:#fff}
+.tab.active{background:var(--primary);color:#fff}
 .panel{display:none;background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .panel.active{display:block}
 h2{font-size:20px;margin-bottom:6px}
@@ -44,15 +50,15 @@ h2{font-size:20px;margin-bottom:6px}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
 .field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px;transition:.2s}
-.field input:focus,.field textarea:focus{outline:none;border-color:#f82032}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--primary)}
 .field textarea{min-height:80px;resize:vertical}
 .color-row{display:flex;gap:8px;align-items:center}
 .color-row input[type=color]{width:50px;height:40px;padding:2px;cursor:pointer}
-.btn{background:#f82032;color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
-.btn:hover{background:#d91a2b}
+.btn{background:var(--primary);color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
+.btn:hover{background:var(--primary-hover)}
 .btn.ghost{background:#e9ecef;color:#495057}
 .save-bar{position:sticky;bottom:0;background:#fff;padding:16px;margin:20px -28px -28px;border-top:1px solid #e9ecef;border-radius:0 0 12px 12px;display:flex;justify-content:flex-end;gap:10px}
-.toast{position:fixed;bottom:20px;right:20px;background:#212529;color:#fff;padding:14px 20px;border-radius:8px;display:none;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;padding:14px 20px;border-radius:8px;display:none;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.ok{background:#198754}
 .toast.err{background:#dc3545}
 .loader{text-align:center;padding:40px;color:#6c757d}
@@ -68,7 +74,7 @@ tr:hover{background:#fafbfc}
 .pill.muted{background:#e9ecef;color:#6c757d}
 .row{display:flex;gap:8px;align-items:center}
 .services-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.service-chip{background:#fff0f1;color:#f82032;padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
+.service-chip{background:#fff0f1;color:var(--primary);padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
 .service-chip i{cursor:pointer}
 .add-service{display:flex;gap:6px;margin-top:8px}
 .add-service input{flex:1}
@@ -101,7 +107,7 @@ tr:hover{background:#fafbfc}
 .charte-preview h4{font-size:13px;margin-bottom:10px;color:#495057}
 .color-swatches{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .swatch{width:72px;text-align:center;cursor:pointer;border-radius:8px;padding:4px;border:2px solid transparent;transition:.15s}
-.swatch:hover{border-color:#f82032}
+.swatch:hover{border-color:var(--primary)}
 .swatch .chip{height:48px;border-radius:6px;border:1px solid #dee2e6;margin-bottom:4px}
 .swatch .hex{font-size:10px;color:#495057;font-family:monospace}
 .slot-picker{background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:10px}
@@ -118,8 +124,8 @@ tr:hover{background:#fafbfc}
 .preview-drawer .icon-btn:hover{background:#dee2e6}
 .preview-drawer iframe{flex:1;width:100%;border:none;background:#f5f6f8}
 .preview-toggle-fab{position:fixed;bottom:24px;right:24px;background:#1a1a2e;color:#fff;border:none;width:56px;height:56px;border-radius:50%;box-shadow:0 6px 22px rgba(0,0,0,.25);cursor:pointer;font-size:20px;z-index:399;display:flex;align-items:center;justify-content:center;transition:.15s}
-.preview-toggle-fab:hover{background:#f82032;transform:scale(1.06)}
-.preview-toggle-fab.active{background:#f82032}
+.preview-toggle-fab:hover{background:var(--primary);transform:scale(1.06)}
+.preview-toggle-fab.active{background:var(--primary)}
 @media(max-width:720px){.preview-drawer{width:100vw;max-width:100vw}}
 
 /* ===== Merchant row enrichments ===== */
@@ -176,7 +182,7 @@ tr:hover{background:#fafbfc}
 .pill-status.unreachable{background:#f1f3f5;color:#6c757d}
 .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
 .tpl-card{border:1.5px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s;background:#fff}
-.tpl-card:hover{border-color:#f82032;box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
+.tpl-card:hover{border-color:var(--primary);box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
 .tpl-card .icon{font-size:22px;margin-bottom:6px}
 .tpl-card .name{font-weight:600;font-size:14px;margin-bottom:4px}
 .tpl-card .meta{font-size:11px;color:#6c757d}
@@ -189,7 +195,7 @@ tr:hover{background:#fafbfc}
 .import-result.show{display:block}
 .section-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 .upload-zone{border:2px dashed #dee2e6;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:.2s}
-.upload-zone:hover,.upload-zone.dragover{border-color:#f82032;background:#fff5f6}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--primary);background:#fff5f6}
 .upload-zone i{font-size:30px;color:#adb5bd;margin-bottom:8px;display:block}
 .preview-mail{background:#f8f9fa;border:1px solid #e9ecef;border-radius:10px;padding:18px;font-size:13px;line-height:1.6;max-height:380px;overflow-y:auto}
 .preview-mail .from{font-size:11px;color:#6c757d;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e9ecef}
@@ -201,8 +207,8 @@ tr:hover{background:#fafbfc}
 .signature-preview{border:1px solid #e9ecef;border-radius:8px;padding:14px;background:#fafbfc;margin-top:8px;font-size:13px;line-height:1.5}
 .signature-preview img{max-height:60px;display:block;margin-top:8px}
 .segment-pill{display:inline-block;padding:5px 12px;background:#f1f3f5;color:#495057;border-radius:14px;font-size:12px;margin:3px;cursor:pointer;border:1.5px solid #e9ecef;user-select:none;transition:.2s}
-.segment-pill:hover{border-color:#f82032}
-.segment-pill.active{background:#f82032;color:#fff;border-color:#f82032}
+.segment-pill:hover{border-color:var(--primary)}
+.segment-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 </style>
 </head>
 <body>
@@ -247,9 +253,9 @@ tr:hover{background:#fafbfc}
       <div class="charte-dropzone" id="charteDrop" onclick="document.getElementById('charteFile').click()">
         <i class="fas fa-cloud-upload-alt"></i>
         <strong>Cliquez ou glissez un PDF ici</strong>
-        <span>Formats supportés : .pdf</span>
+        <span>Formats supportés : .pdf, .jpg, .png, .webp, .svg</span>
       </div>
-      <input type="file" id="charteFile" accept="application/pdf" style="display:none">
+      <input type="file" id="charteFile" accept="application/pdf,image/jpeg,image/png,image/webp,image/svg+xml" style="display:none">
       <div class="charte-preview" id="chartePreview">
         <h4>Couleurs détectées dans le PDF</h4>
         <div class="color-swatches" id="charteSwatches"></div>
@@ -301,6 +307,9 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Police des titres</label><input id="font_heading" placeholder="Poppins, Rubik…"></div>
       <div class="field"><label>Police du texte</label><input id="font_body" placeholder="Inter, Rubik…"></div>
     </div>
+
+  <!-- SECTIONS (Pourquoi MonBonAgent) -->
+  <div class="panel" id="panel-sections">
     <h2 style="margin-top:24px;font-size:16px">Titres des sections</h2>
     <div class="grid-2">
       <div class="field"><label>Titre "commerçants"</label><input id="st_merchants"></div>
@@ -316,9 +325,6 @@ tr:hover{background:#fafbfc}
       <button class="btn" onclick="saveBranding()"><i class="fas fa-save"></i> Enregistrer</button>
     </div>
   </div>
-
-  <!-- SECTIONS (Pourquoi MonBonAgent) -->
-  <div class="panel" id="panel-sections">
     <h2>Sections "Pourquoi MonBonAgent"</h2>
     <p class="sub">Chaque bloc est entièrement personnalisable (titre, texte, image, bouton). L'IA peut générer les 6 blocs d'un coup pour démarrer.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:10px">
@@ -484,7 +490,9 @@ tr:hover{background:#fafbfc}
         <button class="btn" onclick="openAIStudio('merchant')" style="width:100%"><i class="fas fa-magic"></i> Créer une fiche avec l'IA</button>
       </div>
     </div>
-    <style>@media(max-width:900px){.add-merchant-grid{grid-template-columns:1fr!important}}</style>
+    <style>
+:root{--primary:var(--primary);--primary-hover:var(--primary-hover);--dark:#212529;--bg:#f5f6f8;--accent:var(--primary);--gold:#FFD700}
+@media(max-width:900px){.add-merchant-grid{grid-template-columns:1fr!important}}</style>
 
     <h3 style="font-size:15px;margin-bottom:10px">Commerçants inscrits</h3>
     <div id="merchants_list" class="loader">Chargement…</div>
@@ -2559,7 +2567,9 @@ function previewAdminTemplate(id) {
   const t = adminTemplates.find(x => x.id === id); if (!t) return;
   const html = renderAdminVars(t.body_html || '', { commerce:'[Nom commerce]', nom:'[Prénom]', email:'[email]', ville:'[ville]', categorie:'[catégorie]' });
   const w = window.open('', '_blank', 'width=640,height=720');
-  w.document.write(`<html><head><title>${escapeHtmlText(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
+  w.document.write(`<html><head><title>${escapeHtmlText(t.name)}</title><style>
+:root{--primary:var(--primary);--primary-hover:var(--primary-hover);--dark:#212529;--bg:#f5f6f8;--accent:var(--primary);--gold:#FFD700}
+body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:var(--primary)}</style></head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
 }
 function renderAdminVars(html, ctx) {
   ctx = ctx || {};
@@ -3963,15 +3973,17 @@ window.saveContest = saveContest;
   }
 </script>
 <style>
+:root{--primary:var(--primary);--primary-hover:var(--primary-hover);--dark:#212529;--bg:#f5f6f8;--accent:var(--primary);--gold:#FFD700}
+
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
+body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
 header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-header .brand{font-size:20px;font-weight:700;color:#f82032}
-header .brand span{color:#212529}
+header .brand{font-size:20px;font-weight:700;color:var(--primary)}
+header .brand span{color:var(--dark)}
 header .right{display:flex;align-items:center;gap:16px}
 header .user-email{font-size:13px;color:#6c757d}
-header button{background:#f82032;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
-header button:hover{background:#d91a2b}
+header button{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
+header button:hover{background:var(--primary-hover)}
 header button.ghost{background:#e9ecef;color:#495057}
 .wrap{max-width:1100px;margin:24px auto;padding:0 20px;transition:padding-right .3s ease, max-width .3s ease}
 body.preview-open .wrap{max-width:none;margin-left:max(20px, calc((100vw - 520px - 1100px)/2));margin-right:calc(520px + 20px);padding-right:0}
@@ -3982,7 +3994,7 @@ body.preview-open header{padding-right:calc(520px + 24px)}
 .tabs{display:flex;gap:4px;background:#fff;border-radius:12px;padding:6px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow-x:auto}
 .tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#6c757d;white-space:nowrap;transition:.2s}
 .tab:hover{background:#f8f9fa}
-.tab.active{background:#f82032;color:#fff}
+.tab.active{background:var(--primary);color:#fff}
 .panel{display:none;background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .panel.active{display:block}
 h2{font-size:20px;margin-bottom:6px}
@@ -3992,15 +4004,15 @@ h2{font-size:20px;margin-bottom:6px}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
 .field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px;transition:.2s}
-.field input:focus,.field textarea:focus{outline:none;border-color:#f82032}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--primary)}
 .field textarea{min-height:80px;resize:vertical}
 .color-row{display:flex;gap:8px;align-items:center}
 .color-row input[type=color]{width:50px;height:40px;padding:2px;cursor:pointer}
-.btn{background:#f82032;color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
-.btn:hover{background:#d91a2b}
+.btn{background:var(--primary);color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s}
+.btn:hover{background:var(--primary-hover)}
 .btn.ghost{background:#e9ecef;color:#495057}
 .save-bar{position:sticky;bottom:0;background:#fff;padding:16px;margin:20px -28px -28px;border-top:1px solid #e9ecef;border-radius:0 0 12px 12px;display:flex;justify-content:flex-end;gap:10px}
-.toast{position:fixed;bottom:20px;right:20px;background:#212529;color:#fff;padding:14px 20px;border-radius:8px;display:none;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;padding:14px 20px;border-radius:8px;display:none;z-index:200;box-shadow:0 4px 20px rgba(0,0,0,.3)}
 .toast.ok{background:#198754}
 .toast.err{background:#dc3545}
 .loader{text-align:center;padding:40px;color:#6c757d}
@@ -4016,7 +4028,7 @@ tr:hover{background:#fafbfc}
 .pill.muted{background:#e9ecef;color:#6c757d}
 .row{display:flex;gap:8px;align-items:center}
 .services-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.service-chip{background:#fff0f1;color:#f82032;padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
+.service-chip{background:#fff0f1;color:var(--primary);padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
 .service-chip i{cursor:pointer}
 .add-service{display:flex;gap:6px;margin-top:8px}
 .add-service input{flex:1}
@@ -4049,7 +4061,7 @@ tr:hover{background:#fafbfc}
 .charte-preview h4{font-size:13px;margin-bottom:10px;color:#495057}
 .color-swatches{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
 .swatch{width:72px;text-align:center;cursor:pointer;border-radius:8px;padding:4px;border:2px solid transparent;transition:.15s}
-.swatch:hover{border-color:#f82032}
+.swatch:hover{border-color:var(--primary)}
 .swatch .chip{height:48px;border-radius:6px;border:1px solid #dee2e6;margin-bottom:4px}
 .swatch .hex{font-size:10px;color:#495057;font-family:monospace}
 .slot-picker{background:#f8f9fa;border-radius:8px;padding:12px;margin-bottom:10px}
@@ -4066,8 +4078,8 @@ tr:hover{background:#fafbfc}
 .preview-drawer .icon-btn:hover{background:#dee2e6}
 .preview-drawer iframe{flex:1;width:100%;border:none;background:#f5f6f8}
 .preview-toggle-fab{position:fixed;bottom:24px;right:24px;background:#1a1a2e;color:#fff;border:none;width:56px;height:56px;border-radius:50%;box-shadow:0 6px 22px rgba(0,0,0,.25);cursor:pointer;font-size:20px;z-index:399;display:flex;align-items:center;justify-content:center;transition:.15s}
-.preview-toggle-fab:hover{background:#f82032;transform:scale(1.06)}
-.preview-toggle-fab.active{background:#f82032}
+.preview-toggle-fab:hover{background:var(--primary);transform:scale(1.06)}
+.preview-toggle-fab.active{background:var(--primary)}
 @media(max-width:720px){.preview-drawer{width:100vw;max-width:100vw}}
 
 /* ===== Merchant row enrichments ===== */
@@ -4124,7 +4136,7 @@ tr:hover{background:#fafbfc}
 .pill-status.unreachable{background:#f1f3f5;color:#6c757d}
 .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
 .tpl-card{border:1.5px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s;background:#fff}
-.tpl-card:hover{border-color:#f82032;box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
+.tpl-card:hover{border-color:var(--primary);box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
 .tpl-card .icon{font-size:22px;margin-bottom:6px}
 .tpl-card .name{font-weight:600;font-size:14px;margin-bottom:4px}
 .tpl-card .meta{font-size:11px;color:#6c757d}
@@ -4137,7 +4149,7 @@ tr:hover{background:#fafbfc}
 .import-result.show{display:block}
 .section-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
 .upload-zone{border:2px dashed #dee2e6;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:.2s}
-.upload-zone:hover,.upload-zone.dragover{border-color:#f82032;background:#fff5f6}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--primary);background:#fff5f6}
 .upload-zone i{font-size:30px;color:#adb5bd;margin-bottom:8px;display:block}
 .preview-mail{background:#f8f9fa;border:1px solid #e9ecef;border-radius:10px;padding:18px;font-size:13px;line-height:1.6;max-height:380px;overflow-y:auto}
 .preview-mail .from{font-size:11px;color:#6c757d;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e9ecef}
@@ -4149,8 +4161,8 @@ tr:hover{background:#fafbfc}
 .signature-preview{border:1px solid #e9ecef;border-radius:8px;padding:14px;background:#fafbfc;margin-top:8px;font-size:13px;line-height:1.5}
 .signature-preview img{max-height:60px;display:block;margin-top:8px}
 .segment-pill{display:inline-block;padding:5px 12px;background:#f1f3f5;color:#495057;border-radius:14px;font-size:12px;margin:3px;cursor:pointer;border:1.5px solid #e9ecef;user-select:none;transition:.2s}
-.segment-pill:hover{border-color:#f82032}
-.segment-pill.active{background:#f82032;color:#fff;border-color:#f82032}
+.segment-pill:hover{border-color:var(--primary)}
+.segment-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 </style>
 </head>
 <body>
@@ -4195,9 +4207,9 @@ tr:hover{background:#fafbfc}
       <div class="charte-dropzone" id="charteDrop" onclick="document.getElementById('charteFile').click()">
         <i class="fas fa-cloud-upload-alt"></i>
         <strong>Cliquez ou glissez un PDF ici</strong>
-        <span>Formats supportés : .pdf</span>
+        <span>Formats supportés : .pdf, .jpg, .png, .webp, .svg</span>
       </div>
-      <input type="file" id="charteFile" accept="application/pdf" style="display:none">
+      <input type="file" id="charteFile" accept="application/pdf,image/jpeg,image/png,image/webp,image/svg+xml" style="display:none">
       <div class="charte-preview" id="chartePreview">
         <h4>Couleurs détectées dans le PDF</h4>
         <div class="color-swatches" id="charteSwatches"></div>
@@ -4249,6 +4261,9 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Police des titres</label><input id="font_heading" placeholder="Poppins, Rubik…"></div>
       <div class="field"><label>Police du texte</label><input id="font_body" placeholder="Inter, Rubik…"></div>
     </div>
+
+  <!-- SECTIONS (Pourquoi MonBonAgent) -->
+  <div class="panel" id="panel-sections">
     <h2 style="margin-top:24px;font-size:16px">Titres des sections</h2>
     <div class="grid-2">
       <div class="field"><label>Titre "commerçants"</label><input id="st_merchants"></div>
@@ -4264,9 +4279,6 @@ tr:hover{background:#fafbfc}
       <button class="btn" onclick="saveBranding()"><i class="fas fa-save"></i> Enregistrer</button>
     </div>
   </div>
-
-  <!-- SECTIONS (Pourquoi MonBonAgent) -->
-  <div class="panel" id="panel-sections">
     <h2>Sections "Pourquoi MonBonAgent"</h2>
     <p class="sub">Chaque bloc est entièrement personnalisable (titre, texte, image, bouton). L'IA peut générer les 6 blocs d'un coup pour démarrer.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:10px">
@@ -4432,7 +4444,9 @@ tr:hover{background:#fafbfc}
         <button class="btn" onclick="openAIStudio('merchant')" style="width:100%"><i class="fas fa-magic"></i> Créer une fiche avec l'IA</button>
       </div>
     </div>
-    <style>@media(max-width:900px){.add-merchant-grid{grid-template-columns:1fr!important}}</style>
+    <style>
+:root{--primary:var(--primary);--primary-hover:var(--primary-hover);--dark:#212529;--bg:#f5f6f8;--accent:var(--primary);--gold:#FFD700}
+@media(max-width:900px){.add-merchant-grid{grid-template-columns:1fr!important}}</style>
 
     <h3 style="font-size:15px;margin-bottom:10px">Commerçants inscrits</h3>
     <div id="merchants_list" class="loader">Chargement…</div>
@@ -6507,7 +6521,9 @@ function previewAdminTemplate(id) {
   const t = adminTemplates.find(x => x.id === id); if (!t) return;
   const html = renderAdminVars(t.body_html || '', { commerce:'[Nom commerce]', nom:'[Prénom]', email:'[email]', ville:'[ville]', categorie:'[catégorie]' });
   const w = window.open('', '_blank', 'width=640,height=720');
-  w.document.write(`<html><head><title>${escapeHtmlText(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
+  w.document.write(`<html><head><title>${escapeHtmlText(t.name)}</title><style>
+:root{--primary:var(--primary);--primary-hover:var(--primary-hover);--dark:#212529;--bg:#f5f6f8;--accent:var(--primary);--gold:#FFD700}
+body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:var(--primary)}</style></head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
 }
 function renderAdminVars(html, ctx) {
   ctx = ctx || {};
