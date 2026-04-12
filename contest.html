@@ -141,6 +141,552 @@ footer a{color:var(--primary)}
     <div class="steps">
       <div class="step"><i class="fas fa-envelope"></i><b>1. Inscription</b><span>Votre email + 1 tour offert</span></div>
       <div class="step"><i class="fas fa-share-alt"></i><b>2. Partage</b><span>Chaque partage = 1 tour bonus</span></div>
+      <div class="step"><i class="fas fa-trophy"></i><b>3. Roue de la chance</b><span>Un gagnant pour le tirage au sort est automatiquement tiré toutes les 5 participations. Vous récupérez tous les emails</span></div>
+    </div>
+
+    <!-- SIGNUP PANEL -->
+    <div class="panel" id="signup_panel">
+      <h2>Tenter ma chance</h2>
+      <p class="sub">Un email suffit. Vous recevez 1 tour de roue offert, et chaque partage vous donne 1 tour supplémentaire. Un gagnant pour le tirage au sort est automatiquement tiré toutes les 5 participations. Vous récupérez tous les emails. Gratuit, sans engagement.</p>
+      <form id="signup_form">
+        <div class="form-row">
+          <input type="text" id="f_first" placeholder="Prénom" required>
+          <input type="text" id="f_last" placeholder="Nom (facultatif)">
+        </div>
+        <div class="form-row form-row-full">
+          <input type="email" id="f_email" placeholder="votre.email@exemple.fr" required>
+        </div>
+        <div class="form-row">
+          <input type="tel" id="f_phone" placeholder="Téléphone (facultatif)">
+          <select id="f_city"><option value="">Votre ville</option></select>
+        </div>
+        <div class="form-consents">
+          <label><input type="checkbox" id="c_newsletter" checked><span>Je veux recevoir la newsletter MonBonAgent (bons plans du mois, offres des commerçants)</span></label>
+          <label><input type="checkbox" id="c_agent"><span>Je souhaite être contacté·e par l'agent immobilier de ma ville pour une estimation gratuite (facultatif)</span></label>
+          <label><input type="checkbox" id="c_rules" required><span>J'accepte le règlement du jeu et la politique de confidentialité <span style="color:var(--primary)">*</span></span></label>
+        </div>
+        <button type="submit" class="btn-primary" id="btn_signup"><i class="fas fa-ticket-alt"></i> Je participe</button>
+        <div class="form-msg" id="signup_msg"></div>
+      </form>
+    </div>
+
+    <!-- WHEEL PANEL -->
+    <div class="panel wheel-section" id="wheel_panel">
+      <h2>Votre roue de la chance</h2>
+      <p class="sub" id="wheel_sub"></p>
+      <div class="wheel-stats">
+        <div class="wheel-stat"><b id="st_spins">0</b><span>Tours restants</span></div>
+        <div class="wheel-stat"><b id="st_shares">0</b><span>Partages</span></div>
+        <div class="wheel-stat"><b id="st_next">5</b><span>Prochain gagnant dans</span></div>
+      </div>
+      <div class="wheel-wrap">
+        <div class="wheel-pointer"></div>
+        <div class="wheel" id="wheel">
+          <div class="wheel-labels" id="wheel_labels"></div>
+        </div>
+      </div>
+      <button class="btn-spin" id="btn_spin"><i class="fas fa-play"></i> Tourner la roue</button>
+
+      <div class="share-block">
+        <h3><i class="fas fa-gift"></i> Gagnez des tours en partageant</h3>
+        <p>Chaque ami qui s'inscrit via votre lien vous offre <b>1 tour bonus</b> (jusqu'à 10 tours max).</p>
+        <div class="share-buttons">
+          <button class="share-btn wa" data-kind="wa"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+          <button class="share-btn fb" data-kind="fb"><i class="fab fa-facebook-f"></i> Facebook</button>
+          <button class="share-btn mail" data-kind="mail"><i class="fas fa-envelope"></i> Email</button>
+          <button class="share-btn copy" data-kind="copy"><i class="fas fa-link"></i> Copier le lien</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT PANEL -->
+    <div class="result-panel" id="result_panel">
+      <i class="fas fa-trophy" style="color:var(--gold)"></i>
+      <h3 id="result_title"></h3>
+      <p id="result_text"></p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p id="brand_agent" style="font-weight:600;color:var(--dark);display:none;margin-bottom:6px"></p>
+  <p>MonBonAgent — Commerce local à <span id="city_name">Perpignan</span></p>
+  <p style="margin-top:6px"><a href="index.html">Retour au site</a> · <a href="#" id="rules_link">Règlement du jeu</a></p>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// URL params
+const qs = new URLSearchParams(location.search);
+const contestId = qs.get('id');
+const refCode = qs.get('ref') || '';
+
+let contest = null;
+let merchant = null;
+let agent = null;
+let participation = null;
+let wheelRotation = 0;
+let spinning = false;
+
+const DEFAULT_BRAND = {
+  primary:'#f82032', primaryHover:'#d91a2b', accent:'#ff6b35',
+  dark:'#212529', gold:'#ffc107', bg:'#fafafa'
+};
+const DEFAULT_SEGMENTS = [
+  {label:'10% offerts', type:'win',  color:'#f82032', textColor:'#ffffff'},
+  {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
+  {label:'Café offert', type:'win',  color:'#ff6b35', textColor:'#ffffff'},
+  {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
+  {label:'5€ de bon',   type:'win',  color:'#ffc107', textColor:'#212529'},
+  {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
+  {label:'Grand prix',  type:'jackpot', color:'#212529', textColor:'#ffc107'},
+  {label:'Rejouez',     type:'replay', color:'#ffffff', textColor:'#212529'}
+];
+
+function applyBrand(brand) {
+  const b = Object.assign({}, DEFAULT_BRAND, brand || {});
+  const root = document.documentElement.style;
+  root.setProperty('--primary', b.primary);
+  root.setProperty('--primary-hover', b.primaryHover || b.primary);
+  root.setProperty('--accent', b.accent || b.primary);
+  root.setProperty('--dark', b.dark);
+  root.setProperty('--gold', b.gold);
+  root.setProperty('--bg', b.bg);
+  if (b.agentName) {
+    const el = document.getElementById('brand_agent');
+    if (el) { el.textContent = b.agentName + (b.agency ? ' · ' + b.agency : ''); el.style.display='block'; }
+  }
+}
+
+function renderWheel(segments) {
+  const segs = (Array.isArray(segments) && segments.length) ? segments : DEFAULT_SEGMENTS;
+  const n = segs.length;
+  const step = 360 / n;
+  // Conic-gradient
+  let stops = [];
+  segs.forEach((s,i) => {
+    const a = (i*step).toFixed(2);
+    const b = ((i+1)*step).toFixed(2);
+    stops.push(`${s.color||'#fff'} ${a}deg ${b}deg`);
+  });
+  const wheel = document.getElementById('wheel');
+  wheel.style.background = 'conic-gradient(' + stops.join(',') + ')';
+  // Labels
+  const box = document.getElementById('wheel_labels');
+  box.innerHTML = '';
+  segs.forEach((s,i) => {
+    const angle = (i*step) + step/2;
+    const el = document.createElement('div');
+    el.className = 'wheel-label';
+    el.style.color = s.textColor || '#212529';
+    el.style.transform = `rotate(${angle}deg) translate(110px, 0) rotate(90deg) translate(-50%, -50%)`;
+    el.textContent = (s.label || '').slice(0, 14);
+    box.appendChild(el);
+  });
+}
+
+async function loadContest() {
+  if (!contestId) { showError('Jeu introuvable — lien invalide.'); return; }
+  try {
+    const resp = await fetch('/api/contest', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ action:'get', contestId, email: localStorage.getItem('mba_email') || '' })
+    });
+    const data = await resp.json();
+    if (!data.ok) throw new Error(data.error || 'not_found');
+    contest = data.contest;
+    agent = data.agent || null;
+    participation = data.participation;
+    await loadMerchant();
+    renderContest();
+    if (participation) showWheel();
+  } catch (e) {
+    showError('Impossible de charger ce jeu : ' + (e.message || e));
+  }
+}
+
+async function loadMerchant() {
+  if (!contest || !contest.merchant_id) return;
+  const { data } = await sb.from('merchants').select('id,name,slug,image_url,category,city').eq('id', contest.merchant_id).maybeSingle();
+  merchant = data;
+}
+
+function renderContest() {
+  // Brand (contest.brand overrides agent.brand)
+  const agentBrand = (agent && agent.brand) || {};
+  const finalBrand = Object.assign({}, agentBrand, contest.brand || {});
+  if (agent && !finalBrand.agentName) { finalBrand.agentName = agent.name; finalBrand.agency = agent.agency || ''; }
+  applyBrand(finalBrand);
+  // Wheel
+  renderWheel(contest.segments);
+  document.getElementById('hero_title').textContent = contest.title;
+  document.getElementById('hero_prize').textContent = contest.prize_description || '';
+  if (contest.ends_at) {
+    const days = Math.max(0, Math.ceil((new Date(contest.ends_at) - new Date()) / 86400000));
+    document.getElementById('hero_countdown').innerHTML = 'Clôture dans <strong>' + days + ' jour' + (days>1?'s':'') + '</strong>';
+  }
+  document.getElementById('wheel_sub').textContent = 'Tournez la roue. Un gagnant pour le tirage au sort tous les ' + contest.selection_interval + ' participations. Gratuit, sans engagement.';
+  document.getElementById('st_next').textContent = contest.next_winner_in;
+  document.title = contest.title + ' — Jeu du mois MonBonAgent';
+
+  if (merchant) {
+    document.getElementById('merchant_banner').style.display = 'flex';
+    document.getElementById('mb_img').src = merchant.image_url || 'https://placehold.co/80x80/f82032/ffffff?text=M';
+    document.getElementById('mb_name').textContent = merchant.name;
+    document.getElementById('mb_meta').textContent = (merchant.category||'') + (merchant.city?' · '+merchant.city:'');
+    document.getElementById('mb_cta').href = 'index.html#merchant-' + merchant.slug;
+  }
+
+  if (contest.has_winner) {
+    const rp = document.getElementById('result_panel');
+    rp.classList.add('active');
+    document.getElementById('result_title').textContent = '🏆 Nous avons un gagnant !';
+    document.getElementById('result_text').textContent = 'Ce concours est terminé. Rendez-vous le mois prochain pour un nouveau jeu.';
+    document.getElementById('signup_panel').style.display = 'none';
+    document.getElementById('wheel_panel').classList.remove('active');
+  }
+}
+
+async function loadCities() {
+  const { data } = await sb.from('cities').select('id,name,slug').eq('is_active', true).order('population', { ascending: false }).limit(200);
+  const sel = document.getElementById('f_city');
+  (data||[]).forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.name;
+    sel.appendChild(opt);
+  });
+}
+
+function showWheel() {
+  document.getElementById('signup_panel').style.display = 'none';
+  document.getElementById('wheel_panel').classList.add('active');
+  updateWheelStats();
+}
+
+function updateWheelStats() {
+  const remaining = Math.max(0, (participation.spins_earned||0) - (participation.spins_used||0));
+  document.getElementById('st_spins').textContent = remaining;
+  document.getElementById('st_shares').textContent = participation.shares_count||0;
+  document.getElementById('st_next').textContent = contest.next_winner_in;
+  document.getElementById('btn_spin').disabled = remaining <= 0;
+  if (remaining <= 0) {
+    document.getElementById('btn_spin').innerHTML = '<i class="fas fa-share-alt"></i> Partagez pour plus de tours';
+  }
+}
+
+async function handleSignup(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn_signup');
+  const msgEl = document.getElementById('signup_msg');
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Inscription…';
+  msgEl.className = 'form-msg';
+
+  const payload = {
+    action: 'participate',
+    contestId,
+    email: document.getElementById('f_email').value,
+    first_name: document.getElementById('f_first').value,
+    last_name: document.getElementById('f_last').value,
+    phone: document.getElementById('f_phone').value,
+    city_id: document.getElementById('f_city').value || null,
+    consent_newsletter: document.getElementById('c_newsletter').checked,
+    consent_agent: document.getElementById('c_agent').checked,
+    consent_rules: document.getElementById('c_rules').checked,
+    ref_code: refCode || null
+  };
+
+  try {
+    const resp = await fetch('/api/contest', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    const data = await resp.json();
+    if (!data.ok) {
+      const labels = {
+        invalid_email: 'Email invalide',
+        consent_rules_required: 'Merci d\'accepter le règlement du jeu',
+        consent_newsletter_required: 'Merci d\'accepter la newsletter pour participer',
+        contest_not_active: 'Ce jeu n\'est plus actif',
+        contest_ended: 'Ce jeu est terminé',
+        already_won: 'Ce jeu a déjà trouvé son gagnant'
+      };
+      msgEl.className = 'form-msg err';
+      msgEl.textContent = labels[data.error] || ('Erreur : ' + data.error);
+      return;
+    }
+    participation = data.participation;
+    localStorage.setItem('mba_email', payload.email);
+    msgEl.className = 'form-msg ok';
+    msgEl.textContent = data.already_registered
+      ? 'Vous étiez déjà inscrit·e — bienvenue dans le jeu !'
+      : 'Inscription validée ! Vous avez gagné 1 tour de roue.';
+    setTimeout(showWheel, 600);
+  } catch (e) {
+    msgEl.className = 'form-msg err';
+    msgEl.textContent = 'Erreur réseau : ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-ticket-alt"></i> Je participe';
+  }
+}
+
+async function spinWheel() {
+  if (spinning || !participation) return;
+  const remaining = (participation.spins_earned||0) - (participation.spins_used||0);
+  if (remaining <= 0) { triggerShare('wa'); return; }
+
+  spinning = true;
+  const btn = document.getElementById('btn_spin');
+  btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> …';
+
+  // Animation de rotation
+  wheelRotation += 360 * 5 + Math.random() * 360;
+  document.getElementById('wheel').style.transform = 'rotate(' + wheelRotation + 'deg)';
+
+  try {
+    const resp = await fetch('/api/contest', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
+      action:'spin', contestId, participationId: participation.id
+    })});
+    const data = await resp.json();
+    if (!data.ok) {
+      alert('Erreur : ' + (data.error || 'inconnue'));
+      spinning = false;
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-play"></i> Tourner la roue';
+      return;
+    }
+
+    // Attend la fin de l'animation
+    await new Promise(r => setTimeout(r, 4600));
+
+    participation.spins_used += 1;
+    contest.total_spins = data.total_spins;
+    contest.next_winner_in = data.next_winner_in;
+    updateWheelStats();
+
+    if (data.is_winner) {
+      const rp = document.getElementById('result_panel');
+      rp.classList.add('active', 'win');
+      document.getElementById('result_title').textContent = '🎉 Vous avez gagné !';
+      document.getElementById('result_text').textContent = 'Vous êtes le gagnant de ce concours. Vous allez recevoir un email avec les instructions pour récupérer votre bon d\'achat.';
+      document.getElementById('wheel_panel').classList.remove('active');
+    }
+  } catch (e) {
+    alert('Erreur réseau : ' + e.message);
+  } finally {
+    spinning = false;
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-play"></i> Tourner la roue';
+    updateWheelStats();
+  }
+}
+
+function shareLink() {
+  return location.origin + location.pathname + '?id=' + contestId + '&ref=' + (participation && participation.share_code || '');
+}
+
+async function triggerShare(kind) {
+  const url = shareLink();
+  const text = 'Je participe au jeu du mois MonBonAgent — ' + (contest ? contest.title : '') + '. Tente ta chance toi aussi :';
+  let openUrl = null;
+  if (kind === 'wa') openUrl = 'https://wa.me/?text=' + encodeURIComponent(text + ' ' + url);
+  if (kind === 'fb') openUrl = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+  if (kind === 'mail') openUrl = 'mailto:?subject=' + encodeURIComponent('Un bon plan à saisir') + '&body=' + encodeURIComponent(text + '\n\n' + url);
+  if (kind === 'copy') {
+    try { await navigator.clipboard.writeText(url); alert('Lien copié !'); } catch (e) { prompt('Copiez le lien :', url); }
+  } else if (openUrl) {
+    window.open(openUrl, '_blank', 'noopener,width=620,height=540');
+  }
+  // Enregistre le partage (gain de tour bonus)
+  try {
+    const resp = await fetch('/api/contest', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'share', participationId: participation.id }) });
+    const data = await resp.json();
+    if (data.ok) {
+      participation.spins_earned += data.granted || 0;
+      participation.shares_count += 1;
+      updateWheelStats();
+    }
+  } catch (e) { /* non-bloquant */ }
+}
+
+function showError(msg) {
+  document.getElementById('hero_title').textContent = 'Ce jeu est indisponible';
+  document.getElementById('hero_prize').textContent = msg;
+  document.getElementById('signup_panel').style.display = 'none';
+}
+
+document.getElementById('signup_form').addEventListener('submit', handleSignup);
+document.getElementById('btn_spin').addEventListener('click', spinWheel);
+document.querySelectorAll('.share-btn').forEach(b => b.addEventListener('click', () => triggerShare(b.dataset.kind)));
+
+loadCities();
+loadContest();
+
+// --- LIVE PREVIEW MODE ---
+// When embedded in an iframe (admin editor), the parent can push brand/segments/title updates
+// via window.postMessage({type:'contest-preview', contest:{...}}). We render instantly without API.
+window.addEventListener('message', (ev) => {
+  if (!ev.data || ev.data.type !== 'contest-preview') return;
+  const p = ev.data.contest || {};
+  if (!contest) contest = {};
+  if (p.title) contest.title = p.title;
+  if (p.prize_description !== undefined) contest.prize_description = p.prize_description;
+  if (p.selection_interval !== undefined) contest.selection_interval = p.selection_interval;
+  if (p.segments) contest.segments = p.segments;
+  if (p.brand) contest.brand = p.brand;
+  if (p.agent) agent = p.agent;
+  renderContest();
+});
+// Signal to parent that iframe is ready (so admin can push initial state)
+try { window.parent && window.parent.postMessage({type:'contest-preview-ready'}, '*'); } catch(e){}
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeu du mois — MonBonAgent</title>
+<meta name="description" content="Tentez votre chance chaque mois et remportez un bon d'achat chez un commerçant local.">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--primary:#f82032;--primary-hover:#d91a2b;--accent:#ff6b35;--dark:#212529;--light:#6c757d;--bg:#fafafa;--radius:14px;--gold:#ffc107}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--dark);line-height:1.5}
+a{text-decoration:none;color:inherit}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+nav{background:#fff;padding:14px 0;box-shadow:0 2px 10px rgba(0,0,0,.06);position:sticky;top:0;z-index:100}
+nav .container{display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:22px;font-weight:700;color:var(--primary)} .logo span{color:#000}
+.nav-back{font-size:14px;color:var(--light)} .nav-back:hover{color:var(--primary)}
+
+header.hero{background:linear-gradient(135deg,var(--primary) 0%,var(--accent) 100%);color:#fff;padding:48px 0 100px;text-align:center;position:relative;overflow:hidden}
+header.hero::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle at 30% 20%,rgba(255,255,255,.1) 0%,transparent 40%),radial-gradient(circle at 70% 80%,rgba(255,255,255,.08) 0%,transparent 50%);pointer-events:none}
+.hero-kicker{display:inline-block;background:rgba(0,0,0,.25);padding:6px 16px;border-radius:30px;font-size:13px;font-weight:500;margin-bottom:12px;letter-spacing:.5px;text-transform:uppercase}
+.hero h1{font-size:clamp(30px,5vw,48px);margin-bottom:12px;font-weight:700}
+.hero-prize{font-size:20px;opacity:.95;max-width:620px;margin:0 auto}
+.hero-countdown{margin-top:24px;font-size:14px;opacity:.9}
+.hero-countdown strong{display:block;font-size:24px;margin-top:4px}
+
+.main-card{background:#fff;border-radius:var(--radius);box-shadow:0 8px 40px rgba(0,0,0,.08);margin-top:-70px;position:relative;z-index:5;padding:32px;max-width:860px;margin-left:auto;margin-right:auto}
+
+.merchant-banner{display:flex;align-items:center;gap:14px;padding:14px;background:#fff8f9;border:1px solid #ffe0e3;border-radius:10px;margin-bottom:22px}
+.merchant-banner img{width:56px;height:56px;border-radius:50%;object-fit:cover;background:#eee}
+.merchant-banner .mb-name{font-weight:600}
+.merchant-banner .mb-meta{font-size:13px;color:var(--light)}
+.merchant-banner .mb-cta{margin-left:auto;background:var(--primary);color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer}
+.merchant-banner .mb-cta:hover{background:var(--primary-hover)}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:24px 0}
+.step{text-align:center;padding:18px 10px;background:#fafafa;border-radius:10px;border:1px solid #eee}
+.step i{display:block;font-size:28px;color:var(--primary);margin-bottom:8px}
+.step b{display:block;font-size:14px;margin-bottom:4px}
+.step span{font-size:12px;color:var(--light)}
+
+/* Signup */
+.panel{border-top:1px solid #eee;padding-top:22px;margin-top:10px}
+.panel h2{font-size:22px;margin-bottom:8px}
+.panel p.sub{color:var(--light);margin-bottom:16px;font-size:14px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-row-full{grid-template-columns:1fr}
+.form-row input,.form-row select{padding:12px 14px;border:1px solid #dde1e6;border-radius:8px;font-family:inherit;font-size:14px;width:100%;background:#fff}
+.form-row input:focus,.form-row select:focus{outline:none;border-color:var(--primary)}
+.form-consents{margin:10px 0 18px;display:flex;flex-direction:column;gap:8px}
+.form-consents label{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#495057;cursor:pointer;line-height:1.4}
+.form-consents input{margin-top:3px}
+.btn-primary{background:var(--primary);color:#fff;border:none;padding:14px 28px;border-radius:10px;font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;width:100%;transition:.2s}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed}
+.form-msg{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;display:none}
+.form-msg.ok{background:#e8f5e9;color:#2e7d32;display:block}
+.form-msg.err{background:#fff0f1;color:#c62828;display:block}
+
+/* Wheel */
+.wheel-section{display:none;text-align:center}
+.wheel-section.active{display:block}
+.wheel-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0 22px}
+.wheel-stat{background:#fafafa;padding:14px 8px;border-radius:10px;border:1px solid #eee}
+.wheel-stat b{display:block;font-size:22px;color:var(--primary);margin-bottom:2px}
+.wheel-stat span{font-size:11px;color:var(--light);text-transform:uppercase;letter-spacing:.5px}
+
+.wheel-wrap{position:relative;width:340px;height:340px;margin:10px auto 16px}
+.wheel{width:100%;height:100%;border-radius:50%;border:8px solid var(--dark);box-shadow:0 10px 40px rgba(0,0,0,.2),inset 0 0 0 4px #fff;transition:transform 4.5s cubic-bezier(.17,.67,.26,1);position:relative;overflow:hidden}
+.wheel-labels{position:absolute;inset:0;pointer-events:none}
+.wheel-label{position:absolute;left:50%;top:50%;transform-origin:0 0;font-size:11px;font-weight:700;white-space:nowrap;letter-spacing:.3px}
+.wheel::after{content:'';position:absolute;left:46%;top:46%;width:8%;height:8%;background:var(--dark);border-radius:50%;z-index:3}
+.wheel-pointer{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:16px solid transparent;border-right:16px solid transparent;border-top:26px solid var(--dark);filter:drop-shadow(0 2px 4px rgba(0,0,0,.3));z-index:4}
+.btn-spin{background:linear-gradient(135deg,var(--primary),var(--accent));color:#fff;border:none;padding:16px 40px;border-radius:60px;font-family:inherit;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.25);transition:.2s;text-transform:uppercase;letter-spacing:.8px}
+.btn-spin:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.btn-spin:disabled{background:#ccc;box-shadow:none;cursor:not-allowed;color:#fff}
+
+.share-block{background:#fff8f9;border:1px dashed #ffc7cd;border-radius:10px;padding:18px;margin-top:20px}
+.share-block h3{font-size:15px;margin-bottom:6px;color:var(--primary)}
+.share-block p{font-size:13px;color:#495057;margin-bottom:12px}
+.share-buttons{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.share-btn{flex:1;min-width:100px;padding:10px 14px;border-radius:8px;border:none;font-family:inherit;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:.2s}
+.share-btn i{font-size:15px}
+.share-btn.wa{background:#25d366;color:#fff}
+.share-btn.fb{background:#1877f2;color:#fff}
+.share-btn.mail{background:#495057;color:#fff}
+.share-btn.copy{background:#fff;border:1px solid #dde1e6;color:var(--dark)}
+.share-btn:hover{transform:translateY(-1px)}
+
+.result-panel{display:none;text-align:center;padding:30px 20px;background:linear-gradient(135deg,#fff 0%,#fff8f9 100%);border-radius:12px;margin-top:20px}
+.result-panel.active{display:block}
+.result-panel.win{background:linear-gradient(135deg,#fff3cd 0%,#ffe4a8 100%);border:2px solid var(--gold)}
+.result-panel i{font-size:56px;margin-bottom:12px}
+.result-panel h3{font-size:24px;margin-bottom:10px}
+.result-panel p{color:var(--light);font-size:14px}
+
+footer{text-align:center;padding:40px 20px;color:var(--light);font-size:13px}
+footer a{color:var(--primary)}
+
+@media (max-width:640px){
+  .steps{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+  .main-card{padding:22px;margin-top:-50px}
+  .wheel-wrap{width:260px;height:260px}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="container">
+    <a href="index.html" class="logo">MonBon<span>Agent</span></a>
+    <a href="index.html" class="nav-back"><i class="fas fa-arrow-left"></i> Retour au site</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container">
+    <div class="hero-kicker" id="hero_kicker">Jeu du mois</div>
+    <h1 id="hero_title">Chargement…</h1>
+    <div class="hero-prize" id="hero_prize"></div>
+    <div class="hero-countdown" id="hero_countdown"></div>
+  </div>
+</header>
+
+<div class="container">
+  <div class="main-card">
+    <div class="merchant-banner" id="merchant_banner" style="display:none">
+      <img id="mb_img" alt="">
+      <div>
+        <div class="mb-name" id="mb_name"></div>
+        <div class="mb-meta" id="mb_meta"></div>
+      </div>
+      <a class="mb-cta" id="mb_cta" href="#">Voir la fiche</a>
+    </div>
+
+    <div class="steps">
+      <div class="step"><i class="fas fa-envelope"></i><b>1. Inscription</b><span>Votre email + 1 tour offert</span></div>
+      <div class="step"><i class="fas fa-share-alt"></i><b>2. Partage</b><span>Chaque partage = 1 tour bonus</span></div>
       <div class="step"><i class="fas fa-trophy"></i><b>3. Roue de la chance</b><span>Un gagnant pour le tirage au sort tous les 50 participations</span></div>
     </div>
 
