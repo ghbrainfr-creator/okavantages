@@ -10,7 +10,7 @@
   document.addEventListener("DOMContentLoaded",function(){setTimeout(applyBrandFromInputs,1500);["color_primary","color_accent","color_dark","color_bg"].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener("input",applyBrandFromInputs);});});
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-<script>
+<script
   function applyBrandFromInputs(){var p=document.getElementById("color_primary");var a=document.getElementById("color_accent");var d=document.getElementById("color_dark");var bg=document.getElementById("color_bg");if(p&&p.value)document.documentElement.style.setProperty("--primary",p.value);if(a&&a.value)document.documentElement.style.setProperty("--primary-hover",a.value);if(d&&d.value)document.documentElement.style.setProperty("--dark",d.value);if(bg&&bg.value)document.documentElement.style.setProperty("--bg",bg.value);}
 
   if (window['pdfjsLib']) 
@@ -1152,7 +1152,7 @@ tr:hover{background:#fafbfc}
 <script>
 var SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const STORAGE_BUCKET = 'site-assets';
 
@@ -5106,7 +5106,7 @@ tr:hover{background:#fafbfc}
 <script>
 var SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
 var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+var sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const STORAGE_BUCKET = 'site-assets';
 
