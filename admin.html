@@ -337,26 +337,49 @@ tr:hover{background:#fafbfc}
   <!-- FOOTER -->
   <div class="panel" id="panel-footer">
     <h2>Pied de page</h2>
-    <p class="sub">Personnalisez le contenu du footer du site public.</p>
-    <div class="field"><label>Texte "À propos"</label><textarea id="footer_about_text" rows="3"></textarea></div>
-    <div class="grid-2">
-      <div class="field"><label>Ligne légale (bas de page)</label><input id="footer_legal_line"></div>
+    <p class="sub">Structure complète du footer de votre microsite : colonnes, liens et pages légales. Chaque modification est enregistrée automatiquement.</p>
+
+    <div class="row" style="gap:8px;margin-bottom:18px;border-bottom:1px solid #e9ecef">
+      <button class="btn ghost footer-subtab active" data-subtab="sections" onclick="switchFooterSubtab('sections')"><i class="fas fa-layer-group"></i> Sections & liens</button>
+      <button class="btn ghost footer-subtab" data-subtab="pages" onclick="switchFooterSubtab('pages')"><i class="fas fa-file-alt"></i> Pages</button>
     </div>
-    <h2 style="margin-top:20px;font-size:16px">Colonne 1 — MonBonAgent</h2>
-    <div class="field"><label>Titre de colonne</label><input id="footer_col1_title"></div>
-    <div id="footer_col1_items"></div>
-    <button class="btn ghost" onclick="addFooterItem('col1')"><i class="fas fa-plus"></i> Ajouter un lien</button>
-    <h2 style="margin-top:20px;font-size:16px">Colonne 2 — Service client</h2>
-    <div class="field"><label>Titre de colonne</label><input id="footer_col2_title"></div>
-    <div id="footer_col2_items"></div>
-    <button class="btn ghost" onclick="addFooterItem('col2')"><i class="fas fa-plus"></i> Ajouter un lien</button>
-    <h2 style="margin-top:20px;font-size:16px">Colonne 3 — Informations</h2>
-    <div class="field"><label>Titre de colonne</label><input id="footer_col3_title"></div>
-    <div id="footer_col3_items"></div>
-    <button class="btn ghost" onclick="addFooterItem('col3')"><i class="fas fa-plus"></i> Ajouter un lien</button>
-    <div class="save-bar">
-      <button class="btn ghost" onclick="loadSettings()">Annuler</button>
-      <button class="btn" onclick="saveFooter()"><i class="fas fa-save"></i> Enregistrer</button>
+
+    <!-- Sections subtab -->
+    <div id="footer-sub-sections">
+      <div id="footer_sections_host"></div>
+      <button class="btn ghost" onclick="addFooterSection()"><i class="fas fa-plus"></i> Ajouter une section</button>
+    </div>
+
+    <!-- Pages subtab -->
+    <div id="footer-sub-pages" style="display:none">
+      <div class="row" style="gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <button class="btn" onclick="openFooterPageEditor(null)"><i class="fas fa-plus"></i> Nouvelle page</button>
+        <input id="footer_page_search" placeholder="Rechercher une page…" style="flex:1;min-width:200px;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px" oninput="renderFooterPagesList()">
+      </div>
+      <div id="footer_pages_host"></div>
+    </div>
+
+    <!-- Page editor modal-ish -->
+    <div id="footer_page_editor" style="display:none;margin-top:20px;background:#fafbfc;border:1px solid #e9ecef;border-radius:12px;padding:20px">
+      <h3 style="margin-bottom:12px;font-size:16px" id="footer_page_editor_title">Éditer une page</h3>
+      <div class="grid-2">
+        <div class="field"><label>Slug (URL) *</label><input id="fp_slug" placeholder="mentions-legales"></div>
+        <div class="field"><label>Titre *</label><input id="fp_title" placeholder="Mentions légales"></div>
+      </div>
+      <div class="field"><label>Meta description (SEO)</label><input id="fp_meta_description" placeholder="Résumé affiché par Google"></div>
+      <div class="field">
+        <label>Contenu HTML *</label>
+        <textarea id="fp_body_html" rows="14" style="font-family:monospace;font-size:12.5px"></textarea>
+        <p class="sub" style="margin-top:6px">HTML autorisé : &lt;h1&gt;, &lt;h2&gt;, &lt;p&gt;, &lt;ul&gt;, &lt;a&gt;, &lt;strong&gt;… Les placeholders <code>{SIRET}</code>, <code>{ADRESSE}</code>, <code>{NOM_SOCIETE}</code>, <code>{CAPITAL}</code>, <code>{RCS}</code>, <code>{HEBERGEUR}</code> sont libres.</p>
+      </div>
+      <div class="row" style="gap:14px;margin-top:6px">
+        <label><input type="checkbox" id="fp_is_legal"> Page légale (obligatoire)</label>
+      </div>
+      <div class="save-bar">
+        <button class="btn ghost" onclick="closeFooterPageEditor()">Annuler</button>
+        <button class="btn ghost" id="fp_delete_btn" onclick="deleteFooterPage()" style="display:none;color:#c0392b"><i class="fas fa-trash"></i> Supprimer</button>
+        <button class="btn" onclick="saveFooterPage()"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
     </div>
   </div>
 
@@ -1125,6 +1148,12 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const STORAGE_BUCKET = 'site-assets';
 
+// Admin agent scope: either from ?agent=slug URL param or default to Nordine (MVP)
+const DEFAULT_ADMIN_AGENT_SLUG = 'nordine-mouaouia';
+const DEFAULT_ADMIN_AGENT_ID   = '6f633f94-b1b5-468e-946c-8ec2302d6ea0';
+let ADMIN_AGENT_SLUG = new URLSearchParams(location.search).get('agent') || DEFAULT_ADMIN_AGENT_SLUG;
+let ADMIN_AGENT_ID   = DEFAULT_ADMIN_AGENT_ID;
+
 let settings = null;
 let services = [];
 let currentUser = null;
@@ -1596,45 +1625,243 @@ async function seedSectionsFromTemplate() {
 window.seedSectionsFromTemplate = seedSectionsFromTemplate;
 
 /* =========================================================
-   Footer editor
+   Footer editor — Multi-tenant (sections + links + pages)
    ========================================================= */
-function renderFooterItems(col, items) {
-  const host = document.getElementById('footer_'+col+'_items');
+let footerSections = [];   // [{id,title,sort_order, links:[{id,label,url,sort_order}]}]
+let footerPages = [];      // [{slug,title,meta_description,body_html,is_legal,updated_at}]
+let editingPage = null;    // current page being edited (null = new)
+
+function switchFooterSubtab(name) {
+  document.querySelectorAll('.footer-subtab').forEach(b => b.classList.toggle('active', b.dataset.subtab === name));
+  document.getElementById('footer-sub-sections').style.display = name === 'sections' ? '' : 'none';
+  document.getElementById('footer-sub-pages').style.display    = name === 'pages' ? '' : 'none';
+  if (name === 'pages') loadFooterPages();
+}
+window.switchFooterSubtab = switchFooterSubtab;
+
+async function loadFooterSections() {
+  const { data: sections, error: e1 } = await sb
+    .from('footer_sections')
+    .select('id,title,sort_order,is_active')
+    .eq('agent_id', ADMIN_AGENT_ID)
+    .order('sort_order', { ascending: true });
+  if (e1) { toast('Erreur footer: ' + e1.message, 'err'); return; }
+  const ids = (sections || []).map(s => s.id);
+  let links = [];
+  if (ids.length) {
+    const { data: lnk, error: e2 } = await sb
+      .from('footer_links')
+      .select('id,section_id,label,url,sort_order')
+      .in('section_id', ids)
+      .order('sort_order', { ascending: true });
+    if (e2) { toast('Erreur liens: ' + e2.message, 'err'); return; }
+    links = lnk || [];
+  }
+  footerSections = (sections || []).map(s => ({
+    ...s,
+    links: links.filter(l => l.section_id === s.id)
+  }));
+  renderFooterSections();
+}
+
+function renderFooterSections() {
+  const host = document.getElementById('footer_sections_host');
   if (!host) return;
-  host.innerHTML = items.map((it, i) => `
-    <div class="row" style="gap:6px;margin-bottom:6px">
-      <input style="flex:1" placeholder="Libellé" value="${escapeAttr(it.label||'')}" oninput="footerBlocks.links_${col}.items[${i}].label=this.value">
-      <input style="flex:1.3" placeholder="URL" value="${escapeAttr(it.url||'')}" oninput="footerBlocks.links_${col}.items[${i}].url=this.value">
-      <button class="btn ghost" onclick="removeFooterItem('${col}',${i})" style="padding:6px 10px"><i class="fas fa-times"></i></button>
+  host.innerHTML = footerSections.map((s, si) => `
+    <div style="border:1px solid #e9ecef;border-radius:12px;padding:16px;margin-bottom:14px;background:#fafbfc">
+      <div class="row" style="gap:10px;margin-bottom:10px">
+        <input style="flex:1;font-weight:600" placeholder="Titre de section" value="${escapeAttr(s.title||'')}" oninput="footerSections[${si}].title=this.value">
+        <input type="number" style="width:70px" placeholder="Ordre" value="${s.sort_order||0}" oninput="footerSections[${si}].sort_order=parseInt(this.value)||0">
+        <button class="btn ghost" onclick="saveFooterSection(${si})" title="Enregistrer"><i class="fas fa-save"></i></button>
+        <button class="btn ghost" onclick="deleteFooterSection(${si})" style="color:#c0392b" title="Supprimer"><i class="fas fa-trash"></i></button>
+      </div>
+      <div style="padding-left:14px;border-left:2px solid #f82032">
+        ${(s.links||[]).map((l, li) => `
+          <div class="row" style="gap:6px;margin-bottom:6px">
+            <input style="flex:1" placeholder="Libellé" value="${escapeAttr(l.label||'')}" oninput="footerSections[${si}].links[${li}].label=this.value">
+            <input style="flex:1.4" placeholder="/footer-page.html?slug=… ou URL externe" value="${escapeAttr(l.url||'')}" oninput="footerSections[${si}].links[${li}].url=this.value">
+            <input type="number" style="width:60px" value="${l.sort_order||0}" oninput="footerSections[${si}].links[${li}].sort_order=parseInt(this.value)||0">
+            <button class="btn ghost" onclick="saveFooterLink(${si},${li})" style="padding:6px 10px" title="Enregistrer"><i class="fas fa-save"></i></button>
+            <button class="btn ghost" onclick="deleteFooterLink(${si},${li})" style="padding:6px 10px;color:#c0392b" title="Supprimer"><i class="fas fa-times"></i></button>
+          </div>
+        `).join('')}
+        <button class="btn ghost" onclick="addFooterLink(${si})" style="padding:6px 12px;font-size:12px"><i class="fas fa-plus"></i> Ajouter un lien</button>
+      </div>
     </div>
   `).join('');
-  if (!footerBlocks['links_'+col]) footerBlocks['links_'+col] = { title:'', items:[] };
-  footerBlocks['links_'+col].items = items;
 }
-function addFooterItem(col) {
-  if (!footerBlocks['links_'+col]) footerBlocks['links_'+col] = { title:'', items:[] };
-  footerBlocks['links_'+col].items.push({ label:'Nouveau lien', url:'#' });
-  renderFooterItems(col, footerBlocks['links_'+col].items);
+
+async function addFooterSection() {
+  const nextOrder = (footerSections[footerSections.length - 1]?.sort_order || 0) + 10;
+  const { data, error } = await sb.from('footer_sections').insert({
+    agent_id: ADMIN_AGENT_ID,
+    title: 'Nouvelle section',
+    sort_order: nextOrder,
+    is_active: true
+  }).select().single();
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  footerSections.push({ ...data, links: [] });
+  renderFooterSections();
+  toast('Section ajoutée ✓');
 }
-function removeFooterItem(col, i) {
-  footerBlocks['links_'+col].items.splice(i, 1);
-  renderFooterItems(col, footerBlocks['links_'+col].items);
+
+async function saveFooterSection(si) {
+  const s = footerSections[si];
+  const { error } = await sb.from('footer_sections')
+    .update({ title: s.title, sort_order: s.sort_order })
+    .eq('id', s.id);
+  if (error) toast('Erreur: ' + error.message, 'err');
+  else toast('Section enregistrée ✓');
 }
-async function saveFooter() {
-  ['col1','col2','col3'].forEach(c => {
-    if (!footerBlocks['links_'+c]) footerBlocks['links_'+c] = { title:'', items:[] };
-    footerBlocks['links_'+c].title = document.getElementById('footer_'+c+'_title').value;
-  });
-  footerBlocks.about_text = document.getElementById('footer_about_text').value;
-  footerBlocks.legal_line = document.getElementById('footer_legal_line').value;
-  const { error } = await sb.from('site_settings').update({
-    footer_blocks: footerBlocks,
-    updated_at: new Date().toISOString(),
-    updated_by: currentUser.id
-  }).eq('id', settings.id);
-  if (error) toast('Erreur: '+error.message, 'err');
-  else { toast('Footer enregistré ✓'); loadSettings(); }
+
+async function deleteFooterSection(si) {
+  const s = footerSections[si];
+  if (!confirm('Supprimer la section "' + s.title + '" et tous ses liens ?')) return;
+  const { error } = await sb.from('footer_sections').delete().eq('id', s.id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  footerSections.splice(si, 1);
+  renderFooterSections();
+  toast('Section supprimée ✓');
 }
+
+async function addFooterLink(si) {
+  const s = footerSections[si];
+  const nextOrder = (s.links[s.links.length - 1]?.sort_order || 0) + 10;
+  const { data, error } = await sb.from('footer_links').insert({
+    section_id: s.id,
+    label: 'Nouveau lien',
+    url: '#',
+    sort_order: nextOrder
+  }).select().single();
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  s.links.push(data);
+  renderFooterSections();
+}
+
+async function saveFooterLink(si, li) {
+  const l = footerSections[si].links[li];
+  const { error } = await sb.from('footer_links')
+    .update({ label: l.label, url: l.url, sort_order: l.sort_order })
+    .eq('id', l.id);
+  if (error) toast('Erreur: ' + error.message, 'err');
+  else toast('Lien enregistré ✓');
+}
+
+async function deleteFooterLink(si, li) {
+  const l = footerSections[si].links[li];
+  const { error } = await sb.from('footer_links').delete().eq('id', l.id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  footerSections[si].links.splice(li, 1);
+  renderFooterSections();
+}
+
+/* ----- Pages ----- */
+async function loadFooterPages() {
+  const { data, error } = await sb
+    .from('footer_pages')
+    .select('slug,title,meta_description,is_legal,updated_at')
+    .eq('agent_id', ADMIN_AGENT_ID)
+    .order('is_legal', { ascending: true })
+    .order('title', { ascending: true });
+  if (error) { toast('Erreur pages: ' + error.message, 'err'); return; }
+  footerPages = data || [];
+  renderFooterPagesList();
+}
+
+function renderFooterPagesList() {
+  const host = document.getElementById('footer_pages_host');
+  if (!host) return;
+  const q = (document.getElementById('footer_page_search')?.value || '').trim().toLowerCase();
+  const rows = footerPages.filter(p =>
+    !q || (p.title || '').toLowerCase().includes(q) || (p.slug || '').toLowerCase().includes(q)
+  );
+  if (!rows.length) { host.innerHTML = '<div class="empty" style="padding:30px;text-align:center;color:#6c757d">Aucune page.</div>'; return; }
+  host.innerHTML = rows.map(p => `
+    <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid #e9ecef;border-radius:10px;margin-bottom:8px;background:#fff">
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:14px">${escapeHtmlText(p.title||'')} ${p.is_legal ? '<span class="pill" style="background:#fff1f2;color:#c0392b;font-size:11px;padding:2px 8px;border-radius:50px">Légal</span>' : ''}</div>
+        <div style="color:#6c757d;font-size:12px">/${escapeHtmlText(p.slug||'')}</div>
+      </div>
+      <a class="btn ghost" href="/agent/${encodeURIComponent(ADMIN_AGENT_SLUG)}/${encodeURIComponent(p.slug)}" target="_blank" style="padding:6px 12px;font-size:12px"><i class="fas fa-eye"></i> Voir</a>
+      <button class="btn ghost" onclick="openFooterPageEditor('${escapeAttr(p.slug)}')" style="padding:6px 12px;font-size:12px"><i class="fas fa-edit"></i> Éditer</button>
+    </div>
+  `).join('');
+}
+window.renderFooterPagesList = renderFooterPagesList;
+
+async function openFooterPageEditor(slug) {
+  const editor = document.getElementById('footer_page_editor');
+  editor.style.display = '';
+  editor.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (slug) {
+    const { data, error } = await sb.from('footer_pages').select('*').eq('agent_id', ADMIN_AGENT_ID).eq('slug', slug).single();
+    if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+    editingPage = data;
+    document.getElementById('footer_page_editor_title').textContent = 'Éditer : ' + data.title;
+    document.getElementById('fp_slug').value = data.slug || '';
+    document.getElementById('fp_slug').readOnly = true;
+    document.getElementById('fp_title').value = data.title || '';
+    document.getElementById('fp_meta_description').value = data.meta_description || '';
+    document.getElementById('fp_body_html').value = data.body_html || '';
+    document.getElementById('fp_is_legal').checked = !!data.is_legal;
+    document.getElementById('fp_delete_btn').style.display = '';
+  } else {
+    editingPage = null;
+    document.getElementById('footer_page_editor_title').textContent = 'Nouvelle page';
+    document.getElementById('fp_slug').value = '';
+    document.getElementById('fp_slug').readOnly = false;
+    document.getElementById('fp_title').value = '';
+    document.getElementById('fp_meta_description').value = '';
+    document.getElementById('fp_body_html').value = '<h1>Titre</h1>\n<p>Contenu de la page…</p>';
+    document.getElementById('fp_is_legal').checked = false;
+    document.getElementById('fp_delete_btn').style.display = 'none';
+  }
+}
+
+function closeFooterPageEditor() {
+  document.getElementById('footer_page_editor').style.display = 'none';
+  editingPage = null;
+}
+window.closeFooterPageEditor = closeFooterPageEditor;
+
+async function saveFooterPage() {
+  const payload = {
+    agent_id: ADMIN_AGENT_ID,
+    slug: document.getElementById('fp_slug').value.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-'),
+    title: document.getElementById('fp_title').value.trim(),
+    meta_description: document.getElementById('fp_meta_description').value.trim() || null,
+    body_html: document.getElementById('fp_body_html').value,
+    is_legal: document.getElementById('fp_is_legal').checked
+  };
+  if (!payload.slug || !payload.title || !payload.body_html) {
+    toast('Slug, titre et contenu sont obligatoires', 'err');
+    return;
+  }
+  if (editingPage) {
+    const { error } = await sb.from('footer_pages').update(payload).eq('agent_id', ADMIN_AGENT_ID).eq('slug', editingPage.slug);
+    if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  } else {
+    const { error } = await sb.from('footer_pages').insert(payload);
+    if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  }
+  toast('Page enregistrée ✓');
+  closeFooterPageEditor();
+  loadFooterPages();
+}
+
+async function deleteFooterPage() {
+  if (!editingPage) return;
+  if (!confirm('Supprimer définitivement la page "' + editingPage.title + '" ?')) return;
+  const { error } = await sb.from('footer_pages').delete().eq('agent_id', ADMIN_AGENT_ID).eq('slug', editingPage.slug);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Page supprimée ✓');
+  closeFooterPageEditor();
+  loadFooterPages();
+}
+
+/* Legacy stub (old site_settings.footer_blocks) — kept to avoid breaking calls */
+async function saveFooter() { toast('Enregistrement automatique par section/lien ✓'); }
+function addFooterItem() {}
 
 /* =========================================================
    Cookies editor
@@ -1796,8 +2023,18 @@ window.addAboutSection = addAboutSection;
 window.removeAboutSection = removeAboutSection;
 window.saveSections = saveSections;
 window.addFooterItem = addFooterItem;
-window.removeFooterItem = removeFooterItem;
 window.saveFooter = saveFooter;
+window.addFooterSection = addFooterSection;
+window.saveFooterSection = saveFooterSection;
+window.deleteFooterSection = deleteFooterSection;
+window.addFooterLink = addFooterLink;
+window.saveFooterLink = saveFooterLink;
+window.deleteFooterLink = deleteFooterLink;
+window.loadFooterSections = loadFooterSections;
+window.loadFooterPages = loadFooterPages;
+window.openFooterPageEditor = openFooterPageEditor;
+window.saveFooterPage = saveFooterPage;
+window.deleteFooterPage = deleteFooterPage;
 window.addCookieCategory = addCookieCategory;
 window.removeCookieCategory = removeCookieCategory;
 window.saveCookies = saveCookies;
@@ -3189,12 +3426,35 @@ document.querySelectorAll('.tab').forEach(t => {
     if (t.dataset.tab === 'cities') loadAdminCities();
     if (t.dataset.tab === 'agents') loadAdminAgents();
     if (t.dataset.tab === 'contests') loadAdminContests();
+    if (t.dataset.tab === 'footer') loadFooterSections();
   });
 });
+
+async function resolveAdminAgentFromUrl() {
+  // ?agent=slug support for agent-scoped admin at /agent/:slug/admin
+  const qs = new URLSearchParams(location.search);
+  const slug = qs.get('agent');
+  if (!slug || slug === DEFAULT_ADMIN_AGENT_SLUG) {
+    ADMIN_AGENT_SLUG = DEFAULT_ADMIN_AGENT_SLUG;
+    ADMIN_AGENT_ID = DEFAULT_ADMIN_AGENT_ID;
+    return;
+  }
+  const { data, error } = await sb.from('agents').select('id,slug,name').eq('slug', slug).maybeSingle();
+  if (error || !data) {
+    toast('Agent introuvable : ' + slug, 'err');
+    return;
+  }
+  ADMIN_AGENT_SLUG = data.slug;
+  ADMIN_AGENT_ID = data.id;
+  // Visual indicator
+  const nameEl = document.getElementById('userEmail');
+  if (nameEl) nameEl.textContent += ' · ' + data.name;
+}
 
 (async () => {
   const user = await checkAuth();
   if (user) {
+    await resolveAdminAgentFromUrl();
     await loadSettings();
     wireFileUpload('logo_url', 'logo_url_file', 'logo_url_preview', 'branding/logo');
     wireFileUpload('favicon_url', 'favicon_url_file', 'favicon_url_preview', 'branding/favicon');

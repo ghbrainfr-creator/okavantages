@@ -4,7 +4,11 @@
   "rewrites": [
     { "source": "/admin", "destination": "/admin.html" },
     { "source": "/login", "destination": "/login.html" },
-    { "source": "/merchant", "destination": "/merchant.html" }
+    { "source": "/merchant", "destination": "/merchant.html" },
+    { "source": "/footer-page", "destination": "/footer-page.html" },
+    { "source": "/agent/:slug", "destination": "/agent-site.html?slug=:slug" },
+    { "source": "/agent/:slug/admin", "destination": "/admin.html?agent=:slug" },
+    { "source": "/agent/:slug/:page", "destination": "/agent-site.html?slug=:slug&page=:page" }
   ],
   "functions": {
     "api/ai.js": {
