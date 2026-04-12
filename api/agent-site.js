@@ -54,7 +54,7 @@ module.exports = async (req, res) => {
     if (!slug) { json(res, 400, { ok: false, error: 'slug_required' }); return; }
 
     // 1. Fetch agent
-    const agents = await sb('/rest/v1/agents', 'slug=eq.' + encodeURIComponent(slug) + '&select=id,slug,name,title,agency,email,phone,whatsapp,photo_url,cover_url,bio,signature,specialties,linkedin_url,instagram_url,website_url,years_experience,brand,city_id&is_active=eq.true&limit=1');
+    const agents = await sb('/rest/v1/agents', 'slug=eq.' + encodeURIComponent(slug) + '&select=id,slug,name,title,agency,email,phone,whatsapp,photo_url,cover_url,bio,signature,specialties,linkedin_url,instagram_url,website_url,years_experience,brand&is_active=eq.true&limit=1');
     const agent = agents && agents[0];
     if (!agent) { json(res, 404, { ok: false, error: 'agent_not_found' }); return; }
 
@@ -77,7 +77,7 @@ module.exports = async (req, res) => {
       sb('/rest/v1/footer_sections', 'agent_id=eq.' + agentId + '&is_active=eq.true&select=id,title,sort_order&order=sort_order.asc'),
       sb('/rest/v1/footer_links',    'select=id,section_id,label,url,sort_order&order=sort_order.asc'),
       sb('/rest/v1/footer_pages',    'agent_id=eq.' + agentId + '&select=slug,title,is_legal&order=title.asc'),
-      agent.city_id ? sb('/rest/v1/cities', 'id=eq.' + agent.city_id + '&select=id,slug,name&limit=1') : Promise.resolve([])
+      Promise.resolve([])
     ]);
 
     // Attach links to their section, keeping only links of this agent's sections
