@@ -1,27 +1,18 @@
 {
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/login", "destination": "/login.html" },
-    { "source": "/merchant", "destination": "/merchant.html" },
-    { "source": "/footer-page", "destination": "/footer-page.html" },
-    { "source": "/agent/:slug", "destination": "/agent-site.html?slug=:slug" },
-    { "source": "/agent/:slug/admin", "destination": "/admin.html?agent=:slug" },
-    { "source": "/agent/:slug/:page", "destination": "/agent-site.html?slug=:slug&page=:page" }
+  "routes": [
+    { "src": "/(.*)", "headers": { "X-Content-Type-Options": "nosniff", "Referrer-Policy": "strict-origin-when-cross-origin" }, "continue": true },
+    { "src": "/agent/([^/]+)/admin$", "dest": "/admin.html?agent=$1" },
+    { "src": "/agent/([^/]+)/([^/]+)$", "dest": "/agent-site.html?slug=$1&page=$2" },
+    { "src": "/agent/([^/]+)/?$", "dest": "/agent-site.html?slug=$1" },
+    { "handle": "filesystem" },
+    { "src": "/admin$", "dest": "/admin.html" },
+    { "src": "/login$", "dest": "/login.html" },
+    { "src": "/merchant$", "dest": "/merchant.html" },
+    { "src": "/footer-page$", "dest": "/footer-page.html" },
+    { "src": "/agent-site$", "dest": "/agent-site.html" },
+    { "src": "/contest$", "dest": "/contest.html" }
   ],
   "functions": {
-    "api/ai.js": {
-      "maxDuration": 30
-    }
-  },
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
-      ]
-    }
-  ]
+    "api/ai.js": { "maxDuration": 30 }
+  }
 }
