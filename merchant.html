@@ -8,6 +8,1748 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
+:root{--primary:var(--primary);--primary-hover:var(--primary-hover);--dark:#212529;--bg:#f5f6f8;--accent:var(--primary);--gold:#FFD700}
+
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
+header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+header .brand{font-size:20px;font-weight:700;color:var(--primary)}
+header .brand span{color:var(--dark)}
+header .right{display:flex;align-items:center;gap:14px}
+header .user-email{font-size:13px;color:#6c757d}
+header button{background:var(--primary);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
+header button:hover{background:var(--primary-hover)}
+header button.ghost{background:#e9ecef;color:#495057}
+.impersonate-banner{background:#fff3cd;color:#664d03;padding:10px 24px;font-size:13px;border-bottom:1px solid #ffecb5;display:none;align-items:center;justify-content:space-between}
+.impersonate-banner.show{display:flex}
+.impersonate-banner button{background:#664d03;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;cursor:pointer;font-family:inherit}
+.wrap{max-width:1200px;margin:24px auto;padding:0 20px}
+.tabs{display:flex;gap:4px;background:#fff;border-radius:12px;padding:6px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow-x:auto}
+.tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#6c757d;white-space:nowrap;transition:.2s}
+.tab:hover{background:#f8f9fa}
+.tab.active{background:var(--primary);color:#fff}
+.panel{display:none;background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.panel.active{display:block}
+h2{font-size:20px;margin-bottom:6px}
+.sub{color:#6c757d;font-size:13px;margin-bottom:20px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
+.field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px;transition:.2s}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--primary)}
+.field textarea{min-height:80px;resize:vertical}
+.btn{background:var(--primary);color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{background:var(--primary-hover)}
+.btn.ghost{background:#e9ecef;color:#495057}
+.btn.ghost:hover{background:#dee2e6}
+.btn.sm{padding:6px 12px;font-size:12px}
+.btn.danger{background:#dc3545}
+.btn.danger:hover{background:#b02a37}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--dark);color:#fff;padding:14px 20px;border-radius:8px;display:none;z-index:500;box-shadow:0 4px 20px rgba(0,0,0,.3)}
+.toast.ok{background:#198754}
+.toast.err{background:#dc3545}
+.loader{text-align:center;padding:40px;color:#6c757d}
+.empty{text-align:center;padding:40px;color:#6c757d;font-size:14px}
+table{width:100%;border-collapse:collapse}
+th,td{text-align:left;padding:11px 12px;border-bottom:1px solid #f0f1f3;font-size:13px;vertical-align:top}
+th{background:#f8f9fa;font-weight:600;color:#495057;font-size:11px;text-transform:uppercase;letter-spacing:.3px}
+tr:hover{background:#fafbfc}
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:500}
+.pill.new{background:#e7f5ff;color:#1971c2}
+.pill.ok{background:#d3f9d8;color:#2b8a3e}
+.pill.warn{background:#fff4e6;color:#d9480f}
+.pill.muted{background:#f1f3f5;color:#6c757d}
+.stat-card{background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffe3e5;padding:22px;border-radius:12px}
+.stat-card .label{font-size:11px;text-transform:uppercase;color:#6c757d;font-weight:600;letter-spacing:.5px}
+.stat-card .value{font-size:32px;font-weight:700;color:var(--primary);margin-top:6px}
+.stat-card .trend{font-size:12px;color:#6c757d;margin-top:4px}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;padding:28px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
+.modal h3{margin-bottom:18px;font-size:20px}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:18px;padding-top:18px;border-top:1px solid #f0f1f3}
+.row{display:flex;gap:8px;align-items:center}
+.row-between{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.search{padding:9px 14px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:13px;min-width:220px}
+.template-card{border:1.5px solid #e9ecef;border-radius:10px;padding:16px;margin-bottom:12px;transition:.2s;cursor:pointer}
+.template-card:hover{border-color:var(--primary);box-shadow:0 2px 10px rgba(248,32,50,.08)}
+.template-card h4{font-size:15px;margin-bottom:4px}
+.template-card .subj{color:#495057;font-size:13px;margin-bottom:6px}
+.template-card .meta{color:#6c757d;font-size:12px}
+.vars-list{background:#f8f9fa;padding:14px;border-radius:8px;font-size:12px;color:#495057;margin-bottom:14px}
+.vars-list code{background:#fff;padding:2px 6px;border-radius:4px;color:var(--primary);font-family:Menlo,Monaco,monospace;font-size:11px;margin:2px}
+.sequence-card{border:1.5px solid #e9ecef;border-radius:10px;padding:16px;margin-bottom:12px}
+.sequence-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sequence-card .name{font-weight:600;font-size:15px}
+.sequence-card .trig{font-size:12px;color:#6c757d;margin-bottom:8px}
+.switch{position:relative;width:40px;height:22px;background:#dee2e6;border-radius:12px;cursor:pointer;transition:.2s}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;background:#fff;border-radius:50%;transition:.2s}
+.switch.on{background:#198754}
+.switch.on::after{left:20px}
+
+/* ===== V3 — Mobile-first + nouvelles sections ===== */
+.tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{height:0}
+@media(max-width:720px){
+  header{padding:10px 14px;flex-wrap:wrap;gap:8px}
+  header .brand{font-size:16px}
+  header .brand span:nth-child(2){display:none}
+  header .right{gap:6px;flex:1;justify-content:flex-end}
+  header .user-email{display:none}
+  header a{font-size:12px}
+  header button{padding:7px 12px;font-size:12px}
+  .wrap{margin:14px auto;padding:0 12px}
+  .panel{padding:18px 14px}
+  .tabs{padding:4px;gap:2px}
+  .tab{padding:9px 12px;font-size:12px}
+  .row-between{flex-direction:column;align-items:stretch}
+  .row-between .btn{width:100%;justify-content:center}
+  .search{min-width:0;width:100%}
+  table{font-size:11px}
+  th,td{padding:8px 6px}
+  .modal{padding:18px;border-radius:12px;max-height:94vh}
+  h2{font-size:17px}
+  .stat-card{padding:16px}
+  .stat-card .value{font-size:24px}
+}
+.section-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:14px}
+.section-toolbar .btn{padding:8px 14px;font-size:13px}
+.contact-row{display:grid;grid-template-columns:30px 1fr 1fr 130px auto;gap:10px;align-items:center;padding:10px 12px;border:1px solid #f0f1f3;border-radius:8px;margin-bottom:6px;background:#fff}
+@media(max-width:720px){.contact-row{grid-template-columns:30px 1fr auto;gap:6px}.contact-row .col-email,.contact-row .col-phone{display:none}}
+.contact-row .name{font-weight:600;font-size:13px}
+.contact-row .col-email,.contact-row .col-phone{font-size:12px;color:#6c757d;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.contact-row .tag{display:inline-block;background:#e7f5ff;color:#1971c2;padding:2px 8px;border-radius:10px;font-size:10px;margin-right:3px}
+.tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
+.tpl-card{border:1.5px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s;background:#fff;position:relative}
+.tpl-card:hover{border-color:var(--primary);box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
+.tpl-card .icon{font-size:22px;margin-bottom:6px}
+.tpl-card .name{font-weight:600;font-size:14px;margin-bottom:4px}
+.tpl-card .meta{font-size:11px;color:#6c757d}
+.tpl-card .badge-sys{display:inline-block;background:#fff3cd;color:#856404;padding:2px 7px;border-radius:8px;font-size:9px;text-transform:uppercase;margin-left:6px;font-weight:600;letter-spacing:.3px}
+.tpl-card .acts{margin-top:8px;display:flex;gap:6px}
+.tpl-card .acts .btn{padding:5px 9px;font-size:11px}
+.upload-zone{border:2px dashed #dee2e6;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:.2s}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--primary);background:#fff5f6}
+.upload-zone i{font-size:30px;color:#adb5bd;margin-bottom:8px;display:block}
+.upload-zone .hint{font-size:12px;color:#6c757d;margin-top:6px}
+.signature-preview{border:1px solid #e9ecef;border-radius:8px;padding:14px;background:#fafbfc;margin-top:8px;font-size:13px;line-height:1.5}
+.signature-preview img{max-height:60px;display:block;margin-top:8px}
+.campaign-card{border:1.5px solid #e9ecef;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;align-items:center;background:#fff}
+.campaign-card .info{flex:1;min-width:200px}
+.campaign-card .stat{font-size:12px;color:#6c757d}
+.campaign-card .acts{display:flex;gap:6px;flex-wrap:wrap}
+.segment-pill{display:inline-block;padding:5px 12px;background:#f1f3f5;color:#495057;border-radius:14px;font-size:12px;margin:3px;cursor:pointer;border:1.5px solid #e9ecef;user-select:none;transition:.2s}
+.segment-pill:hover{border-color:var(--primary)}
+.segment-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+.checkbox-list{max-height:280px;overflow-y:auto;border:1px solid #e9ecef;border-radius:8px;padding:10px;background:#fafbfc}
+.checkbox-list label{display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f1f3}
+.checkbox-list label:last-child{border-bottom:none}
+.checkbox-list label:hover{background:#fff}
+.preview-mail{background:#f8f9fa;border:1px solid #e9ecef;border-radius:10px;padding:18px;font-size:13px;line-height:1.6;max-height:380px;overflow-y:auto}
+.preview-mail .from{font-size:11px;color:#6c757d;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #e9ecef}
+.preview-mail .subject{font-weight:600;font-size:15px;margin-bottom:10px}
+.tab i{margin-right:4px}
+@media(max-width:720px){.tab i{margin-right:2px}.tab span{display:none}.tab i{margin-right:0;font-size:14px}}
+.btn.full{width:100%;justify-content:center}
+.btn.loading{opacity:.7;cursor:wait}
+.btn.loading i{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.help-banner{background:#e7f5ff;color:#1971c2;border-left:3px solid #1971c2;padding:12px 14px;border-radius:6px;font-size:13px;margin-bottom:14px}
+.help-banner i{margin-right:6px}
+.import-result{background:#d3f9d8;color:#2b8a3e;padding:10px 14px;border-radius:8px;font-size:13px;margin-top:10px;display:none}
+.import-result.show{display:block}
+.empty-icon{font-size:48px;color:#dee2e6;margin-bottom:10px;display:block}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Mon<span>BonAgent</span> <span style="font-weight:400;color:#6c757d;font-size:13px;margin-left:8px">Back-office commerçant</span></div>
+  <div class="right">
+    <span class="user-email" id="userEmail">…</span>
+    <a href="/" style="color:#6c757d;text-decoration:none;font-size:13px"><i class="fas fa-external-link-alt"></i> Voir le site</a>
+    <button class="ghost" onclick="logout()">Déconnexion</button>
+  </div>
+</header>
+
+<div class="impersonate-banner" id="impersonateBanner">
+  <span><i class="fas fa-user-secret"></i> Mode impersonation — vous consultez un commerçant en tant qu'admin.</span>
+  <button onclick="stopImpersonate()"><i class="fas fa-times"></i> Quitter</button>
+</div>
+
+<div class="wrap">
+  <div class="tabs">
+    <div class="tab active" data-tab="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></div>
+    <div class="tab" data-tab="offers"><i class="fas fa-tags"></i> <span>Offres</span></div>
+    <div class="tab" data-tab="leads"><i class="fas fa-users"></i> <span>Leads</span></div>
+    <div class="tab" data-tab="contacts"><i class="fas fa-address-book"></i> <span>Contacts</span></div>
+    <div class="tab" data-tab="campaigns"><i class="fas fa-paper-plane"></i> <span>Campagnes</span></div>
+    <div class="tab" data-tab="templates"><i class="fas fa-file-alt"></i> <span>Modèles</span></div>
+    <div class="tab" data-tab="sequences"><i class="fas fa-clock"></i> <span>Séquences</span></div>
+    <div class="tab" data-tab="signature"><i class="fas fa-signature"></i> <span>Signature</span></div>
+    <div class="tab" data-tab="contests"><i class="fas fa-gift"></i> <span>Jeu du mois</span></div>
+    <div class="tab" data-tab="profile"><i class="fas fa-store"></i> <span>Ma fiche</span></div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="panel active" id="panel-dashboard">
+    <h2>Vue d'ensemble</h2>
+    <p class="sub">Vos chiffres clés des 30 derniers jours.</p>
+    <div class="grid-4" id="stats_grid">
+      <div class="loader">Chargement…</div>
+    </div>
+    <h2 style="margin-top:28px;font-size:16px">Derniers leads</h2>
+    <div id="recent_leads"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- OFFERS -->
+  <div class="panel" id="panel-offers">
+    <div class="row-between">
+      <div>
+        <h2>Mes offres</h2>
+        <p class="sub">Créez et gérez vos bons d'achat.</p>
+      </div>
+      <button class="btn" onclick="openOfferModal()"><i class="fas fa-plus"></i> Nouvelle offre</button>
+    </div>
+    <div id="offers_table"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- LEADS -->
+  <div class="panel" id="panel-leads">
+    <div class="row-between">
+      <div>
+        <h2>Mes leads</h2>
+        <p class="sub">Clients qui ont demandé vos offres.</p>
+      </div>
+      <input type="search" class="search" placeholder="Rechercher…" oninput="filterLeads(this.value)">
+    </div>
+    <div id="leads_table"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- TEMPLATES -->
+  <div class="panel" id="panel-templates">
+    <div class="row-between">
+      <div>
+        <h2>Modèles d'emails</h2>
+        <p class="sub">Modèles prêts à l'emploi + vos modèles personnalisés.</p>
+      </div>
+      <button class="btn" onclick="openTemplateModal()"><i class="fas fa-plus"></i> Nouveau modèle</button>
+    </div>
+    <div class="vars-list">
+      <strong>Variables :</strong>
+      <code>{{nom}}</code><code>{{email}}</code><code>{{commerce}}</code><code>{{adresse}}</code>
+      <code>{{phone}}</code><code>{{offre}}</code><code>{{prix}}</code><code>{{gift}}</code>
+      <code>{{agent_nom}}</code><code>{{agent_tel}}</code>
+    </div>
+    <h3 style="font-size:14px;margin-top:18px;color:#495057">Modèles prêts à l'emploi</h3>
+    <p class="sub" style="margin-bottom:10px">Cliquez "Utiliser" pour cloner un modèle dans vos modèles personnels.</p>
+    <div id="system_templates_list" class="tpl-grid"><div class="loader">Chargement…</div></div>
+    <h3 style="font-size:14px;margin-top:24px;color:#495057">Mes modèles personnels</h3>
+    <div id="templates_list" class="tpl-grid"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- SEQUENCES -->
+  <div class="panel" id="panel-sequences">
+    <div class="row-between">
+      <div>
+        <h2>Séquences automatiques</h2>
+        <p class="sub">Déclenchez des emails à des moments clés (nouveau lead, conversion, anniversaire…).</p>
+      </div>
+      <button class="btn" onclick="openSequenceModal()"><i class="fas fa-plus"></i> Nouvelle séquence</button>
+    </div>
+    <div id="sequences_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="panel" id="panel-contacts">
+    <div class="row-between">
+      <div>
+        <h2>Mon carnet de contacts</h2>
+        <p class="sub">Vos clients à qui vous pouvez envoyer des campagnes ciblées.</p>
+      </div>
+      <div class="section-toolbar">
+        <button class="btn ghost" onclick="exportContactsCsv()"><i class="fas fa-download"></i> Exporter</button>
+        <button class="btn ghost" onclick="document.getElementById('contactsCsvFile').click()"><i class="fas fa-upload"></i> Importer CSV</button>
+        <input type="file" id="contactsCsvFile" accept=".csv,.txt" style="display:none">
+        <button class="btn" onclick="openContactModal()"><i class="fas fa-plus"></i> Nouveau</button>
+      </div>
+    </div>
+    <div class="help-banner">
+      <i class="fas fa-info-circle"></i> Le fichier CSV doit contenir les colonnes : <code>name,email,phone,tags,birthday,notes</code>. Une ligne par contact, première ligne = en-têtes. Les tags sont séparés par des points-virgules (ex: <code>VIP;Anniversaire</code>).
+    </div>
+    <div id="import_result_contacts" class="import-result"></div>
+    <div class="row" style="gap:10px;margin-bottom:14px;flex-wrap:wrap">
+      <input type="search" class="search" id="contacts_search" placeholder="Rechercher nom, email, tag…" oninput="filterContacts(this.value)" style="flex:1">
+      <span class="tiny" id="contacts_count" style="color:#6c757d;font-size:12px"></span>
+    </div>
+    <div id="contacts_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- CAMPAGNES -->
+  <div class="panel" id="panel-campaigns">
+    <div class="row-between">
+      <div>
+        <h2>Campagnes email</h2>
+        <p class="sub">Envoyez un message à tous vos contacts ou à un segment précis.</p>
+      </div>
+      <button class="btn" onclick="openCampaignWizard()"><i class="fas fa-plus"></i> Nouvelle campagne</button>
+    </div>
+    <div class="help-banner">
+      <i class="fas fa-paper-plane"></i> Les campagnes sont préparées dans MonBonAgent puis ouvertes dans votre client mail (Gmail / Outlook / Mail) avec destinataires en BCC pour préserver la confidentialité. La signature et les variables ({{nom}}, {{commerce}}…) sont remplacées automatiquement.
+    </div>
+    <div id="campaigns_list"><div class="loader">Chargement…</div></div>
+  </div>
+
+  <!-- SIGNATURE -->
+  <div class="panel" id="panel-signature">
+    <h2>Ma signature email</h2>
+    <p class="sub">Cette signature est ajoutée automatiquement à la fin de tous vos emails et campagnes.</p>
+    <div class="grid-2">
+      <div>
+        <div class="field">
+          <label>Logo / Photo (PNG/JPG, max 1 Mo)</label>
+          <div class="upload-zone" id="sig_dropzone" onclick="document.getElementById('sig_file').click()">
+            <i class="fas fa-image"></i>
+            <div>Glissez votre logo ici ou cliquez pour parcourir</div>
+            <div class="hint">Format recommandé : 200×60 px</div>
+            <input type="file" id="sig_file" accept="image/*" style="display:none">
+          </div>
+          <input type="hidden" id="sig_image_url">
+        </div>
+        <div class="field">
+          <label>Texte HTML de la signature (variables OK)</label>
+          <textarea id="sig_html" rows="8" placeholder="Cordialement,&#10;{{commerce}}&#10;{{adresse}} — {{phone}}"></textarea>
+        </div>
+        <div class="field" style="display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn ghost" onclick="loadSignaturePresets()"><i class="fas fa-magic"></i> Modèles tout faits</button>
+          <button class="btn" onclick="saveSignature()"><i class="fas fa-save"></i> Enregistrer</button>
+        </div>
+      </div>
+      <div>
+        <label style="display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px">Aperçu</label>
+        <div class="signature-preview" id="sig_preview">
+          <em>Votre signature apparaîtra ici…</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== CONTESTS (Jeu du mois) ========== -->
+  <div class="panel" id="panel-contests">
+    <h2><i class="fas fa-gift" style="color:#f82032"></i> Mon Jeu du mois</h2>
+    <p class="sub">Créez un concours avec roue de la chance pour dynamiser votre fichier client et récupérer des leads qualifiés. Sélection automatique toutes les 50 participations.</p>
+    <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:20px">
+      <strong><i class="fas fa-lightbulb" style="color:#f82032"></i> Comment ça marche</strong>
+      <ol style="margin:8px 0 0 20px;font-size:13px;color:#6c757d;line-height:1.7">
+        <li>Créez un jeu avec un beau lot (ex : bon d'achat de 100€, coffret cadeau, prestation premium).</li>
+        <li>Vos clients s'inscrivent (email + consentement RGPD) et reçoivent 1 tour de roue.</li>
+        <li>Ils gagnent un tour bonus à chaque partage.</li>
+        <li>Un gagnant est automatiquement tiré toutes les 50 participations. Vous récupérez tous les emails.</li>
+      </ol>
+    </div>
+    <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
+      <button class="btn" onclick="openMerchantContestModal()"><i class="fas fa-plus"></i> Créer un nouveau jeu</button>
+    </div>
+    <div id="m_contests_list" class="loader">Chargement…</div>
+  </div>
+
+  <!-- Merchant contest modal -->
+  <div class="modal-overlay" id="mContestModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
+    <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
+      <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#f82032"></i> Nouveau jeu du mois</h3>
+      <p class="sub">Remplissez les champs ci-dessous. Le jeu sera créé en statut « Brouillon » et pourra être activé ensuite.</p>
+      <input type="hidden" id="mct_id">
+      <div class="field"><label>Titre *</label><input id="mct_title" placeholder="Gagnez un bon d'achat de 100€"></div>
+      <div class="field"><label>Description courte</label><textarea id="mct_desc" rows="2"></textarea></div>
+      <div class="grid-2">
+        <div class="field"><label>Lot à gagner *</label><input id="mct_prize" placeholder="Bon d'achat 100€"></div>
+        <div class="field"><label>Valeur (€)</label><input id="mct_value" type="number"></div>
+      </div>
+      <div class="field"><label>Image du lot (URL)</label><input id="mct_prize_img" placeholder="https://…"></div>
+      <div class="grid-2">
+        <div class="field"><label>Début</label><input id="mct_start" type="datetime-local"></div>
+        <div class="field"><label>Fin</label><input id="mct_end" type="datetime-local"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field"><label>Gagnant toutes les N participations</label><input id="mct_interval" type="number" value="50"></div>
+        <div class="field"><label>Tours à l'inscription</label><input id="mct_spins" type="number" value="1"></div>
+      </div>
+      <div class="field">
+        <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="mct_newsletter" checked> Inscrire les participants à ma newsletter (recommandé)</label>
+      </div>
+      <div class="field">
+        <label style="display:flex;gap:10px;align-items:center"><input type="checkbox" id="mct_agent"> Proposer le contact agent immobilier partenaire</label>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:18px;justify-content:flex-end">
+        <button class="btn ghost" onclick="document.getElementById('mContestModal').style.display='none'">Annuler</button>
+        <button class="btn" onclick="saveMerchantContest()"><i class="fas fa-save"></i> Créer le jeu</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="panel" id="panel-profile">
+    <h2>Ma fiche commerce</h2>
+    <p class="sub">Les informations affichées sur le site public.</p>
+    <div class="grid-2">
+      <div class="field"><label>Nom du commerce</label><input id="m_name"></div>
+      <div class="field"><label>Catégorie</label><input id="m_category" placeholder="Ex: Restaurant, Bijouterie…"></div>
+    </div>
+    <div class="field"><label>Adresse</label><input id="m_address"></div>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone</label><input id="m_phone"></div>
+      <div class="field"><label>Horaires</label><input id="m_hours" placeholder="Ex: Lun-Sam 9h-19h"></div>
+    </div>
+    <div class="field">
+      <label>Description</label>
+      <textarea id="m_description" rows="4"></textarea>
+    </div>
+    <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:16px">
+      <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+        <div style="flex:1;min-width:220px">
+          <div style="font-size:13px;font-weight:700;color:#f82032;margin-bottom:4px"><i class="fas fa-wand-magic-sparkles"></i> Améliorer ma fiche avec l'IA</div>
+          <div style="font-size:12px;color:#6c757d">Portrait long, signature, FAQ, mots-clés SEO — la version Premium.</div>
+        </div>
+        <button class="btn" onclick="enrichWithAI()" style="white-space:nowrap"><i class="fas fa-gem"></i> Générer la version Premium</button>
+      </div>
+    </div>
+    <div class="field">
+      <label>Image de couverture</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <input id="m_image_url" placeholder="URL ou téléverser" style="flex:1;min-width:200px">
+        <input type="file" id="m_image_file" accept="image/png,image/jpeg,image/webp" style="display:none" onchange="uploadMerchantImage(this)">
+        <button class="btn ghost" type="button" onclick="document.getElementById('m_image_file').click()"><i class="fas fa-upload"></i> Téléverser</button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:20px">
+      <button class="btn ghost" onclick="loadProfile()">Annuler</button>
+      <button class="btn" onclick="saveProfile()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- OFFER MODAL -->
+<div class="modal-overlay" id="offerModal">
+  <div class="modal">
+    <h3 id="offerModalTitle">Nouvelle offre</h3>
+    <div class="field"><label>Nom de l'offre</label><input id="o_name"></div>
+    <div class="field"><label>Description</label><textarea id="o_description" rows="3"></textarea></div>
+    <div class="grid-2">
+      <div class="field"><label>Prix payé (€)</label><input type="number" id="o_price" min="0" step="1"></div>
+      <div class="field"><label>Bonus offert (€)</label><input type="number" id="o_gift" min="0" step="1"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Stock (laisser vide = illimité)</label><input type="number" id="o_stock" min="0"></div>
+      <div class="field"><label>Date d'expiration</label><input type="date" id="o_expires_at"></div>
+    </div>
+    <div class="field"><label>Statut</label><select id="o_status"><option value="active">Active</option><option value="paused">En pause</option><option value="archived">Archivée</option></select></div>
+    <input type="hidden" id="o_id">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('offerModal')">Annuler</button>
+      <button class="btn" onclick="saveOffer()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- TEMPLATE MODAL -->
+<div class="modal-overlay" id="templateModal">
+  <div class="modal">
+    <h3 id="templateModalTitle">Nouveau modèle d'email</h3>
+    <div class="field"><label>Nom interne</label><input id="t_name" placeholder="Ex: Bienvenue nouveau lead"></div>
+    <div class="field"><label>Sujet de l'email</label><input id="t_subject" placeholder="Ex: Bienvenue {{nom}} chez {{commerce}} !"></div>
+    <div class="field"><label>Corps de l'email (HTML autorisé)</label><textarea id="t_body" rows="10" placeholder="Bonjour {{nom}}, merci d'avoir choisi {{commerce}}…"></textarea></div>
+    <input type="hidden" id="t_id">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('templateModal')">Annuler</button>
+      <button class="btn" onclick="saveTemplate()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- SEQUENCE MODAL -->
+<div class="modal-overlay" id="sequenceModal">
+  <div class="modal">
+    <h3 id="sequenceModalTitle">Nouvelle séquence</h3>
+    <div class="field"><label>Nom</label><input id="s_name" placeholder="Ex: Onboarding nouveau lead"></div>
+    <div class="field">
+      <label>Déclencheur</label>
+      <select id="s_trigger">
+        <option value="new_lead">Nouveau lead reçu</option>
+        <option value="lead_converted">Lead converti (a acheté)</option>
+        <option value="birthday">Anniversaire du lead</option>
+      </select>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Modèle d'email</label><select id="s_template_id"></select></div>
+      <div class="field"><label>Délai après déclenchement (heures)</label><input type="number" id="s_delay_hours" value="0" min="0"></div>
+    </div>
+    <div class="field">
+      <label>Actif ?</label>
+      <select id="s_active"><option value="true">Oui</option><option value="false">Non</option></select>
+    </div>
+    <input type="hidden" id="s_id">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('sequenceModal')">Annuler</button>
+      <button class="btn" onclick="saveSequence()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <h3 id="contactModalTitle">Nouveau contact</h3>
+    <div class="grid-2">
+      <div class="field"><label>Nom complet</label><input id="c_name"></div>
+      <div class="field"><label>Email</label><input type="email" id="c_email"></div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Téléphone</label><input id="c_phone"></div>
+      <div class="field"><label>Anniversaire</label><input type="date" id="c_birthday"></div>
+    </div>
+    <div class="field"><label>Tags (séparés par des virgules)</label><input id="c_tags" placeholder="VIP, Anniversaire, Famille…"></div>
+    <div class="field"><label>Notes</label><textarea id="c_notes" rows="3"></textarea></div>
+    <input type="hidden" id="c_id">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('contactModal')">Annuler</button>
+      <button class="btn" onclick="saveContact()"><i class="fas fa-save"></i> Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- CAMPAIGN WIZARD MODAL -->
+<div class="modal-overlay" id="campaignModal">
+  <div class="modal" style="max-width:780px">
+    <h3 id="campaignModalTitle">Nouvelle campagne</h3>
+    <div class="field"><label>Nom interne (visible uniquement par vous)</label><input id="cmp_name" placeholder="Ex: Promo printemps 2026"></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">1. Choisir le modèle</h4>
+    <div class="field"><select id="cmp_template_id" onchange="loadCampaignTemplate()"><option value="">— Choisir un modèle —</option></select></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">2. Personnaliser</h4>
+    <div class="field"><label>Sujet</label><input id="cmp_subject" placeholder="{{nom}}, votre offre exclusive"></div>
+    <div class="field"><label>Corps du message (HTML)</label><textarea id="cmp_body" rows="8"></textarea></div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">3. Destinataires</h4>
+    <div class="field">
+      <div>
+        <span class="segment-pill active" data-target="all_customers" onclick="selectTarget('all_customers', this)"><i class="fas fa-users"></i> Tous mes contacts</span>
+        <span class="segment-pill" data-target="segment" onclick="selectTarget('segment', this)"><i class="fas fa-tag"></i> Par tag</span>
+        <span class="segment-pill" data-target="selected_customers" onclick="selectTarget('selected_customers', this)"><i class="fas fa-check-square"></i> Sélection manuelle</span>
+        <span class="segment-pill" data-target="custom" onclick="selectTarget('custom', this)"><i class="fas fa-plus"></i> Saisie libre</span>
+      </div>
+    </div>
+
+    <div id="cmp_segment_picker" style="display:none">
+      <div class="field"><label>Sélectionnez un ou plusieurs tags</label><div id="cmp_tags_pills"></div></div>
+    </div>
+
+    <div id="cmp_selection_picker" style="display:none">
+      <div class="field">
+        <label>Cochez les contacts</label>
+        <div class="checkbox-list" id="cmp_contacts_checkboxes"></div>
+      </div>
+    </div>
+
+    <div id="cmp_custom_picker" style="display:none">
+      <div class="field"><label>Emails (un par ligne ou séparés par des virgules)</label><textarea id="cmp_custom_emails" rows="4" placeholder="alice@exemple.fr&#10;bob@exemple.fr"></textarea></div>
+    </div>
+
+    <div style="background:#fff3cd;color:#664d03;padding:10px 14px;border-radius:8px;font-size:13px;margin:12px 0">
+      <i class="fas fa-info-circle"></i> <strong id="cmp_recipient_count">0 destinataire(s)</strong>
+    </div>
+
+    <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">4. Aperçu</h4>
+    <div class="preview-mail" id="cmp_preview">Choisissez un modèle pour voir l'aperçu…</div>
+
+    <input type="hidden" id="cmp_id">
+    <input type="hidden" id="cmp_target_type" value="all_customers">
+    <div class="modal-actions">
+      <button class="btn ghost" onclick="closeModal('campaignModal')">Annuler</button>
+      <button class="btn ghost" onclick="saveCampaignDraft()"><i class="fas fa-save"></i> Brouillon</button>
+      <button class="btn" onclick="sendCampaign()"><i class="fas fa-paper-plane"></i> Envoyer</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://rvknysmuuusygowwauar.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+let merchantId = null;     // the merchant we're managing
+let merchantData = null;   // its row in the merchants table
+let isImpersonating = false;
+let offers = [];
+let leads = [];
+let templates = [];
+let sequences = [];
+
+// ---------- utils ----------
+function toast(msg, type='ok') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast ' + type;
+  t.style.display = 'block';
+  setTimeout(() => t.style.display = 'none', 3000);
+}
+function esc(s) { return (s==null?'':String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"}[c])); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+function fmtDate(d) { return d ? new Date(d).toLocaleDateString('fr-FR') : ''; }
+
+// ---------- auth ----------
+async function logout() {
+  sessionStorage.removeItem('admin_impersonate_merchant');
+  await sb.auth.signOut();
+  window.location.href = '/login.html';
+}
+
+async function checkAuth() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) { window.location.href = '/login.html'; return; }
+  currentUser = session.user;
+  document.getElementById('userEmail').textContent = session.user.email;
+
+  // Check if admin is impersonating
+  const impersonatedId = sessionStorage.getItem('admin_impersonate_merchant');
+  if (impersonatedId) {
+    const { data: isAdmin } = await sb.from('admin_users').select('user_id').eq('user_id', session.user.id).maybeSingle();
+    if (isAdmin) {
+      merchantId = impersonatedId;
+      isImpersonating = true;
+      document.getElementById('impersonateBanner').classList.add('show');
+      return;
+    } else {
+      sessionStorage.removeItem('admin_impersonate_merchant');
+    }
+  }
+
+  // Normal merchant user
+  const { data: link } = await sb.from('merchant_users').select('merchant_id').eq('user_id', session.user.id).maybeSingle();
+  if (!link) {
+    // Could be admin who logged in here by mistake
+    const { data: isAdmin } = await sb.from('admin_users').select('user_id').eq('user_id', session.user.id).maybeSingle();
+    if (isAdmin) { window.location.href = '/admin.html'; return; }
+    toast("Vous n'êtes lié à aucun commerce.", 'err');
+    setTimeout(() => logout(), 2000);
+    return;
+  }
+  merchantId = link.merchant_id;
+}
+
+function stopImpersonate() {
+  sessionStorage.removeItem('admin_impersonate_merchant');
+  window.location.href = '/admin.html';
+}
+
+// ---------- tabs ----------
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'contests') loadMerchantContests();
+  });
+});
+
+// ---------- profile ----------
+async function loadProfile() {
+  const { data, error } = await sb.from('merchants').select('*').eq('id', merchantId).maybeSingle();
+  if (error || !data) { toast("Impossible de charger la fiche", 'err'); return; }
+  merchantData = data;
+  document.getElementById('m_name').value = data.name || '';
+  document.getElementById('m_category').value = data.category || '';
+  document.getElementById('m_address').value = data.address || '';
+  document.getElementById('m_phone').value = data.phone || '';
+  document.getElementById('m_hours').value = data.hours || '';
+  document.getElementById('m_description').value = data.description || '';
+  document.getElementById('m_image_url').value = data.image_url || '';
+}
+async function saveProfile() {
+  const payload = {
+    name: document.getElementById('m_name').value,
+    category: document.getElementById('m_category').value,
+    address: document.getElementById('m_address').value,
+    phone: document.getElementById('m_phone').value,
+    hours: document.getElementById('m_hours').value,
+    description: document.getElementById('m_description').value,
+    image_url: document.getElementById('m_image_url').value
+  };
+  // Persist enrichment premium s'il existe (stash)
+  if (window.__pendingMerchantEnrich) {
+    payload.premium_content = window.__pendingMerchantEnrich;
+    delete window.__pendingMerchantEnrich;
+  }
+  const { error } = await sb.from('merchants').update(payload).eq('id', merchantId);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Fiche enregistrée');
+  loadProfile();
+}
+
+async function uploadMerchantImage(input) {
+  const f = input.files && input.files[0];
+  if (!f) return;
+  try {
+    const ext = (f.name.split('.').pop() || 'jpg').toLowerCase();
+    const path = 'merchants/' + merchantId + '/' + Date.now() + '.' + ext;
+    const { error } = await sb.storage.from('site-assets').upload(path, f, { upsert: true, contentType: f.type });
+    if (error) throw error;
+    const { data } = sb.storage.from('site-assets').getPublicUrl(path);
+    document.getElementById('m_image_url').value = data.publicUrl;
+    toast('Image téléversée ✓');
+  } catch (e) {
+    toast('Erreur upload : ' + (e.message || e), 'err');
+  } finally {
+    input.value = '';
+  }
+}
+window.uploadMerchantImage = uploadMerchantImage;
+
+async function enrichWithAI() {
+  const name = document.getElementById('m_name').value.trim();
+  const category = document.getElementById('m_category').value.trim();
+  if (!name || !category) { toast('Nom et catégorie requis', 'err'); return; }
+  toast('Génération Premium en cours…');
+  try {
+    const r = await fetch('/api/ai', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        type: 'merchant_enrich',
+        inputs: {
+          name,
+          category,
+          description: document.getElementById('m_description').value,
+          address: document.getElementById('m_address').value,
+          facts: ''
+        }
+      })
+    });
+    const data = await r.json();
+    if (!r.ok || !data.ok) throw new Error(data.error || 'Erreur IA');
+    const res = data.result || {};
+    // Applique aux champs visibles
+    const parts = [];
+    if (res.description_premium) parts.push(res.description_premium);
+    if (res.portrait_long) parts.push('\n\n' + res.portrait_long);
+    if (res.signature_sentence) parts.push('\n\n— ' + res.signature_sentence);
+    document.getElementById('m_description').value = parts.join('');
+    window.__pendingMerchantEnrich = res;
+    toast('Version Premium générée ✓ — enregistre pour l\'appliquer');
+    // Affiche un aperçu rapide
+    if (res.faq && res.faq.length) {
+      console.log('FAQ suggérée:', res.faq);
+    }
+  } catch (e) {
+    toast('Erreur IA : ' + (e.message || e), 'err');
+  }
+}
+window.enrichWithAI = enrichWithAI;
+
+// ---------- offers ----------
+async function loadOffers() {
+  const { data, error } = await sb.from('offers').select('*').eq('merchant_id', merchantId).order('created_at', {ascending: false});
+  if (error) { toast('Erreur offres: ' + error.message, 'err'); return; }
+  offers = data || [];
+  renderOffers();
+}
+function renderOffers() {
+  const host = document.getElementById('offers_table');
+  if (!offers.length) { host.innerHTML = '<div class="empty">Aucune offre pour le moment. Cliquez sur "Nouvelle offre" pour commencer.</div>'; return; }
+  host.innerHTML = `<table>
+    <thead><tr><th>Nom</th><th>Prix</th><th>Bonus</th><th>Stock</th><th>Ventes</th><th>Statut</th><th>Actions</th></tr></thead>
+    <tbody>${offers.map(o => `
+      <tr>
+        <td><strong>${esc(o.name || 'Offre sans nom')}</strong><div style="color:#6c757d;font-size:12px">${esc((o.description||'').slice(0,60))}</div></td>
+        <td>${o.price}€</td>
+        <td>+${o.gift}€</td>
+        <td>${o.stock ?? '∞'}</td>
+        <td>${o.sales_count || 0}</td>
+        <td><span class="pill ${o.status==='active'?'ok':(o.status==='paused'?'warn':'muted')}">${o.status||'-'}</span></td>
+        <td>
+          <button class="btn sm ghost" onclick="editOffer('${o.id}')"><i class="fas fa-edit"></i></button>
+          <button class="btn sm danger" onclick="deleteOffer('${o.id}')"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+function openOfferModal() {
+  document.getElementById('offerModalTitle').textContent = 'Nouvelle offre';
+  ['o_name','o_description','o_price','o_gift','o_stock','o_expires_at','o_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('o_status').value = 'active';
+  document.getElementById('offerModal').classList.add('show');
+}
+function editOffer(id) {
+  const o = offers.find(x => x.id === id);
+  if (!o) return;
+  document.getElementById('offerModalTitle').textContent = 'Éditer l\'offre';
+  document.getElementById('o_id').value = o.id;
+  document.getElementById('o_name').value = o.name || '';
+  document.getElementById('o_description').value = o.description || '';
+  document.getElementById('o_price').value = o.price || 0;
+  document.getElementById('o_gift').value = o.gift || 0;
+  document.getElementById('o_stock').value = o.stock ?? '';
+  document.getElementById('o_expires_at').value = o.expires_at ? o.expires_at.slice(0,10) : '';
+  document.getElementById('o_status').value = o.status || 'active';
+  document.getElementById('offerModal').classList.add('show');
+}
+async function saveOffer() {
+  const id = document.getElementById('o_id').value;
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('o_name').value,
+    description: document.getElementById('o_description').value,
+    price: parseInt(document.getElementById('o_price').value || '0', 10),
+    gift: parseInt(document.getElementById('o_gift').value || '0', 10),
+    stock: document.getElementById('o_stock').value ? parseInt(document.getElementById('o_stock').value, 10) : null,
+    expires_at: document.getElementById('o_expires_at').value || null,
+    status: document.getElementById('o_status').value
+  };
+  const { error } = id
+    ? await sb.from('offers').update(payload).eq('id', id)
+    : await sb.from('offers').insert(payload);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Offre enregistrée');
+  closeModal('offerModal');
+  loadOffers();
+  loadStats();
+}
+async function deleteOffer(id) {
+  if (!confirm('Supprimer cette offre ? Cette action est irréversible.')) return;
+  const { error } = await sb.from('offers').delete().eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Offre supprimée');
+  loadOffers();
+  loadStats();
+}
+
+// ---------- leads ----------
+let allLeads = [];
+async function loadLeads() {
+  const { data, error } = await sb.from('leads').select('*').eq('merchant_id', merchantId).order('created_at', {ascending: false}).limit(200);
+  if (error) { toast('Erreur leads: ' + error.message, 'err'); return; }
+  allLeads = data || [];
+  leads = allLeads;
+  renderLeads();
+}
+function filterLeads(q) {
+  const s = (q||'').toLowerCase();
+  leads = allLeads.filter(l => !s || (l.name||'').toLowerCase().includes(s) || (l.email||'').toLowerCase().includes(s));
+  renderLeads();
+}
+function renderLeads() {
+  const host = document.getElementById('leads_table');
+  if (!leads.length) { host.innerHTML = '<div class="empty">Aucun lead pour le moment.</div>'; return; }
+  host.innerHTML = `<table>
+    <thead><tr><th>Date</th><th>Nom</th><th>Email</th><th>Téléphone</th><th>Source</th><th>Statut</th></tr></thead>
+    <tbody>${leads.map(l => `
+      <tr>
+        <td>${fmtDate(l.created_at)}</td>
+        <td>${esc(l.name)}</td>
+        <td><a href="mailto:${esc(l.email)}">${esc(l.email)}</a></td>
+        <td>${esc(l.phone||'-')}</td>
+        <td><span class="pill muted">${esc(l.source||'-')}</span></td>
+        <td><span class="pill ${l.status==='converted'?'ok':'new'}">${esc(l.status||'new')}</span></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+// ---------- templates ----------
+async function loadTemplates() {
+  const { data, error } = await sb.from('email_templates').select('*').eq('merchant_id', merchantId).order('created_at', {ascending: false});
+  if (error) { toast('Erreur modèles: ' + error.message, 'err'); return; }
+  templates = data || [];
+  renderTemplates();
+  // also populate sequence template select
+  const sel = document.getElementById('s_template_id');
+  sel.innerHTML = templates.map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('') || '<option value="">— aucun modèle —</option>';
+}
+function renderTemplates() {
+  const host = document.getElementById('templates_list');
+  if (!templates.length) { host.innerHTML = '<div class="empty">Aucun modèle. Créez-en un pour commencer.</div>'; return; }
+  host.innerHTML = templates.map(t => `
+    <div class="template-card" onclick="editTemplate('${t.id}')">
+      <h4>${esc(t.name)}</h4>
+      <div class="subj"><i class="fas fa-envelope"></i> ${esc(t.subject||'(pas de sujet)')}</div>
+      <div class="meta">Modifié ${fmtDate(t.updated_at||t.created_at)} • <a href="javascript:void(0)" onclick="event.stopPropagation();deleteTemplate('${t.id}')" style="color:#dc3545">Supprimer</a></div>
+    </div>`).join('');
+}
+function openTemplateModal() {
+  document.getElementById('templateModalTitle').textContent = 'Nouveau modèle';
+  ['t_name','t_subject','t_body','t_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('templateModal').classList.add('show');
+}
+function editTemplate(id) {
+  const t = templates.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('templateModalTitle').textContent = 'Éditer le modèle';
+  document.getElementById('t_id').value = t.id;
+  document.getElementById('t_name').value = t.name || '';
+  document.getElementById('t_subject').value = t.subject || '';
+  document.getElementById('t_body').value = t.body || '';
+  document.getElementById('templateModal').classList.add('show');
+}
+async function saveTemplate() {
+  const id = document.getElementById('t_id').value;
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('t_name').value,
+    subject: document.getElementById('t_subject').value,
+    body: document.getElementById('t_body').value,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = id
+    ? await sb.from('email_templates').update(payload).eq('id', id)
+    : await sb.from('email_templates').insert(payload);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Modèle enregistré');
+  closeModal('templateModal');
+  loadTemplates();
+}
+async function deleteTemplate(id) {
+  if (!confirm('Supprimer ce modèle ?')) return;
+  const { error } = await sb.from('email_templates').delete().eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Modèle supprimé');
+  loadTemplates();
+}
+
+// ---------- sequences ----------
+async function loadSequences() {
+  const { data, error } = await sb.from('email_sequences').select('*, email_templates(name)').eq('merchant_id', merchantId).order('created_at', {ascending: false});
+  if (error) { toast('Erreur séquences: ' + error.message, 'err'); return; }
+  sequences = data || [];
+  renderSequences();
+}
+function renderSequences() {
+  const host = document.getElementById('sequences_list');
+  if (!sequences.length) { host.innerHTML = '<div class="empty">Aucune séquence. Créez-en une pour automatiser vos emails.</div>'; return; }
+  const trigLabels = {new_lead:'Nouveau lead', lead_converted:'Lead converti', birthday:'Anniversaire'};
+  host.innerHTML = sequences.map(s => `
+    <div class="sequence-card">
+      <div class="head">
+        <div class="name">${esc(s.name)}</div>
+        <div class="switch ${s.active?'on':''}" onclick="toggleSequence('${s.id}', ${!s.active})"></div>
+      </div>
+      <div class="trig"><i class="fas fa-bolt"></i> Déclencheur : <strong>${trigLabels[s.trigger]||s.trigger}</strong> • Modèle : ${esc(s.email_templates?.name || '(supprimé)')} • Délai : ${s.delay_hours}h</div>
+      <div class="row">
+        <button class="btn sm ghost" onclick="editSequence('${s.id}')"><i class="fas fa-edit"></i> Éditer</button>
+        <button class="btn sm danger" onclick="deleteSequence('${s.id}')"><i class="fas fa-trash"></i> Supprimer</button>
+      </div>
+    </div>`).join('');
+}
+function openSequenceModal() {
+  document.getElementById('sequenceModalTitle').textContent = 'Nouvelle séquence';
+  ['s_name','s_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('s_trigger').value = 'new_lead';
+  document.getElementById('s_delay_hours').value = 0;
+  document.getElementById('s_active').value = 'true';
+  document.getElementById('sequenceModal').classList.add('show');
+}
+function editSequence(id) {
+  const s = sequences.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('sequenceModalTitle').textContent = 'Éditer la séquence';
+  document.getElementById('s_id').value = s.id;
+  document.getElementById('s_name').value = s.name || '';
+  document.getElementById('s_trigger').value = s.trigger || 'new_lead';
+  document.getElementById('s_template_id').value = s.template_id || '';
+  document.getElementById('s_delay_hours').value = s.delay_hours || 0;
+  document.getElementById('s_active').value = s.active ? 'true' : 'false';
+  document.getElementById('sequenceModal').classList.add('show');
+}
+async function saveSequence() {
+  const id = document.getElementById('s_id').value;
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('s_name').value,
+    trigger: document.getElementById('s_trigger').value,
+    template_id: document.getElementById('s_template_id').value || null,
+    delay_hours: parseInt(document.getElementById('s_delay_hours').value || '0', 10),
+    active: document.getElementById('s_active').value === 'true'
+  };
+  const { error } = id
+    ? await sb.from('email_sequences').update(payload).eq('id', id)
+    : await sb.from('email_sequences').insert(payload);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Séquence enregistrée');
+  closeModal('sequenceModal');
+  loadSequences();
+}
+async function toggleSequence(id, newState) {
+  const { error } = await sb.from('email_sequences').update({active: newState}).eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  loadSequences();
+}
+async function deleteSequence(id) {
+  if (!confirm('Supprimer cette séquence ?')) return;
+  const { error } = await sb.from('email_sequences').delete().eq('id', id);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Séquence supprimée');
+  loadSequences();
+}
+
+// ---------- dashboard stats ----------
+async function loadStats() {
+  const thirty = new Date(Date.now() - 30*24*60*60*1000).toISOString();
+  const [oRes, lRes, lRecent, eRes] = await Promise.all([
+    sb.from('offers').select('id, sales_count', {count: 'exact'}).eq('merchant_id', merchantId),
+    sb.from('leads').select('id', {count: 'exact', head: true}).eq('merchant_id', merchantId),
+    sb.from('leads').select('*').eq('merchant_id', merchantId).gte('created_at', thirty).order('created_at', {ascending: false}).limit(5),
+    sb.from('email_logs').select('id', {count: 'exact', head: true}).eq('merchant_id', merchantId)
+  ]);
+  const totalOffers = oRes.count || 0;
+  const totalSales = (oRes.data || []).reduce((s,o) => s + (o.sales_count||0), 0);
+  const totalLeads = lRes.count || 0;
+  const totalEmails = eRes.count || 0;
+
+  document.getElementById('stats_grid').innerHTML = `
+    <div class="stat-card"><div class="label">Offres actives</div><div class="value">${totalOffers}</div></div>
+    <div class="stat-card"><div class="label">Leads totaux</div><div class="value">${totalLeads}</div></div>
+    <div class="stat-card"><div class="label">Bons vendus</div><div class="value">${totalSales}</div></div>
+    <div class="stat-card"><div class="label">Emails envoyés</div><div class="value">${totalEmails}</div></div>
+  `;
+
+  const recent = lRecent.data || [];
+  document.getElementById('recent_leads').innerHTML = recent.length
+    ? `<table><thead><tr><th>Date</th><th>Nom</th><th>Email</th><th>Source</th></tr></thead>
+       <tbody>${recent.map(l => `<tr><td>${fmtDate(l.created_at)}</td><td>${esc(l.name)}</td><td>${esc(l.email)}</td><td><span class="pill muted">${esc(l.source||'-')}</span></td></tr>`).join('')}</tbody></table>`
+    : '<div class="empty">Aucun lead récent.</div>';
+}
+
+// ============================================================
+// V3 — Contacts, Campagnes, Signature, Templates système
+// ============================================================
+const STORAGE_BUCKET = 'site-assets';
+let contacts = [];
+let allContacts = [];
+let systemTemplates = [];
+let campaigns = [];
+let currentSegment = 'all_customers';
+
+// ---------- TEMPLATES SYSTÈME ----------
+async function loadSystemTemplates() {
+  const { data, error } = await sb.from('email_templates')
+    .select('*')
+    .eq('is_system', true)
+    .order('category');
+  if (error) { console.warn('Templates système:', error.message); systemTemplates = []; renderSystemTemplates(); return; }
+  systemTemplates = data || [];
+  renderSystemTemplates();
+}
+const TPL_ICONS = { welcome:'🎁', birthday:'🎂', promo:'📣', newsletter:'💌', followup:'👋', thankyou:'🙏', other:'✉️' };
+function renderSystemTemplates() {
+  const host = document.getElementById('system_templates_list');
+  if (!systemTemplates.length) { host.innerHTML = '<div class="empty">Aucun modèle système. Exécutez le SQL Phase 3.</div>'; return; }
+  host.innerHTML = systemTemplates.map(t => `
+    <div class="tpl-card">
+      <div class="icon">${TPL_ICONS[t.category] || '✉️'}</div>
+      <div class="name">${esc(t.name)} <span class="badge-sys">Système</span></div>
+      <div class="meta">${esc(t.subject || '')}</div>
+      <div class="acts">
+        <button class="btn sm" onclick="cloneSystemTemplate('${t.id}')"><i class="fas fa-copy"></i> Utiliser</button>
+        <button class="btn sm ghost" onclick="previewSystemTemplate('${t.id}')"><i class="fas fa-eye"></i> Aperçu</button>
+      </div>
+    </div>`).join('');
+}
+async function cloneSystemTemplate(id) {
+  const t = systemTemplates.find(x => x.id === id);
+  if (!t) return;
+  const { error } = await sb.from('email_templates').insert({
+    merchant_id: merchantId,
+    name: t.name + ' (mon copie)',
+    category: t.category,
+    subject: t.subject,
+    body_html: t.body_html,
+    body: t.body || t.body_html,
+    is_system: false
+  });
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Modèle ajouté à vos modèles ✓');
+  loadTemplates();
+}
+function previewSystemTemplate(id) {
+  const t = systemTemplates.find(x => x.id === id);
+  if (!t) return;
+  const html = renderTemplateVars(t.body_html || t.body || '');
+  const preview = window.open('', '_blank', 'width=640,height=720');
+  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
+}
+
+// Override original renderTemplates to use card grid
+function renderTemplates() {
+  const host = document.getElementById('templates_list');
+  if (!templates.length) { host.innerHTML = '<div class="empty">Aucun modèle personnel. Cliquez "Utiliser" sur un modèle système ou créez le vôtre.</div>'; return; }
+  host.innerHTML = templates.map(t => `
+    <div class="tpl-card">
+      <div class="icon">${TPL_ICONS[t.category] || '✉️'}</div>
+      <div class="name">${esc(t.name)}</div>
+      <div class="meta">${esc(t.subject || '(pas de sujet)')}</div>
+      <div class="acts">
+        <button class="btn sm" onclick="editTemplate('${t.id}')"><i class="fas fa-edit"></i> Éditer</button>
+        <button class="btn sm ghost" onclick="previewMyTemplate('${t.id}')"><i class="fas fa-eye"></i></button>
+        <button class="btn sm danger" onclick="deleteTemplate('${t.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+function previewMyTemplate(id) {
+  const t = templates.find(x => x.id === id); if (!t) return;
+  const html = renderTemplateVars(t.body_html || t.body || '');
+  const preview = window.open('', '_blank', 'width=640,height=720');
+  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
+}
+
+// Patch saveTemplate to also write body_html
+async function saveTemplate() {
+  const id = document.getElementById('t_id').value;
+  const body = document.getElementById('t_body').value;
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('t_name').value,
+    subject: document.getElementById('t_subject').value,
+    body_html: body,
+    body: body,
+    updated_at: new Date().toISOString()
+  };
+  const { error } = id
+    ? await sb.from('email_templates').update(payload).eq('id', id)
+    : await sb.from('email_templates').insert(payload);
+  if (error) { toast('Erreur: ' + error.message, 'err'); return; }
+  toast('Modèle enregistré ✓');
+  closeModal('templateModal');
+  loadTemplates();
+}
+
+// ---------- CONTACTS ----------
+async function loadContacts() {
+  const { data, error } = await sb.from('merchant_customers')
+    .select('*')
+    .eq('merchant_id', merchantId)
+    .order('created_at', { ascending: false });
+  if (error) { toast('Erreur contacts: '+error.message, 'err'); return; }
+  allContacts = data || [];
+  contacts = allContacts;
+  renderContacts();
+}
+function renderContacts() {
+  const host = document.getElementById('contacts_list');
+  document.getElementById('contacts_count').textContent = `${contacts.length} contact${contacts.length>1?'s':''}`;
+  if (!contacts.length) { host.innerHTML = '<div class="empty"><i class="fas fa-address-book empty-icon"></i><div>Aucun contact. Ajoutez-en un ou importez un fichier CSV.</div></div>'; return; }
+  host.innerHTML = contacts.map((c, i) => {
+    const tags = (c.tags || []).map(t => `<span class="tag">${esc(t)}</span>`).join('');
+    return `<div class="contact-row">
+      <input type="checkbox" data-cid="${c.id}" class="contact-cb">
+      <div><div class="name">${esc(c.name || '(sans nom)')}</div><div>${tags}</div></div>
+      <div class="col-email">${esc(c.email||'-')}</div>
+      <div class="col-phone">${esc(c.phone||'-')}</div>
+      <div style="display:flex;gap:4px">
+        <button class="btn sm ghost" onclick="editContact('${c.id}')"><i class="fas fa-edit"></i></button>
+        <button class="btn sm danger" onclick="deleteContact('${c.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`;
+  }).join('');
+}
+function filterContacts(q) {
+  const s = (q||'').toLowerCase();
+  contacts = allContacts.filter(c => !s
+    || (c.name||'').toLowerCase().includes(s)
+    || (c.email||'').toLowerCase().includes(s)
+    || (c.tags||[]).some(t => t.toLowerCase().includes(s))
+  );
+  renderContacts();
+}
+function openContactModal() {
+  document.getElementById('contactModalTitle').textContent = 'Nouveau contact';
+  ['c_name','c_email','c_phone','c_birthday','c_tags','c_notes','c_id'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('contactModal').classList.add('show');
+}
+function editContact(id) {
+  const c = allContacts.find(x => x.id === id); if (!c) return;
+  document.getElementById('contactModalTitle').textContent = 'Éditer le contact';
+  document.getElementById('c_id').value = c.id;
+  document.getElementById('c_name').value = c.name || '';
+  document.getElementById('c_email').value = c.email || '';
+  document.getElementById('c_phone').value = c.phone || '';
+  document.getElementById('c_birthday').value = c.birthday || '';
+  document.getElementById('c_tags').value = (c.tags || []).join(', ');
+  document.getElementById('c_notes').value = c.notes || '';
+  document.getElementById('contactModal').classList.add('show');
+}
+async function saveContact() {
+  const id = document.getElementById('c_id').value;
+  const tags = document.getElementById('c_tags').value.split(',').map(t => t.trim()).filter(Boolean);
+  const payload = {
+    merchant_id: merchantId,
+    name: document.getElementById('c_name').value.trim() || null,
+    email: document.getElementById('c_email').value.trim() || null,
+    phone: document.getElementById('c_phone').value.trim() || null,
+    birthday: document.getElementById('c_birthday').value || null,
+    tags,
+    notes: document.getElementById('c_notes').value.trim() || null
+  };
+  const { error } = id
+    ? await sb.from('merchant_customers').update(payload).eq('id', id)
+    : await sb.from('merchant_customers').insert(payload);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Contact enregistré ✓');
+  closeModal('contactModal');
+  loadContacts();
+}
+async function deleteContact(id) {
+  if (!confirm('Supprimer ce contact ?')) return;
+  const { error } = await sb.from('merchant_customers').delete().eq('id', id);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Contact supprimé ✓');
+  loadContacts();
+}
+
+// ---------- CSV import / export ----------
+function parseCSV(text) {
+  const rows = [];
+  let cur = [], buf = '', inQ = false;
+  for (let i=0; i<text.length; i++) {
+    const ch = text[i];
+    if (inQ) {
+      if (ch === '"' && text[i+1] === '"') { buf += '"'; i++; }
+      else if (ch === '"') { inQ = false; }
+      else { buf += ch; }
+    } else {
+      if (ch === '"') inQ = true;
+      else if (ch === ',' || ch === ';') { cur.push(buf); buf=''; }
+      else if (ch === '\n' || ch === '\r') {
+        if (buf || cur.length) { cur.push(buf); rows.push(cur); cur=[]; buf=''; }
+        if (ch==='\r' && text[i+1]==='\n') i++;
+      } else buf += ch;
+    }
+  }
+  if (buf || cur.length) { cur.push(buf); rows.push(cur); }
+  return rows.filter(r => r.some(c => c && c.trim()));
+}
+async function importContactsCsv(file) {
+  const text = await file.text();
+  const rows = parseCSV(text);
+  if (rows.length < 2) { toast('CSV vide ou invalide', 'err'); return; }
+  const header = rows[0].map(h => h.trim().toLowerCase());
+  const idx = {
+    name: header.findIndex(h => /^(name|nom|prenom|prénom|fullname|full ?name)$/i.test(h)),
+    email: header.findIndex(h => /^(email|mail|e-mail)$/i.test(h)),
+    phone: header.findIndex(h => /^(phone|tel|téléphone|telephone|mobile)$/i.test(h)),
+    tags: header.findIndex(h => /^(tags?|categori|segment)/i.test(h)),
+    birthday: header.findIndex(h => /^(birthday|anniversaire|naissance|dob)$/i.test(h)),
+    notes: header.findIndex(h => /^(notes?|comment)/i.test(h))
+  };
+  const records = rows.slice(1).map(r => ({
+    merchant_id: merchantId,
+    name: idx.name >= 0 ? (r[idx.name] || '').trim() || null : null,
+    email: idx.email >= 0 ? (r[idx.email] || '').trim() || null : null,
+    phone: idx.phone >= 0 ? (r[idx.phone] || '').trim() || null : null,
+    tags: idx.tags >= 0 && r[idx.tags] ? r[idx.tags].split(/[;,]/).map(t => t.trim()).filter(Boolean) : [],
+    birthday: idx.birthday >= 0 && r[idx.birthday] ? r[idx.birthday].trim() : null,
+    notes: idx.notes >= 0 ? (r[idx.notes] || '').trim() || null : null,
+    source: 'csv'
+  })).filter(r => r.name || r.email);
+  if (!records.length) { toast('Aucune ligne valide dans le CSV', 'err'); return; }
+  // Insert by chunks of 100
+  let inserted = 0, failed = 0;
+  for (let i=0; i<records.length; i+=100) {
+    const chunk = records.slice(i, i+100);
+    const { error } = await sb.from('merchant_customers').insert(chunk);
+    if (error) failed += chunk.length;
+    else inserted += chunk.length;
+  }
+  const box = document.getElementById('import_result_contacts');
+  box.textContent = `✓ ${inserted} contact(s) importé(s)${failed?` — ${failed} échec(s)`:''}`;
+  box.classList.add('show');
+  setTimeout(() => box.classList.remove('show'), 6000);
+  loadContacts();
+}
+function exportContactsCsv() {
+  if (!allContacts.length) { toast('Aucun contact à exporter', 'err'); return; }
+  const header = 'name,email,phone,tags,birthday,notes\n';
+  const csv = header + allContacts.map(c => [
+    c.name||'', c.email||'', c.phone||'',
+    (c.tags||[]).join(';'),
+    c.birthday||'', (c.notes||'').replace(/[\r\n]/g,' ')
+  ].map(v => '"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'contacts-'+(new Date().toISOString().slice(0,10))+'.csv'; a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ---------- SIGNATURE ----------
+async function loadSignature() {
+  if (!merchantData) await loadProfile();
+  document.getElementById('sig_html').value = merchantData?.email_signature_html || '';
+  document.getElementById('sig_image_url').value = merchantData?.email_signature_image_url || '';
+  renderSignaturePreview();
+}
+function renderSignaturePreview() {
+  const html = document.getElementById('sig_html').value || '';
+  const img = document.getElementById('sig_image_url').value || '';
+  const rendered = renderTemplateVars(html).replace(/\n/g, '<br>');
+  document.getElementById('sig_preview').innerHTML = (img ? `<img src="${esc(img)}" alt="logo">` : '') + '<div>' + rendered + '</div>' || '<em>Votre signature apparaîtra ici…</em>';
+}
+function loadSignaturePresets() {
+  const c = merchantData?.name || 'Mon commerce';
+  const a = merchantData?.address || '';
+  const p = merchantData?.phone || '';
+  const tpl = `Cordialement,\n<strong>${c}</strong>\n${a}\n${p}\n<a href="mailto:${merchantData?.email||''}">${merchantData?.email||''}</a>`;
+  document.getElementById('sig_html').value = tpl;
+  renderSignaturePreview();
+}
+async function uploadSignatureImage(file) {
+  if (file.size > 1024*1024) { toast('Image trop lourde (max 1 Mo)', 'err'); return; }
+  const ext = (file.name.split('.').pop() || 'png').toLowerCase();
+  const path = `signatures/${merchantId}-${Date.now()}.${ext}`;
+  const { error } = await sb.storage.from(STORAGE_BUCKET).upload(path, file, { upsert: true });
+  if (error) { toast('Upload: '+error.message, 'err'); return; }
+  const { data } = sb.storage.from(STORAGE_BUCKET).getPublicUrl(path);
+  document.getElementById('sig_image_url').value = data.publicUrl;
+  renderSignaturePreview();
+  toast('Logo téléversé ✓');
+}
+async function saveSignature() {
+  const payload = {
+    email_signature_html: document.getElementById('sig_html').value || null,
+    email_signature_image_url: document.getElementById('sig_image_url').value || null
+  };
+  const { error } = await sb.from('merchants').update(payload).eq('id', merchantId);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Signature enregistrée ✓');
+  loadProfile();
+}
+
+// ---------- VARIABLES ----------
+function renderTemplateVars(html, contact) {
+  const m = merchantData || {};
+  const c = contact || {};
+  return (html || '')
+    .replace(/\{\{nom\}\}/g, c.name || 'Bonjour')
+    .replace(/\{\{email\}\}/g, c.email || '')
+    .replace(/\{\{phone\}\}/g, m.phone || '')
+    .replace(/\{\{commerce\}\}/g, m.name || '')
+    .replace(/\{\{adresse\}\}/g, m.address || '')
+    .replace(/\{\{offre\}\}/g, '[votre offre]')
+    .replace(/\{\{prix\}\}/g, '[prix]')
+    .replace(/\{\{gift\}\}/g, '[cadeau]')
+    .replace(/\{\{agent_nom\}\}/g, 'Nordine Mouaouia')
+    .replace(/\{\{agent_tel\}\}/g, '04 68 00 00 00');
+}
+function appendSignature(html) {
+  const m = merchantData || {};
+  const sigImg = m.email_signature_image_url ? `<br><img src="${m.email_signature_image_url}" alt="" style="max-height:60px"><br>` : '<br>';
+  const sigHtml = m.email_signature_html ? renderTemplateVars(m.email_signature_html).replace(/\n/g,'<br>') : '';
+  return html + sigImg + sigHtml;
+}
+
+// ---------- CAMPAGNES ----------
+async function loadCampaigns() {
+  const { data, error } = await sb.from('campaigns')
+    .select('*')
+    .eq('owner_type','merchant')
+    .eq('merchant_id', merchantId)
+    .order('created_at', { ascending: false });
+  if (error) { console.warn('Campagnes:', error.message); campaigns = []; renderCampaigns(); return; }
+  campaigns = data || [];
+  renderCampaigns();
+}
+function renderCampaigns() {
+  const host = document.getElementById('campaigns_list');
+  if (!campaigns.length) { host.innerHTML = '<div class="empty"><i class="fas fa-paper-plane empty-icon"></i><div>Aucune campagne. Cliquez "Nouvelle campagne" pour démarrer.</div></div>'; return; }
+  const STATUS_LABELS = { draft:'Brouillon', sent:'Envoyée', scheduled:'Programmée', sending:'En cours', failed:'Échec' };
+  host.innerHTML = campaigns.map(c => `
+    <div class="campaign-card">
+      <div class="info">
+        <div style="font-weight:600;font-size:14px">${esc(c.name)}</div>
+        <div class="stat"><i class="fas fa-envelope"></i> ${esc(c.subject || '(pas de sujet)')}</div>
+        <div class="stat"><i class="fas fa-users"></i> ${c.recipient_count||0} destinataires • <span class="pill ${c.status==='sent'?'ok':'muted'}">${STATUS_LABELS[c.status]||c.status}</span></div>
+      </div>
+      <div class="acts">
+        <button class="btn sm ghost" onclick="editCampaign('${c.id}')"><i class="fas fa-edit"></i></button>
+        ${c.status==='draft' ? `<button class="btn sm" onclick="resendCampaign('${c.id}')"><i class="fas fa-paper-plane"></i></button>` : ''}
+        <button class="btn sm danger" onclick="deleteCampaign('${c.id}')"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+async function deleteCampaign(id) {
+  if (!confirm('Supprimer cette campagne ?')) return;
+  await sb.from('campaigns').delete().eq('id', id);
+  loadCampaigns();
+}
+function openCampaignWizard() {
+  document.getElementById('campaignModalTitle').textContent = 'Nouvelle campagne';
+  ['cmp_name','cmp_subject','cmp_body','cmp_id','cmp_custom_emails'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('cmp_target_type').value = 'all_customers';
+  document.querySelectorAll('#campaignModal .segment-pill').forEach(p => p.classList.toggle('active', p.dataset.target === 'all_customers'));
+  document.getElementById('cmp_segment_picker').style.display = 'none';
+  document.getElementById('cmp_selection_picker').style.display = 'none';
+  document.getElementById('cmp_custom_picker').style.display = 'none';
+  // populate template select with system + personal
+  const sel = document.getElementById('cmp_template_id');
+  sel.innerHTML = '<option value="">— Choisir un modèle —</option>'
+    + (templates.length ? '<optgroup label="Mes modèles">' + templates.map(t => `<option value="${t.id}" data-source="mine">${esc(t.name)}</option>`).join('') + '</optgroup>' : '')
+    + (systemTemplates.length ? '<optgroup label="Modèles système">' + systemTemplates.map(t => `<option value="${t.id}" data-source="sys">${esc(t.name)}</option>`).join('') + '</optgroup>' : '');
+  populateContactCheckboxes();
+  populateTagPills();
+  updateRecipientCount();
+  document.getElementById('cmp_preview').innerHTML = 'Choisissez un modèle pour voir l\'aperçu…';
+  document.getElementById('campaignModal').classList.add('show');
+}
+function loadCampaignTemplate() {
+  const id = document.getElementById('cmp_template_id').value;
+  if (!id) return;
+  const t = [...templates, ...systemTemplates].find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('cmp_subject').value = t.subject || '';
+  document.getElementById('cmp_body').value = t.body_html || t.body || '';
+  updateCampaignPreview();
+}
+function updateCampaignPreview() {
+  const subj = document.getElementById('cmp_subject').value;
+  const body = document.getElementById('cmp_body').value;
+  const fullHtml = appendSignature(renderTemplateVars(body));
+  document.getElementById('cmp_preview').innerHTML = `
+    <div class="from">De : ${esc(merchantData?.email||'votre@email.com')} • À : [destinataire]</div>
+    <div class="subject">${esc(renderTemplateVars(subj))}</div>
+    <div>${fullHtml}</div>`;
+}
+['cmp_subject','cmp_body'].forEach(id => {
+  document.addEventListener('input', e => { if (e.target && e.target.id === id) updateCampaignPreview(); });
+});
+function selectTarget(type, el) {
+  document.querySelectorAll('#campaignModal .segment-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cmp_target_type').value = type;
+  document.getElementById('cmp_segment_picker').style.display = type === 'segment' ? 'block' : 'none';
+  document.getElementById('cmp_selection_picker').style.display = type === 'selected_customers' ? 'block' : 'none';
+  document.getElementById('cmp_custom_picker').style.display = type === 'custom' ? 'block' : 'none';
+  updateRecipientCount();
+}
+function populateContactCheckboxes() {
+  const host = document.getElementById('cmp_contacts_checkboxes');
+  if (!allContacts.length) { host.innerHTML = '<em>Aucun contact.</em>'; return; }
+  host.innerHTML = allContacts.map(c => `
+    <label><input type="checkbox" data-cid="${c.id}" onchange="updateRecipientCount()"> <span>${esc(c.name||c.email||'(sans nom)')}</span> <span style="color:#6c757d;font-size:11px">${esc(c.email||'')}</span></label>
+  `).join('');
+}
+function populateTagPills() {
+  const tags = new Set();
+  allContacts.forEach(c => (c.tags||[]).forEach(t => tags.add(t)));
+  const host = document.getElementById('cmp_tags_pills');
+  if (!tags.size) { host.innerHTML = '<em>Aucun tag défini sur vos contacts.</em>'; return; }
+  host.innerHTML = [...tags].map(t => `<span class="segment-pill" data-tag="${esc(t)}" onclick="this.classList.toggle('active');updateRecipientCount()">${esc(t)}</span>`).join('');
+}
+function getCampaignRecipients() {
+  const type = document.getElementById('cmp_target_type').value;
+  if (type === 'all_customers') return allContacts.filter(c => c.email);
+  if (type === 'selected_customers') {
+    const ids = [...document.querySelectorAll('#cmp_contacts_checkboxes input:checked')].map(i => i.dataset.cid);
+    return allContacts.filter(c => ids.includes(c.id) && c.email);
+  }
+  if (type === 'segment') {
+    const tags = [...document.querySelectorAll('#cmp_tags_pills .segment-pill.active')].map(p => p.dataset.tag);
+    if (!tags.length) return [];
+    return allContacts.filter(c => c.email && (c.tags||[]).some(t => tags.includes(t)));
+  }
+  if (type === 'custom') {
+    const raw = document.getElementById('cmp_custom_emails').value;
+    return raw.split(/[,;\n]/).map(e => e.trim()).filter(e => /@/.test(e)).map(e => ({ email: e, name: '' }));
+  }
+  return [];
+}
+function updateRecipientCount() {
+  const r = getCampaignRecipients();
+  document.getElementById('cmp_recipient_count').textContent = `${r.length} destinataire${r.length>1?'s':''}`;
+}
+async function saveCampaignDraft() {
+  const recipients = getCampaignRecipients();
+  const payload = {
+    owner_type: 'merchant',
+    merchant_id: merchantId,
+    name: document.getElementById('cmp_name').value || 'Campagne sans nom',
+    subject: document.getElementById('cmp_subject').value || null,
+    body_html: document.getElementById('cmp_body').value || null,
+    target_type: document.getElementById('cmp_target_type').value,
+    recipient_count: recipients.length,
+    status: 'draft',
+    created_by: currentUser?.id
+  };
+  const id = document.getElementById('cmp_id').value;
+  const { error } = id
+    ? await sb.from('campaigns').update(payload).eq('id', id)
+    : await sb.from('campaigns').insert(payload);
+  if (error) { toast('Erreur: '+error.message, 'err'); return; }
+  toast('Brouillon enregistré ✓');
+  closeModal('campaignModal');
+  loadCampaigns();
+}
+async function sendCampaign() {
+  const recipients = getCampaignRecipients();
+  if (!recipients.length) { toast('Aucun destinataire avec email valide', 'err'); return; }
+  const subject = renderTemplateVars(document.getElementById('cmp_subject').value || '');
+  // Strip HTML for mailto body (most clients prefer text)
+  const bodyHtml = appendSignature(renderTemplateVars(document.getElementById('cmp_body').value || ''));
+  const body = bodyHtml.replace(/<br\s*\/?>/gi,'\n').replace(/<[^>]+>/g,'').replace(/&nbsp;/g,' ');
+  const bcc = recipients.map(r => r.email).filter(Boolean).join(',');
+  // Save as sent
+  await sb.from('campaigns').insert({
+    owner_type:'merchant', merchant_id: merchantId,
+    name: document.getElementById('cmp_name').value || 'Campagne '+new Date().toLocaleDateString(),
+    subject, body_html: bodyHtml,
+    target_type: document.getElementById('cmp_target_type').value,
+    recipient_count: recipients.length, status: 'sent',
+    sent_at: new Date().toISOString(), created_by: currentUser?.id
+  });
+  // mailto: limit ~2000 chars; if too many BCC, split into batches and warn
+  if (bcc.length > 1800) {
+    if (!confirm(`Liste trop longue pour mailto: (${recipients.length} destinataires).\n\nUn fichier .eml va être téléchargé. Glissez-le dans votre client mail (Gmail / Outlook / Mail) pour l'ouvrir comme brouillon.`)) return;
+    downloadEml(recipients, subject, bodyHtml);
+  } else {
+    const url = `mailto:?bcc=${encodeURIComponent(bcc)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = url;
+  }
+  toast(`Campagne ouverte dans votre client mail (${recipients.length} destinataires) ✓`);
+  closeModal('campaignModal');
+  loadCampaigns();
+}
+function downloadEml(recipients, subject, bodyHtml) {
+  const bcc = recipients.map(r => r.email).join(', ');
+  const eml = `From: ${merchantData?.email||''}\nBcc: ${bcc}\nSubject: ${subject}\nMIME-Version: 1.0\nContent-Type: text/html; charset=utf-8\n\n${bodyHtml}`;
+  const blob = new Blob([eml], { type: 'message/rfc822' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `campagne-${Date.now()}.eml`;
+  a.click();
+}
+function editCampaign(id) {
+  const c = campaigns.find(x => x.id === id); if (!c) return;
+  openCampaignWizard();
+  document.getElementById('campaignModalTitle').textContent = 'Éditer la campagne';
+  document.getElementById('cmp_id').value = c.id;
+  document.getElementById('cmp_name').value = c.name || '';
+  document.getElementById('cmp_subject').value = c.subject || '';
+  document.getElementById('cmp_body').value = c.body_html || '';
+  updateCampaignPreview();
+}
+function resendCampaign(id) { editCampaign(id); }
+
+// ---------- WIRE FILE INPUTS ----------
+function wireMerchantFiles() {
+  const sigFile = document.getElementById('sig_file');
+  if (sigFile) sigFile.addEventListener('change', e => { if (e.target.files[0]) uploadSignatureImage(e.target.files[0]); });
+  const sigDrop = document.getElementById('sig_dropzone');
+  if (sigDrop) {
+    ['dragenter','dragover'].forEach(ev => sigDrop.addEventListener(ev, e => { e.preventDefault(); sigDrop.classList.add('dragover'); }));
+    ['dragleave','drop'].forEach(ev => sigDrop.addEventListener(ev, e => { e.preventDefault(); sigDrop.classList.remove('dragover'); }));
+    sigDrop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) uploadSignatureImage(e.dataTransfer.files[0]); });
+  }
+  const sigHtml = document.getElementById('sig_html');
+  if (sigHtml) sigHtml.addEventListener('input', renderSignaturePreview);
+  const csv = document.getElementById('contactsCsvFile');
+  if (csv) csv.addEventListener('change', e => { if (e.target.files[0]) importContactsCsv(e.target.files[0]); });
+}
+
+// expose
+window.openContactModal = openContactModal;
+window.editContact = editContact;
+window.saveContact = saveContact;
+window.deleteContact = deleteContact;
+window.filterContacts = filterContacts;
+window.exportContactsCsv = exportContactsCsv;
+window.cloneSystemTemplate = cloneSystemTemplate;
+window.previewSystemTemplate = previewSystemTemplate;
+window.previewMyTemplate = previewMyTemplate;
+window.openCampaignWizard = openCampaignWizard;
+window.loadCampaignTemplate = loadCampaignTemplate;
+window.selectTarget = selectTarget;
+window.updateRecipientCount = updateRecipientCount;
+window.saveCampaignDraft = saveCampaignDraft;
+window.sendCampaign = sendCampaign;
+window.editCampaign = editCampaign;
+window.resendCampaign = resendCampaign;
+window.deleteCampaign = deleteCampaign;
+window.saveSignature = saveSignature;
+window.loadSignaturePresets = loadSignaturePresets;
+
+// ---------- init ----------
+(async () => {
+  await checkAuth();
+  if (!merchantId) return;
+  await Promise.all([
+    loadProfile(),
+    loadOffers(),
+    loadLeads(),
+    loadTemplates(),
+    loadSystemTemplates(),
+    loadSequences(),
+    loadStats(),
+    loadContacts(),
+    loadCampaigns()
+  ]);
+  loadSignature();
+  wireMerchantFiles();
+})();
+
+// ============================================================================
+// PHASE 6 — Merchant contests (Jeu du mois)
+// ============================================================================
+let _mContests = [];
+
+function _mctEsc(s){ return String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function _mctLocal(iso){ if(!iso) return ''; const d=new Date(iso); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes()); }
+
+async function loadMerchantContests(){
+  const el = document.getElementById('m_contests_list');
+  if (!el) return;
+  el.innerHTML = '<div class="loader">Chargement…</div>';
+  try{
+    const { data, error } = await sb.from('contests').select('*').eq('merchant_id', merchantId).order('created_at', {ascending:false});
+    if(error) throw error;
+    _mContests = data || [];
+    if(!_mContests.length){
+      el.innerHTML = '<div style="background:#fff;border:2px dashed #e5e5e5;border-radius:12px;padding:40px;text-align:center;color:#6c757d"><i class="fas fa-gift" style="font-size:42px;color:#f82032;margin-bottom:12px;display:block"></i><strong style="color:#212529">Aucun jeu créé</strong><p style="margin-top:6px">Lancez votre premier concours pour collecter des leads qualifiés.</p></div>';
+      return;
+    }
+    el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px">' +
+      _mContests.map(c => {
+        const statusColor = {draft:'#999', active:'#28a745', won:'#ff8c00', ended:'#6c757d'}[c.status] || '#999';
+        const pct = c.selection_interval ? Math.min(100, ((c.total_spins||0) % c.selection_interval) / c.selection_interval * 100) : 0;
+        const nextIn = c.selection_interval - ((c.total_spins||0) % c.selection_interval);
+        return '<div style="background:#fff;border-radius:12px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.06)">' +
+          '<div style="display:flex;justify-content:space-between;align-items:start;gap:10px"><strong style="font-size:15px">'+_mctEsc(c.title)+'</strong>' +
+          '<span style="background:'+statusColor+';color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase">'+_mctEsc(c.status)+'</span></div>' +
+          '<div style="font-size:12px;color:#6c757d;margin-top:4px">'+_mctEsc(c.prize_description||'')+'</div>' +
+          '<div style="margin-top:12px;font-size:12px"><strong>'+(c.total_participants||0)+'</strong> participants · <strong>'+(c.total_spins||0)+'</strong> tours</div>' +
+          '<div style="margin-top:6px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#f82032;height:100%;width:'+pct+'%"></div></div>' +
+          '<div style="font-size:11px;color:#6c757d;margin-top:4px">Prochain gagnant dans '+nextIn+' tours</div>' +
+          '<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">' +
+            '<button class="btn btn-sm" onclick="openMerchantContestModal(\''+c.id+'\')"><i class="fas fa-edit"></i> Modifier</button>' +
+            (c.status==='draft' ? '<button class="btn btn-sm" style="background:#28a745" onclick="activateMerchantContest(\''+c.id+'\')"><i class="fas fa-play"></i> Activer</button>' : '') +
+            '<a class="btn btn-sm ghost" target="_blank" href="contest.html?id='+c.id+'"><i class="fas fa-eye"></i> Voir</a>' +
+            '<button class="btn btn-sm ghost" onclick="copyContestLink(\''+c.id+'\')"><i class="fas fa-link"></i></button>' +
+          '</div>' +
+        '</div>';
+      }).join('') + '</div>';
+  }catch(e){ el.innerHTML = '<div class="error">Erreur: ' + _mctEsc(e.message) + '</div>'; }
+}
+
+function openMerchantContestModal(id){
+  const c = id ? _mContests.find(x=>x.id===id) : null;
+  document.getElementById('mct_id').value = c ? c.id : '';
+  document.getElementById('mct_title').value = c ? c.title : '';
+  document.getElementById('mct_desc').value = c ? (c.description||'') : '';
+  document.getElementById('mct_prize').value = c ? (c.prize_description||'') : '';
+  document.getElementById('mct_value').value = c ? (c.prize_value||'') : '';
+  document.getElementById('mct_prize_img').value = c ? (c.prize_image||'') : '';
+  document.getElementById('mct_start').value = c ? _mctLocal(c.starts_at) : '';
+  document.getElementById('mct_end').value = c ? _mctLocal(c.ends_at) : '';
+  document.getElementById('mct_interval').value = c ? c.selection_interval : 50;
+  document.getElementById('mct_spins').value = c ? c.spins_per_signup : 1;
+  document.getElementById('mct_newsletter').checked = c ? !!c.require_consent_newsletter : true;
+  document.getElementById('mct_agent').checked = c ? !!c.require_consent_agent : false;
+  document.getElementById('mContestModal').style.display = 'flex';
+}
+
+async function saveMerchantContest(){
+  const id = document.getElementById('mct_id').value;
+  const title = document.getElementById('mct_title').value.trim();
+  const prize = document.getElementById('mct_prize').value.trim();
+  if(!title) return toast('Le titre est requis', 'err');
+  if(!prize) return toast('Le lot est requis', 'err');
+  const payload = {
+    merchant_id: merchantId,
+    title,
+    description: document.getElementById('mct_desc').value.trim() || null,
+    prize_description: prize,
+    prize_value: parseFloat(document.getElementById('mct_value').value) || null,
+    prize_image: document.getElementById('mct_prize_img').value.trim() || null,
+    starts_at: document.getElementById('mct_start').value ? new Date(document.getElementById('mct_start').value).toISOString() : null,
+    ends_at: document.getElementById('mct_end').value ? new Date(document.getElementById('mct_end').value).toISOString() : null,
+    selection_interval: parseInt(document.getElementById('mct_interval').value, 10) || 50,
+    spins_per_signup: parseInt(document.getElementById('mct_spins').value, 10) || 1,
+    require_consent_newsletter: document.getElementById('mct_newsletter').checked,
+    require_consent_agent: document.getElementById('mct_agent').checked,
+    status: id ? undefined : 'draft'
+  };
+  try{
+    if(id){
+      delete payload.status;
+      const { error } = await sb.from('contests').update(payload).eq('id', id).eq('merchant_id', merchantId);
+      if(error) throw error;
+    } else {
+      const { error } = await sb.from('contests').insert(payload);
+      if(error) throw error;
+    }
+    document.getElementById('mContestModal').style.display = 'none';
+    toast('Jeu enregistré ✓', 'ok');
+    loadMerchantContests();
+  }catch(e){ toast('Erreur : '+e.message, 'err'); }
+}
+
+async function activateMerchantContest(id){
+  if(!confirm('Activer ce jeu ? Il sera visible publiquement.')) return;
+  try{
+    const { error } = await sb.from('contests').update({ status: 'active' }).eq('id', id).eq('merchant_id', merchantId);
+    if(error) throw error;
+    toast('Jeu activé ✓', 'ok');
+    loadMerchantContests();
+  }catch(e){ toast('Erreur : '+e.message, 'err'); }
+}
+
+function copyContestLink(id){
+  const url = location.origin + location.pathname.replace(/merchant\.html$/, 'contest.html') + '?id=' + id;
+  navigator.clipboard.writeText(url).then(() => toast('Lien copié ✓', 'ok')).catch(() => prompt('Copiez le lien :', url));
+}
+
+window.openMerchantContestModal = openMerchantContestModal;
+window.saveMerchantContest = saveMerchantContest;
+window.activateMerchantContest = activateMerchantContest;
+window.copyContestLink = copyContestLink;
+
+  // === Dynamic Branding ===
+  function applyBrand(brand) {
+    if (!brand) return;
+    const root = document.documentElement.style;
+    if (brand.primary) root.setProperty('--primary', brand.primary);
+    if (brand.primaryHover) root.setProperty('--primary-hover', brand.primaryHover);
+    if (brand.dark) root.setProperty('--dark', brand.dark);
+    if (brand.bg) root.setProperty('--bg', brand.bg);
+    if (brand.accent) root.setProperty('--accent', brand.accent);
+    if (brand.gold) root.setProperty('--gold', brand.gold);
+  }
+  // Check for agent slug in URL params and fetch brand
+  (async function loadBrand() {
+    const params = new URLSearchParams(window.location.search);
+    const agentSlug = params.get('agent');
+    if (!agentSlug) return;
+    try {
+      const resp = await fetch('/api/agent-site?slug=' + encodeURIComponent(agentSlug));
+      const data = await resp.json();
+      if (data && data.brand) applyBrand(data.brand);
+    } catch(e) { console.warn('Brand load failed:', e); }
+  })();
+
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace commerçant — MonBonAgent</title>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
 header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
