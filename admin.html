@@ -13,7 +13,7 @@
 <script>
   function applyBrandFromInputs(){var p=document.getElementById("color_primary");var a=document.getElementById("color_accent");var d=document.getElementById("color_dark");var bg=document.getElementById("color_bg");if(p&&p.value)document.documentElement.style.setProperty("--primary",p.value);if(a&&a.value)document.documentElement.style.setProperty("--primary-hover",a.value);if(d&&d.value)document.documentElement.style.setProperty("--dark",d.value);if(bg&&bg.value)document.documentElement.style.setProperty("--bg",bg.value);}
 
-  if (window['pdfjsLib']) {
+  if (window['pdfjsLib']) 
     window['pdfjsLib'].GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
   }
