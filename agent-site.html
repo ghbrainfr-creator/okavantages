@@ -157,11 +157,11 @@ footer h5{color:#fff;font-size:14px;font-weight:600;text-transform:uppercase;let
     (footer.sections || []).forEach(s => {
       sectionsHtml += '<div><h5>'+esc(s.title)+'</h5><ul>';
       (s.links || []).forEach(l => {
-        const href = l.url.startsWith('/') ? '/agent/'+encodeURIComponent(agent.slug)+l.url.replace('/footer-page.html?slug=','/') : l.url;
-        // Rewrite footer-page links to agent-scoped pages
-        let finalHref = l.url;
-        const m = /footer-page\.html\?slug=([^&]+)/.exec(l.url);
+        const url = l.url || '#';
+        let finalHref = url;
+        const m = /footer-page\.html\?slug=([^&]+)/.exec(url);
         if(m) finalHref = '/agent/'+encodeURIComponent(agent.slug)+'/'+m[1];
+        else if(url.startsWith('/')) finalHref = '/agent/'+encodeURIComponent(agent.slug)+url;
         sectionsHtml += '<li><a href="'+esc(finalHref)+'">'+esc(l.label)+'</a></li>';
       });
       sectionsHtml += '</ul></div>';
