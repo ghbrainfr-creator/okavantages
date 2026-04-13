@@ -745,6 +745,14 @@ function applySiteSettings(s) {
     _hero.style.backgroundRepeat = 'no-repeat';
     _hero.style.color = '#fff';
   }
+
+  // --- Hero title & subtitle ---
+  try{
+    const _h1 = document.querySelector('.hero h1');
+    if(_h1 && s.hero_title) _h1.textContent = s.hero_title;
+    const _hp = document.querySelector('.hero > .container > p') || document.querySelector('.hero p');
+    if(_hp && s.hero_subtitle) _hp.textContent = s.hero_subtitle;
+  }catch(e){}
 }
 
 // ---------- About sections ----------
