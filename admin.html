@@ -210,6 +210,42 @@ tr:hover{background:#fafbfc}
 .segment-pill:hover{border-color:var(--primary)}
 .segment-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 </style>
+<script>
+(function(){
+  function fixAdminPanels(){
+    var br=document.getElementById('panel-branding');
+    var sec=document.getElementById('panel-sections');
+    if(!br||!sec) return;
+    if(sec.parentElement===br){
+      // Move H2 Pourquoi and all subsequent siblings into panel-sections
+      var h2=null;
+      var kids=br.children;
+      for(var i=0;i<kids.length;i++){
+        if(kids[i].tagName==='H2' && kids[i].textContent && kids[i].textContent.indexOf('Pourquoi MonBonAgent')>=0){
+          h2=kids[i]; break;
+        }
+      }
+      if(h2){
+        var node=h2;
+        while(node){
+          var next=node.nextElementSibling;
+          sec.appendChild(node);
+          node=next;
+        }
+      }
+      // Move panel-sections out to be sibling of panel-branding
+      if(br.parentElement){
+        br.parentElement.insertBefore(sec,br.nextElementSibling);
+      }
+    }
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',fixAdminPanels);
+  }else{
+    fixAdminPanels();
+  }
+})();
+</script>
 </head>
 <body>
 <header>
