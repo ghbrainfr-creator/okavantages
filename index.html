@@ -729,6 +729,22 @@ function applySiteSettings(s) {
 
   // --- Cookies policy ---
   applyCookiesPolicy(s.cookies_policy || null);
+
+  // --- Top banner ---
+  const _tb = document.querySelector('.top-banner');
+  if(_tb){
+    if(s.top_banner_enabled===false){ _tb.style.display='none'; }
+    else { _tb.style.display=''; if(s.top_banner_text){ _tb.innerHTML = '<i class="fas fa-gift"></i> ' + s.top_banner_text; } }
+  }
+  // --- Hero background image ---
+  const _hero = document.querySelector('.hero');
+  if(_hero && s.hero_image_url){
+    _hero.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url("'+s.hero_image_url+'")';
+    _hero.style.backgroundSize = 'cover';
+    _hero.style.backgroundPosition = 'center';
+    _hero.style.backgroundRepeat = 'no-repeat';
+    _hero.style.color = '#fff';
+  }
 }
 
 // ---------- About sections ----------
