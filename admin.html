@@ -738,8 +738,8 @@ tr:hover{background:#fafbfc}
     <p class="sub">Ajoutez ou modifiez une ville du réseau.</p>
     <input type="hidden" id="city_id_hidden">
     <div class="grid-2">
-      <div class="field"><label>Nom *</label><input id="city_name_in" placeholder="Perpignan"></div>
-      <div class="field"><label>Slug (url)</label><input id="city_slug_in" placeholder="perpignan"></div>
+      <div class="field"><label>Nom de la ville *</label><input id="city_name_in" placeholder="ex : Elne, Perpignan, Marseille" oninput="var v=this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');document.getElementById('city_slug_in').value=v;"><small style="color:#666;font-size:11px">Le nom affiché sur le site</small></div>
+      <div class="field"><label>Identifiant URL (slug)</label><input id="city_slug_in" placeholder="se remplit automatiquement"><small style="color:#666;font-size:11px">Minuscules, sans accents, sans espaces — utilisé dans l'URL</small></div>
     </div>
     <div class="grid-2">
       <div class="field"><label>Code postal</label><input id="city_postal"></div>
