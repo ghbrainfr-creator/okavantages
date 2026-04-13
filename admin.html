@@ -350,13 +350,21 @@ tr:hover{background:#fafbfc}
   <div class="panel" id="panel-sections">
     <h2 style="margin-top:24px;font-size:16px">Titres des sections</h2>
     <div class="grid-2">
-      <div class="field"><label>Titre "commerçants"</label><input id="st_merchants"></div>
+      <div class="field"><label>Titre "commercants"</label><input id="st_merchants"></div>
+      <div class="field"><label>Sous-titre "commercants"</label><input id="sub_merchants" placeholder="Ex: Vos partenaires locaux"></div>
       <div class="field"><label>Titre "offres" (Les bons moments)</label><input id="st_offers"></div>
-      <div class="field"><label>Titre "offres terminées"</label><input id="st_offers_ended"></div>
+      <div class="field"><label>Sous-titre "offres"</label><input id="sub_offers" placeholder="Sous-titre optionnel"></div>
+      <div class="field"><label>Titre "offres terminees"</label><input id="st_offers_ended"></div>
+      <div class="field"><label>Sous-titre "offres terminees"</label><input id="sub_offers_ended" placeholder="Sous-titre optionnel"></div>
       <div class="field"><label>Titre "pourquoi MonBonAgent"</label><input id="st_about"></div>
+      <div class="field"><label>Sous-titre "pourquoi MonBonAgent"</label><input id="sub_about" placeholder="Sous-titre optionnel"></div>
       <div class="field"><label>Titre "blog"</label><input id="st_blog"></div>
+      <div class="field"><label>Sous-titre "blog"</label><input id="sub_blog" placeholder="Sous-titre optionnel"></div>
       <div class="field"><label>Titre "agent"</label><input id="st_agent"></div>
+      <div class="field"><label>Sous-titre "agent"</label><input id="sub_agent" placeholder="Sous-titre optionnel"></div>
       <div class="field"><label>Titre "newsletter"</label><input id="st_newsletter"></div>
+      <div class="field"><label>Sous-titre "newsletter"</label><input id="sub_newsletter" placeholder="Sous-titre optionnel"></div>
+    </div>
     </div>
     <div class="save-bar">
       <button class="btn ghost" onclick="loadSettings()">Annuler</button>
@@ -1503,13 +1511,20 @@ async function loadSettings() {
   (document.getElementById('font_body')||{}).value = data.font_body || 'Inter';
 
   const st = data.section_titles || {};
-  (document.getElementById('st_merchants')||{}).value = st.merchants || '';
-  (document.getElementById('st_offers')||{}).value = st.offers || '';
-  (document.getElementById('st_offers_ended')||{}).value = st.offers_ended || '';
-  (document.getElementById('st_about')||{}).value = st.about || '';
-  (document.getElementById('st_blog')||{}).value = st.blog || '';
-  (document.getElementById('st_agent')||{}).value = st.agent || '';
-  (document.getElementById('st_newsletter')||{}).value = st.newsletter || '';
+  function _loadST(k, tId, sId) {
+    var v = st[k], t = '', s = '';
+    if (v && typeof v === 'object') { t = v.title || ''; s = v.subtitle || ''; }
+    else if (typeof v === 'string') { t = v; }
+    (document.getElementById(tId)||{}).value = t;
+    (document.getElementById(sId)||{}).value = s;
+  }
+  _loadST('merchants','st_merchants','sub_merchants');
+  _loadST('offers','st_offers','sub_offers');
+  _loadST('offers_ended','st_offers_ended','sub_offers_ended');
+  _loadST('about','st_about','sub_about');
+  _loadST('blog','st_blog','sub_blog');
+  _loadST('agent','st_agent','sub_agent');
+  _loadST('newsletter','st_newsletter','sub_newsletter');
 
   (document.getElementById('agent_name')||{}).value = data.agent_name || '';
   (document.getElementById('agent_role')||{}).value = data.agent_role || '';
@@ -2134,13 +2149,13 @@ async function saveBranding() {
     font_heading: document.getElementById('font_heading').value,
     font_body: document.getElementById('font_body').value,
     section_titles: {
-      merchants: document.getElementById('st_merchants').value,
-      offers: document.getElementById('st_offers').value,
-      offers_ended: document.getElementById('st_offers_ended').value,
-      about: document.getElementById('st_about').value,
-      blog: document.getElementById('st_blog').value,
-      agent: document.getElementById('st_agent').value,
-      newsletter: document.getElementById('st_newsletter').value
+      merchants: {title: document.getElementById('st_merchants').value, subtitle: document.getElementById('sub_merchants').value},
+      offers: {title: document.getElementById('st_offers').value, subtitle: document.getElementById('sub_offers').value},
+      offers_ended: {title: document.getElementById('st_offers_ended').value, subtitle: document.getElementById('sub_offers_ended').value},
+      about: {title: document.getElementById('st_about').value, subtitle: document.getElementById('sub_about').value},
+      blog: {title: document.getElementById('st_blog').value, subtitle: document.getElementById('sub_blog').value},
+      agent: {title: document.getElementById('st_agent').value, subtitle: document.getElementById('sub_agent').value},
+      newsletter: {title: document.getElementById('st_newsletter').value, subtitle: document.getElementById('sub_newsletter').value}
     },
     updated_at: new Date().toISOString(),
     updated_by: currentUser.id
