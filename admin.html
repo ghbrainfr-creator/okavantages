@@ -3579,8 +3579,17 @@ function renderAdminCities(){
       '<td style="padding:10px">'+_p6Esc(c.region||'')+'</td>' +
       '<td style="padding:10px">'+(c.population ? Number(c.population).toLocaleString('fr-FR') : '—')+'</td>' +
       '<td style="padding:10px"><code>'+_p6Esc(c.slug)+'</code></td>' +
-      '<td style="padding:10px;text-align:right"><button class="btn btn-sm" onclick="openCityModal(\''+c.id+'\')"><i class="fas fa-edit"></i></button></td>' +
+      '<td style="padding:10px;text-align:right"><button class="btn btn-sm" onclick="openCityModal(\''+c.id+'\')" title="Modifier"><i class="fas fa-edit"></i></button> <button class="btn btn-sm" style="background:#dc2626;color:#fff;border-color:#dc2626" onclick="_p6DeleteCity(\''+c.id+'\')" title="Supprimer"><i class="fas fa-trash"></i></button></td>' +
     '</tr>').join('') + '</tbody></table>';
+}
+async function _p6DeleteCity(id){
+  if(!confirm('Supprimer definitivement cette ville ?')) return;
+  try{
+    await sb.from('agent_cities').delete().eq('city_id', id);
+    const r = await sb.from('cities').delete().eq('id', id);
+    if(r.error) throw r.error;
+    await loadAdminCities();
+  }catch(e){ alert('Erreur : '+(e.message||e)); }
 }
 function openCityModal(id){
   const c = id ? _p6Cities.find(x=>x.id===id) : null;
@@ -3649,11 +3658,20 @@ function renderAdminAgents(){
           '<div style="font-size:12px;color:#6c757d">'+_p6Esc(a.role||'Conseiller')+(a.agency_name?' · '+_p6Esc(a.agency_name):'')+'</div>' +
           '<div style="font-size:11px;color:#999;margin-top:4px"><i class="fas fa-map-marker-alt"></i> '+_p6Esc(cities)+'</div>' +
           '<div style="margin-top:8px;display:flex;gap:6px">' +
-            '<button class="btn btn-sm" onclick="openAgentModal(\''+a.id+'\')"><i class="fas fa-edit"></i></button>' +
+            '<button class="btn btn-sm" onclick="openAgentModal(\''+a.id+'\')" title="Modifier"><i class="fas fa-edit"></i></button> <button class="btn btn-sm" style="background:#dc2626;color:#fff;border-color:#dc2626" onclick="_p6DeleteAgent(\''+a.id+'\')" title="Supprimer"><i class="fas fa-trash"></i></button>' +
           '</div>' +
         '</div>' +
       '</div>';
     }).join('') + '</div>';
+}
+async function _p6DeleteAgent(id){
+  if(!confirm('Supprimer definitivement cet agent ?')) return;
+  try{
+    await sb.from('agent_cities').delete().eq('agent_id', id);
+    const r = await sb.from('agents').delete().eq('id', id);
+    if(r.error) throw r.error;
+    await loadAdminAgents();
+  }catch(e){ alert('Erreur : '+(e.message||e)); }
 }
 function openAgentModal(id){
   const a = id ? _p6Agents.find(x=>x.id===id) : null;
