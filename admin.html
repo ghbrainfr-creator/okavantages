@@ -2232,7 +2232,7 @@ async function _p6SaveBannerSettings(){
 }
 
 async function _p6RemoveBannerImage(){
-  if(!confirm('Supprimer l'image de bannière actuelle ?')) return;
+  if(!confirm('Supprimer l\'image de bannière actuelle ?')) return;
   try{
     const sid = (settings&&settings.id)||1;
     const r = await sb.from('site_settings').update({hero_image_url:null}).eq('id', sid);
