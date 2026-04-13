@@ -348,6 +348,28 @@ tr:hover{background:#fafbfc}
   </div>
   <!-- SECTIONS (Pourquoi MonBonAgent) -->
   <div class="panel" id="panel-sections">
+    <h2>Bannière & bandeau d'accueil</h2>
+    <div class="card" style="padding:16px;margin-bottom:16px;">
+      <div style="margin-bottom:12px;">
+        <label><input type="checkbox" id="top_banner_enabled"> Afficher le bandeau du haut</label>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label>Texte du bandeau du haut</label>
+        <input type="text" id="top_banner_text" class="input">
+      </div>
+      <hr style="margin:16px 0;">
+      <div style="margin-bottom:12px;">
+        <label>Image de la bannière d'accueil (hero)</label>
+        <input type="text" id="hero_image_url" class="input" placeholder="https://...">
+        <small style="display:block;color:#666;margin-top:4px;">Formats: JPG, PNG, WebP, GIF, SVG â¢ Taille recommandée: 1920 Ã 600 px â¢ Max 10 Mo</small>
+      </div>
+      <div style="margin-bottom:12px;">
+        <input type="file" id="hero_image_file" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml">
+      </div>
+      <div id="hero_image_preview" style="margin-bottom:12px;"></div>
+      <button class="btn btn-primary" onclick="_p6SaveBannerSettings()"><i class="fas fa-save"></i> Enregistrer la bannière</button>
+    </div>
+
     <h2 style="margin-top:24px;font-size:16px">Titres des sections</h2>
     <div class="grid-2">
       <div class="field"><label>Titre "commerçants"</label><input id="st_merchants"></div>
@@ -1470,6 +1492,7 @@ async function loadSettings() {
   const { data, error } = await sb.from('site_settings').select('*').limit(1).maybeSingle();
   if (error || !data) { toast("Impossible de charger les paramètres", 'err'); return; }
   settings = data;
+  if(window._p6LoadBannerSettings)_p6LoadBannerSettings();
   (document.getElementById('site_title')||{}).value = data.site_title || '';
   (document.getElementById('site_tagline')||{}).value = data.site_tagline || '';
   (document.getElementById('hero_title')||{}).value = data.hero_title || '';
@@ -2149,6 +2172,48 @@ async function saveBranding() {
   if (error) toast('Erreur: ' + error.message, 'err');
   else { toast('Branding enregistré ✓'); loadSettings(); }
 }
+
+async function _p6LoadBannerSettings(){
+  try{
+    const s = settings||{};
+    const eT = document.getElementById('top_banner_text'); if(eT) eT.value = s.top_banner_text||'';
+    const eE = document.getElementById('top_banner_enabled'); if(eE) eE.checked = s.top_banner_enabled!==false;
+    const eH = document.getElementById('hero_image_url'); if(eH) eH.value = s.hero_image_url||'';
+    const p = document.getElementById('hero_image_preview');
+    if(p) p.innerHTML = s.hero_image_url? '<img src="'+s.hero_image_url+'" style="max-width:100%;max-height:200px;border-radius:8px;">':'';
+  }catch(e){console.error(e);}
+}
+
+async function _p6SaveBannerSettings(){
+  try{
+    let url = (document.getElementById('hero_image_url')||{}).value || '';
+    const f = document.getElementById('hero_image_file');
+    if(f && f.files && f.files[0]){
+      const file = f.files[0];
+      if(file.size > 10*1024*1024){ alert('Fichier trop volumineux (max 10 Mo).'); return; }
+      const ext = (file.name.split('.').pop()||'jpg').toLowerCase();
+      const path = 'hero/hero-'+Date.now()+'.'+ext;
+      const up = await sb.storage.from('public-assets').upload(path, file, {upsert:true, contentType:file.type});
+      if(up.error) throw up.error;
+      const pub = sb.storage.from('public-assets').getPublicUrl(path);
+      url = pub.data.publicUrl;
+      const eH = document.getElementById('hero_image_url'); if(eH) eH.value = url;
+    }
+    const patch = {
+      top_banner_text: (document.getElementById('top_banner_text')||{}).value||'',
+      top_banner_enabled: !!(document.getElementById('top_banner_enabled')||{}).checked,
+      hero_image_url: url
+    };
+    const sid = (settings&&settings.id)||1;
+    const r = await sb.from('site_settings').update(patch).eq('id', sid);
+    if(r.error) throw r.error;
+    Object.assign(settings||{}, patch);
+    const p = document.getElementById('hero_image_preview');
+    if(p) p.innerHTML = url? '<img src="'+url+'" style="max-width:100%;max-height:200px;border-radius:8px;">':'';
+    (typeof toast==='function'?toast('Banniere enregistree','ok'):alert('Banniere enregistree'));
+  }catch(e){ alert('Erreur : '+(e.message||e)); }
+}
+
 
 async function saveAgent() {
   const patch = {
