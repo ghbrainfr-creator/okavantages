@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Valider un bon â MonBonAgent</title>
-<meta name="description" content="Interface commerÃ§ant : valider un bon d'achat MonBonAgent en saisissant ou scannant son code.">
+<title>Valider un bon — MonBonAgent</title>
+<meta name="description" content="Interface commerçant : valider un bon d'achat MonBonAgent en saisissant ou scannant son code.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--primary:#e11d48;--primary-hover:#be123c;--dark:#111;--bg:#fafafa}
@@ -43,33 +43,33 @@ footer a{color:#999;text-decoration:none}
 </head>
 <body>
 <header>
-  <a href="/">Mon<span>Bon</span>Agent</a>
-  <span class="tag">Espace commerÃ§ant Â· Validation d'un bon</span>
+  <a href="/">MonBon<span>Agent</span></a>
+  <span class="tag">Espace commerçant · Validation d'un bon</span>
 </header>
 <main>
   <div class="card">
     <h1>Valider un bon</h1>
-    <p class="sub">Saisissez ou scannez le code du bon prÃ©sentÃ© par votre client.</p>
+    <p class="sub">Saisissez ou scannez le code du bon présenté par votre client.</p>
     <form class="form" onsubmit="return checkCode(event)">
       <input id="code" type="text" placeholder="Code du bon" autocomplete="off" required>
-      <button class="btn btn-primary" type="submit">VÃ©rifier</button>
+      <button class="btn btn-primary" type="submit">Vérifier</button>
     </form>
     <div id="out"></div>
   </div>
 </main>
-<footer>&copy; MonBonAgent â <a href="/">Retour Ã  l'accueil</a></footer>
+<footer>&copy; MonBonAgent — <a href="/">Retour à l'accueil</a></footer>
 <script>
 var SUPABASE_URL='https://rvknysmuuusygowwauar.supabase.co';
 var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
 var sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 function esc(s){return(s==null?'':String(s)).replace(/[&<>"]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]);});}
-function fmt(iso){if(!iso)return'â';return new Date(iso).toLocaleString('fr-FR');}
+function fmt(iso){if(!iso)return'—';return new Date(iso).toLocaleString('fr-FR');}
 async function checkCode(e){
   if(e)e.preventDefault();
   var code=(document.getElementById('code').value||'').trim().toUpperCase();
   var out=document.getElementById('out');
   if(!code){out.innerHTML='';return false;}
-  out.innerHTML='<div class="result warn">Rechercheâ¦</div>';
+  out.innerHTML='<div class="result warn">Recherche…</div>';
   var r=await sb.from('voucher_purchases').select('*').eq('code',code).maybeSingle();
   if(r.error||!r.data){out.innerHTML='<div class="result err"><h2>Bon introuvable</h2>Aucun bon ne correspond au code saisi.</div>';return false;}
   var v=r.data;
@@ -80,24 +80,24 @@ async function checkCode(e){
   var canUse=v.status==='paid'||v.status==='pending';
   out.innerHTML=''+
     '<div class="result '+statusClass+'">'+
-      '<h2>'+esc(o.description||'Bon')+' â '+esc(v.status.toUpperCase())+'</h2>'+
+      '<h2>'+esc(o.description||'Bon')+' — '+esc(v.status.toUpperCase())+'</h2>'+
       '<dl>'+
-        '<dt>Commerce</dt><dd>'+esc(m.name||'â')+'</dd>'+
-        '<dt>Acheteur</dt><dd>'+esc(v.buyer_name||v.buyer_email||'â')+'</dd>'+
+        '<dt>Commerce</dt><dd>'+esc(m.name||'—')+'</dd>'+
+        '<dt>Acheteur</dt><dd>'+esc(v.buyer_name||v.buyer_email||'—')+'</dd>'+
         '<dt>E-mail</dt><dd>'+esc(v.buyer_email)+'</dd>'+
-        '<dt>Montant</dt><dd>'+(v.amount?Number(v.amount).toFixed(2)+' â¬':'â')+(v.gift?' + '+Number(v.gift).toFixed(2)+' â¬ offerts':'')+'</dd>'+
-        '<dt>AchetÃ© le</dt><dd>'+esc(fmt(v.created_at))+'</dd>'+
+        '<dt>Montant</dt><dd>'+(v.amount?Number(v.amount).toFixed(2)+' €':'—')+(v.gift?' + '+Number(v.gift).toFixed(2)+' € offerts':'')+'</dd>'+
+        '<dt>Acheté le</dt><dd>'+esc(fmt(v.created_at))+'</dd>'+
         (v.expires_at?'<dt>Valable jusqu\'au</dt><dd>'+esc(fmt(v.expires_at))+'</dd>':'')+
-        (v.used_at?'<dt>UtilisÃ© le</dt><dd>'+esc(fmt(v.used_at))+'</dd>':'')+
+        (v.used_at?'<dt>Utilisé le</dt><dd>'+esc(fmt(v.used_at))+'</dd>':'')+
       '</dl>'+
-      (canUse?'<div class="confirm"><button class="btn btn-primary" onclick="markUsed(\''+esc(v.id)+'\')">Valider &amp; marquer utilisÃ©</button><button class="btn btn-ghost" onclick="document.getElementById(\'code\').value=\'\';document.getElementById(\'out\').innerHTML=\'\';">Annuler</button></div>':'')+
+      (canUse?'<div class="confirm"><button class="btn btn-primary" onclick="markUsed(\''+esc(v.id)+'\')">Valider &amp; marquer utilisé</button><button class="btn btn-ghost" onclick="document.getElementById(\'code\').value=\'\';document.getElementById(\'out\').innerHTML=\'\';">Annuler</button></div>':'')+
     '</div>';
   return false;
 }
 async function markUsed(id){
   var r=await sb.from('voucher_purchases').update({status:'used',used_at:new Date().toISOString()}).eq('id',id).select('id,code,status').maybeSingle();
   if(r.error){document.getElementById('out').innerHTML='<div class="result err"><h2>Erreur</h2>'+esc(r.error.message)+'</div>';return;}
-  document.getElementById('out').innerHTML='<div class="result ok"><h2>Bon validÃ© â</h2>Le bon <strong>'+esc(r.data.code)+'</strong> a Ã©tÃ© marquÃ© comme utilisÃ©.<div class="confirm"><button class="btn btn-ghost" onclick="document.getElementById(\'code\').value=\'\';document.getElementById(\'out\').innerHTML=\'\';document.getElementById(\'code\').focus();">Valider un autre bon</button></div></div>';
+  document.getElementById('out').innerHTML='<div class="result ok"><h2>Bon validé ✔</h2>Le bon <strong>'+esc(r.data.code)+'</strong> a été marqué comme utilisé.<div class="confirm"><button class="btn btn-ghost" onclick="document.getElementById(\'code\').value=\'\';document.getElementById(\'out\').innerHTML=\'\';document.getElementById(\'code\').focus();">Valider un autre bon</button></div></div>';
 }
 (async function(){
   var ss=await sb.from('site_settings').select('color_primary,color_dark,color_bg').limit(1).maybeSingle();
