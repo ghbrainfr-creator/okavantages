@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MonBonAgent — Bons d'achat et commerce local | Perpignan</title>
+<title>OK Avantages — Bons d'achat et commerce local | Perpignan</title>
 <meta name="description" content="Découvrez les offres exclusives de vos commerçants locaux. Bons d'achat, réductions et avantages à Perpignan et environs.">
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
@@ -62,13 +62,6 @@ nav .container{display:flex;align-items:center;justify-content:space-between}
 .card-img{height:180px;background-size:cover;background-position:center;position:relative}
 .card-badge{position:absolute;top:12px;left:12px;background:var(--primary);color:#fff;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
 .card-featured{position:absolute;top:12px;right:12px;background:#ff6b35;color:#fff;padding:4px 10px;border-radius:20px;font-size:11px}
-.plan-badge{position:absolute;bottom:12px;right:12px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700;display:inline-flex;align-items:center;gap:4px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
-.plan-badge.premium{background:linear-gradient(135deg,#ffd700,#ff8c00);color:#fff}
-.plan-badge.boost{background:linear-gradient(135deg,#f82032,#c8102e);color:#fff;animation:pulseBoost 2s ease-in-out infinite}
-.plan-badge.pro{background:#495057;color:#fff}
-@keyframes pulseBoost{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
-.card-premium{border:2px solid #ffd700;position:relative}
-.card-boost{border:2px solid #f82032;box-shadow:0 8px 28px rgba(248,32,50,.25)}
 .card-body{padding:16px}
 .card-body h3{font-size:16px;margin-bottom:6px}
 .card-meta{color:var(--light);font-size:13px;margin-bottom:8px}
@@ -161,8 +154,6 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
 .blog-meta{color:var(--light);font-size:12px;margin-bottom:10px}
 .blog-meta i{margin-right:4px}
 .blog-excerpt{color:#555;font-size:13px;line-height:1.6;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-.blog-source{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;background:#fff0f1;color:#f82032;font-size:12px;font-weight:600;border-radius:20px;text-decoration:none;margin-bottom:10px;border:1px solid #ffcdd2;transition:.2s}
-.blog-source:hover{background:#f82032;color:#fff}
 .blog-link{color:var(--primary);font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:6px}
 
 /* Blog modal */
@@ -179,117 +170,23 @@ footer p{opacity:.6;font-size:13px;margin-top:16px}
   .agent-contacts{justify-content:center}
   .agent-services{justify-content:center}
 }
-
-/* =============================================== */
-/* V2 : Sections Pourquoi, Cookies, Footer, Ended  */
-/* =============================================== */
-
-/* Section Pourquoi */
-.about-section{padding:70px 0;background:#fff}
-.about-section .section-title{margin-bottom:40px}
-.about-section .section-title h2{font-size:32px}
-.about-row{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;margin-bottom:60px}
-.about-row.reverse{direction:rtl}
-.about-row.reverse > *{direction:ltr}
-.about-img{width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.12)}
-.about-text h3{font-size:24px;margin-bottom:14px;color:var(--dark);line-height:1.2}
-.about-text p{color:#555;font-size:15.5px;line-height:1.75;margin-bottom:20px}
-.about-cta{display:inline-flex;align-items:center;gap:8px;background:var(--primary);color:#fff;padding:12px 24px;border-radius:10px;font-weight:600;font-size:14px;transition:.2s}
-.about-cta:hover{background:var(--primary-hover);transform:translateX(3px)}
-
-/* Ended offers carousel */
-.ended-section{background:#f5f5f7;padding:60px 0}
-.ended-section .section-title h2{font-size:26px;color:#555}
-.ended-section .section-title p{color:#999}
-.ended-wrap{position:relative;margin-top:20px}
-.ended-scroll{display:flex;gap:20px;overflow-x:auto;scroll-behavior:smooth;padding:10px 4px 30px;scrollbar-width:thin}
-.ended-scroll::-webkit-scrollbar{height:6px}
-.ended-scroll::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
-.ended-card{flex:0 0 260px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06);position:relative;opacity:.88;transition:.2s}
-.ended-card:hover{opacity:1;transform:translateY(-3px)}
-.ended-card .card-img{height:140px;filter:grayscale(.3)}
-.ended-card .ended-badge{position:absolute;top:10px;right:10px;background:#999;color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.ended-card .card-body{padding:14px}
-.ended-card h4{font-size:15px;margin-bottom:4px}
-.ended-card .ended-merchant{color:var(--light);font-size:12px;margin-bottom:8px}
-.ended-card .ended-price{color:#888;text-decoration:line-through;font-size:14px;font-weight:600}
-.ended-arrows{display:flex;gap:10px;justify-content:flex-end;margin-bottom:10px}
-.ended-arrows button{width:38px;height:38px;border-radius:50%;border:1px solid #ddd;background:#fff;cursor:pointer;font-size:14px;color:#555;transition:.2s}
-.ended-arrows button:hover{background:var(--primary);color:#fff;border-color:var(--primary)}
-
-/* Footer V2 */
-footer.footer-v2{background:#111;color:#fff;padding:60px 0 0;text-align:left}
-footer.footer-v2 .footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;border-bottom:1px solid #333}
-footer.footer-v2 .footer-col h4{font-size:14px;text-transform:uppercase;letter-spacing:1px;margin-bottom:18px;color:#fff}
-footer.footer-v2 .footer-col p,footer.footer-v2 .footer-col a{color:#aaa;font-size:14px;line-height:1.8;transition:.2s}
-footer.footer-v2 .footer-col a:hover{color:var(--primary)}
-footer.footer-v2 .footer-col ul{list-style:none}
-footer.footer-v2 .footer-col ul li{margin-bottom:8px}
-footer.footer-v2 .footer-about .logo{font-size:24px;margin-bottom:14px;display:inline-block}
-footer.footer-v2 .footer-about .logo span{color:#fff}
-footer.footer-v2 .footer-about p{color:#aaa;font-size:14px;line-height:1.7;margin-bottom:18px}
-footer.footer-v2 .footer-social{display:flex;gap:12px}
-footer.footer-v2 .footer-social a{width:38px;height:38px;border-radius:50%;background:#222;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;transition:.2s}
-footer.footer-v2 .footer-social a:hover{background:var(--primary);transform:translateY(-2px)}
-footer.footer-v2 .footer-bottom{padding:20px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-footer.footer-v2 .footer-bottom p{color:#888;font-size:13px;margin:0}
-footer.footer-v2 .footer-payments{display:flex;gap:8px;align-items:center}
-footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
-@media(max-width:768px){
-  footer.footer-v2 .footer-grid{grid-template-columns:1fr;gap:30px}
-  .about-row{grid-template-columns:1fr;gap:24px;margin-bottom:40px}
-  .about-row.reverse{direction:ltr}
-  .about-img{aspect-ratio:16/10}
-}
-
-/* Cookies banner */
-.cookies-banner{position:fixed;left:20px;bottom:20px;right:20px;max-width:480px;background:#fff;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.25);padding:24px;z-index:9999;display:none;border:1px solid #eee}
-.cookies-banner.show{display:block;animation:slideUp .4s ease}
-@keyframes slideUp{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
-.cookies-banner h4{font-size:17px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-.cookies-banner h4 i{color:var(--primary)}
-.cookies-banner p{font-size:13px;color:#555;line-height:1.6;margin-bottom:16px}
-.cookies-banner .cookies-actions{display:flex;gap:8px;flex-wrap:wrap}
-.cookies-banner button{flex:1;padding:11px 14px;border-radius:8px;border:none;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer;transition:.2s;min-width:100px}
-.cookies-banner .btn-accept{background:var(--primary);color:#fff}
-.cookies-banner .btn-accept:hover{background:var(--primary-hover)}
-.cookies-banner .btn-refuse{background:#f5f5f5;color:#333}
-.cookies-banner .btn-refuse:hover{background:#e0e0e0}
-.cookies-banner .btn-settings{background:transparent;color:#555;text-decoration:underline;padding:8px 0;font-weight:500}
-.cookies-banner .cookies-categories{margin-top:16px;border-top:1px solid #eee;padding-top:16px;display:none;max-height:220px;overflow-y:auto}
-.cookies-banner.expanded .cookies-categories{display:block}
-.cookies-cat{margin-bottom:14px}
-.cookies-cat label{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:600;cursor:pointer}
-.cookies-cat .cookies-cat-desc{font-size:12px;color:#777;margin-top:4px;padding-left:24px}
-.cookies-cat input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary)}
-.cookies-cat input[disabled]{opacity:.5}
-.cookies-fab{position:fixed;left:20px;bottom:20px;width:46px;height:46px;border-radius:50%;background:#fff;border:1px solid #ddd;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.12);display:none;align-items:center;justify-content:center;font-size:18px;color:var(--primary);z-index:998;transition:.2s}
-.cookies-fab:hover{transform:scale(1.1)}
-.cookies-fab.show{display:flex}
-@media(max-width:520px){
-  .cookies-banner{left:10px;right:10px;bottom:10px;padding:18px}
-  .cookies-banner .cookies-actions{flex-direction:column}
-}
 </style>
 </head>
 <body>
 
 <div class="top-banner">
-  <i class="fas fa-gift"></i> Bienvenue sur MonBonAgent — Soutenez vos commerçants locaux à Perpignan !
+  <i class="fas fa-gift"></i> Bienvenue sur OK Avantages — Soutenez vos commerçants locaux à Perpignan !
 </div>
 
 <nav>
   <div class="container">
-    <a href="#" class="logo">Mon <span>BonAgent</span></a>
+    <a href="#" class="logo">OK <span>Avantages</span></a>
     <div class="nav-links">
       <a href="#merchants">Commerçants</a>
-      <a href="#jeu">Jeu du mois</a>
       <a href="#offers">Offres</a>
       <a href="#agent-immo">Agent immo</a>
       <a href="#blog">Le Mag</a>
-      <select id="citySelector" onchange="if(this.value)location.href='city.html?slug='+this.value" style="padding:8px 12px;border:1px solid #e5e5e5;border-radius:8px;font-family:inherit;font-size:13px;background:#fff;cursor:pointer">
-        <option value="">📍 Ma ville</option>
-      </select>
+      <a href="#newsletter">Newsletter</a>
       <a href="#" class="nav-cta" onclick="document.getElementById('merchantModal').classList.add('show')">
         <i class="fas fa-store"></i> Espace commerçant
       </a>
@@ -326,34 +223,6 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
   </div>
 </section>
 
-<!-- ========== JEU DU MOIS ========== -->
-<section id="jeu" style="padding:60px 0;background:linear-gradient(135deg,#111 0%,#2a0a0e 100%);color:#fff">
-  <div class="container">
-    <div class="section-title" style="color:#fff">
-      <h2 style="color:#fff"><i class="fas fa-gift" style="color:#f82032"></i> Le Jeu du Mois</h2>
-      <p style="color:#ccc">Un gagnant automatique toutes les 50 participations. Gratuit, sans engagement.</p>
-    </div>
-    <div id="jeuContainer" style="max-width:900px;margin:0 auto">
-      <div class="loading" style="color:#ccc;text-align:center;padding:30px"><i class="fas fa-spinner fa-spin"></i> Chargement…</div>
-    </div>
-  </div>
-</section>
-<style>
-.jeu-card{background:#fff;color:#212529;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.4);display:grid;grid-template-columns:1fr 1fr;min-height:320px}
-@media(max-width:768px){.jeu-card{grid-template-columns:1fr}}
-.jeu-img{background-size:cover;background-position:center;background-color:#f0f0f0;min-height:280px}
-.jeu-body{padding:36px;display:flex;flex-direction:column;justify-content:center}
-.jeu-label{color:#f82032;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
-.jeu-body h3{font-size:28px;margin-bottom:8px}
-.jeu-body .prize{font-size:16px;color:#6c757d;margin-bottom:16px}
-.jeu-stats{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap}
-.jeu-stats div{font-size:12px;color:#6c757d}
-.jeu-stats strong{display:block;font-size:22px;color:#212529}
-.jeu-cta{background:#f82032;color:#fff;padding:16px 28px;border-radius:12px;font-weight:700;font-size:15px;display:inline-flex;align-items:center;gap:10px;align-self:flex-start;transition:.2s}
-.jeu-cta:hover{background:#d91a2b;transform:scale(1.02)}
-.jeu-empty{background:#fff;color:#6c757d;border-radius:16px;padding:50px;text-align:center}
-</style>
-
 <!-- Mon sacré voisin : bandeau agent immobilier -->
 <section class="agent-section" id="agent-immo">
   <div class="container">
@@ -384,46 +253,14 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
   </div>
 </section>
 
-<!-- Pourquoi MonBonAgent -->
-<section class="about-section" id="about">
-  <div class="container">
-    <div class="section-title">
-      <h2><i class="fas fa-heart" style="color:var(--primary)"></i> Pourquoi MonBonAgent</h2>
-      <p>Un agent immobilier, des commerçants locaux, une seule communauté perpignanaise</p>
-    </div>
-    <div id="aboutRows">
-      <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
-    </div>
-  </div>
-</section>
-
 <section class="offers-section" id="offers">
   <div class="container">
     <div class="section-title">
-      <h2><i class="fas fa-tags" style="color:var(--primary)"></i> Les bons moments</h2>
-      <p>Profitez de bons d'achat exclusifs chez vos commerçants préférés</p>
+      <h2><i class="fas fa-tags" style="color:var(--primary)"></i> Offres du moment</h2>
+      <p>Profitez de bons d'achat exclusifs</p>
     </div>
     <div class="offer-cards" id="offerCards">
       <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
-    </div>
-  </div>
-</section>
-
-<!-- Offres terminées -->
-<section class="ended-section" id="offers-ended">
-  <div class="container">
-    <div class="section-title">
-      <h2><i class="fas fa-clock" style="color:#888"></i> Offres terminées</h2>
-      <p>Revenez bientôt, ces offres pourraient revenir</p>
-    </div>
-    <div class="ended-arrows">
-      <button onclick="scrollEnded(-1)" aria-label="Précédent"><i class="fas fa-chevron-left"></i></button>
-      <button onclick="scrollEnded(1)" aria-label="Suivant"><i class="fas fa-chevron-right"></i></button>
-    </div>
-    <div class="ended-wrap">
-      <div class="ended-scroll" id="endedScroll">
-        <div class="loading" style="flex:1"><i class="fas fa-spinner"></i> Chargement...</div>
-      </div>
     </div>
   </div>
 </section>
@@ -480,69 +317,20 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
   </div>
 </div>
 
-<footer class="footer-v2" id="footer">
+<footer>
   <div class="container">
-    <div class="footer-grid">
-      <div class="footer-col footer-about">
-        <a href="#" class="logo">Mon <span>BonAgent</span></a>
-        <p id="footerAbout">MonBonAgent est la plateforme locale qui connecte Nordine Mouaouia, agent Guy Hoquet Perpignan, aux meilleurs commerçants de la ville.</p>
-        <div class="footer-social" id="footerSocial"></div>
-      </div>
-      <div class="footer-col" id="footerCol1">
-        <h4>MonBonAgent</h4>
-        <ul>
-          <li><a href="#about">À propos</a></li>
-          <li><a href="#merchants">Nos commerçants</a></li>
-          <li><a href="#offers">Les bons moments</a></li>
-          <li><a href="#blog">Le Mag</a></li>
-        </ul>
-      </div>
-      <div class="footer-col" id="footerCol2">
-        <h4>Service client</h4>
-        <ul>
-          <li><a href="#contact">Contact</a></li>
-          <li><a href="#faq">FAQ</a></li>
-          <li><a href="merchant.html">Devenir partenaire</a></li>
-          <li><a href="mailto:n.mouaouia@guyhoquet.com">Nous écrire</a></li>
-        </ul>
-      </div>
-      <div class="footer-col" id="footerCol3">
-        <h4>Informations</h4>
-        <ul>
-          <li><a href="#mentions">Mentions légales</a></li>
-          <li><a href="#cgu">CGU</a></li>
-          <li><a href="#privacy">Confidentialité</a></li>
-          <li><a href="#" onclick="openCookiesSettings();return false">Gérer les cookies</a></li>
-        </ul>
-      </div>
+    <div class="logo" style="margin-bottom:16px">OK <span style="color:#fff">Avantages</span></div>
+    <div class="footer-links">
+      <a href="#">Accueil</a>
+      <a href="#merchants">Commerçants</a>
+      <a href="#offers">Offres</a>
+      <a href="#agent-immo">Agent immo</a>
+      <a href="#blog">Le Mag</a>
+      <a href="#">Contact</a>
     </div>
-    <div class="footer-bottom">
-      <p id="footerLegal">© 2026 MonBonAgent — Nordine Mouaouia, agent Guy Hoquet Perpignan. Tous droits réservés.</p>
-      <div class="footer-payments">
-        <i class="fab fa-cc-visa"></i>
-        <i class="fab fa-cc-mastercard"></i>
-        <i class="fab fa-cc-amex"></i>
-        <i class="fab fa-cc-paypal"></i>
-        <i class="fab fa-cc-apple-pay"></i>
-      </div>
-    </div>
+    <p>&copy; 2026 OK Avantages — Perpignan. Tous droits réservés.</p>
   </div>
 </footer>
-
-<!-- Cookies banner -->
-<div class="cookies-banner" id="cookiesBanner">
-  <h4><i class="fas fa-cookie-bite"></i> <span id="cookiesTitle">Votre vie privée compte</span></h4>
-  <p id="cookiesText">Nous utilisons des cookies pour faire fonctionner le site, mesurer l'audience et vous proposer des contenus pertinents.</p>
-  <div class="cookies-actions">
-    <button class="btn-refuse" onclick="refuseCookies()" id="btnRefuse">Tout refuser</button>
-    <button class="btn-accept" onclick="acceptCookies()" id="btnAccept">Tout accepter</button>
-  </div>
-  <button class="btn-settings" onclick="toggleCookiesSettings()" id="btnSettings">Personnaliser mes choix</button>
-  <div class="cookies-categories" id="cookiesCategories"></div>
-</div>
-<button class="cookies-fab" id="cookiesFab" onclick="openCookiesSettings()" aria-label="Gérer les cookies" title="Gérer les cookies">
-  <i class="fas fa-cookie-bite"></i>
-</button>
 
 <!-- Lead Modal -->
 <div class="modal-overlay" id="leadModal">
@@ -556,6 +344,8 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
       <input type="tel" id="leadPhone" placeholder="Téléphone (optionnel)">
       <input type="hidden" id="leadOfferId">
       <input type="hidden" id="leadMerchantId">
+      <input type="hidden" id="leadPrice">
+      <input type="hidden" id="leadGift">
       <button onclick="submitLead()">Recevoir mon bon <i class="fas fa-arrow-right"></i></button>
     </div>
     <div class="success" id="leadSuccess">
@@ -571,7 +361,7 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
   <div class="modal">
     <span class="modal-close" onclick="this.closest('.modal-overlay').classList.remove('show')">&times;</span>
     <h3><i class="fas fa-store" style="color:var(--primary)"></i> Espace commerçant</h3>
-    <p style="color:var(--light);font-size:14px;margin-bottom:16px">Rejoignez MonBonAgent et boostez votre visibilité !</p>
+    <p style="color:var(--light);font-size:14px;margin-bottom:16px">Rejoignez OK Avantages et boostez votre visibilité !</p>
     <input type="text" placeholder="Nom du commerce">
     <input type="email" placeholder="Email professionnel">
     <input type="tel" placeholder="Téléphone">
@@ -587,350 +377,8 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let allMerchants = [];
 let allOffers = [];
-let endedOffers = [];
 let allBlogPosts = [];
 let activeCategory = 'all';
-let siteSettings = null;
-
-// Darken a hex color by a percentage (for hover states)
-function darkenHex(hex, pct) {
-  hex = (hex||'').replace('#','');
-  if (hex.length !== 6) return '#d91a2b';
-  const num = parseInt(hex, 16);
-  let r = (num >> 16) - Math.round(255 * pct);
-  let g = ((num >> 8) & 0x00ff) - Math.round(255 * pct);
-  let b = (num & 0x0000ff) - Math.round(255 * pct);
-  r = Math.max(0, Math.min(255, r));
-  g = Math.max(0, Math.min(255, g));
-  b = Math.max(0, Math.min(255, b));
-  return '#' + ((r << 16) | (g << 8) | b).toString(16).padStart(6, '0');
-}
-
-// Apply site_settings to the DOM + CSS variables
-function applySiteSettings(s) {
-  if (!s) return;
-  siteSettings = s;
-
-  // --- Colors (CSS variables) ---
-  const root = document.documentElement;
-  if (s.color_primary) {
-    root.style.setProperty('--primary', s.color_primary);
-    root.style.setProperty('--primary-hover', darkenHex(s.color_primary, 0.08));
-  }
-  if (s.color_dark) root.style.setProperty('--dark', s.color_dark);
-
-  // --- Title & meta ---
-  // Legacy values from before rebrand are ignored so the current HTML default wins.
-  const LEGACY_TITLES = ['OK Avantages', 'MonBonLoc'];
-  const effectiveTitle = (s.site_title && !LEGACY_TITLES.includes(s.site_title)) ? s.site_title : null;
-  const tagline = s.site_tagline || '';
-  if (effectiveTitle) {
-    document.title = effectiveTitle + (tagline ? ' — ' + tagline : '');
-  }
-  if (s.meta_description) {
-    const md = document.querySelector('meta[name="description"]');
-    if (md) md.setAttribute('content', s.meta_description);
-  }
-
-  // --- Favicon ---
-  if (s.favicon_url) {
-    let link = document.querySelector('link[rel="icon"]');
-    if (!link) { link = document.createElement('link'); link.rel = 'icon'; document.head.appendChild(link); }
-    link.href = s.favicon_url;
-  }
-
-  // --- Nav logo ---
-  if (effectiveTitle) {
-    const parts = effectiveTitle.split(' ');
-    const first = parts.shift();
-    const rest = parts.join(' ');
-    document.querySelectorAll('.logo').forEach(el => {
-      el.innerHTML = first + (rest ? ' <span>' + rest + '</span>' : '');
-    });
-  }
-
-  // --- Hero ---
-  if (s.hero_title) {
-    const h = document.querySelector('.hero h1');
-    if (h) h.textContent = s.hero_title;
-  }
-  if (s.hero_subtitle) {
-    const p = document.querySelector('.hero p');
-    if (p) p.textContent = s.hero_subtitle;
-  }
-
-  // --- Section titles ---
-  const st = s.section_titles || {};
-  const secMap = {
-    merchants: ['#merchants .section-title h2', '#merchants .section-title p'],
-    offers:    ['.offers-section .section-title h2', '.offers-section .section-title p'],
-    agent:     ['.agent-section .section-title h2', '.agent-section .section-title p'],
-    blog:      ['.blog-section .section-title h2', '.blog-section .section-title p'],
-    newsletter:['.newsletter h2', '.newsletter p']
-  };
-  Object.keys(secMap).forEach(k => {
-    const entry = st[k];
-    if (!entry) return;
-    const [hSel, pSel] = secMap[k];
-    if (typeof entry === 'string') {
-      const el = document.querySelector(hSel);
-      if (el) {
-        const icon = el.querySelector('i');
-        el.textContent = ' ' + entry;
-        if (icon) el.prepend(icon);
-      }
-    } else if (typeof entry === 'object') {
-      if (entry.title) {
-        const el = document.querySelector(hSel);
-        if (el) {
-          const icon = el.querySelector('i');
-          el.textContent = ' ' + entry.title;
-          if (icon) el.prepend(icon);
-        }
-      }
-      if (entry.subtitle) {
-        const el = document.querySelector(pSel);
-        if (el) el.textContent = entry.subtitle;
-      }
-    }
-  });
-
-  // --- Agent card ---
-  if (s.agent_name) document.getElementById('agentName').textContent = s.agent_name;
-  if (s.agent_role) document.getElementById('agentRole').textContent = s.agent_role;
-  if (s.agent_bio)  document.getElementById('agentBio').textContent  = s.agent_bio;
-  if (s.agent_photo_url) {
-    document.getElementById('agentPhoto').style.backgroundImage = `url('${s.agent_photo_url}')`;
-  }
-  if (s.agent_tel) {
-    const a = document.getElementById('agentTel');
-    a.href = 'tel:' + s.agent_tel.replace(/\s+/g, '');
-    a.innerHTML = '<i class="fas fa-phone"></i> ' + s.agent_tel;
-  }
-  if (s.agent_email) {
-    const a = document.getElementById('agentEmail');
-    a.href = 'mailto:' + s.agent_email;
-    a.innerHTML = '<i class="fas fa-envelope"></i> ' + s.agent_email;
-  }
-  if (Array.isArray(s.agent_services) && s.agent_services.length) {
-    const host = document.querySelector('.agent-services');
-    if (host) {
-      host.innerHTML = s.agent_services.map(sv =>
-        `<span><i class="fas fa-check"></i> ${sv}</span>`
-      ).join('');
-    }
-  }
-
-  // --- About sections "Pourquoi MonBonAgent" ---
-  renderAboutSections(s.about_sections);
-
-  // --- Footer blocks ---
-  applyFooter(s.footer_blocks || {}, s.social_links || {});
-
-  // --- Cookies policy ---
-  applyCookiesPolicy(s.cookies_policy || null);
-
-  // --- Top banner ---
-  const _tb = document.querySelector('.top-banner');
-  if(_tb){
-    if(s.top_banner_enabled===false){ _tb.style.display='none'; }
-    else { _tb.style.display=''; if(s.top_banner_text){ _tb.innerHTML = '<i class="fas fa-gift"></i> ' + s.top_banner_text; } }
-  }
-  // --- Hero background image ---
-  const _hero = document.querySelector('.hero');
-  if(_hero && s.hero_image_url){
-    _hero.style.backgroundImage = 'linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35)), url("'+s.hero_image_url+'")';
-    _hero.style.backgroundSize = 'cover';
-    _hero.style.backgroundPosition = 'center';
-    _hero.style.backgroundRepeat = 'no-repeat';
-    _hero.style.color = '#fff';
-  }
-
-  // --- Hero title & subtitle ---
-  try{
-    const _h1 = document.querySelector('.hero h1');
-    if(_h1 && s.hero_title) _h1.textContent = s.hero_title;
-    const _hp = document.querySelector('.hero > .container > p') || document.querySelector('.hero p');
-    if(_hp && s.hero_subtitle) _hp.textContent = s.hero_subtitle;
-  }catch(e){}
-}
-
-// ---------- About sections ----------
-function renderAboutSections(sections) {
-  const host = document.getElementById('aboutRows');
-  if (!host) return;
-  if (!Array.isArray(sections) || !sections.length) {
-    // fallback content
-    sections = [
-      { title:"Un agent immobilier au cœur de Perpignan",
-        text:"MonBonAgent, c'est d'abord l'engagement de Nordine Mouaouia, conseiller Guy Hoquet à Perpignan, pour vous connecter aux meilleurs commerçants de la ville.",
-        image:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80",
-        cta_label:"Découvrir mon agence", cta_url:"#agent-immo" },
-      { title:"Des bons d'achat chez vos commerçants préférés",
-        text:"Chaque bon MonBonAgent est négocié en direct avec un commerçant perpignanais. Vous profitez de vraies remises, eux d'une nouvelle clientèle locale.",
-        image:"https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1000&q=80",
-        cta_label:"Voir les bons", cta_url:"#offers" },
-      { title:"Un réseau local qui fait vivre le quartier",
-        text:"En rejoignant MonBonAgent, vous soutenez une économie de proximité. 100% des commerçants présents sur la plateforme sont indépendants.",
-        image:"https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1000&q=80",
-        cta_label:"Nos commerçants", cta_url:"#merchants" }
-    ];
-  }
-  host.innerHTML = sections.map((b, i) => `
-    <div class="about-row ${i % 2 === 1 ? 'reverse' : ''}">
-      <div class="about-img" style="background-image:url('${(b.image||'').replace(/'/g,"\\'")}')"></div>
-      <div class="about-text">
-        <h3>${escapeHtml(b.title||'')}</h3>
-        <p>${escapeHtml(b.text||'')}</p>
-        ${b.cta_label ? `<a href="${b.cta_url||'#'}" class="about-cta">${escapeHtml(b.cta_label)} <i class="fas fa-arrow-right"></i></a>` : ''}
-      </div>
-    </div>
-  `).join('');
-}
-
-function escapeHtml(str) {
-  return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[c]);
-}
-
-// ---------- Footer rendering ----------
-function applyFooter(fb, sl) {
-  if (fb.about_text) {
-    const a = document.getElementById('footerAbout');
-    if (a) a.textContent = fb.about_text;
-  }
-  if (fb.legal_line) {
-    const l = document.getElementById('footerLegal');
-    if (l) l.textContent = fb.legal_line;
-  }
-  const setCol = (id, col) => {
-    if (!col) return;
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerHTML = `<h4>${escapeHtml(col.title||'')}</h4><ul>` +
-      (col.items||[]).map(it => `<li><a href="${it.url||'#'}">${escapeHtml(it.label||'')}</a></li>`).join('') +
-      `</ul>`;
-  };
-  setCol('footerCol1', fb.links_col1);
-  setCol('footerCol2', fb.links_col2);
-  setCol('footerCol3', fb.links_col3);
-
-  // Social icons
-  const socialHost = document.getElementById('footerSocial');
-  if (socialHost) {
-    const icons = {
-      facebook:'fab fa-facebook-f', instagram:'fab fa-instagram',
-      linkedin:'fab fa-linkedin-in', twitter:'fab fa-x-twitter',
-      tiktok:'fab fa-tiktok', youtube:'fab fa-youtube',
-      whatsapp:'fab fa-whatsapp'
-    };
-    const html = Object.keys(icons)
-      .filter(k => sl[k] && sl[k].trim())
-      .map(k => `<a href="${sl[k]}" target="_blank" rel="noopener" aria-label="${k}"><i class="${icons[k]}"></i></a>`)
-      .join('');
-    socialHost.innerHTML = html || '<a href="mailto:n.mouaouia@guyhoquet.com" aria-label="email"><i class="fas fa-envelope"></i></a>';
-  }
-}
-
-// ---------- Cookies banner ----------
-let cookiesPolicy = null;
-function applyCookiesPolicy(policy) {
-  const defaults = {
-    banner_title:"Votre vie privée compte",
-    banner_text:"Nous utilisons des cookies pour faire fonctionner le site, mesurer l'audience et vous proposer des contenus pertinents.",
-    accept_label:"Tout accepter",
-    refuse_label:"Tout refuser",
-    settings_label:"Personnaliser mes choix",
-    categories:[
-      {key:"essential",label:"Essentiels",required:true,description:"Nécessaires au fonctionnement du site."},
-      {key:"analytics",label:"Mesure d'audience",required:false,description:"Statistiques anonymes pour améliorer le site."},
-      {key:"marketing",label:"Marketing",required:false,description:"Personnalisation des contenus et campagnes."}
-    ]
-  };
-  cookiesPolicy = Object.assign({}, defaults, policy || {});
-  if (policy && policy.categories) cookiesPolicy.categories = policy.categories;
-
-  document.getElementById('cookiesTitle').textContent = cookiesPolicy.banner_title;
-  document.getElementById('cookiesText').textContent = cookiesPolicy.banner_text;
-  document.getElementById('btnAccept').textContent = cookiesPolicy.accept_label;
-  document.getElementById('btnRefuse').textContent = cookiesPolicy.refuse_label;
-  document.getElementById('btnSettings').textContent = cookiesPolicy.settings_label;
-
-  const host = document.getElementById('cookiesCategories');
-  host.innerHTML = cookiesPolicy.categories.map(c => `
-    <div class="cookies-cat">
-      <label>
-        <input type="checkbox" data-key="${c.key}" ${c.required ? 'checked disabled' : ''}>
-        ${escapeHtml(c.label)}
-      </label>
-      <div class="cookies-cat-desc">${escapeHtml(c.description||'')}</div>
-    </div>
-  `).join('') + `<div style="margin-top:14px;display:flex;gap:8px">
-    <button class="btn-refuse" onclick="saveCookiesChoice()" style="flex:1;padding:10px;border-radius:8px;border:none;font-weight:600;background:var(--primary);color:#fff;cursor:pointer">Enregistrer mes choix</button>
-  </div>`;
-
-  // Show banner if no decision yet
-  const saved = localStorage.getItem('cookies_consent');
-  if (!saved) {
-    setTimeout(() => document.getElementById('cookiesBanner').classList.add('show'), 600);
-  } else {
-    document.getElementById('cookiesFab').classList.add('show');
-  }
-}
-
-function acceptCookies() {
-  const choice = { essential:true, analytics:true, marketing:true, ts:Date.now() };
-  localStorage.setItem('cookies_consent', JSON.stringify(choice));
-  document.getElementById('cookiesBanner').classList.remove('show','expanded');
-  document.getElementById('cookiesFab').classList.add('show');
-}
-function refuseCookies() {
-  const choice = { essential:true, analytics:false, marketing:false, ts:Date.now() };
-  localStorage.setItem('cookies_consent', JSON.stringify(choice));
-  document.getElementById('cookiesBanner').classList.remove('show','expanded');
-  document.getElementById('cookiesFab').classList.add('show');
-}
-function toggleCookiesSettings() {
-  document.getElementById('cookiesBanner').classList.toggle('expanded');
-}
-function openCookiesSettings() {
-  const saved = localStorage.getItem('cookies_consent');
-  if (saved) {
-    try {
-      const choice = JSON.parse(saved);
-      document.querySelectorAll('#cookiesCategories input[type=checkbox]').forEach(cb => {
-        const key = cb.getAttribute('data-key');
-        if (!cb.disabled && choice[key] !== undefined) cb.checked = !!choice[key];
-      });
-    } catch(e) {}
-  }
-  document.getElementById('cookiesBanner').classList.add('show','expanded');
-}
-function saveCookiesChoice() {
-  const choice = { ts:Date.now() };
-  document.querySelectorAll('#cookiesCategories input[type=checkbox]').forEach(cb => {
-    choice[cb.getAttribute('data-key')] = cb.checked;
-  });
-  choice.essential = true;
-  localStorage.setItem('cookies_consent', JSON.stringify(choice));
-  document.getElementById('cookiesBanner').classList.remove('show','expanded');
-  document.getElementById('cookiesFab').classList.add('show');
-}
-
-// Expose for inline onclick handlers
-window.acceptCookies = acceptCookies;
-window.refuseCookies = refuseCookies;
-window.toggleCookiesSettings = toggleCookiesSettings;
-window.openCookiesSettings = openCookiesSettings;
-window.saveCookiesChoice = saveCookiesChoice;
-
-async function loadSiteSettings() {
-  try {
-    const { data } = await sb.from('site_settings').select('*').limit(1).maybeSingle();
-    if (data) applySiteSettings(data);
-  } catch (e) {
-    console.warn('site_settings not loaded:', e);
-  }
-}
 
 // Blog fallback content (recettes, événements, conseil immo) utilisé si la table blog_posts est vide
 const FALLBACK_BLOG = [
@@ -985,15 +433,13 @@ const FALLBACK_BLOG = [
 ];
 
 async function loadData() {
-  const [mRes, oRes, eRes, bRes] = await Promise.all([
+  const [mRes, oRes, bRes] = await Promise.all([
     sb.from('merchants').select('*').eq('status','active').order('featured',{ascending:false}),
-    sb.from('offers').select('*, merchants(name, category, image_url)').eq('status','active'),
-    sb.from('offers').select('*, merchants(name, category, image_url)').eq('status','ended').order('ended_at',{ascending:false}).limit(12),
-    sb.from('blog_posts').select('*, featured_merchant:merchants!featured_merchant_id(id,name,slug,image_url,category,city)').order('published_at',{ascending:false}).limit(6)
+    sb.from('offers').select('*, merchants(name, category)').eq('status','active'),
+    sb.from('blog_posts').select('*').order('published_at',{ascending:false}).limit(6)
   ]);
   allMerchants = mRes.data || [];
   allOffers = oRes.data || [];
-  endedOffers = eRes.data || [];
   allBlogPosts = (bRes.data && bRes.data.length > 0) ? bRes.data : FALLBACK_BLOG;
 
   document.getElementById('statMerchants').textContent = allMerchants.length;
@@ -1003,38 +449,8 @@ async function loadData() {
   renderCategories();
   renderMerchants();
   renderOffers();
-  renderEndedOffers();
   renderBlog();
 }
-
-function renderEndedOffers() {
-  const host = document.getElementById('endedScroll');
-  if (!host) return;
-  if (!endedOffers.length) {
-    host.innerHTML = '<p style="color:#999;flex:1;text-align:center;padding:20px">Aucune offre terminée pour le moment.</p>';
-    return;
-  }
-  host.innerHTML = endedOffers.map(o => {
-    const m = o.merchants || {};
-    const img = m.image_url || 'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&q=80';
-    return `<div class="ended-card">
-      <div class="card-img" style="background-image:url('${img}')">
-        <span class="ended-badge">Terminé</span>
-      </div>
-      <div class="card-body">
-        <h4>${escapeHtml(o.title || (o.price+'€ → '+(o.price+o.gift)+'€ offert'))}</h4>
-        <div class="ended-merchant">${escapeHtml(m.name||'')}</div>
-        <div class="ended-price">${o.price}€ payé → ${o.price + (o.gift||0)}€</div>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-function scrollEnded(dir) {
-  const el = document.getElementById('endedScroll');
-  if (el) el.scrollBy({ left: dir * 300, behavior:'smooth' });
-}
-window.scrollEnded = scrollEnded;
 
 function renderBlog() {
   const grid = document.getElementById('blogGrid');
@@ -1046,16 +462,6 @@ function renderBlog() {
     const excerpt = p.excerpt || (p.content ? p.content.replace(/<[^>]+>/g,'').slice(0,140)+'…' : '');
     const author = p.author || 'Rédaction';
     const date = p.date || (p.published_at ? new Date(p.published_at).toLocaleDateString('fr-FR') : '');
-    // Source link contextuel (événement → billetterie, recette → commerçant vedette)
-    let sourceBlock = '';
-    const fm = p.featured_merchant;
-    if (fm && fm.name) {
-      const merchantUrl = fm.slug ? ('/merchant.html?slug=' + encodeURIComponent(fm.slug)) : ('/merchant.html?id=' + encodeURIComponent(fm.id));
-      sourceBlock = `<a class="blog-source" href="${merchantUrl}" onclick="event.stopPropagation()"><i class="fas fa-store"></i> ${escapeHtml(fm.name)}${fm.city ? ' · ' + escapeHtml(fm.city) : ''}</a>`;
-    } else if (p.source_url) {
-      const label = p.source_label || 'Voir la source';
-      sourceBlock = `<a class="blog-source" href="${escapeHtml(p.source_url)}" target="_blank" rel="noopener" onclick="event.stopPropagation()"><i class="fas fa-external-link-alt"></i> ${escapeHtml(label)}</a>`;
-    }
     return `<div class="blog-card" onclick="openBlog(${i})">
       <div class="blog-img" style="background-image:url('${img}')">
         <span class="blog-tag">${cat}</span>
@@ -1064,7 +470,6 @@ function renderBlog() {
         <h3>${title}</h3>
         <div class="blog-meta"><i class="fas fa-user"></i> ${author} &nbsp;•&nbsp; <i class="fas fa-calendar"></i> ${date}</div>
         <p class="blog-excerpt">${excerpt}</p>
-        ${sourceBlock}
         <span class="blog-link">Lire l'article <i class="fas fa-arrow-right"></i></span>
       </div>
     </div>`;
@@ -1078,18 +483,7 @@ function openBlog(i) {
   document.getElementById('blogModalTag').textContent = p.category || 'Actualité';
   document.getElementById('blogModalTitle').textContent = p.title || '';
   document.getElementById('blogModalMeta').innerHTML = `<i class="fas fa-user"></i> ${p.author||'Rédaction'} &nbsp;•&nbsp; <i class="fas fa-calendar"></i> ${p.date || (p.published_at ? new Date(p.published_at).toLocaleDateString('fr-FR') : '')}`;
-  let body = p.content_html || p.content || p.body || '<p>'+(p.excerpt||'')+'</p>';
-  // CTA contextuel à la fin de l'article
-  const fm = p.featured_merchant;
-  if (fm && fm.name) {
-    const merchantUrl = fm.slug ? ('/merchant.html?slug=' + encodeURIComponent(fm.slug)) : ('/merchant.html?id=' + encodeURIComponent(fm.id));
-    const thumb = fm.image_url ? `<img src="${fm.image_url}" style="width:64px;height:64px;border-radius:10px;object-fit:cover">` : `<div style="width:64px;height:64px;border-radius:10px;background:#fff0f1;display:flex;align-items:center;justify-content:center;color:#f82032"><i class="fas fa-store"></i></div>`;
-    body += `<div style="margin-top:24px;padding:18px;background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:14px;display:flex;gap:14px;align-items:center">${thumb}<div style="flex:1"><div style="font-size:11px;color:#f82032;text-transform:uppercase;letter-spacing:.3px;font-weight:600">Commerçant mis en avant</div><div style="font-weight:700;font-size:16px">${escapeHtml(fm.name)}</div><div style="font-size:12px;color:#6c757d">${escapeHtml(fm.category||'')}${fm.city ? ' · ' + escapeHtml(fm.city) : ''}</div></div><a href="${merchantUrl}" class="btn-pop" style="text-decoration:none;padding:10px 18px;border-radius:10px;background:#f82032;color:#fff;font-weight:600">Voir la fiche <i class="fas fa-arrow-right"></i></a></div>`;
-  } else if (p.source_url) {
-    const label = p.source_label || 'Accéder à la source';
-    body += `<div style="margin-top:24px;padding:16px;background:#fff0f1;border:1px solid #ffcdd2;border-radius:12px;text-align:center"><a href="${escapeHtml(p.source_url)}" target="_blank" rel="noopener" style="text-decoration:none;color:#f82032;font-weight:600"><i class="fas fa-external-link-alt"></i> ${escapeHtml(label)}</a></div>`;
-  }
-  document.getElementById('blogModalContent').innerHTML = body;
+  document.getElementById('blogModalContent').innerHTML = p.content || p.body || '<p>'+(p.excerpt||'')+'</p>';
   document.getElementById('blogModal').classList.add('show');
 }
 
@@ -1146,18 +540,10 @@ function renderMerchants() {
     : filtered.map(m => {
       const offers = merchantOffers[m.id] || [];
       const stars = '★'.repeat(Math.round(m.rating)) + '☆'.repeat(5-Math.round(m.rating));
-      const plan = (m.plan || 'free').toLowerCase();
-      const boostActive = m.boost_until && new Date(m.boost_until) > new Date();
-      let planBadge = '';
-      if (boostActive) planBadge = '<span class="plan-badge boost"><i class="fas fa-rocket"></i> Boost</span>';
-      else if (plan === 'premium') planBadge = '<span class="plan-badge premium"><i class="fas fa-gem"></i> Premium</span>';
-      else if (plan === 'pro') planBadge = '<span class="plan-badge pro"><i class="fas fa-check-circle"></i> Pro</span>';
-      const cardClass = 'card' + (boostActive ? ' card-boost' : '') + (plan === 'premium' ? ' card-premium' : '');
-      return `<div class="${cardClass}">
+      return `<div class="card">
         <div class="card-img" style="background-image:url('${m.image_url||''}')">
           <span class="card-badge">${m.category}</span>
           ${m.featured ? '<span class="card-featured"><i class="fas fa-star"></i> Vedette</span>' : ''}
-          ${planBadge}
         </div>
         <div class="card-body">
           <h3>${m.name}</h3>
@@ -1165,7 +551,7 @@ function renderMerchants() {
           <div class="card-meta"><i class="fas fa-clock"></i> ${m.hours||''}</div>
           <div class="card-rating">${stars} <span>${m.rating}/5 (${m.avis} avis)</span></div>
           <div class="card-desc">${m.description||''}</div>
-          ${offers.length ? '<div class="card-offers">' + offers.map(o =>
+          ${offers.length ? '<div class="card-offers">' + offers.map(o => 
             `<span class="offer-tag" style="cursor:pointer" onclick="openLead('${o.id}','${m.id}','${m.name}',${o.price},${o.gift})">${o.price}€ payé → ${o.price+o.gift}€ offert</span>`
           ).join('') + '</div>' : ''}
         </div>
@@ -1195,9 +581,17 @@ function openLead(offerId, merchantId, merchantName, price, gift) {
   document.getElementById('leadOfferInfo').textContent = `${merchantName} — Payez ${price}€, recevez ${price+gift}€`;
   document.getElementById('leadOfferId').value = offerId;
   document.getElementById('leadMerchantId').value = merchantId;
+  document.getElementById('leadPrice').value = price;
+  document.getElementById('leadGift').value = gift;
   document.getElementById('leadForm').style.display = 'block';
   document.getElementById('leadSuccess').style.display = 'none';
   document.getElementById('leadModal').classList.add('show');
+}
+
+function _genCode(){
+  var a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789', s='';
+  for(var i=0;i<8;i++) s+=a.charAt(Math.floor(Math.random()*a.length));
+  return s;
 }
 
 async function submitLead() {
@@ -1206,17 +600,35 @@ async function submitLead() {
   const phone = document.getElementById('leadPhone').value;
   const offerId = document.getElementById('leadOfferId').value;
   const merchantId = document.getElementById('leadMerchantId').value;
+  const price = parseFloat(document.getElementById('leadPrice').value)||null;
+  const gift = parseFloat(document.getElementById('leadGift').value)||null;
   if (!name || !email) return alert('Veuillez remplir votre nom et email');
-  
-  await sb.from('leads').insert({
+
+  // 1) Trace lead (non bloquant)
+  sb.from('leads').insert({
     name, email, phone: phone||null,
     offer_id: offerId, merchant_id: merchantId,
     source: 'website', status: 'new'
-  });
-  
-  document.getElementById('leadForm').style.display = 'none';
-  document.getElementById('leadSuccess').style.display = 'block';
-  setTimeout(() => document.getElementById('leadModal').classList.remove('show'), 2500);
+  }).then(()=>{}).catch(()=>{});
+
+  // 2) Créer le bon d'achat
+  const code = _genCode();
+  const expires = new Date(); expires.setFullYear(expires.getFullYear()+1);
+  const {data, error} = await sb.from('voucher_purchases').insert({
+    offer_id: offerId, merchant_id: merchantId,
+    buyer_name: name, buyer_email: email, buyer_phone: phone||null,
+    amount: price, gift: gift,
+    code: code, status: 'paid',
+    expires_at: expires.toISOString()
+  }).select('code').maybeSingle();
+
+  if (error || !data) {
+    alert('Une erreur est survenue : ' + (error?error.message:'bon non créé'));
+    return;
+  }
+
+  // 3) Redirection vers le bon
+  window.location.href = '/voucher.html?code=' + encodeURIComponent(data.code);
 }
 
 async function subscribeNewsletter(e) {
@@ -1241,55 +653,7 @@ async function subscribeNewsletter(e) {
 }
 
 // Init
-loadSiteSettings();
 loadData();
-
-// ---------- Phase 6 : city selector + jeu du mois ----------
-async function loadCitiesSelector(){
-  try{
-    const { data } = await sb.from('cities').select('slug,name,department_code').order('population', {ascending:false}).limit(50);
-    const sel = document.getElementById('citySelector');
-    if(!sel || !data) return;
-    data.forEach(c => {
-      const opt = document.createElement('option');
-      opt.value = c.slug;
-      opt.textContent = c.name + (c.department_code ? ' ('+c.department_code+')' : '');
-      sel.appendChild(opt);
-    });
-  }catch(e){}
-}
-async function loadJeuDuMois(){
-  const el = document.getElementById('jeuContainer');
-  if(!el) return;
-  try{
-    const { data } = await sb.from('contests').select('*').eq('status', 'active').order('created_at', {ascending:false}).limit(1).maybeSingle();
-    if(!data){
-      el.innerHTML = '<div class="jeu-empty"><i class="fas fa-hourglass-half" style="font-size:32px;color:#f82032;margin-bottom:12px"></i><h3 style="color:#212529;margin-bottom:6px">Aucun jeu en cours</h3><p>Revenez bientôt — le prochain tirage arrive vite&nbsp;!</p></div>';
-      return;
-    }
-    const img = data.prize_image || data.cover_image || 'https://images.pexels.com/photos/264636/pexels-photo-264636.jpeg?auto=compress&cs=tinysrgb&w=800';
-    const nextIn = data.selection_interval - ((data.total_spins||0) % data.selection_interval);
-    const safe = s => String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    el.innerHTML = '<div class="jeu-card">' +
-      '<div class="jeu-img" style="background-image:url('+JSON.stringify(img)+')"></div>' +
-      '<div class="jeu-body">' +
-        '<div class="jeu-label"><i class="fas fa-trophy"></i> Gros lot en jeu</div>' +
-        '<h3>'+safe(data.title)+'</h3>' +
-        '<div class="prize">'+safe(data.prize_description || data.description || '')+'</div>' +
-        '<div class="jeu-stats">' +
-          '<div><strong>'+(data.total_participants||0)+'</strong>Participants</div>' +
-          '<div><strong>'+(data.total_spins||0)+'</strong>Tours joués</div>' +
-          '<div><strong>'+nextIn+'</strong>Tours avant gagnant</div>' +
-        '</div>' +
-        '<a class="jeu-cta" href="contest.html?id='+data.id+'">'+safe(data.cta_text || 'Tenter ma chance')+' <i class="fas fa-arrow-right"></i></a>' +
-      '</div>' +
-    '</div>';
-  }catch(e){
-    el.innerHTML = '<div class="jeu-empty">Impossible de charger le jeu en cours.</div>';
-  }
-}
-loadCitiesSelector();
-loadJeuDuMois();
 </script>
 </body>
 </html>
