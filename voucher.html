@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Mon bon â MonBonAgent</title>
+<title>Mon bon — MonBonAgent</title>
 <meta name="description" content="Votre bon d'achat MonBonAgent : code, QR code et instructions d'utilisation.">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
@@ -12,8 +12,8 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:#333;line-height:1.6}
 header{background:#fff;border-bottom:1px solid #e9ecef;padding:16px 24px;text-align:center}
-header a{text-decoration:none;font-size:20px;font-weight:700;color:var(--primary)}
-header a span{color:var(--dark)}
+header a{text-decoration:none;font-size:20px;font-weight:700;color:var(--dark)}
+header a span{color:var(--primary)}
 main{max-width:680px;margin:32px auto;padding:0 20px}
 .ticket{background:#fff;border-radius:18px;box-shadow:0 4px 20px rgba(0,0,0,.08);overflow:hidden}
 .ticket-top{background:linear-gradient(135deg,var(--primary),var(--primary-hover));color:#fff;padding:28px 24px;text-align:center}
@@ -51,11 +51,11 @@ footer a{color:#999;text-decoration:none}
 </style>
 </head>
 <body>
-<header><a href="/">Mon<span>Bon</span>Agent</a></header>
+<header><a href="/">MonBon<span>Agent</span></a></header>
 <main id="main">
-<div class="err" id="loading">Chargement de votre bonâ¦</div>
+<div class="err" id="loading">Chargement de votre bon…</div>
 </main>
-<footer>&copy; MonBonAgent â <a href="/">Retour Ã  l'accueil</a></footer>
+<footer>&copy; MonBonAgent — <a href="/">Retour à l'accueil</a></footer>
 <script>
 var SUPABASE_URL='https://rvknysmuuusygowwauar.supabase.co';
 var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
@@ -66,9 +66,9 @@ function esc(s){return(s==null?'':String(s)).replace(/[&<>"]/g,function(c){retur
   var main=document.getElementById('main');
   var p=new URLSearchParams(location.search);
   var code=p.get('code');
-  if(!code){main.innerHTML='<div class="err"><h1>Code manquant</h1><p>Ce lien ne contient pas de code de bon.</p><a class="btn btn-primary" href="/">Retour Ã  l\'accueil</a></div>';return;}
+  if(!code){main.innerHTML='<div class="err"><h1>Code manquant</h1><p>Ce lien ne contient pas de code de bon.</p><a class="btn btn-primary" href="/">Retour à l\'accueil</a></div>';return;}
   var r=await sb.from('voucher_purchases').select('*').eq('code',code).maybeSingle();
-  if(r.error||!r.data){main.innerHTML='<div class="err"><h1>Bon introuvable</h1><p>Ce bon n\'existe pas ou a Ã©tÃ© retirÃ©.</p><a class="btn btn-primary" href="/">Retour Ã  l\'accueil</a></div>';return;}
+  if(r.error||!r.data){main.innerHTML='<div class="err"><h1>Bon introuvable</h1><p>Ce bon n\'existe pas ou a été retiré.</p><a class="btn btn-primary" href="/">Retour à l\'accueil</a></div>';return;}
   var v=r.data;
   var mr=v.merchant_id?await sb.from('merchants').select('name,category,address,phone,image_url,slug').eq('id',v.merchant_id).maybeSingle():{data:null};
   var m=mr.data||{};
@@ -76,13 +76,13 @@ function esc(s){return(s==null?'':String(s)).replace(/[&<>"]/g,function(c){retur
   var o=or.data||{};
   var ss=await sb.from('site_settings').select('color_primary,color_dark,color_bg').limit(1).maybeSingle();
   if(ss.data){var s=document.documentElement.style;if(ss.data.color_primary)s.setProperty('--primary',ss.data.color_primary);if(ss.data.color_dark)s.setProperty('--dark',ss.data.color_dark);if(ss.data.color_bg)s.setProperty('--bg',ss.data.color_bg);}
-  var statusLabel={pending:'En attente',paid:'PayÃ©',used:'UtilisÃ©',expired:'ExpirÃ©',refunded:'RemboursÃ©'}[v.status]||v.status;
+  var statusLabel={pending:'En attente',paid:'Payé',used:'Utilisé',expired:'Expiré',refunded:'Remboursé'}[v.status]||v.status;
   var html=''+
     '<div class="ticket">'+
       '<div class="ticket-top">'+
         '<h1>'+esc(o.description||'Bon d\'achat')+'</h1>'+
         '<div class="merchant">'+esc(m.name||'Commerce partenaire')+'</div>'+
-        (v.amount?'<div class="value">'+Number(v.amount).toFixed(0)+' â¬ payÃ©s'+(v.gift?' Â· '+Number(v.gift).toFixed(0)+' â¬ offerts':'')+'</div>':'')+
+        (v.amount?'<div class="value">'+Number(v.amount).toFixed(0)+' € payés'+(v.gift?' · '+Number(v.gift).toFixed(0)+' € offerts':'')+'</div>':'')+
       '</div>'+
       '<div class="dashed"></div>'+
       '<div class="ticket-body">'+
@@ -94,10 +94,10 @@ function esc(s){return(s==null?'':String(s)).replace(/[&<>"]/g,function(c){retur
           '<strong>Acheteur :</strong> '+esc(v.buyer_name||v.buyer_email)+'<br>'+
           '<strong>Achat :</strong> '+esc(fmtDate(v.created_at))+
           (v.expires_at?'<br><strong>Valable jusqu\'au :</strong> '+esc(fmtDate(v.expires_at)):'')+
-          (v.used_at?'<br><strong>UtilisÃ© le :</strong> '+esc(fmtDate(v.used_at)):'')+
+          (v.used_at?'<br><strong>Utilisé le :</strong> '+esc(fmtDate(v.used_at)):'')+
         '</div>'+
         (m.address?'<div class="info"><strong>Adresse :</strong> '+esc(m.address)+'</div>':'')+
-        '<div class="instructions"><strong>Comment utiliser votre bon</strong>'+esc((o.qr_config&&o.qr_config.instructions)||'PrÃ©sentez ce bon (sur votre tÃ©lÃ©phone ou imprimÃ©) au commerÃ§ant partenaire. Il scannera le QR code ou saisira le code pour valider votre bon.')+'</div>'+
+        '<div class="instructions"><strong>Comment utiliser votre bon</strong>'+esc((o.qr_config&&o.qr_config.instructions)||'Présentez ce bon (sur votre téléphone ou imprimé) au commerçant partenaire. Il scannera le QR code ou saisira le code pour valider votre bon.')+'</div>'+
         '<div class="actions">'+
           '<button class="btn btn-primary" onclick="window.print()">Imprimer</button>'+
           (m.slug?'<a class="btn btn-ghost" href="/merchant.html?slug='+esc(m.slug)+'">Voir le commerce</a>':'')+
