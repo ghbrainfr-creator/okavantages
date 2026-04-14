@@ -1506,6 +1506,7 @@ async function loadSettings() {
   if (error || !data) { toast("Impossible de charger les paramètres", 'err'); return; }
   settings = data;
   if(window._p6LoadBannerSettings)_p6LoadBannerSettings();
+  try{loadFooterPages()}catch(e){}
   (document.getElementById('site_title')||{}).value = data.site_title || '';
   (document.getElementById('site_tagline')||{}).value = data.site_tagline || '';
   (document.getElementById('hero_title')||{}).value = data.hero_title || '';
