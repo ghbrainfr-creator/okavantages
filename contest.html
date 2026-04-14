@@ -1088,5 +1088,23 @@ window.addEventListener('message', (ev) => {
 // Signal to parent that iframe is ready (so admin can push initial state)
 try { window.parent && window.parent.postMessage({type:'contest-preview-ready'}, '*'); } catch(e){}
 </script>
+
+<script>
+(async function(){
+  try{
+    if(typeof supabase==="undefined")return;
+    var _sb=supabase.createClient("https://rvknysmuuusygowwauar.supabase.co","eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg");
+    var r=await _sb.from("site_settings").select("color_primary,color_accent,color_dark,color_bg").limit(1).maybeSingle();
+    if(r&&r.data){
+      var s=document.documentElement.style;
+      function dark(h){try{h=String(h).replace("#","");if(h.length===3)h=h.split("").map(function(c){return c+c;}).join("");var n=parseInt(h,16);var rr=Math.max(0,((n>>16)&255)-25),gg=Math.max(0,((n>>8)&255)-25),bb=Math.max(0,(n&255)-25);return "#"+((1<<24)+(rr<<16)+(gg<<8)+bb).toString(16).slice(1);}catch(e){return "#"+h;}}
+      if(r.data.color_primary){s.setProperty("--primary",r.data.color_primary);s.setProperty("--primary-hover",dark(r.data.color_primary));}
+      if(r.data.color_accent){s.setProperty("--accent",r.data.color_accent);}
+      if(r.data.color_dark){s.setProperty("--dark",r.data.color_dark);}
+      if(r.data.color_bg){s.setProperty("--bg",r.data.color_bg);}
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
