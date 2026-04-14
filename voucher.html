@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Mon bon â MonBonAgent</title>
+<meta name="description" content="Votre bon d'achat MonBonAgent : code, QR code et instructions d'utilisation.">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+:root{--primary:#e11d48;--primary-hover:#be123c;--dark:#111;--bg:#fafafa;--gold:#ffc107}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:#333;line-height:1.6}
+header{background:#fff;border-bottom:1px solid #e9ecef;padding:16px 24px;text-align:center}
+header a{text-decoration:none;font-size:20px;font-weight:700;color:var(--primary)}
+header a span{color:var(--dark)}
+main{max-width:680px;margin:32px auto;padding:0 20px}
+.ticket{background:#fff;border-radius:18px;box-shadow:0 4px 20px rgba(0,0,0,.08);overflow:hidden}
+.ticket-top{background:linear-gradient(135deg,var(--primary),var(--primary-hover));color:#fff;padding:28px 24px;text-align:center}
+.ticket-top h1{margin:0 0 8px;font-size:22px;font-weight:700}
+.ticket-top .merchant{font-size:15px;opacity:.95}
+.value{background:var(--gold);color:#111;display:inline-block;margin-top:12px;padding:6px 14px;border-radius:999px;font-weight:700;font-size:14px}
+.dashed{border-top:2px dashed #e5e7eb;position:relative}
+.dashed::before,.dashed::after{content:"";position:absolute;top:-12px;width:22px;height:22px;background:var(--bg);border-radius:50%}
+.dashed::before{left:-11px}.dashed::after{right:-11px}
+.ticket-body{padding:28px 24px;text-align:center}
+.qr-wrap{display:flex;justify-content:center;margin:10px 0 20px}
+.qr-wrap canvas{border:1px solid #eee;border-radius:10px;padding:10px;background:#fff}
+.code-label{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:6px}
+.code{font-family:'Courier New',monospace;font-size:24px;font-weight:700;letter-spacing:3px;color:var(--dark);background:#f3f4f6;padding:12px 18px;border-radius:10px;display:inline-block;margin-bottom:18px}
+.info{font-size:14px;color:#555;margin:8px 0}
+.info strong{color:var(--dark)}
+.status{display:inline-block;padding:6px 14px;border-radius:999px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.status.pending{background:#fef3c7;color:#92400e}
+.status.paid{background:#d1fae5;color:#065f46}
+.status.used{background:#e5e7eb;color:#374151}
+.status.expired{background:#fee2e2;color:#991b1b}
+.instructions{background:#f9fafb;border-left:3px solid var(--primary);padding:14px 16px;margin-top:22px;text-align:left;font-size:14px;border-radius:6px}
+.instructions strong{display:block;margin-bottom:6px;color:var(--dark)}
+.actions{margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:10px 20px;border-radius:999px;font-weight:600;font-size:14px;text-decoration:none;border:none;cursor:pointer;transition:.2s}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover)}
+.btn-ghost{background:#fff;color:var(--dark);border:1px solid #ddd}
+.btn-ghost:hover{background:#f3f4f6}
+.err{background:#fff;border-radius:12px;padding:32px;text-align:center;color:#666}
+.err h1{color:var(--dark);margin:0 0 12px}
+footer{text-align:center;padding:32px;color:#999;font-size:13px;margin-top:40px}
+footer a{color:#999;text-decoration:none}
+@media print{header,footer,.actions{display:none}body{background:#fff}main{margin:0;padding:0}.ticket{box-shadow:none;border:1px solid #ddd}}
+</style>
+</head>
+<body>
+<header><a href="/">Mon<span>Bon</span>Agent</a></header>
+<main id="main">
+<div class="err" id="loading">Chargement de votre bonâ¦</div>
+</main>
+<footer>&copy; MonBonAgent â <a href="/">Retour Ã  l'accueil</a></footer>
+<script>
+var SUPABASE_URL='https://rvknysmuuusygowwauar.supabase.co';
+var SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJ2a255c211dXVzeWdvd3dhdWFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU3NTc0OTYsImV4cCI6MjA5MTMzMzQ5Nn0._X2KohbYZIqn_1d4bf0tlbimlNAKHflmUCW-vbj1yTg';
+var sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+function fmtDate(iso){if(!iso)return'';var d=new Date(iso);return d.toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});}
+function esc(s){return(s==null?'':String(s)).replace(/[&<>"]/g,function(c){return({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]);});}
+(async function(){
+  var main=document.getElementById('main');
+  var p=new URLSearchParams(location.search);
+  var code=p.get('code');
+  if(!code){main.innerHTML='<div class="err"><h1>Code manquant</h1><p>Ce lien ne contient pas de code de bon.</p><a class="btn btn-primary" href="/">Retour Ã  l\'accueil</a></div>';return;}
+  var r=await sb.from('voucher_purchases').select('*').eq('code',code).maybeSingle();
+  if(r.error||!r.data){main.innerHTML='<div class="err"><h1>Bon introuvable</h1><p>Ce bon n\'existe pas ou a Ã©tÃ© retirÃ©.</p><a class="btn btn-primary" href="/">Retour Ã  l\'accueil</a></div>';return;}
+  var v=r.data;
+  var mr=v.merchant_id?await sb.from('merchants').select('name,category,address,phone,image_url,slug').eq('id',v.merchant_id).maybeSingle():{data:null};
+  var m=mr.data||{};
+  var or=v.offer_id?await sb.from('offers').select('description,qr_config,price,gift').eq('id',v.offer_id).maybeSingle():{data:null};
+  var o=or.data||{};
+  var ss=await sb.from('site_settings').select('color_primary,color_dark,color_bg').limit(1).maybeSingle();
+  if(ss.data){var s=document.documentElement.style;if(ss.data.color_primary)s.setProperty('--primary',ss.data.color_primary);if(ss.data.color_dark)s.setProperty('--dark',ss.data.color_dark);if(ss.data.color_bg)s.setProperty('--bg',ss.data.color_bg);}
+  var statusLabel={pending:'En attente',paid:'PayÃ©',used:'UtilisÃ©',expired:'ExpirÃ©',refunded:'RemboursÃ©'}[v.status]||v.status;
+  var html=''+
+    '<div class="ticket">'+
+      '<div class="ticket-top">'+
+        '<h1>'+esc(o.description||'Bon d\'achat')+'</h1>'+
+        '<div class="merchant">'+esc(m.name||'Commerce partenaire')+'</div>'+
+        (v.amount?'<div class="value">'+Number(v.amount).toFixed(0)+' â¬ payÃ©s'+(v.gift?' Â· '+Number(v.gift).toFixed(0)+' â¬ offerts':'')+'</div>':'')+
+      '</div>'+
+      '<div class="dashed"></div>'+
+      '<div class="ticket-body">'+
+        '<div class="qr-wrap"><canvas id="qrc"></canvas></div>'+
+        '<div class="code-label">Code de validation</div>'+
+        '<div class="code">'+esc(v.code)+'</div><br>'+
+        '<span class="status '+esc(v.status)+'">'+esc(statusLabel)+'</span>'+
+        '<div class="info" style="margin-top:16px">'+
+          '<strong>Acheteur :</strong> '+esc(v.buyer_name||v.buyer_email)+'<br>'+
+          '<strong>Achat :</strong> '+esc(fmtDate(v.created_at))+
+          (v.expires_at?'<br><strong>Valable jusqu\'au :</strong> '+esc(fmtDate(v.expires_at)):'')+
+          (v.used_at?'<br><strong>UtilisÃ© le :</strong> '+esc(fmtDate(v.used_at)):'')+
+        '</div>'+
+        (m.address?'<div class="info"><strong>Adresse :</strong> '+esc(m.address)+'</div>':'')+
+        '<div class="instructions"><strong>Comment utiliser votre bon</strong>'+esc((o.qr_config&&o.qr_config.instructions)||'PrÃ©sentez ce bon (sur votre tÃ©lÃ©phone ou imprimÃ©) au commerÃ§ant partenaire. Il scannera le QR code ou saisira le code pour valider votre bon.')+'</div>'+
+        '<div class="actions">'+
+          '<button class="btn btn-primary" onclick="window.print()">Imprimer</button>'+
+          (m.slug?'<a class="btn btn-ghost" href="/merchant.html?slug='+esc(m.slug)+'">Voir le commerce</a>':'')+
+          '<a class="btn btn-ghost" href="/">Accueil</a>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+  main.innerHTML=html;
+  var valUrl=location.origin+'/validate.html?code='+encodeURIComponent(v.code);
+  QRCode.toCanvas(document.getElementById('qrc'),valUrl,{width:200,margin:1,color:{dark:getComputedStyle(document.documentElement).getPropertyValue('--dark').trim()||'#111',light:'#ffffff'}},function(e){if(e)console.log(e);});
+})();
+</script>
+</body>
+</html>
