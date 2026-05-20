@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centre commercial du Boulevard Jacques Albert — Elne | MonBonAgent</title>
+<meta name="description" content="Tous les commerces installés sur le pôle commercial du Boulevard Jacques Albert à Elne : Lidl, Intermarché, Marie Blachère, Picard, Société Générale, et plus.">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/assets/gh-theme.css">
+<link rel="stylesheet" href="/assets/commerces.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Montserrat", sans-serif; background: #fff; color: #212529; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+nav { background: #fff; padding: 14px 0; box-shadow: 0 2px 10px rgba(15,10,48,.06); position: sticky; top: 0; z-index: 100; }
+nav .container { display: flex; align-items: center; justify-content: space-between; }
+.logo { font-family: "Anton", sans-serif; font-size: 24px; color: var(--gh-bleu-cyan); letter-spacing: 0.5px; }
+.logo span { color: var(--gh-bleu-iris); }
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-links a { font-weight: 500; font-size: 14px; transition: color .2s; }
+.nav-links a:hover { color: var(--gh-bleu-cyan); }
+.nav-cta { background: var(--gh-bleu-cyan); color: #fff !important; padding: 8px 18px; border-radius: 8px; }
+.nav-cta:hover { background: var(--gh-bleu-cyan-hover); }
+
+/* Infos pratiques */
+.infos-pratiques {
+  background: #f6f8fc;
+  padding: 50px 0;
+}
+.infos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+}
+.info-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 22px;
+  border: 1px solid #eef0f5;
+}
+.info-card .info-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--gh-bleu-cyan);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.info-card h3 {
+  font-family: "Anton", sans-serif;
+  font-size: 18px;
+  color: var(--gh-bleu-iris);
+  margin: 0 0 6px;
+  letter-spacing: 0.3px;
+}
+.info-card p { font-size: 13.5px; color: #495057; line-height: 1.55; }
+
+.map-embed { margin-top: 28px; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 18px rgba(15,10,48,.08); }
+.map-embed iframe { display: block; width: 100%; height: 360px; border: 0; }
+
+/* Footer */
+footer { background: var(--gh-bleu-iris); color: #fff; padding: 44px 0 24px; text-align: center; }
+footer p { opacity: .65; font-size: 13px; margin-top: 16px; }
+.footer-links { display: flex; justify-content: center; gap: 22px; margin-bottom: 14px; flex-wrap: wrap; }
+.footer-links a { color: #fff; opacity: .75; transition: opacity .2s; font-size: 14px; }
+.footer-links a:hover { opacity: 1; color: var(--gh-bleu-cyan); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="logo">Mon<span>BonAgent</span></a>
+    <div class="nav-links">
+      <a href="/">Accueil</a>
+      <a href="/commerces.html">Commerces</a>
+      <a href="/centre-commercial-jacques-albert.html">Centre commercial</a>
+      <a href="/login.html" class="nav-cta">Se connecter</a>
+    </div>
+  </div>
+</nav>
+
+<header class="commerces-hero">
+  <div class="container">
+    <h1>Le pôle commercial du Boulevard Jacques Albert</h1>
+    <p>Toutes les enseignes installées sur l'axe Boulevard Jacques Albert à Elne (66200) : alimentation, restauration, services, artisanat. La zone commerciale principale d'Elne, à deux pas du centre-ville.</p>
+    <div class="hero-stats">
+      <div>
+        <strong id="commerces-count">—</strong>
+        <span>Enseignes installées</span>
+      </div>
+      <div>
+        <strong>Bd Jacques Albert</strong>
+        <span>66200 Elne</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="infos-pratiques">
+  <div class="container">
+    <div class="infos-grid">
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-location-dot"></i></div>
+        <h3>Adresse</h3>
+        <p>Boulevard Jacques Albert, 66200 Elne. Accès direct depuis la D914 et la route d'Alénya.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-square-parking"></i></div>
+        <h3>Parking</h3>
+        <p>Parkings gratuits devant chaque enseigne. Accès facile pour les véhicules et les livraisons.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-bus"></i></div>
+        <h3>Transports</h3>
+        <p>Desservi par la ligne Sankéo Elne ↔ Perpignan. Pistes cyclables le long du boulevard.</p>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="fas fa-clock"></i></div>
+        <h3>Ouvertures</h3>
+        <p>Horaires variables selon les enseignes. Consultez la fiche Google Maps de chaque commerce.</p>
+      </div>
+    </div>
+
+    <div class="map-embed">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=2.9750%2C42.6020%2C2.9850%2C42.6080&amp;layer=mapnik&amp;marker=42.6048%2C2.9795"
+        loading="lazy"
+        title="Carte OpenStreetMap — Boulevard Jacques Albert, Elne"></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="commerces-filters">
+  <div class="container commerces-filters-inner" id="commerces-filters">
+    <div class="commerces-search">
+      <i class="fas fa-search"></i>
+      <input type="search" id="commerces-search" placeholder="Rechercher…" aria-label="Rechercher une enseigne">
+    </div>
+    <button class="filter-chip active" data-cat="all">Tous</button>
+  </div>
+</section>
+
+<main class="container">
+  <section class="commerces-grid" id="commerces-grid" data-zone="centre-commercial-jacques-albert"></section>
+
+  <aside class="commerce-cta-partenariat">
+    <h2>Votre enseigne est installée ici ?</h2>
+    <p>Devenez partenaire MonBonAgent et proposez vos bons d'achat aux habitants d'Elne. Plus de visibilité, plus de visites, fidélisation renforcée.</p>
+    <a href="mailto:contact@monbonagent.fr?subject=Partenariat%20centre%20commercial%20Jacques%20Albert">Devenir partenaire</a>
+  </aside>
+</main>
+
+<section class="commerces-sources">
+  <div class="container">
+    <strong>Sources des données :</strong> OpenStreetMap (sous licence ODbL, <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">crédits</a>) et base Sirene / Recherche d'entreprises de l'INSEE (data.gouv.fr, Licence ouverte). Les fiches affichent uniquement des données factuelles publiques. Le lien « Google Maps » renvoie vers la fiche officielle du commerçant. Pour signaler une erreur ou demander un retrait :
+    <a href="mailto:contact@monbonagent.fr">contact@monbonagent.fr</a>.
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="/">Accueil</a>
+      <a href="/commerces.html">Commerces</a>
+      <a href="/centre-commercial-jacques-albert.html">Centre commercial</a>
+      <a href="/footer-page.html">Mentions légales</a>
+    </div>
+    <p>© 2026 MonBonAgent — Nordine Mouaouia, agent Guy Hoquet Perpignan. Tous droits réservés.</p>
+  </div>
+</footer>
+
+<script src="/assets/commerces.js"></script>
+</body>
+</html>

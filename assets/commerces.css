@@ -1,0 +1,302 @@
+/* ==========================================================================
+   Cartes commerces — annuaire MonBonAgent (Elne)
+   Charte Guy Hoquet 2026 (palette + typo via gh-theme.css)
+   ========================================================================== */
+
+.commerces-hero {
+  background: linear-gradient(135deg, var(--gh-bleu-iris, #0f0a30) 0%, #1c1750 100%);
+  color: #fff;
+  padding: 70px 0 56px;
+  text-align: center;
+}
+.commerces-hero h1 {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  letter-spacing: 0.5px;
+  margin: 0 0 14px;
+}
+.commerces-hero p {
+  font-size: 16px;
+  opacity: 0.85;
+  max-width: 680px;
+  margin: 0 auto;
+}
+.commerces-hero .hero-stats {
+  margin-top: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.commerces-hero .hero-stats strong {
+  display: block;
+  font-family: "Anton", sans-serif;
+  font-size: 32px;
+  color: var(--gh-bleu-cyan, #006fff);
+}
+.commerces-hero .hero-stats span {
+  font-size: 13px;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Filtres catégorie */
+.commerces-filters {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #fff;
+  border-bottom: 1px solid #e8eaf0;
+  padding: 14px 0;
+}
+.commerces-filters-inner {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding-bottom: 4px;
+}
+.filter-chip {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1.5px solid #e0e3eb;
+  background: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #495057;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+}
+.filter-chip:hover { border-color: var(--gh-bleu-cyan, #006fff); color: var(--gh-bleu-cyan, #006fff); }
+.filter-chip.active {
+  background: var(--gh-bleu-cyan, #006fff);
+  border-color: var(--gh-bleu-cyan, #006fff);
+  color: #fff;
+}
+.commerces-search {
+  flex: 0 0 auto;
+  position: relative;
+  margin-right: 8px;
+}
+.commerces-search input {
+  width: 220px;
+  padding: 8px 14px 8px 36px;
+  border: 1.5px solid #e0e3eb;
+  border-radius: 999px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.18s;
+}
+.commerces-search input:focus { border-color: var(--gh-bleu-cyan, #006fff); }
+.commerces-search i {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #adb5bd;
+  font-size: 13px;
+}
+
+/* Grille cartes */
+.commerces-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 22px;
+  padding: 36px 0 80px;
+}
+.commerce-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 2px 14px rgba(15, 10, 48, 0.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eef0f5;
+}
+.commerce-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(15, 10, 48, 0.12);
+  border-color: var(--gh-bleu-cyan, #006fff);
+}
+.commerce-card-header {
+  padding: 22px 20px 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(135deg, #f6f8fc 0%, #eef3fa 100%);
+}
+.commerce-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: var(--gh-bleu-cyan, #006fff);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 111, 255, 0.25);
+}
+.commerce-title {
+  flex: 1;
+  min-width: 0;
+}
+.commerce-title h3 {
+  font-family: "Anton", sans-serif;
+  font-size: 19px;
+  line-height: 1.15;
+  letter-spacing: 0.3px;
+  color: var(--gh-bleu-iris, #0f0a30);
+  margin: 0 0 4px;
+  word-wrap: break-word;
+}
+.commerce-cat {
+  display: inline-block;
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--gh-bleu-cyan, #006fff);
+}
+.commerce-card-body {
+  padding: 14px 20px 16px;
+  flex: 1;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13.5px;
+  color: #495057;
+  line-height: 1.55;
+}
+.commerce-card-body .meta-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.commerce-card-body .meta-row i {
+  color: #adb5bd;
+  width: 14px;
+  margin-top: 3px;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+.commerce-card-body .meta-row a {
+  color: #495057;
+  text-decoration: none;
+}
+.commerce-card-body .meta-row a:hover {
+  color: var(--gh-bleu-cyan, #006fff);
+}
+.commerce-card-footer {
+  padding: 14px 20px 18px;
+  border-top: 1px solid #f1f3f7;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.commerce-badge {
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+.commerce-badge.partenaire {
+  background: var(--gh-bleu-cyan, #006fff);
+  color: #fff;
+}
+.commerce-badge.annuaire {
+  background: #f1f3f7;
+  color: #6c757d;
+}
+.commerce-cta {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: var(--gh-bleu-iris, #0f0a30);
+  color: #fff;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.18s;
+}
+.commerce-cta:hover {
+  background: var(--gh-bleu-cyan, #006fff);
+}
+
+/* État vide */
+.commerces-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 80px 20px;
+  color: #6c757d;
+  font-family: "Montserrat", sans-serif;
+}
+.commerces-empty i {
+  font-size: 48px;
+  color: #ced4da;
+  margin-bottom: 14px;
+}
+
+/* Bloc "vous êtes commerçant ?" */
+.commerce-cta-partenariat {
+  background: linear-gradient(135deg, #f6f8fc 0%, #eef3fa 100%);
+  border-radius: 14px;
+  padding: 30px;
+  text-align: center;
+  margin: 50px 0;
+}
+.commerce-cta-partenariat h2 {
+  font-family: "Anton", sans-serif;
+  font-size: 26px;
+  color: var(--gh-bleu-iris, #0f0a30);
+  margin: 0 0 8px;
+}
+.commerce-cta-partenariat p {
+  font-family: "Montserrat", sans-serif;
+  color: #495057;
+  margin: 0 0 18px;
+}
+.commerce-cta-partenariat a {
+  display: inline-block;
+  padding: 12px 28px;
+  background: var(--gh-bleu-cyan, #006fff);
+  color: #fff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  transition: background 0.18s;
+}
+.commerce-cta-partenariat a:hover { background: var(--gh-bleu-cyan-hover, #0050cc); }
+
+/* Notice sources légales */
+.commerces-sources {
+  background: #f8f9fc;
+  padding: 30px 0;
+  border-top: 1px solid #eef0f5;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12.5px;
+  color: #6c757d;
+  line-height: 1.6;
+}
+.commerces-sources strong { color: #495057; }
+
+/* Mobile */
+@media (max-width: 600px) {
+  .commerces-grid { grid-template-columns: 1fr; gap: 14px; }
+  .commerces-search input { width: 160px; }
+}

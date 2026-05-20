@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commerçants et artisans d'Elne — MonBonAgent</title>
+<meta name="description" content="Annuaire local des commerçants et artisans d'Elne (66200). Trouvez vos commerces de proximité : boulangerie, restaurant, banque, coiffeur, supermarché, artisans du bâtiment.">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/assets/gh-theme.css">
+<link rel="stylesheet" href="/assets/commerces.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Montserrat", sans-serif; background: #fff; color: #212529; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+/* Nav */
+nav { background: #fff; padding: 14px 0; box-shadow: 0 2px 10px rgba(15,10,48,.06); position: sticky; top: 0; z-index: 100; }
+nav .container { display: flex; align-items: center; justify-content: space-between; }
+.logo { font-family: "Anton", sans-serif; font-size: 24px; color: var(--gh-bleu-cyan); letter-spacing: 0.5px; }
+.logo span { color: var(--gh-bleu-iris); }
+.nav-links { display: flex; gap: 24px; align-items: center; }
+.nav-links a { font-weight: 500; font-size: 14px; transition: color .2s; }
+.nav-links a:hover { color: var(--gh-bleu-cyan); }
+.nav-cta { background: var(--gh-bleu-cyan); color: #fff !important; padding: 8px 18px; border-radius: 8px; }
+.nav-cta:hover { background: var(--gh-bleu-cyan-hover); }
+
+/* Footer */
+footer { background: var(--gh-bleu-iris); color: #fff; padding: 44px 0 24px; text-align: center; margin-top: 0; }
+footer p { opacity: .65; font-size: 13px; margin-top: 16px; }
+.footer-links { display: flex; justify-content: center; gap: 22px; margin-bottom: 14px; flex-wrap: wrap; }
+.footer-links a { color: #fff; opacity: .75; transition: opacity .2s; font-size: 14px; }
+.footer-links a:hover { opacity: 1; color: var(--gh-bleu-cyan); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="logo">Mon<span>BonAgent</span></a>
+    <div class="nav-links">
+      <a href="/">Accueil</a>
+      <a href="/commerces.html">Commerces</a>
+      <a href="/centre-commercial-jacques-albert.html">Centre commercial</a>
+      <a href="/login.html" class="nav-cta">Se connecter</a>
+    </div>
+  </div>
+</nav>
+
+<header class="commerces-hero">
+  <div class="container">
+    <h1>Commerçants et artisans d'Elne</h1>
+    <p>L'annuaire local des commerces de proximité à Elne (66200). Trouvez en quelques clics votre boulanger, votre coiffeur, votre garagiste ou votre supermarché.</p>
+    <div class="hero-stats">
+      <div>
+        <strong id="commerces-count">—</strong>
+        <span>Commerces référencés</span>
+      </div>
+      <div>
+        <strong>66200</strong>
+        <span>Elne</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="commerces-filters">
+  <div class="container commerces-filters-inner" id="commerces-filters">
+    <div class="commerces-search">
+      <i class="fas fa-search"></i>
+      <input type="search" id="commerces-search" placeholder="Rechercher…" aria-label="Rechercher un commerce">
+    </div>
+    <button class="filter-chip active" data-cat="all">Tous</button>
+  </div>
+</section>
+
+<main class="container">
+  <section class="commerces-grid" id="commerces-grid" data-zone=""></section>
+
+  <aside class="commerce-cta-partenariat">
+    <h2>Vous êtes commerçant ou artisan à Elne ?</h2>
+    <p>Référencez gratuitement votre activité et proposez vos bons d'achat aux habitants. Une visibilité locale renforcée et de nouveaux clients à la clé.</p>
+    <a href="mailto:contact@monbonagent.fr?subject=Devenir%20partenaire%20MonBonAgent%20Elne">Devenir partenaire</a>
+  </aside>
+</main>
+
+<section class="commerces-sources">
+  <div class="container">
+    <strong>Sources des données :</strong> OpenStreetMap (sous licence ODbL, <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">crédits</a>) et base Sirene / Recherche d'entreprises de l'INSEE (data.gouv.fr, Licence ouverte). Les fiches affichent uniquement des données factuelles publiques (nom commercial, catégorie, adresse, téléphone). Le lien « Google Maps » renvoie vers la fiche officielle du commerçant. Pour signaler une erreur ou demander un retrait :
+    <a href="mailto:contact@monbonagent.fr">contact@monbonagent.fr</a>.
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="/">Accueil</a>
+      <a href="/commerces.html">Commerces</a>
+      <a href="/centre-commercial-jacques-albert.html">Centre commercial</a>
+      <a href="/footer-page.html">Mentions légales</a>
+    </div>
+    <p>© 2026 MonBonAgent — Nordine Mouaouia, agent Guy Hoquet Perpignan. Tous droits réservés.</p>
+  </div>
+</footer>
+
+<script src="/assets/commerces.js"></script>
+</body>
+</html>
