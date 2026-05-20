@@ -798,19 +798,45 @@ body.has-immo-bar { padding-bottom: 76px; }
   border: 3px solid #fff;
   box-shadow: 0 4px 12px rgba(15, 10, 48, 0.2);
 }
-.hiw-step-photo {
+/* Visuel illustratif : gradient + icône XL + 2 deco icons décoratives */
+.hiw-step-visual {
   aspect-ratio: 16 / 10;
-  background-color: var(--gh-bleu-iris, #0f0a30);
-  background-size: cover;
-  background-position: center;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--gh-bleu-iris, #0f0a30) 0%, #1c1750 50%, var(--gh-bleu-cyan, #006fff) 130%);
 }
-.hiw-step-photo::after {
+.hiw-step-visual::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(15,10,48,0) 50%, rgba(15,10,48,0.18) 100%);
+  background:
+    radial-gradient(circle at 80% 25%, rgba(255,255,255,.08) 0%, transparent 35%),
+    radial-gradient(circle at 20% 80%, rgba(0,111,255,.18) 0%, transparent 45%);
 }
+.hiw-step-visual-icon {
+  font-size: 80px;
+  color: #fff;
+  opacity: .96;
+  filter: drop-shadow(0 6px 18px rgba(0,0,0,.35));
+  z-index: 2;
+  position: relative;
+}
+.hiw-step-visual-deco {
+  position: absolute;
+  color: rgba(255,255,255,.18);
+  font-size: 38px;
+  pointer-events: none;
+  z-index: 1;
+}
+.hiw-step-visual-deco--a { top: 18px;    right: 22px; transform: rotate(-12deg); }
+.hiw-step-visual-deco--b { bottom: 18px; left:  22px; transform: rotate(8deg);   font-size: 30px; }
+
+/* Variantes par étape (subtiles, charte conservée) */
+.hiw-step-visual--2 { background: linear-gradient(135deg, var(--gh-bleu-iris, #0f0a30) 0%, #142064 50%, var(--gh-bleu-cyan, #006fff) 130%); }
+.hiw-step-visual--3 { background: linear-gradient(135deg, var(--gh-bleu-iris, #0f0a30) 0%, #0f1a5a 50%, #00a3ff 130%); }
 .hiw-step-body {
   padding: 0 28px 30px;
   display: flex;
@@ -838,11 +864,17 @@ body.has-immo-bar { padding-bottom: 76px; }
 /* Équilibre 3 cartes : titre + texte alignés sur même nombre de lignes */
 .hiw-step h3 { min-height: 28px; }
 .hiw-step p {
-  min-height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;             /* Important : pas flex, sinon <strong> devient un item séparé */
+  min-height: 96px;
+  padding: 4px 6px 0;
+  margin: 0;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #495057;
 }
+.hiw-step p strong { color: var(--gh-bleu-iris, #0f0a30); font-weight: 700; }
 @media (max-width: 760px) {
   .hiw-step p { min-height: 0; }
 }
