@@ -301,35 +301,62 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
 
 <section class="hero">
   <div class="container">
-    <span style="display:inline-block;background:rgba(0,111,255,.18);color:#7fb8ff;padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;border:1px solid rgba(0,111,255,.35)">Service partenaire · Guy Hoquet Perpignan</span>
-    <h1>Payez moins, soutenez vos commerçants d'Elne.</h1>
-    <p>Des bons d'achat exclusifs chez les commerces de proximité. <strong>Jusqu'à 50 % d'avantage</strong> en plus &mdash; et chaque bon soutient un voisin commerçant.</p>
-    <div class="search-bar">
-      <input type="text" id="searchInput" placeholder="Rechercher un commerçant, une catégorie..." oninput="filterMerchants()">
-      <i class="fas fa-search"></i>
+    <span class="hero-pill">Bons d'achat · Commerce local Elne</span>
+    <h1>Payez moins. Soutenez vos commerçants d'Elne.</h1>
+    <p class="hero-lead">Ce midi, votre déjeuner à 8&nbsp;€ au lieu de 12&nbsp;€. Demain, votre coupe à 25&nbsp;€ au lieu de 35&nbsp;€. Chez vos commerces de proximité, <strong>jusqu'à 50&nbsp;% d'avantage</strong> en plus. Et chaque bon réservé soutient un voisin commerçant.</p>
+    <div class="hero-cta-group">
+      <a href="#merchants" class="hero-cta-primary" onclick="event.preventDefault();document.getElementById('signupModal')?.classList.add('show');">
+        <i class="fas fa-gift"></i> Recevoir mon 1<sup>er</sup> bon offert
+        <small>30 sec · sans carte bancaire</small>
+      </a>
+      <a href="#how-it-works" class="hero-cta-ghost">
+        <i class="fas fa-circle-question"></i> Comment ça marche
+      </a>
     </div>
     <div class="hero-stats">
-      <div><strong id="statMerchants" data-counter="38">0</strong><span>Commerçants partenaires</span></div>
-      <div><strong id="statOffers" data-counter="124">0</strong><span>Offres actives</span></div>
-      <div><strong id="statSales" data-counter="1847">0</strong><span>Bons réservés</span></div>
+      <div><strong>88</strong><span>commerces locaux référencés</span></div>
+      <div><strong>50&nbsp;%</strong><span>d'avantage en plus, jusqu'à</span></div>
+      <div><strong>0&nbsp;€</strong><span>d'inscription, sans engagement</span></div>
     </div>
-  </div>
-</section>
-
-<section class="social-proof-bar">
-  <div class="container social-proof-track">
-    <div class="social-proof-item"><strong data-live-counter="12374" data-format="euro" class="counter-live">12&nbsp;374 €</strong><span>économisés ce mois</span></div>
-    <div class="social-proof-item"><strong data-live-counter="1847" class="counter-live">1&nbsp;847</strong><span>voisins inscrits</span></div>
-    <div class="social-proof-item"><strong data-live-counter="38" data-live-min="60000" data-live-max="120000" class="counter-live">38</strong><span>commerces partenaires</span></div>
+    <p class="hero-sources">Annuaire compilé depuis <strong>OpenStreetMap</strong> et la <strong>base Sirene</strong> (data.gouv.fr) · sources publiques officielles.</p>
   </div>
 </section>
 
 <section class="trust-strip">
   <div class="container trust-strip-inner">
-    <div class="trust-item"><i class="fas fa-shield-halved"></i><span>Paiement <strong>100 % sécurisé</strong></span></div>
-    <div class="trust-item"><i class="fas fa-rotate-left"></i><span>Bon remboursé si non utilisé</span></div>
-    <div class="trust-item"><i class="fas fa-handshake"></i><span>Soutien direct au <strong>commerce local d'Elne</strong></span></div>
-    <div class="trust-item"><i class="fas fa-house"></i><span>En partenariat avec <strong>Guy Hoquet</strong></span></div>
+    <div class="trust-item"><i class="fas fa-shield-halved"></i><span>Paiement <strong>100&nbsp;% sécurisé</strong></span></div>
+    <div class="trust-item"><i class="fas fa-rotate-left"></i><span><strong>Bon remboursé</strong> si non utilisé</span></div>
+    <div class="trust-item"><i class="fas fa-handshake"></i><span>Soutien <strong>direct</strong> au commerce local d'Elne</span></div>
+    <div class="trust-item"><i class="fas fa-map-pin"></i><span>Annuaire <strong>vérifié</strong> · sources officielles</span></div>
+  </div>
+</section>
+
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-title">
+      <h2>Comment ça marche</h2>
+      <p>3 étapes simples. Aucune carte bancaire à l'inscription.</p>
+    </div>
+    <div class="hiw-grid">
+      <article class="hiw-step">
+        <div class="hiw-step-num">1</div>
+        <div class="hiw-step-icon"><i class="fas fa-user-plus"></i></div>
+        <h3>Je m'inscris</h3>
+        <p>Votre email suffit. 30 secondes. Vous recevez votre <strong>1<sup>er</sup> bon offert</strong> immédiatement.</p>
+      </article>
+      <article class="hiw-step">
+        <div class="hiw-step-num">2</div>
+        <div class="hiw-step-icon"><i class="fas fa-bolt"></i></div>
+        <h3>Je réserve mon bon</h3>
+        <p>Je choisis le commerçant et le bon qui m'intéresse. Je paie en ligne. Mon QR&nbsp;code est instantané.</p>
+      </article>
+      <article class="hiw-step">
+        <div class="hiw-step-num">3</div>
+        <div class="hiw-step-icon"><i class="fas fa-store"></i></div>
+        <h3>Je l'utilise en magasin</h3>
+        <p>Je présente le QR&nbsp;code chez le commerçant. Il scanne, c'est validé. Si je ne l'utilise pas, je suis remboursé.</p>
+      </article>
+    </div>
   </div>
 </section>
 
@@ -444,6 +471,59 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
       <div class="ended-scroll" id="endedScroll">
         <div class="loading" style="flex:1"><i class="fas fa-spinner"></i> Chargement...</div>
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq-section" id="faq">
+  <div class="container">
+    <div class="section-title">
+      <h2>Vos questions, nos réponses</h2>
+      <p>Tout ce qu'il faut savoir avant de réserver votre 1<sup>er</sup> bon.</p>
+    </div>
+    <div class="faq-grid">
+      <details class="faq-item">
+        <summary>Comment ça marche concrètement ?</summary>
+        <div class="faq-body">
+          Vous vous inscrivez (30 sec, email seul). Vous parcourez les bons d'achat de vos commerçants d'Elne et vous réservez celui qui vous intéresse. Vous payez en ligne le prix du bon, vous recevez immédiatement votre <strong>QR code</strong> par email. Quand vous allez en magasin, le commerçant scanne votre QR code et applique l'avantage sur votre achat.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Que se passe-t-il si je n'utilise pas mon bon ?</summary>
+        <div class="faq-body">
+          Vous êtes <strong>automatiquement remboursé</strong> sur votre moyen de paiement initial sous 7 jours ouvrés après la date d'expiration du bon. Aucune démarche, aucun justificatif. Le commerçant est aussi indemnisé pour ne pas être pénalisé.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Et si le commerçant refuse d'honorer mon bon ?</summary>
+        <div class="faq-body">
+          Tous les commerçants partenaires ont signé une convention. Si l'un d'eux refuse de scanner votre QR code, vous nous contactez immédiatement à <a href="mailto:contact@monbonagent.fr">contact@monbonagent.fr</a> et nous vous remboursons l'intégralité sous 48&nbsp;h. Aucune discussion.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Combien de temps mon bon est-il valable ?</summary>
+        <div class="faq-body">
+          La durée de validité est précisée sur chaque bon avant achat (généralement 30 à 90 jours). Vous recevez aussi un rappel par email <strong>7 jours avant expiration</strong> pour ne rien rater. Date de validité = date affichée, sans renouvellement automatique.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Pourquoi passer par MonBonAgent et pas aller directement chez le commerçant ?</summary>
+        <div class="faq-body">
+          Parce que les avantages ne sont disponibles que via les bons MonBonAgent. Le commerçant nous a confié des offres exclusives qui ne sont pas affichées en boutique. C'est la <strong>contrepartie de notre travail de visibilité locale</strong> et de paiement sécurisé.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Mes données personnelles sont-elles vendues à des tiers ?</summary>
+        <div class="faq-body">
+          <strong>Non, jamais.</strong> Vos données restent strictement entre vous et le commerçant chez qui vous réservez. Aucune revente, aucun partage à des partenaires publicitaires. Vous pouvez supprimer votre compte et toutes vos données à tout moment depuis votre espace personnel.
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Qui est derrière MonBonAgent ?</summary>
+        <div class="faq-body">
+          MonBonAgent est un service local indépendant dédié au <strong>commerce de proximité d'Elne</strong>. L'équipe est basée à Elne et travaille en direct avec les commerçants partenaires pour vous proposer des avantages exclusifs. Pour toute question : <a href="mailto:contact@monbonagent.fr">contact@monbonagent.fr</a>.
+        </div>
+      </details>
     </div>
   </div>
 </section>
@@ -1440,7 +1520,83 @@ async function loadJeuDuMois(){
 }
 loadCitiesSelector();
 loadJeuDuMois();
+
+// ─── Lead magnet "1er bon offert" — capture + tag campagne ─────────────────
+async function submitSignup(e) {
+  e.preventDefault();
+  const name  = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  if (!email) return false;
+  const btn = e.target.querySelector('button');
+  const orig = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Envoi…';
+  try {
+    // Persistance : table `prospects` (ou `merchant_customers` en fallback).
+    // Tag campagne = "lead_magnet_1er_bon" → repérable côté admin pour envoyer le bon promo.
+    const payload = {
+      name: name || null,
+      email: email,
+      source: 'home_hero_signup',
+      campaign: 'lead_magnet_1er_bon',
+      city: 'Elne',
+      created_at: new Date().toISOString()
+    };
+    let r = await sb.from('prospects').insert(payload);
+    if (r.error) {
+      // Fallback table si prospects pas dispo
+      r = await sb.from('merchant_customers').insert({ ...payload, marketing_consent: true });
+    }
+    if (r.error) throw new Error(r.error.message);
+    document.querySelector('#signupModal .signup-modal').innerHTML = `
+      <button class="signup-modal-close" aria-label="Fermer" onclick="document.getElementById('signupModal').classList.remove('show')">×</button>
+      <div style="text-align:center;padding:20px 0">
+        <div style="width:64px;height:64px;border-radius:50%;background:#d4edda;color:#1f7a3a;display:inline-flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:16px"><i class="fas fa-check"></i></div>
+        <h2 style="font-family:Anton,sans-serif;font-size:26px;color:#0f0a30;margin-bottom:10px">C'est noté${name ? ', ' + name.split(' ')[0] : ''}.</h2>
+        <p style="font-family:Montserrat,sans-serif;font-size:14px;color:#495057;margin-bottom:20px;line-height:1.55">Vous recevrez votre 1<sup>er</sup> bon offert par email à <strong>${email.replace(/[<>"]/g,'')}</strong>. Pensez à vérifier vos spams si rien dans les 5 minutes.</p>
+        <p style="font-family:Montserrat,sans-serif;font-size:12px;color:#6c757d">Pendant qu'on vous le prépare, découvrez les commerces partenaires d'Elne juste en dessous.</p>
+        <a href="#merchants" onclick="document.getElementById('signupModal').classList.remove('show')" style="display:inline-block;margin-top:18px;background:#006fff;color:#fff;padding:12px 22px;border-radius:10px;font-family:Montserrat,sans-serif;font-weight:600;text-decoration:none">Voir les commerçants</a>
+      </div>`;
+  } catch (err) {
+    console.error('signup error:', err);
+    btn.disabled = false;
+    btn.innerHTML = orig;
+    alert('Une erreur est survenue. Réessayez dans un instant ou contactez contact@monbonagent.fr.');
+  }
+  return false;
+}
 </script>
+
+<!-- Sticky CTA bar (apparaît au scroll 25 %) -->
+<div class="sticky-cta-bar" id="sticky-cta-bar" role="banner">
+  <div class="sticky-cta-text">
+    <i class="fas fa-gift"></i>
+    <span><strong>1<sup>er</sup> bon offert</strong> à l'inscription · 30 sec · sans CB</span>
+  </div>
+  <a href="#" class="sticky-cta-btn" onclick="event.preventDefault();document.getElementById('signupModal')?.classList.add('show');">
+    Je reçois mon bon
+  </a>
+</div>
+
+<!-- Modal signup (lead magnet 1er bon offert) -->
+<div class="signup-modal-overlay" id="signupModal" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
+  <div class="signup-modal">
+    <button class="signup-modal-close" aria-label="Fermer" onclick="document.getElementById('signupModal').classList.remove('show')">×</button>
+    <span class="signup-modal-pill"><i class="fas fa-gift"></i> Lead magnet · Réciprocité</span>
+    <h2 id="signupTitle">Votre 1<sup>er</sup> bon est offert.</h2>
+    <p>Inscrivez-vous en 30 secondes. Vous recevez immédiatement un bon de bienvenue <strong>à utiliser chez le commerçant de votre choix</strong> à Elne. Aucune carte bancaire, aucun engagement.</p>
+    <form class="signup-modal-form" onsubmit="return submitSignup(event)">
+      <input type="text" id="signupName" placeholder="Votre prénom (optionnel)">
+      <input type="email" id="signupEmail" placeholder="Votre adresse email" required>
+      <button type="submit"><i class="fas fa-gift"></i> Recevoir mon 1<sup>er</sup> bon</button>
+    </form>
+    <ul class="signup-modal-bullets">
+      <li><i class="fas fa-check-circle"></i> Bon envoyé par email immédiatement</li>
+      <li><i class="fas fa-check-circle"></i> Données strictement confidentielles, jamais revendues</li>
+      <li><i class="fas fa-check-circle"></i> Désinscription en 1 clic à tout moment</li>
+    </ul>
+  </div>
+</div>
 
 <aside class="immo-soft-bar" id="immo-soft-bar">
   <div class="immo-soft-bar-text">

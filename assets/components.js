@@ -38,22 +38,11 @@
     });
   }
 
-  /* ---------- Compteur live (incrément aléatoire pour social proof) ---------- */
-  function bootLiveCounters() {
-    document.querySelectorAll("[data-live-counter]").forEach((el) => {
-      let current = parseInt(el.dataset.liveCounter, 10);
-      const minInt = parseInt(el.dataset.liveMin || "8000", 10);
-      const maxInt = parseInt(el.dataset.liveMax || "22000", 10);
-      const increment = () => {
-        current += 1 + Math.floor(Math.random() * 3);
-        el.textContent = current.toLocaleString("fr-FR");
-        el.classList.add("bumped");
-        setTimeout(() => el.classList.remove("bumped"), 240);
-        setTimeout(increment, minInt + Math.random() * (maxInt - minInt));
-      };
-      setTimeout(increment, 5000 + Math.random() * 8000);
-    });
-  }
+  /* ---------- Compteur live ---------- */
+  /* Désactivé volontairement : la social proof bar ne doit afficher que des
+     chiffres vérifiables (annuaire OSM+Sirene, partenaire GH). Les incréments
+     aléatoires sont une pratique commerciale trompeuse (DGCCRF L121-2). */
+  function bootLiveCounters() { /* no-op */ }
 
   /* ---------- Countdown timer (data-countdown="YYYY-MM-DDTHH:MM:SSZ" ou +Xj) ---------- */
   function parseTarget(spec) {
@@ -105,6 +94,37 @@
     });
   }
 
+  /* ---------- Sticky CTA bar (apparaît à 25 % scroll) ---------- */
+  function bootStickyCta() {
+    const bar = document.getElementById("sticky-cta-bar");
+    if (!bar) return;
+    let visible = false;
+    const threshold = 0.25; // 25 % de la page
+    function onScroll() {
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const ratio = window.scrollY / max;
+      const shouldShow = ratio >= threshold;
+      if (shouldShow !== visible) {
+        visible = shouldShow;
+        bar.classList.toggle("show", visible);
+      }
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
+  /* ---------- Modal signup (1er bon offert) — fermeture overlay + Esc ---------- */
+  function bootSignupModal() {
+    const overlay = document.getElementById("signupModal");
+    if (!overlay) return;
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) overlay.classList.remove("show");
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") overlay.classList.remove("show");
+    });
+  }
+
   /* ---------- Bandeau immo soft (cookie de fermeture 7j) ---------- */
   function bootImmoBar() {
     const bar = document.getElementById("immo-soft-bar");
@@ -136,6 +156,8 @@
     bootCountdowns();
     bootStockMeters();
     bootImmoBar();
+    bootStickyCta();
+    bootSignupModal();
   }
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", init);
