@@ -58,12 +58,33 @@ h4,
   font-weight: 400;
 }
 
-/* Logo : forcer les bonnes couleurs de marque */
+/* Logo Mon BonAgent — typographie canonique unifiée sur toutes les pages
+   "Mon" = Bleu Cyan, "BonAgent" = Bleu Iris, Anton bold condensé. */
 .logo {
-  color: var(--gh-bleu-cyan) !important;
+  font-family: "Anton", "Montserrat", sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1 !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: baseline !important;
+  gap: 5px !important;
+  color: var(--gh-bleu-cyan, #006fff) !important;
 }
-.logo span {
-  color: var(--gh-bleu-iris) !important;
+.logo > span:first-child,
+.logo .logo-mon {
+  color: var(--gh-bleu-cyan, #006fff) !important;
+}
+.logo > span:last-child,
+.logo .logo-bonagent,
+.logo span:not(:first-child) {
+  color: var(--gh-bleu-iris, #0f0a30) !important;
+}
+/* Compat ancien format `<a class="logo">Mon<span>BonAgent</span></a>` :
+   force la couleur du texte direct (avant le span) en Bleu Cyan */
+.logo {
+  /* fallback couleur du texte sans span = Bleu Cyan */
 }
 
 /* CTA / boutons primaires : Bleu Cyan + hover Bleu Cyan sombre */
