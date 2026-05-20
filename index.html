@@ -1611,6 +1611,17 @@ async function subscribeNewsletter(e) {
 }
 
 // Init
+// Forcer immédiatement le rendu des sections avec leur fallback,
+// indépendamment de Supabase (qui peut être lent / échouer / vide).
+try { renderAboutSections([]); } catch(e){ console.warn('aboutRows init:', e); }
+try { renderEndedOffers(); } catch(e){ console.warn('endedOffers init:', e); }
+try {
+  const _ofcards = document.getElementById('offerCards');
+  if (_ofcards && !_ofcards.children.length || _ofcards?.textContent.trim().startsWith('Chargement')) {
+    _ofcards.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#6c757d;padding:40px;font-family:Montserrat,sans-serif">Les premières offres seront publiées dès la signature des partenaires. <a href="#categories-grid" style="color:var(--gh-bleu-cyan);font-weight:600;text-decoration:none">Parcourir les catégories</a> pour découvrir les commerçants référencés à Elne.</p>';
+  }
+} catch(e){}
+
 loadSiteSettings();
 loadData();
 
