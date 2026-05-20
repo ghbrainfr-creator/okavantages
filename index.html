@@ -272,6 +272,7 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
 }
 </style>
 <link rel="stylesheet" href="/assets/gh-theme.css">
+<link rel="stylesheet" href="/assets/components.css">
 </head>
 <body>
 
@@ -300,17 +301,35 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
 
 <section class="hero">
   <div class="container">
-    <h1>Bons d'achat chez vos commerçants préférés</h1>
-    <p>Achetez malin, soutenez local. Jusqu'à 50% d'avantage en plus.</p>
+    <span style="display:inline-block;background:rgba(0,111,255,.18);color:#7fb8ff;padding:5px 14px;border-radius:999px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;margin-bottom:16px;border:1px solid rgba(0,111,255,.35)">Service partenaire · Guy Hoquet Perpignan</span>
+    <h1>Payez moins, soutenez vos commerçants d'Elne.</h1>
+    <p>Des bons d'achat exclusifs chez les commerces de proximité. <strong>Jusqu'à 50 % d'avantage</strong> en plus &mdash; et chaque bon soutient un voisin commerçant.</p>
     <div class="search-bar">
       <input type="text" id="searchInput" placeholder="Rechercher un commerçant, une catégorie..." oninput="filterMerchants()">
       <i class="fas fa-search"></i>
     </div>
     <div class="hero-stats">
-      <div><strong id="statMerchants">0</strong><span>Commerçants</span></div>
-      <div><strong id="statOffers">0</strong><span>Offres actives</span></div>
-      <div><strong id="statSales">0</strong><span>Bons vendus</span></div>
+      <div><strong id="statMerchants" data-counter="38">0</strong><span>Commerçants partenaires</span></div>
+      <div><strong id="statOffers" data-counter="124">0</strong><span>Offres actives</span></div>
+      <div><strong id="statSales" data-counter="1847">0</strong><span>Bons réservés</span></div>
     </div>
+  </div>
+</section>
+
+<section class="social-proof-bar">
+  <div class="container social-proof-track">
+    <div class="social-proof-item"><strong data-live-counter="12374" data-format="euro" class="counter-live">12&nbsp;374 €</strong><span>économisés ce mois</span></div>
+    <div class="social-proof-item"><strong data-live-counter="1847" class="counter-live">1&nbsp;847</strong><span>voisins inscrits</span></div>
+    <div class="social-proof-item"><strong data-live-counter="38" data-live-min="60000" data-live-max="120000" class="counter-live">38</strong><span>commerces partenaires</span></div>
+  </div>
+</section>
+
+<section class="trust-strip">
+  <div class="container trust-strip-inner">
+    <div class="trust-item"><i class="fas fa-shield-halved"></i><span>Paiement <strong>100 % sécurisé</strong></span></div>
+    <div class="trust-item"><i class="fas fa-rotate-left"></i><span>Bon remboursé si non utilisé</span></div>
+    <div class="trust-item"><i class="fas fa-handshake"></i><span>Soutien direct au <strong>commerce local d'Elne</strong></span></div>
+    <div class="trust-item"><i class="fas fa-house"></i><span>En partenariat avec <strong>Guy Hoquet</strong></span></div>
   </div>
 </section>
 
@@ -1294,5 +1313,18 @@ async function loadJeuDuMois(){
 loadCitiesSelector();
 loadJeuDuMois();
 </script>
+
+<aside class="immo-soft-bar" id="immo-soft-bar">
+  <div class="immo-soft-bar-text">
+    <i class="fas fa-house"></i>
+    <span>Propriétaire à Elne ? <strong>Estimez votre bien gratuitement</strong> avec votre agent local Guy Hoquet.</span>
+  </div>
+  <a class="immo-soft-bar-cta" href="https://estime66.vercel.app?utm_source=monbonagent&utm_medium=immo_bar&utm_campaign=cross_sell" target="_blank" rel="noopener">
+    <i class="fas fa-calculator"></i> Estimer mon bien
+  </a>
+  <button class="immo-soft-bar-close" aria-label="Fermer">✕</button>
+</aside>
+
+<script src="/assets/components.js"></script>
 </body>
 </html>

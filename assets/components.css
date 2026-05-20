@@ -1,0 +1,375 @@
+/* ==========================================================================
+   Composants CRO / neuromarketing — MonBonAgent
+   Charte Guy Hoquet 2026. Tous les composants sont conçus pour la conversion
+   et la captation d'attention selon les principes documentés :
+     - Thorndike (halo) — visuel premier impact
+     - Cialdini (preuve sociale, rareté, autorité, réciprocité)
+     - Kahneman/Tversky (ancrage prix, aversion à la perte)
+     - Zeigarnik (tâches inachevées)
+     - Ariely (effet IKEA — engagement par construction)
+   ========================================================================== */
+
+/* ---------- Bandeau social proof / preuve sociale ---------- */
+.social-proof-bar {
+  background: linear-gradient(90deg, var(--gh-bleu-iris, #0f0a30) 0%, #1c1750 100%);
+  color: #fff;
+  padding: 14px 0;
+  overflow: hidden;
+  position: relative;
+}
+.social-proof-track {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.social-proof-item {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: "Montserrat", sans-serif;
+}
+.social-proof-item strong {
+  font-family: "Anton", sans-serif;
+  font-size: 22px;
+  color: var(--gh-bleu-cyan, #006fff);
+  letter-spacing: 0.5px;
+}
+.social-proof-item span {
+  font-size: 13px;
+  opacity: 0.85;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* ---------- Compteur live (animation up) ---------- */
+.counter-live {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.25s;
+}
+.counter-live.bumped { color: #ffd166; }
+
+/* ---------- Badges urgence / scarcité / promo ---------- */
+.badge-urgence {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ff5630;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  animation: pulseRed 2.5s ease-in-out infinite;
+}
+@keyframes pulseRed {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 86, 48, 0.5); }
+  50%      { box-shadow: 0 0 0 8px rgba(255, 86, 48, 0);   }
+}
+.badge-scarcite {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #fff3cd;
+  color: #8a5b00;
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid #ffe08a;
+}
+.badge-promo {
+  display: inline-flex;
+  align-items: center;
+  background: var(--gh-bleu-cyan, #006fff);
+  color: #fff;
+  font-family: "Anton", sans-serif;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* ---------- Countdown timer (urgence offre) ---------- */
+.countdown {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: #8a5b00;
+  background: #fff3cd;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+.countdown i { color: #ff5630; }
+.countdown-units {
+  display: inline-flex;
+  gap: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.countdown-unit {
+  background: #fff;
+  border: 1px solid #ffe08a;
+  padding: 2px 6px;
+  border-radius: 4px;
+  min-width: 26px;
+  text-align: center;
+}
+
+/* ---------- Ancrage prix (prix barré + prix bon) ---------- */
+.price-anchor {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: "Anton", sans-serif;
+}
+.price-anchor .price-original {
+  font-size: 18px;
+  color: #adb5bd;
+  text-decoration: line-through;
+  font-weight: 400;
+}
+.price-anchor .price-final {
+  font-size: 32px;
+  color: var(--gh-bleu-cyan, #006fff);
+  letter-spacing: 0.5px;
+}
+.price-anchor .price-saving {
+  display: inline-block;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #1f7a3a;
+  background: #d4edda;
+  padding: 3px 8px;
+  border-radius: 6px;
+  margin-left: 6px;
+}
+
+/* ---------- Progress bar Zeigarnik ---------- */
+.progress-zeigarnik {
+  background: #eef0f5;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 14px 0 6px;
+}
+.progress-zeigarnik-fill {
+  background: linear-gradient(90deg, var(--gh-bleu-cyan, #006fff), #00a3ff);
+  height: 100%;
+  transition: width 0.5s ease;
+}
+.progress-zeigarnik-label {
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+/* ---------- Stock résiduel (rareté inventory) ---------- */
+.stock-meter {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12.5px;
+  color: #6c757d;
+  margin-top: 8px;
+}
+.stock-meter-bar {
+  flex: 1;
+  height: 6px;
+  background: #eef0f5;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.stock-meter-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #1f7a3a 0%, #ffaa00 70%, #ff5630 100%);
+}
+.stock-meter strong { color: #ff5630; font-family: "Anton", sans-serif; font-size: 14px; }
+
+/* ---------- Bandeau immo soft (cross-sell agent) ---------- */
+.immo-soft-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--gh-bleu-iris, #0f0a30);
+  color: #fff;
+  padding: 12px 16px;
+  z-index: 90;
+  font-family: "Montserrat", sans-serif;
+  box-shadow: 0 -4px 20px rgba(15,10,48,.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  transform: translateY(0);
+  transition: transform 0.3s ease;
+}
+.immo-soft-bar.hidden { transform: translateY(100%); }
+.immo-soft-bar-text {
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.immo-soft-bar-text i { color: var(--gh-bleu-cyan, #006fff); font-size: 20px; }
+.immo-soft-bar-text strong { font-weight: 700; }
+.immo-soft-bar-cta {
+  background: var(--gh-bleu-cyan, #006fff);
+  color: #fff !important;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13.5px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.18s;
+}
+.immo-soft-bar-cta:hover { background: var(--gh-bleu-cyan-hover, #0050cc); }
+.immo-soft-bar-close {
+  background: transparent;
+  color: rgba(255,255,255,.6);
+  border: 0;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 4px 8px;
+}
+.immo-soft-bar-close:hover { color: #fff; }
+body.has-immo-bar { padding-bottom: 76px; }
+
+/* ---------- Carte offre marketplace (look e-commerce moderne) ---------- */
+.offer-card-pro {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 14px rgba(15,10,48,.06);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #eef0f5;
+  position: relative;
+}
+.offer-card-pro:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 38px rgba(15,10,48,.14);
+  border-color: var(--gh-bleu-cyan, #006fff);
+}
+.offer-card-pro .offer-visual {
+  position: relative;
+  aspect-ratio: 16/10;
+  background: linear-gradient(135deg, var(--gh-bleu-iris, #0f0a30) 0%, var(--gh-bleu-cyan, #006fff) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.95);
+}
+.offer-card-pro .offer-visual i { font-size: 58px; }
+.offer-card-pro .offer-visual .visual-overlay {
+  position: absolute;
+  top: 12px; left: 12px;
+  display: flex; gap: 6px;
+}
+.offer-card-pro .offer-visual .visual-overlay-tr {
+  position: absolute;
+  top: 12px; right: 12px;
+}
+.offer-card-pro .offer-body {
+  padding: 18px 20px 16px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.offer-card-pro .offer-merchant {
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--gh-bleu-cyan, #006fff);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.offer-card-pro .offer-title {
+  font-family: "Anton", sans-serif;
+  font-size: 19px;
+  color: var(--gh-bleu-iris, #0f0a30);
+  letter-spacing: 0.3px;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.offer-card-pro .offer-pitch {
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  color: #495057;
+  line-height: 1.5;
+  margin-bottom: 14px;
+  flex: 1;
+}
+.offer-card-pro .offer-footer {
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #f1f3f7;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.offer-card-pro .offer-cta {
+  background: var(--gh-bleu-iris, #0f0a30);
+  color: #fff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.18s;
+}
+.offer-card-pro .offer-cta:hover { background: var(--gh-bleu-cyan, #006fff); }
+
+/* ---------- Trust strip (badge halo Guy Hoquet) ---------- */
+.trust-strip {
+  background: #f8f9fc;
+  padding: 18px 0;
+  border-top: 1px solid #eef0f5;
+  border-bottom: 1px solid #eef0f5;
+  text-align: center;
+}
+.trust-strip-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 28px;
+  flex-wrap: wrap;
+}
+.trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  color: #495057;
+}
+.trust-item i { color: var(--gh-bleu-cyan, #006fff); font-size: 18px; }
+.trust-item strong { color: var(--gh-bleu-iris, #0f0a30); font-weight: 700; }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 600px) {
+  .social-proof-track { gap: 24px; }
+  .social-proof-item strong { font-size: 18px; }
+  .immo-soft-bar { padding: 10px 12px; flex-direction: column; gap: 8px; text-align: center; }
+  .immo-soft-bar-text { font-size: 13px; }
+  body.has-immo-bar { padding-bottom: 110px; }
+}
