@@ -287,7 +287,8 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
       <a href="#merchants">Commerçants</a>
       <a href="#jeu">Jeu du mois</a>
       <a href="#offers">Offres</a>
-      <a href="#agent-immo">Agent immo</a>
+      <a href="#how-it-works">Comment ça marche</a>
+      <a href="#faq">FAQ</a>
       <a href="#blog">Le Mag</a>
       <select id="citySelector" onchange="if(this.value)location.href='city.html?slug='+this.value" style="padding:8px 12px;border:1px solid #e5e5e5;border-radius:8px;font-family:inherit;font-size:13px;background:#fff;cursor:pointer">
         <option value="">📍 Ma ville</option>
@@ -401,42 +402,12 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
 .jeu-empty{background:#fff;color:#6c757d;border-radius:16px;padding:50px;text-align:center}
 </style>
 
-<!-- Mon sacré voisin : bandeau agent immobilier -->
-<section class="agent-section" id="agent-immo">
-  <div class="container">
-    <div class="section-title">
-      <h2><i class="fas fa-home" style="color:var(--primary)"></i> Mon sacré voisin</h2>
-      <p>Votre conseiller immobilier de confiance à Perpignan</p>
-    </div>
-    <div class="agent-card">
-      <div class="agent-photo" id="agentPhoto" style="background-image:url('https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80')"></div>
-      <div>
-        <span class="agent-badge"><i class="fas fa-award"></i> Agent certifié</span>
-        <h2 id="agentName">Nordine Mouaouia</h2>
-        <div class="agent-role" id="agentRole">Conseiller immobilier — Guy Hoquet Perpignan</div>
-        <p class="agent-bio" id="agentBio">Expert du marché immobilier perpignanais depuis plus de 15 ans, je vous accompagne dans tous vos projets : achat, vente, estimation, conseil patrimonial. Approche humaine, données marché à jour, stratégie personnalisée. Votre réussite est ma priorité.</p>
-        <div class="agent-contacts">
-          <a href="tel:+33468000000" id="agentTel"><i class="fas fa-phone"></i> 04 68 00 00 00</a>
-          <a href="mailto:n.mouaouia@guyhoquet.com" id="agentEmail"><i class="fas fa-envelope"></i> n.mouaouia@guyhoquet.com</a>
-          <a href="#" id="agentWeb" onclick="document.getElementById('agentModal').classList.add('show');return false"><i class="fas fa-calendar-check"></i> Prendre rendez-vous</a>
-        </div>
-        <div class="agent-services">
-          <span><i class="fas fa-check"></i> Estimation gratuite</span>
-          <span><i class="fas fa-check"></i> Vente & Achat</span>
-          <span><i class="fas fa-check"></i> Conseil patrimonial</span>
-          <span><i class="fas fa-check"></i> Investissement locatif</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- Pourquoi MonBonAgent -->
 <section class="about-section" id="about">
   <div class="container">
     <div class="section-title">
       <h2><i class="fas fa-heart" style="color:var(--primary)"></i> Pourquoi MonBonAgent</h2>
-      <p>Un agent immobilier, des commerçants locaux, une seule communauté perpignanaise</p>
+      <p>Des commerçants locaux, une seule communauté à Elne</p>
     </div>
     <div id="aboutRows">
       <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
@@ -585,7 +556,7 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
     <div class="footer-grid">
       <div class="footer-col footer-about">
         <a href="#" class="logo">Mon <span>BonAgent</span></a>
-        <p id="footerAbout">MonBonAgent est la plateforme locale qui connecte Nordine Mouaouia, agent Guy Hoquet Perpignan, aux meilleurs commerçants de la ville.</p>
+        <p id="footerAbout">MonBonAgent est la plateforme locale qui connecte les habitants d'Elne aux meilleurs commerçants de la ville. Bons d'achat, réductions et avantages exclusifs.</p>
         <div class="footer-social" id="footerSocial"></div>
       </div>
       <div class="footer-col" id="footerCol1">
@@ -617,7 +588,7 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
       </div>
     </div>
     <div class="footer-bottom">
-      <p id="footerLegal">© 2026 MonBonAgent — Nordine Mouaouia, agent Guy Hoquet Perpignan. Tous droits réservés.</p>
+      <p id="footerLegal">© 2026 MonBonAgent · Service local d'Elne (66200) · Tous droits réservés.</p>
       <div class="footer-payments">
         <i class="fab fa-cc-visa"></i>
         <i class="fab fa-cc-mastercard"></i>
@@ -862,10 +833,10 @@ function renderAboutSections(sections) {
   if (!Array.isArray(sections) || !sections.length) {
     // fallback content
     sections = [
-      { title:"Un agent immobilier au cœur de Perpignan",
-        text:"MonBonAgent, c'est d'abord l'engagement de Nordine Mouaouia, conseiller Guy Hoquet à Perpignan, pour vous connecter aux meilleurs commerçants de la ville.",
+      { title:"Un service local 100 % dédié à Elne",
+        text:"MonBonAgent est une plateforme locale qui négocie en direct avec les commerçants d'Elne pour vous proposer des avantages exclusifs. Chaque bon réservé soutient un voisin commerçant.",
         image:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80",
-        cta_label:"Découvrir mon agence", cta_url:"#agent-immo" },
+        cta_label:"Voir les commerçants", cta_url:"#merchants" },
       { title:"Des bons d'achat chez vos commerçants préférés",
         text:"Chaque bon MonBonAgent est négocié en direct avec un commerçant perpignanais. Vous profitez de vraies remises, eux d'une nouvelle clientèle locale.",
         image:"https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1000&q=80",
@@ -1055,7 +1026,7 @@ const FALLBACK_BLOG = [
     title:'Acheter à Perpignan en 2026 : les 5 quartiers à surveiller',
     excerpt:"Prix en hausse modérée, rendements locatifs attractifs, métro-bus en développement : Perpignan reste une valeur sûre. Analyse des quartiers porteurs et des pièges à éviter.",
     image:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
-    author:'Nordine Mouaouia', date:'8 avril 2026',
+    author:'Équipe MonBonAgent', date:'8 avril 2026',
     content:`<p>En 2026, Perpignan confirme son statut de marché immobilier accessible en France : le <strong>prix médian</strong> au m² reste sous les 2 000€, très loin des moyennes nationales, avec des rendements locatifs bruts pouvant dépasser 7% dans certains secteurs.</p><p><strong>Les 5 quartiers à surveiller</strong> :</p><p><strong>1. Saint-Assiscle</strong> — Proche gare TGV, en pleine mutation. Idéal pour investir locatif : la demande étudiante est forte.</p><p><strong>2. Centre historique</strong> — Cachet unique, mais vigilance sur l'état du bâti. À privilégier pour les passionnés de pierre.</p><p><strong>3. Moulin à Vent</strong> — Quartier résidentiel calme, familial. Prix raisonnables, écoles à proximité.</p><p><strong>4. Saint-Jacques</strong> — En pleine rénovation urbaine. Opportunités à saisir pour les investisseurs patients.</p><p><strong>5. Catalunya</strong> — Dynamique commercial, idéal pour primo-accédants.</p><p><strong>Pièges à éviter</strong> : DPE F/G qui deviendront non louables, copropriétés dégradées, biens sur nuisances sonores. Faites toujours estimer par un professionnel avant de signer.</p>`
   },
   {
@@ -1079,7 +1050,7 @@ const FALLBACK_BLOG = [
     title:'Vendre son bien en 2026 : le guide des étapes clés',
     excerpt:"Estimation, diagnostic, mise en valeur, négociation : vendre son bien immobilier ne s'improvise pas. Découvrez les 7 étapes pour réussir votre vente au meilleur prix à Perpignan.",
     image:'https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800&q=80',
-    author:'Nordine Mouaouia', date:'6 avril 2026',
+    author:'Équipe MonBonAgent', date:'6 avril 2026',
     content:`<p>Vendre son bien immobilier est une étape importante qui mérite une méthode rigoureuse. Voici les <strong>7 étapes clés</strong> pour maximiser vos chances de vendre vite et au bon prix sur le marché perpignanais.</p><p><strong>1. L'estimation</strong> — Gratuite et sans engagement chez un professionnel. Basée sur les transactions récentes du secteur (DVF).</p><p><strong>2. Les diagnostics</strong> — Obligatoires avant la mise en vente : DPE, amiante, plomb, électricité, gaz selon l'âge du bien.</p><p><strong>3. La mise en valeur</strong> — Home staging léger, photos professionnelles, dépersonnalisation des espaces.</p><p><strong>4. La commercialisation</strong> — Annonces ciblées, réseau d'agence, visites qualifiées.</p><p><strong>5. Les visites</strong> — Toujours accompagnées, questions préparées, feedback immédiat.</p><p><strong>6. La négociation</strong> — Un bon agent fait la différence entre 5 et 10% de prix final.</p><p><strong>7. Le compromis et l'acte</strong> — Délai moyen de 3 mois entre le compromis et la signature chez le notaire.</p><p>Conseil : entourez-vous d'un professionnel local qui connaît parfaitement votre quartier. L'écart de prix entre une vente bien menée et une vente improvisée peut dépasser 15%.</p>`
   }
 ];
