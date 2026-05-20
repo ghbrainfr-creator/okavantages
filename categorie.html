@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Catégorie — MonBonAgent</title>
+<meta name="description" content="Tous les commerçants d'Elne dans cette catégorie, avec leurs bons d'achat exclusifs.">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/assets/gh-theme.css">
+<link rel="stylesheet" href="/assets/components.css">
+<link rel="stylesheet" href="/assets/commerces.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: "Montserrat", sans-serif; background: #fff; color: #212529; line-height: 1.5; }
+a { color: inherit; text-decoration: none; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+nav { background: #fff; padding: 14px 0; box-shadow: 0 2px 10px rgba(15,10,48,.06); position: sticky; top: 0; z-index: 100; }
+nav .container { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { font-family: "Anton", sans-serif; font-size: 24px; color: var(--gh-bleu-cyan); letter-spacing: .5px; }
+.logo span { color: var(--gh-bleu-iris); }
+.nav-links { display: flex; gap: 22px; align-items: center; }
+.nav-links a { font-weight: 500; font-size: 14px; }
+.nav-links a:hover { color: var(--gh-bleu-cyan); }
+.nav-cta { background: var(--gh-bleu-cyan); color: #fff !important; padding: 8px 18px; border-radius: 8px; }
+.nav-cta:hover { background: var(--gh-bleu-cyan-hover); }
+
+/* Hero catégorie */
+.cat-hero {
+  position: relative;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  color: #fff;
+  isolation: isolate;
+  overflow: hidden;
+}
+.cat-hero-bg {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  z-index: -2;
+  background-color: var(--gh-bleu-iris);
+}
+.cat-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(15,10,48,.78) 0%, rgba(0,111,255,.55) 100%);
+  z-index: -1;
+}
+.cat-hero .container { padding: 60px 20px; }
+.cat-breadcrumb { font-family: "Montserrat", sans-serif; font-size: 13px; opacity: .85; margin-bottom: 12px; }
+.cat-breadcrumb a { color: #fff; opacity: .85; }
+.cat-breadcrumb a:hover { opacity: 1; text-decoration: underline; }
+.cat-hero-title {
+  display: flex; align-items: center; gap: 18px;
+  font-family: "Anton", sans-serif;
+  font-size: clamp(34px, 5vw, 56px);
+  letter-spacing: .4px;
+  margin-bottom: 14px; line-height: 1.05;
+}
+.cat-hero-title .cat-hero-icon {
+  width: 64px; height: 64px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.16);
+  border: 1px solid rgba(255,255,255,.25);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.cat-hero-lead {
+  font-family: "Montserrat", sans-serif;
+  font-size: 16px;
+  opacity: .92;
+  max-width: 640px;
+  margin-bottom: 22px;
+}
+.cat-hero-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+.cat-hero-stats .pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.18);
+  padding: 7px 14px; border-radius: 999px;
+  font-family: "Montserrat", sans-serif; font-size: 13px;
+}
+.cat-hero-stats .pill i { color: #7fb8ff; }
+
+/* Section listing */
+.cat-listing { padding: 36px 0 60px; background: #f8f9fc; }
+.cat-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.cat-count {
+  font-family: "Montserrat", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--gh-bleu-iris);
+}
+.cat-count strong { color: var(--gh-bleu-cyan); font-size: 18px; font-family: "Anton", sans-serif; letter-spacing: .3px; }
+.cat-search { position: relative; }
+.cat-search input {
+  width: 280px;
+  padding: 10px 14px 10px 38px;
+  border: 1.5px solid #dee2e6;
+  border-radius: 10px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  outline: none;
+}
+.cat-search input:focus { border-color: var(--gh-bleu-cyan); }
+.cat-search i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #adb5bd; }
+
+.cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 22px;
+}
+
+.cat-empty {
+  background: #fff;
+  border: 1px dashed #ced4da;
+  border-radius: 16px;
+  padding: 60px 30px;
+  text-align: center;
+  color: #6c757d;
+  font-family: "Montserrat", sans-serif;
+}
+.cat-empty i { font-size: 48px; color: #ced4da; margin-bottom: 14px; display: block; }
+.cat-empty h2 { font-family: "Anton", sans-serif; font-size: 24px; color: var(--gh-bleu-iris); margin-bottom: 8px; letter-spacing: .3px; }
+.cat-empty p { margin-bottom: 18px; }
+.cat-empty .btn {
+  display: inline-block;
+  background: var(--gh-bleu-cyan); color: #fff;
+  padding: 10px 22px; border-radius: 8px;
+  font-weight: 600; font-size: 14px; text-decoration: none;
+}
+
+/* Footer */
+footer { background: var(--gh-bleu-iris); color: #fff; padding: 44px 0 24px; text-align: center; }
+footer p { opacity: .65; font-size: 13px; margin-top: 12px; }
+.footer-links { display: flex; justify-content: center; gap: 22px; margin-bottom: 14px; flex-wrap: wrap; }
+.footer-links a { color: #fff; opacity: .75; font-size: 14px; }
+.footer-links a:hover { opacity: 1; color: var(--gh-bleu-cyan); }
+
+@media (max-width: 600px) {
+  .cat-hero { min-height: 240px; }
+  .cat-hero .container { padding: 36px 20px; }
+  .cat-hero-title .cat-hero-icon { width: 48px; height: 48px; font-size: 22px; }
+  .cat-search input { width: 180px; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="/" class="logo">Mon<span>BonAgent</span></a>
+    <div class="nav-links">
+      <a href="/">Accueil</a>
+      <a href="/commerces.html">Commerces</a>
+      <a href="/centre-commercial-jacques-albert.html">Centre commercial</a>
+      <a href="/login.html" class="nav-cta">Se connecter</a>
+    </div>
+  </div>
+</nav>
+
+<header class="cat-hero" id="cat-hero">
+  <div class="cat-hero-bg" id="cat-hero-bg"></div>
+  <div class="container">
+    <div class="cat-breadcrumb">
+      <a href="/">Accueil</a> &rsaquo; <a href="/#categories-grid">Catégories</a> &rsaquo; <span id="cat-breadcrumb-current">…</span>
+    </div>
+    <h1 class="cat-hero-title">
+      <span class="cat-hero-icon"><i class="fas fa-store" id="cat-hero-icon-i"></i></span>
+      <span id="cat-hero-name">Catégorie</span>
+    </h1>
+    <p class="cat-hero-lead" id="cat-hero-lead">Découvrez les commerçants d'Elne de cette catégorie et leurs bons d'achat exclusifs.</p>
+    <div class="cat-hero-stats">
+      <div class="pill"><i class="fas fa-store"></i> <span id="cat-merchant-count">0</span> commerçant<span id="cat-merchant-s">s</span></div>
+      <div class="pill"><i class="fas fa-map-location-dot"></i> Elne (66200)</div>
+    </div>
+  </div>
+</header>
+
+<section class="cat-listing">
+  <div class="container">
+    <div class="cat-controls">
+      <div class="cat-count"><strong id="cat-results-count">0</strong> résultat(s) affiché(s)</div>
+      <div class="cat-search">
+        <i class="fas fa-search"></i>
+        <input type="search" id="cat-search-input" placeholder="Rechercher dans cette catégorie…">
+      </div>
+    </div>
+    <div class="cat-grid" id="cat-grid">
+      <div class="cat-empty"><i class="fas fa-spinner fa-spin"></i><p>Chargement des commerçants…</p></div>
+    </div>
+  </div>
+</section>
+
+<aside class="immo-soft-bar" id="immo-soft-bar">
+  <div class="immo-soft-bar-text">
+    <i class="fas fa-house"></i>
+    <span>Propriétaire à Elne ? <strong>Estimez votre bien gratuitement</strong> avec votre agent local Guy Hoquet.</span>
+  </div>
+  <a class="immo-soft-bar-cta" href="https://estime66.vercel.app?utm_source=monbonagent&utm_medium=immo_bar&utm_campaign=categorie" target="_blank" rel="noopener">
+    <i class="fas fa-calculator"></i> Estimer mon bien
+  </a>
+  <button class="immo-soft-bar-close" aria-label="Fermer">✕</button>
+</aside>
+
+<footer>
+  <div class="container">
+    <div class="footer-links">
+      <a href="/">Accueil</a>
+      <a href="/commerces.html">Commerces</a>
+      <a href="/#categories-grid">Catégories</a>
+      <a href="/footer-page.html">Mentions légales</a>
+    </div>
+    <p>© 2026 Mon BonAgent · Service local d'Elne (66200) · Tous droits réservés.</p>
+  </div>
+</footer>
+
+<script src="/assets/components.js"></script>
+<script>
+/* Mapping slug → catégorie d'affichage + photo + icône + sous-catégories du JSON */
+const CAT_MAP = {
+  'alimentation':       { label: 'Alimentation',          icon: 'fa-basket-shopping',  photo: 'photo-1542838132-92c53300491e', match: /boulang|patiss|super|epicer|alim|bouch|poisson|primeur|caviste|tabac|conserver|fruit/i },
+  'escapades':          { label: 'Escapades',             icon: 'fa-suitcase-rolling', photo: 'photo-1488646953014-85cb44e25828', match: /voyage|hotel|hebergement|escapade/i },
+  'maison':             { label: 'Maison',                icon: 'fa-couch',            photo: 'photo-1556909114-f6e7ad7d3136', match: /decor|mobilier|cuisinist|jardin|bricolage|electromenager|menuiser|plomb|carrel|peint/i },
+  'restaurants':        { label: 'Restaurants',           icon: 'fa-utensils',         photo: 'photo-1517248135467-4c7edcad34c4', match: /restau|fast.?food|caf|bar|pub|traiteur/i },
+  'sante-bien-etre':    { label: 'Santé & bien-être',     icon: 'fa-spa',              photo: 'photo-1518611012118-696072aa579a', match: /pharm|medecin|dentist|coiff|beaut|paramedical|soin|compl|optic|vet/i },
+  'services':           { label: 'Services',              icon: 'fa-screwdriver-wrench', photo: 'photo-1581094794329-c8112a89af12', match: /service|pressing|cordonn|banque|assur|comptable|avocat|conseil|fun/i },
+  'divertissement':     { label: 'Divertissement',        icon: 'fa-masks-theater',    photo: 'photo-1543007630-9710e4a00a20', match: /billett|spectacle|disqua|librair|art/i },
+  'animaux':            { label: 'Animaux',               icon: 'fa-paw',              photo: 'photo-1543466835-00a7907e9de1', match: /veter|animal|toilett/i },
+  'vetements-mode':     { label: 'Vêtements & mode',      icon: 'fa-shirt',            photo: 'photo-1445205170230-053b83016050', match: /mode|vetement|chauss|bijouter|parfum|cosmetique/i },
+  'sports-activites':   { label: 'Sports & activités',    icon: 'fa-person-running',   photo: 'photo-1571019613454-1cb2f99b2d8b', match: /sport|velo|scooter|fitness/i },
+  'bebes-enfants':      { label: 'Bébés & enfants',       icon: 'fa-baby',             photo: 'photo-1519689680058-324335c77eba', match: /jeu|jouet|bebe|enfant|maternit/i },
+  'vins-spiritueux':    { label: 'Vins & spiritueux',     icon: 'fa-wine-glass',       photo: 'photo-1510626176961-4b57d4fbad03', match: /caviste|vin|spiritueux|alcool/i }
+};
+
+function escapeHtml(s){return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+
+(async function () {
+  const url = new URL(location.href);
+  const slug = (url.searchParams.get('slug') || '').toLowerCase().trim();
+  const cat = CAT_MAP[slug];
+
+  if (!cat) {
+    document.getElementById('cat-hero-name').textContent = 'Catégorie inconnue';
+    document.getElementById('cat-breadcrumb-current').textContent = 'Inconnue';
+    document.getElementById('cat-grid').innerHTML = `
+      <div class="cat-empty">
+        <i class="fas fa-circle-question"></i>
+        <h2>Catégorie introuvable</h2>
+        <p>Cette catégorie n'existe pas ou plus.</p>
+        <a class="btn" href="/#categories-grid">Voir toutes les catégories</a>
+      </div>`;
+    return;
+  }
+
+  /* Hero */
+  document.title = `${cat.label} — MonBonAgent`;
+  document.getElementById('cat-hero-name').textContent = cat.label;
+  document.getElementById('cat-hero-icon-i').className = `fas ${cat.icon}`;
+  document.getElementById('cat-breadcrumb-current').textContent = cat.label;
+  document.getElementById('cat-hero-bg').style.backgroundImage = `url('https://images.unsplash.com/${cat.photo}?auto=format&fit=crop&w=1600&q=70')`;
+  document.getElementById('cat-hero-lead').textContent = `Tous les commerçants d'Elne dans la catégorie « ${cat.label} » et leurs bons d'achat exclusifs.`;
+
+  /* Charge le JSON annuaire + filtre */
+  let commerces = [];
+  try {
+    const r = await fetch('/data/commerces-elne.json');
+    const data = await r.json();
+    commerces = data.commerces || [];
+  } catch (e) {
+    console.error('Erreur chargement annuaire:', e);
+  }
+
+  const filtered = commerces.filter(c => cat.match.test((c.categorie || '') + ' ' + (c.nom || '')));
+  document.getElementById('cat-merchant-count').textContent = filtered.length;
+  document.getElementById('cat-merchant-s').textContent = filtered.length > 1 ? 's' : '';
+  document.getElementById('cat-results-count').textContent = filtered.length;
+
+  if (!filtered.length) {
+    document.getElementById('cat-grid').innerHTML = `
+      <div class="cat-empty">
+        <i class="fas fa-store-slash"></i>
+        <h2>Aucun commerce pour l'instant</h2>
+        <p>Nous travaillons à référencer plus de commerçants dans la catégorie « ${escapeHtml(cat.label)} ».<br>Revenez bientôt ou explorez les autres catégories.</p>
+        <a class="btn" href="/#categories-grid">Voir toutes les catégories</a>
+      </div>`;
+    return;
+  }
+
+  function renderCard(c) {
+    const phone = c.telephone ? c.telephone : '';
+    const telHref = phone ? 'tel:' + phone.replace(/\s+/g, '') : '';
+    const partenaire = c.partenaire === true;
+    return `
+      <article class="commerce-card" data-name="${escapeHtml((c.nom||'').toLowerCase())}">
+        <div class="commerce-card-header">
+          <div class="commerce-icon"><i class="fas ${escapeHtml(c.icone || cat.icon)}"></i></div>
+          <div class="commerce-title">
+            <h3>${escapeHtml(c.nom || 'Commerce')}</h3>
+            <span class="commerce-cat">${escapeHtml(c.categorie || cat.label)}</span>
+          </div>
+        </div>
+        <div class="commerce-card-body">
+          ${c.adresse ? `<div class="meta-row"><i class="fas fa-map-marker-alt"></i><span>${escapeHtml(c.adresse)}</span></div>` : ''}
+          ${phone ? `<div class="meta-row"><i class="fas fa-phone"></i><a href="${escapeHtml(telHref)}">${escapeHtml(phone)}</a></div>` : ''}
+          ${c.site_web ? `<div class="meta-row"><i class="fas fa-globe"></i><a href="${escapeHtml(c.site_web)}" target="_blank" rel="noopener">${escapeHtml(c.site_web.replace(/^https?:\/\//,'').replace(/\/$/,''))}</a></div>` : ''}
+        </div>
+        <div class="commerce-card-footer">
+          ${partenaire ? '<span class="commerce-badge partenaire"><i class="fas fa-check-circle"></i> Partenaire</span>' : '<span class="commerce-badge annuaire">Annuaire local</span>'}
+          <a class="commerce-cta" href="${escapeHtml(c.lien_maps || ('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent((c.nom||'') + ' ' + (c.adresse||'') + ' Elne')))}" target="_blank" rel="noopener">
+            <i class="fas fa-map"></i> Google Maps
+          </a>
+        </div>
+      </article>`;
+  }
+
+  let visible = filtered.slice();
+  function rerender() {
+    const grid = document.getElementById('cat-grid');
+    if (!visible.length) {
+      grid.innerHTML = `<div class="cat-empty"><i class="fas fa-search"></i><p>Aucun résultat.</p></div>`;
+    } else {
+      grid.innerHTML = visible.map(renderCard).join('');
+    }
+    document.getElementById('cat-results-count').textContent = visible.length;
+  }
+  rerender();
+
+  /* Recherche locale */
+  const input = document.getElementById('cat-search-input');
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    visible = q ? filtered.filter(c => (c.nom || '').toLowerCase().includes(q) || (c.categorie || '').toLowerCase().includes(q)) : filtered.slice();
+    rerender();
+  });
+})();
+</script>
+
+</body>
+</html>

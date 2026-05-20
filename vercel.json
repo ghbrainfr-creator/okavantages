@@ -4,6 +4,8 @@
     { "src": "/agent/([^/]+)/admin$", "dest": "/admin.html?agent=$1" },
     { "src": "/agent/([^/]+)/([^/]+)$", "dest": "/agent-site.html?slug=$1&page=$2" },
     { "src": "/agent/([^/]+)/?$", "dest": "/agent-site.html?slug=$1" },
+    { "src": "/categorie/([^/]+)/?$", "dest": "/categorie.html?slug=$1" },
+    { "src": "/commerce/([^/]+)/?$", "dest": "/commerce.html?slug=$1" },
     { "handle": "filesystem" },
     { "src": "/admin$", "dest": "/admin.html" },
     { "src": "/login$", "dest": "/login.html" },
