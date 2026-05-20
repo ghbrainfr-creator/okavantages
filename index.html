@@ -41,10 +41,31 @@ nav .container{display:flex;align-items:center;justify-content:space-between;gap
   .nav-cta{margin-top:10px;justify-content:center;padding:12px 18px;font-size:14px}
 }
 
-/* Hero */
-.hero{background:linear-gradient(135deg,var(--gh-bleu-iris) 0%,#1a134d 45%,var(--gh-bleu-cyan) 100%);color:#fff;padding:80px 0;text-align:center;position:relative;overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(255,255,255,.08),transparent 60%),radial-gradient(ellipse at bottom left,rgba(0,111,255,.18),transparent 60%);pointer-events:none}
-.hero>.container{position:relative;z-index:1}
+/* Hero — inspiré de la campagne Solidarité Commerçants Guy Hoquet
+   (composition : photo commerce chaleureux + bloc accroche Bleu Iris en bas) */
+.hero{position:relative;min-height:560px;color:#fff;padding:0;text-align:left;overflow:hidden;display:flex;align-items:flex-end;isolation:isolate}
+.hero::before{content:"";position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1800&q=80');background-size:cover;background-position:center;z-index:-2}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,10,48,.15) 0%,rgba(15,10,48,.6) 60%,rgba(15,10,48,.92) 100%);z-index:-1}
+.hero>.container{position:relative;z-index:1;padding:90px 20px 70px;width:100%}
+.hero-accroche{background:rgba(15,10,48,.88);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-radius:20px;padding:38px 42px;max-width:760px;border:1px solid rgba(255,255,255,.08);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.hero-accroche .hero-pill{margin-bottom:14px}
+.hero-accroche h1{font-family:"Anton",sans-serif;font-size:clamp(28px,4.2vw,46px);line-height:1.08;letter-spacing:.3px;margin-bottom:14px}
+.hero-accroche h1 em{font-style:normal;color:var(--gh-bleu-cyan)}
+.hero-accroche .hero-lead{font-size:15.5px;line-height:1.55;margin-bottom:24px;opacity:.95;max-width:none}
+.hero-accroche .hero-cta-group{margin:0 0 22px;justify-content:flex-start}
+.hero-accroche .hero-stats{justify-content:flex-start;gap:36px;margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12)}
+.hero-accroche .hero-stats div{text-align:left}
+.hero-accroche .hero-stats strong{display:block;font-family:"Anton",sans-serif;font-size:28px;color:var(--gh-bleu-cyan);letter-spacing:.4px}
+.hero-accroche .hero-stats span{font-size:12px;opacity:.78;text-transform:uppercase;letter-spacing:.5px}
+@media(max-width:760px){
+  .hero{min-height:auto}
+  .hero>.container{padding:60px 16px 50px}
+  .hero-accroche{padding:28px 22px;border-radius:16px}
+  .hero-accroche .hero-cta-group{flex-direction:column;align-items:stretch}
+  .hero-accroche .hero-cta-group>*{justify-content:center}
+  .hero-accroche .hero-stats{gap:18px}
+  .hero-accroche .hero-stats strong{font-size:22px}
+}
 .hero h1{font-size:clamp(28px,5vw,44px);font-weight:700;margin-bottom:12px}
 .hero p{font-size:18px;opacity:.9;margin-bottom:30px}
 .hero-stats{display:flex;justify-content:center;gap:40px;margin-top:30px}
@@ -314,22 +335,24 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
 
 <section class="hero">
   <div class="container">
-    <span class="hero-pill">Bons d'achat · Commerce local Elne</span>
-    <h1>Payez moins. Soutenez vos commerçants d'Elne.</h1>
-    <p class="hero-lead">Ce midi, votre déjeuner à 8&nbsp;€ au lieu de 12&nbsp;€. Demain, votre coupe à 25&nbsp;€ au lieu de 35&nbsp;€. Chez vos commerces de proximité, <strong>jusqu'à 50&nbsp;% d'avantage</strong> en plus. Et chaque bon réservé soutient un voisin commerçant.</p>
-    <div class="hero-cta-group">
-      <a href="#merchants" class="hero-cta-primary" onclick="event.preventDefault();document.getElementById('signupModal')?.classList.add('show');">
-        <span class="hero-cta-main"><i class="fas fa-gift"></i> Recevoir mon 1ᵉʳ bon offert</span>
-        <small>30 sec · sans carte bancaire</small>
-      </a>
-      <a href="#how-it-works" class="hero-cta-ghost">
-        <i class="fas fa-circle-question"></i> Comment ça marche
-      </a>
-    </div>
-    <div class="hero-stats">
-      <div><strong>88</strong><span>commerces locaux référencés</span></div>
-      <div><strong>50&nbsp;%</strong><span>d'avantage en plus, jusqu'à</span></div>
-      <div><strong>0&nbsp;€</strong><span>d'inscription, sans engagement</span></div>
+    <div class="hero-accroche">
+      <span class="hero-pill"><i class="fas fa-heart" style="margin-right:6px"></i> Solidarité commerçants · Elne</span>
+      <h1>Nous vous offrons <em>jusqu'à 50&nbsp;%</em> de bons d'achat à dépenser dans les commerces de votre quartier.</h1>
+      <p class="hero-lead">Ce midi, votre déjeuner à 8&nbsp;€ au lieu de 12&nbsp;€. Demain, votre coupe à 25&nbsp;€ au lieu de 35&nbsp;€. Chez vos commerçants d'Elne et des environs, chaque bon réservé soutient un voisin commerçant.</p>
+      <div class="hero-cta-group">
+        <a href="#merchants" class="hero-cta-primary" onclick="event.preventDefault();document.getElementById('signupModal')?.classList.add('show');">
+          <span class="hero-cta-main"><i class="fas fa-gift"></i> Recevoir mon 1ᵉʳ bon offert</span>
+          <small>30 sec · sans carte bancaire</small>
+        </a>
+        <a href="#how-it-works" class="hero-cta-ghost">
+          <i class="fas fa-circle-question"></i> Comment ça marche
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div><strong>88</strong><span>commerces locaux référencés</span></div>
+        <div><strong>50&nbsp;%</strong><span>d'avantage en plus, jusqu'à</span></div>
+        <div><strong>0&nbsp;€</strong><span>d'inscription, sans engagement</span></div>
+      </div>
     </div>
   </div>
 </section>
