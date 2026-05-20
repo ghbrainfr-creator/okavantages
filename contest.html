@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jeu du mois — MonBonAgent</title>
 <meta name="description" content="Tentez votre chance chaque mois et remportez un bon d'achat chez un commerçant local.">
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--primary:#f82032;--primary-hover:#d91a2b;--accent:#ff6b35;--dark:#212529;--light:#6c757d;--bg:#fafafa;--radius:14px;--gold:#ffc107}
+:root{--primary:#006fff;--primary-hover:#0050cc;--accent:#ff6b35;--dark:#212529;--light:#6c757d;--bg:#fafafa;--radius:14px;--gold:#ffc107}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--dark);line-height:1.5}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--dark);line-height:1.5}
 a{text-decoration:none;color:inherit}
 .container{max-width:1100px;margin:0 auto;padding:0 20px}
 
@@ -60,7 +60,7 @@ header.hero::before{content:'';position:absolute;inset:0;background-image:radial
 .btn-primary:disabled{background:#ccc;cursor:not-allowed}
 .form-msg{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;display:none}
 .form-msg.ok{background:#e8f5e9;color:#2e7d32;display:block}
-.form-msg.err{background:#fff0f1;color:#c62828;display:block}
+.form-msg.err{background:#e6f1ff;color:#c62828;display:block}
 
 /* Wheel */
 .wheel-section{display:none;text-align:center}
@@ -109,6 +109,7 @@ footer a{color:var(--primary)}
   .wheel-wrap{width:260px;height:260px}
 }
 </style>
+<link rel="stylesheet" href="/assets/gh-theme.css">
 </head>
 <body>
 <nav>
@@ -232,11 +233,11 @@ let wheelRotation = 0;
 let spinning = false;
 
 const DEFAULT_BRAND = {
-  primary:'#f82032', primaryHover:'#d91a2b', accent:'#ff6b35',
+  primary:'#006fff', primaryHover:'#0050cc', accent:'#ff6b35',
   dark:'#212529', gold:'#ffc107', bg:'#fafafa'
 };
 const DEFAULT_SEGMENTS = [
-  {label:'10% offerts', type:'win',  color:'#f82032', textColor:'#ffffff'},
+  {label:'10% offerts', type:'win',  color:'#006fff', textColor:'#ffffff'},
   {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
   {label:'Café offert', type:'win',  color:'#ff6b35', textColor:'#ffffff'},
   {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
@@ -551,13 +552,13 @@ try { window.parent && window.parent.postMessage({type:'contest-preview-ready'},
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jeu du mois — MonBonAgent</title>
 <meta name="description" content="Tentez votre chance chaque mois et remportez un bon d'achat chez un commerçant local.">
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--primary:#f82032;--primary-hover:#d91a2b;--accent:#ff6b35;--dark:#212529;--light:#6c757d;--bg:#fafafa;--radius:14px;--gold:#ffc107}
+:root{--primary:#006fff;--primary-hover:#0050cc;--accent:#ff6b35;--dark:#212529;--light:#6c757d;--bg:#fafafa;--radius:14px;--gold:#ffc107}
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Rubik',sans-serif;background:var(--bg);color:var(--dark);line-height:1.5}
+body{font-family:'Montserrat',sans-serif;background:var(--bg);color:var(--dark);line-height:1.5}
 a{text-decoration:none;color:inherit}
 .container{max-width:1100px;margin:0 auto;padding:0 20px}
 
@@ -606,7 +607,7 @@ header.hero::before{content:'';position:absolute;inset:0;background-image:radial
 .btn-primary:disabled{background:#ccc;cursor:not-allowed}
 .form-msg{margin-top:10px;padding:10px 14px;border-radius:8px;font-size:13px;display:none}
 .form-msg.ok{background:#e8f5e9;color:#2e7d32;display:block}
-.form-msg.err{background:#fff0f1;color:#c62828;display:block}
+.form-msg.err{background:#e6f1ff;color:#c62828;display:block}
 
 /* Wheel */
 .wheel-section{display:none;text-align:center}
@@ -655,6 +656,7 @@ footer a{color:var(--primary)}
   .wheel-wrap{width:260px;height:260px}
 }
 </style>
+<link rel="stylesheet" href="/assets/gh-theme.css">
 </head>
 <body>
 <nav>
@@ -778,11 +780,11 @@ let wheelRotation = 0;
 let spinning = false;
 
 const DEFAULT_BRAND = {
-  primary:'#f82032', primaryHover:'#d91a2b', accent:'#ff6b35',
+  primary:'#006fff', primaryHover:'#0050cc', accent:'#ff6b35',
   dark:'#212529', gold:'#ffc107', bg:'#fafafa'
 };
 const DEFAULT_SEGMENTS = [
-  {label:'10% offerts', type:'win',  color:'#f82032', textColor:'#ffffff'},
+  {label:'10% offerts', type:'win',  color:'#006fff', textColor:'#ffffff'},
   {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
   {label:'Café offert', type:'win',  color:'#ff6b35', textColor:'#ffffff'},
   {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},

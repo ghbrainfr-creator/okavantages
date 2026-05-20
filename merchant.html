@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Espace commerçant — MonBonAgent</title>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{--primary:var(--primary);--primary-hover:var(--primary-hover);--dark:#212529;--bg:#f5f6f8;--accent:var(--primary);--gold:#FFD700}
 
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
+body{font-family:'Montserrat',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
 header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
 header .brand{font-size:20px;font-weight:700;color:var(--primary)}
 header .brand span{color:var(--dark)}
@@ -62,7 +62,7 @@ tr:hover{background:#fafbfc}
 .pill.ok{background:#d3f9d8;color:#2b8a3e}
 .pill.warn{background:#fff4e6;color:#d9480f}
 .pill.muted{background:#f1f3f5;color:#6c757d}
-.stat-card{background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffe3e5;padding:22px;border-radius:12px}
+.stat-card{background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffe3e5;padding:22px;border-radius:12px}
 .stat-card .label{font-size:11px;text-transform:uppercase;color:#6c757d;font-weight:600;letter-spacing:.5px}
 .stat-card .value{font-size:32px;font-weight:700;color:var(--primary);margin-top:6px}
 .stat-card .trend{font-size:12px;color:#6c757d;margin-top:4px}
@@ -163,6 +163,7 @@ tr:hover{background:#fafbfc}
 .import-result.show{display:block}
 .empty-icon{font-size:48px;color:#dee2e6;margin-bottom:10px;display:block}
 </style>
+<link rel="stylesheet" href="/assets/gh-theme.css">
 </head>
 <body>
 <header>
@@ -338,10 +339,10 @@ tr:hover{background:#fafbfc}
 
   <!-- ========== CONTESTS (Jeu du mois) ========== -->
   <div class="panel" id="panel-contests">
-    <h2><i class="fas fa-gift" style="color:#f82032"></i> Mon Jeu du mois</h2>
+    <h2><i class="fas fa-gift" style="color:#006fff"></i> Mon Jeu du mois</h2>
     <p class="sub">Créez un concours avec roue de la chance pour dynamiser votre fichier client et récupérer des leads qualifiés. Sélection automatique toutes les 50 participations.</p>
-    <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:20px">
-      <strong><i class="fas fa-lightbulb" style="color:#f82032"></i> Comment ça marche</strong>
+    <div style="background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:20px">
+      <strong><i class="fas fa-lightbulb" style="color:#006fff"></i> Comment ça marche</strong>
       <ol style="margin:8px 0 0 20px;font-size:13px;color:#6c757d;line-height:1.7">
         <li>Créez un jeu avec un beau lot (ex : bon d'achat de 100€, coffret cadeau, prestation premium).</li>
         <li>Vos clients s'inscrivent (email + consentement RGPD) et reçoivent 1 tour de roue.</li>
@@ -358,7 +359,7 @@ tr:hover{background:#fafbfc}
   <!-- Merchant contest modal -->
   <div class="modal-overlay" id="mContestModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
     <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
-      <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#f82032"></i> Nouveau jeu du mois</h3>
+      <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#006fff"></i> Nouveau jeu du mois</h3>
       <p class="sub">Remplissez les champs ci-dessous. Le jeu sera créé en statut « Brouillon » et pourra être activé ensuite.</p>
       <input type="hidden" id="mct_id">
       <div class="field"><label>Titre *</label><input id="mct_title" placeholder="Gagnez un bon d'achat de 100€"></div>
@@ -406,10 +407,10 @@ tr:hover{background:#fafbfc}
       <label>Description</label>
       <textarea id="m_description" rows="4"></textarea>
     </div>
-    <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:16px">
+    <div style="background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:16px">
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
         <div style="flex:1;min-width:220px">
-          <div style="font-size:13px;font-weight:700;color:#f82032;margin-bottom:4px"><i class="fas fa-wand-magic-sparkles"></i> Améliorer ma fiche avec l'IA</div>
+          <div style="font-size:13px;font-weight:700;color:#006fff;margin-bottom:4px"><i class="fas fa-wand-magic-sparkles"></i> Améliorer ma fiche avec l'IA</div>
           <div style="font-size:12px;color:#6c757d">Portrait long, signature, FAQ, mots-clés SEO — la version Premium.</div>
         </div>
         <button class="btn" onclick="enrichWithAI()" style="white-space:nowrap"><i class="fas fa-gem"></i> Générer la version Premium</button>
@@ -1079,7 +1080,8 @@ function previewSystemTemplate(id) {
   if (!t) return;
   const html = renderTemplateVars(t.body_html || t.body || '');
   const preview = window.open('', '_blank', 'width=640,height=720');
-  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
+  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#006fff}</style><link rel="stylesheet" href="/assets/gh-theme.css">
+</head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
 }
 
 // Override original renderTemplates to use card grid
@@ -1102,7 +1104,8 @@ function previewMyTemplate(id) {
   const t = templates.find(x => x.id === id); if (!t) return;
   const html = renderTemplateVars(t.body_html || t.body || '');
   const preview = window.open('', '_blank', 'width=640,height=720');
-  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
+  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#006fff}</style><link rel="stylesheet" href="/assets/gh-theme.css">
+</head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
 }
 
 // Patch saveTemplate to also write body_html
@@ -1615,7 +1618,7 @@ async function loadMerchantContests(){
     if(error) throw error;
     _mContests = data || [];
     if(!_mContests.length){
-      el.innerHTML = '<div style="background:#fff;border:2px dashed #e5e5e5;border-radius:12px;padding:40px;text-align:center;color:#6c757d"><i class="fas fa-gift" style="font-size:42px;color:#f82032;margin-bottom:12px;display:block"></i><strong style="color:#212529">Aucun jeu créé</strong><p style="margin-top:6px">Lancez votre premier concours pour collecter des leads qualifiés.</p></div>';
+      el.innerHTML = '<div style="background:#fff;border:2px dashed #e5e5e5;border-radius:12px;padding:40px;text-align:center;color:#6c757d"><i class="fas fa-gift" style="font-size:42px;color:#006fff;margin-bottom:12px;display:block"></i><strong style="color:#212529">Aucun jeu créé</strong><p style="margin-top:6px">Lancez votre premier concours pour collecter des leads qualifiés.</p></div>';
       return;
     }
     el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px">' +
@@ -1628,7 +1631,7 @@ async function loadMerchantContests(){
           '<span style="background:'+statusColor+';color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase">'+_mctEsc(c.status)+'</span></div>' +
           '<div style="font-size:12px;color:#6c757d;margin-top:4px">'+_mctEsc(c.prize_description||'')+'</div>' +
           '<div style="margin-top:12px;font-size:12px"><strong>'+(c.total_participants||0)+'</strong> participants · <strong>'+(c.total_spins||0)+'</strong> tours</div>' +
-          '<div style="margin-top:6px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#f82032;height:100%;width:'+pct+'%"></div></div>' +
+          '<div style="margin-top:6px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#006fff;height:100%;width:'+pct+'%"></div></div>' +
           '<div style="font-size:11px;color:#6c757d;margin-top:4px">Prochain gagnant dans '+nextIn+' tours</div>' +
           '<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">' +
             '<button class="btn btn-sm" onclick="openMerchantContestModal(\''+c.id+'\')"><i class="fas fa-edit"></i> Modifier</button>' +
@@ -1746,19 +1749,19 @@ window.copyContestLink = copyContestLink;
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Espace commerçant — MonBonAgent</title>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
+body{font-family:'Montserrat',sans-serif;background:#f5f6f8;color:#212529;min-height:100vh}
 header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-header .brand{font-size:20px;font-weight:700;color:#f82032}
+header .brand{font-size:20px;font-weight:700;color:#006fff}
 header .brand span{color:#212529}
 header .right{display:flex;align-items:center;gap:14px}
 header .user-email{font-size:13px;color:#6c757d}
-header button{background:#f82032;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
-header button:hover{background:#d91a2b}
+header button{background:#006fff;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-family:inherit;font-size:13px;cursor:pointer;font-weight:500}
+header button:hover{background:#0050cc}
 header button.ghost{background:#e9ecef;color:#495057}
 .impersonate-banner{background:#fff3cd;color:#664d03;padding:10px 24px;font-size:13px;border-bottom:1px solid #ffecb5;display:none;align-items:center;justify-content:space-between}
 .impersonate-banner.show{display:flex}
@@ -1767,7 +1770,7 @@ header button.ghost{background:#e9ecef;color:#495057}
 .tabs{display:flex;gap:4px;background:#fff;border-radius:12px;padding:6px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.04);overflow-x:auto}
 .tab{padding:10px 16px;border-radius:8px;cursor:pointer;font-size:14px;font-weight:500;color:#6c757d;white-space:nowrap;transition:.2s}
 .tab:hover{background:#f8f9fa}
-.tab.active{background:#f82032;color:#fff}
+.tab.active{background:#006fff;color:#fff}
 .panel{display:none;background:#fff;border-radius:12px;padding:28px;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .panel.active{display:block}
 h2{font-size:20px;margin-bottom:6px}
@@ -1779,10 +1782,10 @@ h2{font-size:20px;margin-bottom:6px}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:12px;font-weight:500;color:#495057;margin-bottom:5px;text-transform:uppercase;letter-spacing:.3px}
 .field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px;transition:.2s}
-.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:#f82032}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:#006fff}
 .field textarea{min-height:80px;resize:vertical}
-.btn{background:#f82032;color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
-.btn:hover{background:#d91a2b}
+.btn{background:#006fff;color:#fff;border:none;padding:11px 22px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:500;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:8px}
+.btn:hover{background:#0050cc}
 .btn.ghost{background:#e9ecef;color:#495057}
 .btn.ghost:hover{background:#dee2e6}
 .btn.sm{padding:6px 12px;font-size:12px}
@@ -1802,9 +1805,9 @@ tr:hover{background:#fafbfc}
 .pill.ok{background:#d3f9d8;color:#2b8a3e}
 .pill.warn{background:#fff4e6;color:#d9480f}
 .pill.muted{background:#f1f3f5;color:#6c757d}
-.stat-card{background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffe3e5;padding:22px;border-radius:12px}
+.stat-card{background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffe3e5;padding:22px;border-radius:12px}
 .stat-card .label{font-size:11px;text-transform:uppercase;color:#6c757d;font-weight:600;letter-spacing:.5px}
-.stat-card .value{font-size:32px;font-weight:700;color:#f82032;margin-top:6px}
+.stat-card .value{font-size:32px;font-weight:700;color:#006fff;margin-top:6px}
 .stat-card .trend{font-size:12px;color:#6c757d;margin-top:4px}
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.show{display:flex}
@@ -1815,12 +1818,12 @@ tr:hover{background:#fafbfc}
 .row-between{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px}
 .search{padding:9px 14px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:13px;min-width:220px}
 .template-card{border:1.5px solid #e9ecef;border-radius:10px;padding:16px;margin-bottom:12px;transition:.2s;cursor:pointer}
-.template-card:hover{border-color:#f82032;box-shadow:0 2px 10px rgba(248,32,50,.08)}
+.template-card:hover{border-color:#006fff;box-shadow:0 2px 10px rgba(248,32,50,.08)}
 .template-card h4{font-size:15px;margin-bottom:4px}
 .template-card .subj{color:#495057;font-size:13px;margin-bottom:6px}
 .template-card .meta{color:#6c757d;font-size:12px}
 .vars-list{background:#f8f9fa;padding:14px;border-radius:8px;font-size:12px;color:#495057;margin-bottom:14px}
-.vars-list code{background:#fff;padding:2px 6px;border-radius:4px;color:#f82032;font-family:Menlo,Monaco,monospace;font-size:11px;margin:2px}
+.vars-list code{background:#fff;padding:2px 6px;border-radius:4px;color:#006fff;font-family:Menlo,Monaco,monospace;font-size:11px;margin:2px}
 .sequence-card{border:1.5px solid #e9ecef;border-radius:10px;padding:16px;margin-bottom:12px}
 .sequence-card .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .sequence-card .name{font-weight:600;font-size:15px}
@@ -1864,7 +1867,7 @@ tr:hover{background:#fafbfc}
 .contact-row .tag{display:inline-block;background:#e7f5ff;color:#1971c2;padding:2px 8px;border-radius:10px;font-size:10px;margin-right:3px}
 .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:14px}
 .tpl-card{border:1.5px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s;background:#fff;position:relative}
-.tpl-card:hover{border-color:#f82032;box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
+.tpl-card:hover{border-color:#006fff;box-shadow:0 4px 14px rgba(248,32,50,.1);transform:translateY(-2px)}
 .tpl-card .icon{font-size:22px;margin-bottom:6px}
 .tpl-card .name{font-weight:600;font-size:14px;margin-bottom:4px}
 .tpl-card .meta{font-size:11px;color:#6c757d}
@@ -1872,7 +1875,7 @@ tr:hover{background:#fafbfc}
 .tpl-card .acts{margin-top:8px;display:flex;gap:6px}
 .tpl-card .acts .btn{padding:5px 9px;font-size:11px}
 .upload-zone{border:2px dashed #dee2e6;border-radius:12px;padding:24px;text-align:center;cursor:pointer;transition:.2s}
-.upload-zone:hover,.upload-zone.dragover{border-color:#f82032;background:#fff5f6}
+.upload-zone:hover,.upload-zone.dragover{border-color:#006fff;background:#fff5f6}
 .upload-zone i{font-size:30px;color:#adb5bd;margin-bottom:8px;display:block}
 .upload-zone .hint{font-size:12px;color:#6c757d;margin-top:6px}
 .signature-preview{border:1px solid #e9ecef;border-radius:8px;padding:14px;background:#fafbfc;margin-top:8px;font-size:13px;line-height:1.5}
@@ -1882,8 +1885,8 @@ tr:hover{background:#fafbfc}
 .campaign-card .stat{font-size:12px;color:#6c757d}
 .campaign-card .acts{display:flex;gap:6px;flex-wrap:wrap}
 .segment-pill{display:inline-block;padding:5px 12px;background:#f1f3f5;color:#495057;border-radius:14px;font-size:12px;margin:3px;cursor:pointer;border:1.5px solid #e9ecef;user-select:none;transition:.2s}
-.segment-pill:hover{border-color:#f82032}
-.segment-pill.active{background:#f82032;color:#fff;border-color:#f82032}
+.segment-pill:hover{border-color:#006fff}
+.segment-pill.active{background:#006fff;color:#fff;border-color:#006fff}
 .checkbox-list{max-height:280px;overflow-y:auto;border:1px solid #e9ecef;border-radius:8px;padding:10px;background:#fafbfc}
 .checkbox-list label{display:flex;align-items:center;gap:8px;padding:6px 4px;cursor:pointer;font-size:13px;border-bottom:1px solid #f0f1f3}
 .checkbox-list label:last-child{border-bottom:none}
@@ -1903,6 +1906,7 @@ tr:hover{background:#fafbfc}
 .import-result.show{display:block}
 .empty-icon{font-size:48px;color:#dee2e6;margin-bottom:10px;display:block}
 </style>
+<link rel="stylesheet" href="/assets/gh-theme.css">
 </head>
 <body>
 <header>
@@ -2078,10 +2082,10 @@ tr:hover{background:#fafbfc}
 
   <!-- ========== CONTESTS (Jeu du mois) ========== -->
   <div class="panel" id="panel-contests">
-    <h2><i class="fas fa-gift" style="color:#f82032"></i> Mon Jeu du mois</h2>
+    <h2><i class="fas fa-gift" style="color:#006fff"></i> Mon Jeu du mois</h2>
     <p class="sub">Créez un concours avec roue de la chance pour dynamiser votre fichier client et récupérer des leads qualifiés. Sélection automatique toutes les 50 participations.</p>
-    <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:20px">
-      <strong><i class="fas fa-lightbulb" style="color:#f82032"></i> Comment ça marche</strong>
+    <div style="background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:20px">
+      <strong><i class="fas fa-lightbulb" style="color:#006fff"></i> Comment ça marche</strong>
       <ol style="margin:8px 0 0 20px;font-size:13px;color:#6c757d;line-height:1.7">
         <li>Créez un jeu avec un beau lot (ex : bon d'achat de 100€, coffret cadeau, prestation premium).</li>
         <li>Vos clients s'inscrivent (email + consentement RGPD) et reçoivent 1 tour de roue.</li>
@@ -2098,7 +2102,7 @@ tr:hover{background:#fafbfc}
   <!-- Merchant contest modal -->
   <div class="modal-overlay" id="mContestModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
     <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
-      <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#f82032"></i> Nouveau jeu du mois</h3>
+      <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#006fff"></i> Nouveau jeu du mois</h3>
       <p class="sub">Remplissez les champs ci-dessous. Le jeu sera créé en statut « Brouillon » et pourra être activé ensuite.</p>
       <input type="hidden" id="mct_id">
       <div class="field"><label>Titre *</label><input id="mct_title" placeholder="Gagnez un bon d'achat de 100€"></div>
@@ -2146,10 +2150,10 @@ tr:hover{background:#fafbfc}
       <label>Description</label>
       <textarea id="m_description" rows="4"></textarea>
     </div>
-    <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:16px">
+    <div style="background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:16px;margin-bottom:16px">
       <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
         <div style="flex:1;min-width:220px">
-          <div style="font-size:13px;font-weight:700;color:#f82032;margin-bottom:4px"><i class="fas fa-wand-magic-sparkles"></i> Améliorer ma fiche avec l'IA</div>
+          <div style="font-size:13px;font-weight:700;color:#006fff;margin-bottom:4px"><i class="fas fa-wand-magic-sparkles"></i> Améliorer ma fiche avec l'IA</div>
           <div style="font-size:12px;color:#6c757d">Portrait long, signature, FAQ, mots-clés SEO — la version Premium.</div>
         </div>
         <button class="btn" onclick="enrichWithAI()" style="white-space:nowrap"><i class="fas fa-gem"></i> Générer la version Premium</button>
@@ -2819,7 +2823,8 @@ function previewSystemTemplate(id) {
   if (!t) return;
   const html = renderTemplateVars(t.body_html || t.body || '');
   const preview = window.open('', '_blank', 'width=640,height=720');
-  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
+  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#006fff}</style><link rel="stylesheet" href="/assets/gh-theme.css">
+</head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
 }
 
 // Override original renderTemplates to use card grid
@@ -2842,7 +2847,8 @@ function previewMyTemplate(id) {
   const t = templates.find(x => x.id === id); if (!t) return;
   const html = renderTemplateVars(t.body_html || t.body || '');
   const preview = window.open('', '_blank', 'width=640,height=720');
-  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#f82032}</style></head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
+  preview.document.write(`<html><head><title>${esc(t.name)}</title><style>body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:#006fff}</style><link rel="stylesheet" href="/assets/gh-theme.css">
+</head><body><h2>${esc(t.subject)}</h2><hr>${html}</body></html>`);
 }
 
 // Patch saveTemplate to also write body_html
@@ -3355,7 +3361,7 @@ async function loadMerchantContests(){
     if(error) throw error;
     _mContests = data || [];
     if(!_mContests.length){
-      el.innerHTML = '<div style="background:#fff;border:2px dashed #e5e5e5;border-radius:12px;padding:40px;text-align:center;color:#6c757d"><i class="fas fa-gift" style="font-size:42px;color:#f82032;margin-bottom:12px;display:block"></i><strong style="color:#212529">Aucun jeu créé</strong><p style="margin-top:6px">Lancez votre premier concours pour collecter des leads qualifiés.</p></div>';
+      el.innerHTML = '<div style="background:#fff;border:2px dashed #e5e5e5;border-radius:12px;padding:40px;text-align:center;color:#6c757d"><i class="fas fa-gift" style="font-size:42px;color:#006fff;margin-bottom:12px;display:block"></i><strong style="color:#212529">Aucun jeu créé</strong><p style="margin-top:6px">Lancez votre premier concours pour collecter des leads qualifiés.</p></div>';
       return;
     }
     el.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:16px">' +
@@ -3368,7 +3374,7 @@ async function loadMerchantContests(){
           '<span style="background:'+statusColor+';color:#fff;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:600;text-transform:uppercase">'+_mctEsc(c.status)+'</span></div>' +
           '<div style="font-size:12px;color:#6c757d;margin-top:4px">'+_mctEsc(c.prize_description||'')+'</div>' +
           '<div style="margin-top:12px;font-size:12px"><strong>'+(c.total_participants||0)+'</strong> participants · <strong>'+(c.total_spins||0)+'</strong> tours</div>' +
-          '<div style="margin-top:6px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#f82032;height:100%;width:'+pct+'%"></div></div>' +
+          '<div style="margin-top:6px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#006fff;height:100%;width:'+pct+'%"></div></div>' +
           '<div style="font-size:11px;color:#6c757d;margin-top:4px">Prochain gagnant dans '+nextIn+' tours</div>' +
           '<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">' +
             '<button class="btn btn-sm" onclick="openMerchantContestModal(\''+c.id+'\')"><i class="fas fa-edit"></i> Modifier</button>' +

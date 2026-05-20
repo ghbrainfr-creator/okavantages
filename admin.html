@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — MonBonAgent</title>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
   document.addEventListener("DOMContentLoaded",function(){setTimeout(applyBrandFromInputs,1500);["color_primary","color_accent","color_dark","color_bg"].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener("input",applyBrandFromInputs);});});
@@ -22,7 +22,7 @@
 :root{--primary:#0060e0;--primary-hover:#0050c0;--dark:#212529;--bg:#f5f6f8;--accent:#0060e0;--gold:#FFD700}
 
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
+body{font-family:'Montserrat',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
 header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
 header .brand{font-size:20px;font-weight:700;color:var(--primary)}
 header .brand span{color:var(--dark)}
@@ -74,7 +74,7 @@ tr:hover{background:#fafbfc}
 .pill.muted{background:#e9ecef;color:#6c757d}
 .row{display:flex;gap:8px;align-items:center}
 .services-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.service-chip{background:#fff0f1;color:var(--primary);padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
+.service-chip{background:#e6f1ff;color:var(--primary);padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
 .service-chip i{cursor:pointer}
 .add-service{display:flex;gap:6px;margin-top:8px}
 .add-service input{flex:1}
@@ -247,6 +247,7 @@ tr:hover{background:#fafbfc}
 })();
 </script>
 <style>body > #toast ~ * { display: none !important; }</style>
+<link rel="stylesheet" href="/assets/gh-theme.css">
 </head>
 <body>
 <header>
@@ -398,7 +399,7 @@ tr:hover{background:#fafbfc}
     </div>
     <h2>Sections "Pourquoi MonBonAgent"</h2>
     <p class="sub">Chaque bloc est entièrement personnalisable (titre, texte, image, bouton). L'IA peut générer les 6 blocs d'un coup pour démarrer.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:10px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffcdd2;border-radius:10px">
       <button class="btn" onclick="openAIStudio('section')"><i class="fas fa-wand-magic-sparkles"></i> Générer 6 blocs avec l'IA</button>
       <button class="btn ghost" onclick="seedSectionsFromTemplate()"><i class="fas fa-star"></i> Charger le modèle type</button>
       <div style="flex:1;font-size:12px;color:#6c757d;align-self:center;min-width:200px">Le modèle type reprend l'architecture éprouvée (6 blocs progressifs), ensuite tu peux tout modifier manuellement ou avec l'IA.</div>
@@ -548,15 +549,15 @@ tr:hover{background:#fafbfc}
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px" class="add-merchant-grid">
       <div style="background:#f8f9fa;border:1px dashed #dee2e6;border-radius:12px;padding:18px">
-        <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-link" style="color:#f82032"></i> Depuis un lien</h3>
+        <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-link" style="color:#006fff"></i> Depuis un lien</h3>
         <div class="row" style="gap:10px;flex-wrap:wrap">
           <input id="enrich_url" placeholder="https://instagram.com/ma-boulangerie…" style="flex:1;min-width:220px;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px">
           <button class="btn" onclick="enrichMerchant()"><i class="fas fa-download"></i> Récupérer</button>
         </div>
         <div id="enrich_result" style="margin-top:14px;display:none;background:#fff;border:1px solid #e9ecef;border-radius:10px;padding:16px"></div>
       </div>
-      <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:18px">
-        <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-wand-magic-sparkles" style="color:#f82032"></i> Générer avec l'IA</h3>
+      <div style="background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:18px">
+        <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-wand-magic-sparkles" style="color:#006fff"></i> Générer avec l'IA</h3>
         <p style="font-size:13px;color:#6c757d;margin-bottom:12px">5 questions suffisent : l'IA rédige description, portrait, horaires, offres, hashtags.</p>
         <button class="btn" onclick="openAIStudio('merchant')" style="width:100%"><i class="fas fa-magic"></i> Créer une fiche avec l'IA</button>
       </div>
@@ -726,7 +727,7 @@ tr:hover{background:#fafbfc}
 
   <!-- ========== VILLES ========== -->
   <div class="panel" id="panel-cities">
-    <h2><i class="fas fa-city" style="color:#f82032"></i> Villes</h2>
+    <h2><i class="fas fa-city" style="color:#006fff"></i> Villes</h2>
     <p class="sub">Gérez les villes couvertes par MonBonAgent. Les commerçants et agents sont rattachés à une ville.</p>
     <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
       <input id="city_search" placeholder="Rechercher une ville…" style="flex:1;min-width:200px;padding:10px;border:1px solid #e5e5e5;border-radius:8px">
@@ -738,7 +739,7 @@ tr:hover{background:#fafbfc}
 
   <!-- ========== AGENTS ========== -->
   <div class="panel" id="panel-agents">
-    <h2><i class="fas fa-user-tie" style="color:#f82032"></i> Agents immobiliers</h2>
+    <h2><i class="fas fa-user-tie" style="color:#006fff"></i> Agents immobiliers</h2>
     <p class="sub">Réseau d'agents partenaires. Chaque agent peut couvrir plusieurs villes.</p>
     <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
       <input id="agent_search" placeholder="Rechercher un agent…" style="flex:1;min-width:200px;padding:10px;border:1px solid #e5e5e5;border-radius:8px">
@@ -749,7 +750,7 @@ tr:hover{background:#fafbfc}
 
   <!-- ========== JEUX / CONCOURS ========== -->
   <div class="panel" id="panel-contests">
-    <h2><i class="fas fa-gift" style="color:#f82032"></i> Jeux du mois</h2>
+    <h2><i class="fas fa-gift" style="color:#006fff"></i> Jeux du mois</h2>
     <p class="sub">Concours avec roue de la chance. Un gagnant automatique toutes les N participations.</p>
     <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
       <select id="contest_filter" style="padding:10px;border:1px solid #e5e5e5;border-radius:8px">
@@ -768,7 +769,7 @@ tr:hover{background:#fafbfc}
 <!-- ========== CITY MODAL ========== -->
 <div class="modal-overlay" id="cityModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:640px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 style="margin-bottom:4px"><i class="fas fa-city" style="color:#f82032"></i> Ville</h3>
+    <h3 style="margin-bottom:4px"><i class="fas fa-city" style="color:#006fff"></i> Ville</h3>
     <p class="sub">Ajoutez ou modifiez une ville du réseau.</p>
     <input type="hidden" id="city_id_hidden">
     <div class="grid-2">
@@ -797,7 +798,7 @@ tr:hover{background:#fafbfc}
 <!-- ========== AGENT MODAL ========== -->
 <div class="modal-overlay" id="agentModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 style="margin-bottom:4px"><i class="fas fa-user-tie" style="color:#f82032"></i> Agent immobilier</h3>
+    <h3 style="margin-bottom:4px"><i class="fas fa-user-tie" style="color:#006fff"></i> Agent immobilier</h3>
     <p class="sub">Fiche complète de l'agent, ses coordonnées et les villes qu'il couvre.</p>
     <input type="hidden" id="agent_id_hidden">
     <div class="grid-2">
@@ -822,10 +823,10 @@ tr:hover{background:#fafbfc}
     </div>
 
     <!-- ===== BRANDING DE L'AGENT ===== -->
-    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-palette"></i> Branding de l'agent</h4>
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#006fff"><i class="fas fa-palette"></i> Branding de l'agent</h4>
     <p class="sub" style="font-size:12px">Ces couleurs sont automatiquement reprises sur toutes les pages liées à cet agent (jeux concours, fiche agent, landing). Chaque jeu peut les surcharger au cas par cas.</p>
     <div class="grid-2">
-      <div class="field"><label>Couleur principale</label><input type="color" id="agent_brand_primary" value="#f82032"></div>
+      <div class="field"><label>Couleur principale</label><input type="color" id="agent_brand_primary" value="#006fff"></div>
       <div class="field"><label>Couleur accent</label><input type="color" id="agent_brand_accent" value="#ff6b35"></div>
     </div>
     <div class="grid-2">
@@ -845,7 +846,7 @@ tr:hover{background:#fafbfc}
 <div class="modal-overlay" id="contestModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:1240px;width:100%;max-height:94vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:24px">
     <div style="min-width:0">
-    <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#f82032"></i> Jeu du mois</h3>
+    <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#006fff"></i> Jeu du mois</h3>
     <p class="sub">Concours avec roue de la chance. Sélection automatique toutes les N participations.</p>
     <input type="hidden" id="ct_id_hidden">
     <div class="field"><label>Titre *</label><input id="ct_title" placeholder="Gagnez un weekend à Barcelone"></div>
@@ -890,14 +891,14 @@ tr:hover{background:#fafbfc}
     </div>
 
     <!-- ===== AGENT BRANDING ===== -->
-    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-user-tie"></i> Agent immobilier (branding)</h4>
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#006fff"><i class="fas fa-user-tie"></i> Agent immobilier (branding)</h4>
     <p class="sub" style="font-size:12px">La page d'inscription reprendra le nom et les couleurs de l'agent. Chaque contest peut surcharger ces couleurs.</p>
     <div class="field">
       <label>Agent assigné</label>
       <select id="ct_agent_id"><option value="">— Aucun (branding par défaut MonBonAgent) —</option></select>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Couleur principale</label><input type="color" id="ct_brand_primary" value="#f82032"></div>
+      <div class="field"><label>Couleur principale</label><input type="color" id="ct_brand_primary" value="#006fff"></div>
       <div class="field"><label>Couleur accent</label><input type="color" id="ct_brand_accent" value="#ff6b35"></div>
     </div>
     <div class="grid-2">
@@ -906,11 +907,11 @@ tr:hover{background:#fafbfc}
     </div>
 
     <!-- ===== WHEEL EDITOR ===== -->
-    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-sync-alt"></i> Roue de la chance — palmes</h4>
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#006fff"><i class="fas fa-sync-alt"></i> Roue de la chance — palmes</h4>
     <p class="sub" style="font-size:12px">Ajoutez, retirez ou modifiez les segments (gagné, perdu, café, bon d'achat, remise…). La roue s'adapte automatiquement au nombre de palmes.</p>
     <div id="ct_segments_list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button type="button" class="btn btn-sm" onclick="ctAddSegment('win','Gagné','#f82032','#ffffff')"><i class="fas fa-plus"></i> Gagné</button>
+      <button type="button" class="btn btn-sm" onclick="ctAddSegment('win','Gagné','#006fff','#ffffff')"><i class="fas fa-plus"></i> Gagné</button>
       <button type="button" class="btn btn-sm btn-ghost" onclick="ctAddSegment('lose','Perdu','#ffffff','#212529')"><i class="fas fa-plus"></i> Perdu</button>
       <button type="button" class="btn btn-sm" style="background:#ff6b35" onclick="ctAddSegment('win','Café offert','#ff6b35','#ffffff')"><i class="fas fa-mug-hot"></i> Café</button>
       <button type="button" class="btn btn-sm" style="background:#ffc107;color:#212529" onclick="ctAddSegment('win','Bon 5€','#ffc107','#212529')"><i class="fas fa-ticket-alt"></i> Bon</button>
@@ -940,7 +941,7 @@ tr:hover{background:#fafbfc}
 <!-- EDIT MERCHANT MODAL (full fields, same as merchant.html profile) -->
 <div class="modal-overlay" id="editMerchantModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 style="margin-bottom:4px"><i class="fas fa-store" style="color:#f82032"></i> Fiche commerçant</h3>
+    <h3 style="margin-bottom:4px"><i class="fas fa-store" style="color:#006fff"></i> Fiche commerçant</h3>
     <p class="sub">Édition complète de la fiche — mêmes champs que l'espace commerçant.</p>
     <input type="hidden" id="em_id">
     <div class="grid-2">
@@ -963,9 +964,9 @@ tr:hover{background:#fafbfc}
       </label>
       <textarea id="em_description" rows="4"></textarea>
     </div>
-    <div class="field" style="background:#fff0f1;border:1px dashed #ffcdd2;border-radius:10px;padding:12px">
+    <div class="field" style="background:#e6f1ff;border:1px dashed #ffcdd2;border-radius:10px;padding:12px">
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <i class="fas fa-wand-magic-sparkles" style="color:#f82032"></i>
+        <i class="fas fa-wand-magic-sparkles" style="color:#006fff"></i>
         <strong style="font-size:13px">Génération IA</strong>
         <button type="button" class="btn ghost" style="padding:6px 12px;font-size:12px" onclick="generateOffersForEditMerchant()"><i class="fas fa-tags"></i> 10 offres saisonnières</button>
         <button type="button" class="btn ghost" style="padding:6px 12px;font-size:12px" onclick="regenerateFullMerchant()"><i class="fas fa-sync"></i> Regénérer la fiche</button>
@@ -1022,7 +1023,7 @@ tr:hover{background:#fafbfc}
 <!-- PROSPECT MODAL -->
 <div class="modal-overlay" id="prospectModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 id="prospectModalTitle"><i class="fas fa-user-plus" style="color:#f82032"></i> Nouveau prospect</h3>
+    <h3 id="prospectModalTitle"><i class="fas fa-user-plus" style="color:#006fff"></i> Nouveau prospect</h3>
     <p class="sub">Commerçant à contacter pour une invitation, upgrade, etc.</p>
     <div class="grid-2">
       <div class="field"><label>Nom du commerce</label><input id="p_name"></div>
@@ -1059,7 +1060,7 @@ tr:hover{background:#fafbfc}
 <!-- ADMIN TEMPLATE MODAL -->
 <div class="modal-overlay" id="adminTemplateModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 id="adminTemplateModalTitle"><i class="fas fa-file-alt" style="color:#f82032"></i> Nouveau modèle d'outreach</h3>
+    <h3 id="adminTemplateModalTitle"><i class="fas fa-file-alt" style="color:#006fff"></i> Nouveau modèle d'outreach</h3>
     <div class="grid-2">
       <div class="field"><label>Nom interne</label><input id="at_name" placeholder="Ex: Invitation forfait gratuit"></div>
       <div class="field"><label>Catégorie</label><select id="at_category"><option value="outreach">Outreach</option><option value="upsell">Upgrade</option><option value="welcome">Bienvenue</option><option value="followup">Relance</option><option value="newsletter">Newsletter</option><option value="announcement">Annonce</option><option value="other">Autre</option></select></div>
@@ -1080,7 +1081,7 @@ tr:hover{background:#fafbfc}
 <!-- ADMIN CAMPAIGN WIZARD MODAL -->
 <div class="modal-overlay" id="adminCampaignModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:780px;width:100%;max-height:94vh;overflow-y:auto">
-    <h3 id="adminCampaignModalTitle"><i class="fas fa-paper-plane" style="color:#f82032"></i> Nouvelle campagne d'outreach</h3>
+    <h3 id="adminCampaignModalTitle"><i class="fas fa-paper-plane" style="color:#006fff"></i> Nouvelle campagne d'outreach</h3>
     <div class="field"><label>Nom interne</label><input id="acmp_name" placeholder="Ex: Vague invitation 2026 T2"></div>
 
     <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">1. Modèle</h4>
@@ -1126,7 +1127,7 @@ tr:hover{background:#fafbfc}
 <!-- AI STUDIO MODAL — single modal with dynamic form per mode -->
 <div class="modal-overlay" id="aiStudioModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:0;max-width:760px;width:100%;max-height:94vh;overflow:hidden;display:flex;flex-direction:column">
-    <div style="background:linear-gradient(135deg,#f82032,#c9152b);color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:center">
+    <div style="background:linear-gradient(135deg,#006fff,#c9152b);color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:center">
       <h3 style="margin:0;font-size:18px"><i class="fas fa-wand-magic-sparkles"></i> <span id="ais_title">Studio IA</span></h3>
       <button onclick="closeAIStudio()" style="background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">×</button>
     </div>
@@ -1134,7 +1135,7 @@ tr:hover{background:#fafbfc}
       <p id="ais_intro" style="color:#6c757d;font-size:14px;margin-bottom:18px"></p>
       <div id="ais_form"></div>
       <div id="ais_loading" style="display:none;text-align:center;padding:30px;color:#6c757d">
-        <div style="font-size:32px;color:#f82032"><i class="fas fa-spinner fa-spin"></i></div>
+        <div style="font-size:32px;color:#006fff"><i class="fas fa-spinner fa-spin"></i></div>
         <div style="margin-top:10px;font-size:14px">L'IA rédige votre contenu… (10 à 30 secondes)</div>
       </div>
       <div id="ais_result" style="display:none"></div>
@@ -1154,7 +1155,7 @@ tr:hover{background:#fafbfc}
 <!-- BLOG POST EDIT MODAL -->
 <div class="modal-overlay" id="blogModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:780px;width:100%;max-height:94vh;overflow-y:auto">
-    <h3 id="bp_modal_title"><i class="fas fa-newspaper" style="color:#f82032"></i> Nouvel article</h3>
+    <h3 id="bp_modal_title"><i class="fas fa-newspaper" style="color:#006fff"></i> Nouvel article</h3>
     <p class="sub">Article du magazine local. Tu peux le rédiger à la main ou partir d'une génération IA.</p>
     <input type="hidden" id="bp_id">
     <div class="field"><label>Titre</label><input id="bp_title" placeholder="Les boles de picolat, recette authentique"></div>
@@ -1189,7 +1190,7 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Tags (séparés par des virgules)</label><input id="bp_tags" placeholder="Perpignan, Catalogne, recette"></div>
       <div class="field"><label>Statut</label><select id="bp_status"><option value="published">Publié</option><option value="draft">Brouillon</option></select></div>
     </div>
-    <div style="background:#fff0f1;border:1px solid #ffcdd2;border-radius:10px;padding:14px;margin-top:10px">
+    <div style="background:#e6f1ff;border:1px solid #ffcdd2;border-radius:10px;padding:14px;margin-top:10px">
       <p style="font-size:12px;color:#6c757d;margin-bottom:10px"><i class="fas fa-link"></i> <strong>Source & mise en avant</strong> — lien d'action contextuel pour la carte (billetterie pour un événement, site d'un commerçant vedette pour une recette).</p>
       <div class="grid-2">
         <div class="field"><label>Libellé du lien source</label><input id="bp_source_label" placeholder="Ex : Acheter les billets / Voir le site"></div>
@@ -1530,7 +1531,7 @@ async function loadSettings() {
     if (inp) inp.value = v;
     if (pick) pick.value = v;
   };
-  setColor('color_primary', '#f82032');
+  setColor('color_primary', '#006fff');
   setColor('color_accent', '#ff6b35');
   setColor('color_secondary', '#0ea5e9');
   setColor('color_dark', '#1a1a2e');
@@ -1757,7 +1758,7 @@ function renderFooterSections() {
         <button class="btn ghost" onclick="saveFooterSection(${si})" title="Enregistrer"><i class="fas fa-save"></i></button>
         <button class="btn ghost" onclick="deleteFooterSection(${si})" style="color:#c0392b" title="Supprimer"><i class="fas fa-trash"></i></button>
       </div>
-      <div style="padding-left:14px;border-left:2px solid #f82032">
+      <div style="padding-left:14px;border-left:2px solid #006fff">
         ${(s.links||[]).map((l, li) => `
           <div class="row" style="gap:6px;margin-bottom:6px">
             <input style="flex:1" placeholder="Libellé" value="${escapeAttr(l.label||'')}" oninput="footerSections[${si}].links[${li}].label=this.value">
@@ -2452,10 +2453,10 @@ async function loadStats() {
   ]);
   const [m, o, l, e] = queries.map(q => q.count || 0);
   host.innerHTML = `
-    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Commerçants</div><div style="font-size:32px;font-weight:700;color:#f82032">${m}</div></div>
-    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Offres</div><div style="font-size:32px;font-weight:700;color:#f82032">${o}</div></div>
-    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Leads</div><div style="font-size:32px;font-weight:700;color:#f82032">${l}</div></div>
-    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Emails envoyés</div><div style="font-size:32px;font-weight:700;color:#f82032">${e}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Commerçants</div><div style="font-size:32px;font-weight:700;color:#006fff">${m}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Offres</div><div style="font-size:32px;font-weight:700;color:#006fff">${o}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Leads</div><div style="font-size:32px;font-weight:700;color:#006fff">${l}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Emails envoyés</div><div style="font-size:32px;font-weight:700;color:#006fff">${e}</div></div>
   `;
 }
 
@@ -2508,7 +2509,7 @@ function filterProspectsByStatus(status) {
   renderProspects();
 }
 function openProspectModal() {
-  (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-user-plus" style="color:#f82032"></i> Nouveau prospect';
+  (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-user-plus" style="color:#006fff"></i> Nouveau prospect';
   ['p_name','p_category','p_address','p_phone','p_email','p_website','p_notes','p_id'].forEach(id => document.getElementById(id).value = '');
   (document.getElementById('p_city')||{}).value = 'Perpignan';
   (document.getElementById('p_status')||{}).value = 'new';
@@ -2518,7 +2519,7 @@ function openProspectModal() {
 }
 function editProspect(id) {
   const p = allProspects.find(x => x.id === id); if (!p) return;
-  (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-edit" style="color:#f82032"></i> Éditer prospect';
+  (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-edit" style="color:#006fff"></i> Éditer prospect';
   (document.getElementById('p_id')||{}).value = p.id;
   (document.getElementById('p_name')||{}).value = p.name || '';
   (document.getElementById('p_category')||{}).value = p.category || '';
@@ -2659,14 +2660,14 @@ function renderAdminTemplates() {
     </div>`).join('');
 }
 function openAdminTemplateModal() {
-  (document.getElementById('adminTemplateModalTitle')||{}).innerHTML = '<i class="fas fa-file-alt" style="color:#f82032"></i> Nouveau modèle d\'outreach';
+  (document.getElementById('adminTemplateModalTitle')||{}).innerHTML = '<i class="fas fa-file-alt" style="color:#006fff"></i> Nouveau modèle d\'outreach';
   ['at_name','at_subject','at_body','at_id'].forEach(id => document.getElementById(id).value = '');
   (document.getElementById('at_category')||{}).value = 'outreach';
   document.getElementById('adminTemplateModal').style.display = 'flex';
 }
 function editAdminTemplate(id) {
   const t = adminTemplates.find(x => x.id === id); if (!t) return;
-  (document.getElementById('adminTemplateModalTitle')||{}).innerHTML = '<i class="fas fa-edit" style="color:#f82032"></i> Éditer modèle';
+  (document.getElementById('adminTemplateModalTitle')||{}).innerHTML = '<i class="fas fa-edit" style="color:#006fff"></i> Éditer modèle';
   (document.getElementById('at_id')||{}).value = t.id;
   (document.getElementById('at_name')||{}).value = t.name || '';
   (document.getElementById('at_category')||{}).value = t.category || 'other';
@@ -2705,7 +2706,8 @@ function previewAdminTemplate(id) {
   const w = window.open('', '_blank', 'width=640,height=720');
   w.document.write(`<html><head><title>${escapeHtmlText(t.name)}</title><style>
 :root{--primary:#0060e0;--primary-hover:#0050c0;--dark:#212529;--bg:#f5f6f8;--accent:#0060e0;--gold:#FFD700}
-body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:var(--primary)}</style></head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
+body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:var(--primary)}</style><link rel="stylesheet" href="/assets/gh-theme.css">
+</head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
 }
 function renderAdminVars(html, ctx) {
   ctx = ctx || {};
@@ -2751,7 +2753,7 @@ async function deleteAdminCampaign(id) {
   loadAdminCampaigns();
 }
 function openAdminCampaignWizard() {
-  (document.getElementById('adminCampaignModalTitle')||{}).innerHTML = '<i class="fas fa-paper-plane" style="color:#f82032"></i> Nouvelle campagne d\'outreach';
+  (document.getElementById('adminCampaignModalTitle')||{}).innerHTML = '<i class="fas fa-paper-plane" style="color:#006fff"></i> Nouvelle campagne d\'outreach';
   ['acmp_name','acmp_subject','acmp_body','acmp_id','acmp_custom_emails'].forEach(id => document.getElementById(id).value = '');
   (document.getElementById('acmp_target_type')||{}).value = 'all_prospects';
   document.querySelectorAll('#adminCampaignModal .segment-pill').forEach(p => p.classList.toggle('active', p.dataset.target === 'all_prospects'));
@@ -3044,7 +3046,7 @@ function aiStudioRenderForm() {
   const ctx = aiStudioState.context || {};
   host.innerHTML = def.fields.map(f => {
     const val = (aiStudioState.inputs[f.id] != null ? aiStudioState.inputs[f.id] : (ctx[f.id] || ''));
-    const req = f.required ? '<span style="color:#f82032">*</span>' : '';
+    const req = f.required ? '<span style="color:#006fff">*</span>' : '';
     if (f.type === 'textarea') {
       return '<div class="field"><label>' + f.label + ' ' + req + '</label><textarea id="ais_f_' + f.id + '" rows="2" placeholder="' + escapeAttr(f.placeholder || '') + '">' + escapeHtmlText(val) + '</textarea></div>';
     }
@@ -3111,22 +3113,22 @@ function aiStudioShowResult() {
   if (mode === 'merchant') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
       '<h4 style="margin-bottom:6px">' + escapeHtmlText(aiStudioState.inputs.name || '') + ' <span style="font-weight:400;color:#6c757d;font-size:13px">— ' + escapeHtmlText(r.category || '') + '</span></h4>' +
-      '<p style="font-style:italic;color:#f82032;margin-bottom:10px">« ' + escapeHtmlText(r.tagline || '') + ' »</p>' +
+      '<p style="font-style:italic;color:#006fff;margin-bottom:10px">« ' + escapeHtmlText(r.tagline || '') + ' »</p>' +
       '<p style="font-size:13px;margin-bottom:10px">' + escapeHtmlText(r.description || '') + '</p>' +
       '<details><summary style="cursor:pointer;font-size:13px;color:#495057;font-weight:600">Portrait narratif</summary>' +
       '<p style="font-size:13px;margin-top:8px;color:#495057">' + escapeHtmlText(r.portrait || '') + '</p>' +
-      (r.quote ? '<p style="font-size:13px;font-style:italic;color:#f82032;margin-top:8px">« ' + escapeHtmlText(r.quote) + ' »</p>' : '') +
+      (r.quote ? '<p style="font-size:13px;font-style:italic;color:#006fff;margin-top:8px">« ' + escapeHtmlText(r.quote) + ' »</p>' : '') +
       '</details>' +
       '<p style="font-size:12px;color:#6c757d;margin-top:10px"><i class="far fa-clock"></i> ' + escapeHtmlText(r.hours || '') + '</p>' +
       '<h5 style="margin-top:14px;font-size:12px;text-transform:uppercase;color:#495057;letter-spacing:.3px">Offres suggérées</h5>' +
       '<div style="display:grid;gap:8px;margin-top:8px">' +
-      (r.offers || []).map(o => '<div style="background:#fff;border:1px solid #e9ecef;border-radius:8px;padding:10px"><strong>' + escapeHtmlText(o.title || '') + '</strong> — <span style="color:#f82032">' + (o.price || 0) + '€</span> ' + (o.original_price ? '<s style="color:#6c757d;font-size:12px">' + o.original_price + '€</s>' : '') + '<div style="font-size:12px;color:#6c757d">' + escapeHtmlText(o.description || '') + '</div></div>').join('') +
+      (r.offers || []).map(o => '<div style="background:#fff;border:1px solid #e9ecef;border-radius:8px;padding:10px"><strong>' + escapeHtmlText(o.title || '') + '</strong> — <span style="color:#006fff">' + (o.price || 0) + '€</span> ' + (o.original_price ? '<s style="color:#6c757d;font-size:12px">' + o.original_price + '€</s>' : '') + '<div style="font-size:12px;color:#6c757d">' + escapeHtmlText(o.description || '') + '</div></div>').join('') +
       '</div>' +
       '<div style="margin-top:10px">' + (r.hashtags || []).map(h => '<span style="display:inline-block;background:#fff;border:1px solid #e9ecef;border-radius:20px;padding:3px 10px;font-size:11px;color:#495057;margin:2px">' + escapeHtmlText(h) + '</span>').join('') + '</div>' +
       '</div>';
   } else if (mode === 'blog') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
-      '<span style="background:#f82032;color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;text-transform:uppercase">' + escapeHtmlText(r.category || '') + '</span>' +
+      '<span style="background:#006fff;color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;text-transform:uppercase">' + escapeHtmlText(r.category || '') + '</span>' +
       '<h4 style="margin:10px 0 6px;font-size:18px">' + escapeHtmlText(r.title || '') + '</h4>' +
       '<p style="color:#6c757d;font-size:12px;margin-bottom:10px">Par ' + escapeHtmlText(r.author || '') + '</p>' +
       '<p style="font-style:italic;font-size:13px;margin-bottom:14px">' + escapeHtmlText(r.excerpt || '') + '</p>' +
@@ -3140,7 +3142,7 @@ function aiStudioShowResult() {
       (r.offers || []).map((o, i) => '<label style="background:#fff;border:1px solid #e9ecef;border-radius:8px;padding:10px;display:flex;gap:10px;align-items:flex-start;cursor:pointer">' +
         '<input type="checkbox" class="ais_offer_check" data-idx="' + i + '" checked style="margin-top:2px">' +
         '<div style="flex:1">' +
-        '<div><strong>' + escapeHtmlText(o.title || '') + '</strong> — <span style="color:#f82032">' + (o.price || 0) + '€</span> ' + (o.original_price ? '<s style="color:#6c757d;font-size:12px">' + o.original_price + '€</s>' : '') + '</div>' +
+        '<div><strong>' + escapeHtmlText(o.title || '') + '</strong> — <span style="color:#006fff">' + (o.price || 0) + '€</span> ' + (o.original_price ? '<s style="color:#6c757d;font-size:12px">' + o.original_price + '€</s>' : '') + '</div>' +
         '<div style="font-size:12px;color:#6c757d">' + escapeHtmlText(o.description || '') + '</div>' +
         '<div style="font-size:11px;color:#868e96;margin-top:4px"><i class="far fa-calendar"></i> ' + escapeHtmlText(o.season || '') + ' · ' + escapeHtmlText(o.occasion || '') + '</div>' +
         '</div></label>').join('') +
@@ -3148,8 +3150,8 @@ function aiStudioShowResult() {
   } else if (mode === 'portrait') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
       '<p style="font-size:14px;line-height:1.7">' + escapeHtmlText(r.portrait || '') + '</p>' +
-      (r.quote ? '<p style="font-size:14px;font-style:italic;color:#f82032;margin-top:12px">« ' + escapeHtmlText(r.quote) + ' »</p>' : '') +
-      (r.anecdote ? '<p style="font-size:12px;color:#6c757d;margin-top:10px;border-left:3px solid #f82032;padding-left:10px">' + escapeHtmlText(r.anecdote) + '</p>' : '') +
+      (r.quote ? '<p style="font-size:14px;font-style:italic;color:#006fff;margin-top:12px">« ' + escapeHtmlText(r.quote) + ' »</p>' : '') +
+      (r.anecdote ? '<p style="font-size:12px;color:#6c757d;margin-top:10px;border-left:3px solid #006fff;padding-left:10px">' + escapeHtmlText(r.anecdote) + '</p>' : '') +
       '</div>';
   } else if (mode === 'template') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
@@ -3168,16 +3170,16 @@ function aiStudioShowResult() {
         '<div style="font-size:11px;color:#6c757d;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">Bloc ' + (i+1) + ' · ' + escapeHtmlText(s.cta_url || '#') + '</div>' +
         '<strong style="display:block;margin-bottom:4px">' + escapeHtmlText(s.title || '') + '</strong>' +
         '<p style="font-size:13px;color:#495057;margin:0 0 6px">' + escapeHtmlText(s.text || '') + '</p>' +
-        (s.cta_label ? '<span style="display:inline-block;background:#f82032;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px">' + escapeHtmlText(s.cta_label) + '</span>' : '') +
+        (s.cta_label ? '<span style="display:inline-block;background:#006fff;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px">' + escapeHtmlText(s.cta_label) + '</span>' : '') +
         '</div>').join('') +
       '</div></div>';
   } else if (mode === 'merchant_enrich') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
-      (r.tagline_premium ? '<p style="font-style:italic;color:#f82032;font-size:14px;margin-bottom:10px">« ' + escapeHtmlText(r.tagline_premium) + ' »</p>' : '') +
+      (r.tagline_premium ? '<p style="font-style:italic;color:#006fff;font-size:14px;margin-bottom:10px">« ' + escapeHtmlText(r.tagline_premium) + ' »</p>' : '') +
       (r.description_premium ? '<p style="font-size:13px;margin-bottom:10px">' + escapeHtmlText(r.description_premium) + '</p>' : '') +
       (r.portrait_long ? '<details open><summary style="cursor:pointer;font-size:13px;color:#495057;font-weight:600">Portrait long</summary><p style="font-size:13px;margin-top:8px;color:#495057;line-height:1.6">' + escapeHtmlText(r.portrait_long) + '</p></details>' : '') +
       (r.signature_sentence ? '<p style="margin-top:10px;font-size:13px;font-style:italic;color:#868e96">Signature : « ' + escapeHtmlText(r.signature_sentence) + ' »</p>' : '') +
-      (r.why_now ? '<p style="margin-top:10px;background:#fff0f1;padding:10px;border-radius:8px;font-size:13px">⏱ ' + escapeHtmlText(r.why_now) + '</p>' : '') +
+      (r.why_now ? '<p style="margin-top:10px;background:#e6f1ff;padding:10px;border-radius:8px;font-size:13px">⏱ ' + escapeHtmlText(r.why_now) + '</p>' : '') +
       (Array.isArray(r.three_reasons) && r.three_reasons.length ? '<ul style="margin:10px 0 0;padding-left:20px;font-size:13px">' + r.three_reasons.map(x => '<li>' + escapeHtmlText(x) + '</li>').join('') + '</ul>' : '') +
       (Array.isArray(r.faq) && r.faq.length ? '<details style="margin-top:12px"><summary style="cursor:pointer;font-size:13px;color:#495057;font-weight:600">FAQ (' + r.faq.length + ')</summary>' + r.faq.map(q => '<div style="margin-top:8px"><strong style="font-size:13px">' + escapeHtmlText(q.q || '') + '</strong><p style="font-size:12px;color:#6c757d;margin:4px 0 0">' + escapeHtmlText(q.a || '') + '</p></div>').join('') + '</details>' : '') +
       (r.instagram_caption ? '<p style="margin-top:10px;background:#fff;padding:10px;border:1px dashed #ced4da;border-radius:8px;font-size:12px;color:#495057"><strong>Instagram :</strong> ' + escapeHtmlText(r.instagram_caption) + '</p>' : '') +
@@ -3368,9 +3370,9 @@ function renderBlogPosts(list) {
   }
   host.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">' + list.map(p => {
     const statusBadge = p.status === 'draft' ? '<span style="font-size:11px;color:#6c757d">⏳ Brouillon</span>' : '<span style="font-size:11px;color:#28a745">✓ Publié</span>';
-    return '<div style="background:#fff;border:1px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s" onmouseover="this.style.borderColor=\'#f82032\'" onmouseout="this.style.borderColor=\'#e9ecef\'" onclick="openBlogModal(\'' + p.id + '\')">' +
+    return '<div style="background:#fff;border:1px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s" onmouseover="this.style.borderColor=\'#006fff\'" onmouseout="this.style.borderColor=\'#e9ecef\'" onclick="openBlogModal(\'' + p.id + '\')">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-      '<span style="background:#f82032;color:#fff;padding:2px 10px;border-radius:20px;font-size:10px;text-transform:uppercase;letter-spacing:.3px">' + escapeHtmlText(p.category || '') + '</span>' +
+      '<span style="background:#006fff;color:#fff;padding:2px 10px;border-radius:20px;font-size:10px;text-transform:uppercase;letter-spacing:.3px">' + escapeHtmlText(p.category || '') + '</span>' +
       statusBadge +
       '</div>' +
       '<h4 style="font-size:15px;margin-bottom:6px;line-height:1.3">' + escapeHtmlText(p.title || '') + '</h4>' +
@@ -3439,8 +3441,8 @@ window.bpUploadAttachment = bpUploadAttachment;
 
 async function openBlogModal(id) {
   (document.getElementById('bp_modal_title')||{}).innerHTML = id
-    ? '<i class="fas fa-newspaper" style="color:#f82032"></i> Éditer l\'article'
-    : '<i class="fas fa-newspaper" style="color:#f82032"></i> Nouvel article';
+    ? '<i class="fas fa-newspaper" style="color:#006fff"></i> Éditer l\'article'
+    : '<i class="fas fa-newspaper" style="color:#006fff"></i> Nouvel article';
   // Assure qu'on a la liste à jour des commerçants
   if (!Array.isArray(merchantsCache) || !merchantsCache.length) {
     try { const { data } = await sb.from('merchants').select('id,name,category').order('name'); if (data) merchantsCache = data; } catch (_) {}
@@ -3788,7 +3790,7 @@ function openAgentModal(id){
   (document.getElementById('agent_cities_in')||{}).value = slugs;
   // Branding
   const b = (a && a.brand) || {};
-  (document.getElementById('agent_brand_primary')||{}).value = b.primary || '#f82032';
+  (document.getElementById('agent_brand_primary')||{}).value = b.primary || '#006fff';
   (document.getElementById('agent_brand_accent')||{}).value = b.accent  || '#ff6b35';
   (document.getElementById('agent_brand_dark')||{}).value = b.dark    || '#212529';
   (document.getElementById('agent_brand_gold')||{}).value = b.gold    || '#ffc107';
@@ -3872,7 +3874,7 @@ function renderAdminContests(){
         '<div style="font-size:12px;color:#6c757d;margin-top:4px">'+_p6Esc(c.prize_description||'')+'</div>' +
         '<div style="font-size:11px;color:#999;margin-top:4px">'+(c.merchant && c.merchant.name ? _p6Esc(c.merchant.name) : '—')+' · '+(c.city && c.city.name ? _p6Esc(c.city.name) : '—')+'</div>' +
         '<div style="margin-top:12px;font-size:12px"><strong>'+(c.total_participants||0)+'</strong> participants · <strong>'+(c.total_spins||0)+'</strong> tours · <strong>'+(c.total_shares||0)+'</strong> partages</div>' +
-        '<div style="margin-top:8px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#f82032;height:100%;width:'+pct+'%"></div></div>' +
+        '<div style="margin-top:8px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#006fff;height:100%;width:'+pct+'%"></div></div>' +
         '<div style="font-size:11px;color:#6c757d;margin-top:4px">Prochain gagnant dans '+(c.selection_interval - ((c.total_spins||0) % c.selection_interval))+' tours</div>' +
         '<div style="margin-top:12px;display:flex;gap:6px">' +
           '<button class="btn btn-sm" onclick="openContestModal(\''+c.id+'\')"><i class="fas fa-edit"></i></button>' +
@@ -3883,7 +3885,7 @@ function renderAdminContests(){
 }
 function _p6ToLocalInput(iso){ if(!iso) return ''; const d = new Date(iso); const p = n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes()); }
 const CT_DEFAULT_SEGMENTS = [
-  {label:'10% offerts', type:'win',  color:'#f82032', textColor:'#ffffff'},
+  {label:'10% offerts', type:'win',  color:'#006fff', textColor:'#ffffff'},
   {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
   {label:'Café offert', type:'win',  color:'#ff6b35', textColor:'#ffffff'},
   {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
@@ -3909,7 +3911,7 @@ function ctRenderSegments(){
       '<input type="color" value="'+(s.color||'#ffffff')+'" oninput="_ctSegments['+i+'].color=this.value;ctSyncPreview()" title="Fond">' +
       '<input type="color" value="'+(s.textColor||'#212529')+'" oninput="_ctSegments['+i+'].textColor=this.value;ctSyncPreview()" title="Texte">' +
       '<input type="number" min="1" max="10" value="'+(s.weight||1)+'" oninput="_ctSegments['+i+'].weight=parseInt(this.value)||1;ctSyncPreview()" title="Poids" style="padding:6px;border:1px solid #ddd;border-radius:6px">' +
-      '<button type="button" onclick="_ctSegments.splice('+i+',1);ctRenderSegments();ctSyncPreview()" style="background:#fff0f1;color:#c62828;border:1px solid #ffc7cd;border-radius:6px;cursor:pointer" title="Supprimer"><i class="fas fa-trash"></i></button>' +
+      '<button type="button" onclick="_ctSegments.splice('+i+',1);ctRenderSegments();ctSyncPreview()" style="background:#e6f1ff;color:#c62828;border:1px solid #ffc7cd;border-radius:6px;cursor:pointer" title="Supprimer"><i class="fas fa-trash"></i></button>' +
     '</div>'
   ).join('') || '<p class="sub" style="font-size:12px;padding:10px;background:#fafafa;border-radius:8px;text-align:center">Aucune palme — ajoutez-en ci-dessous.</p>';
 }
@@ -4017,7 +4019,7 @@ async function openContestModal(id){
   const agentBrand = (selectedAgent && selectedAgent.brand) || {};
   const contestBrand = (c && c.brand) || {};
   const b = Object.assign({}, agentBrand, contestBrand);
-  (document.getElementById('ct_brand_primary')||{}).value = b.primary || '#f82032';
+  (document.getElementById('ct_brand_primary')||{}).value = b.primary || '#006fff';
   (document.getElementById('ct_brand_accent')||{}).value = b.accent  || '#ff6b35';
   (document.getElementById('ct_brand_dark')||{}).value = b.dark    || '#212529';
   (document.getElementById('ct_brand_gold')||{}).value = b.gold    || '#ffc107';
@@ -4116,7 +4118,7 @@ window.saveContest = saveContest;
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin — MonBonAgent</title>
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Anton&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -4130,7 +4132,7 @@ window.saveContest = saveContest;
 :root{--primary:#0060e0;--primary-hover:#0050c0;--dark:#212529;--bg:#f5f6f8;--accent:#0060e0;--gold:#FFD700}
 
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Rubik',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
+body{font-family:'Montserrat',sans-serif;background:#f5f6f8;color:var(--dark);min-height:100vh}
 header{background:#fff;border-bottom:1px solid #e9ecef;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
 header .brand{font-size:20px;font-weight:700;color:var(--primary)}
 header .brand span{color:var(--dark)}
@@ -4182,7 +4184,7 @@ tr:hover{background:#fafbfc}
 .pill.muted{background:#e9ecef;color:#6c757d}
 .row{display:flex;gap:8px;align-items:center}
 .services-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
-.service-chip{background:#fff0f1;color:var(--primary);padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
+.service-chip{background:#e6f1ff;color:var(--primary);padding:4px 10px;border-radius:12px;font-size:12px;display:flex;align-items:center;gap:4px}
 .service-chip i{cursor:pointer}
 .add-service{display:flex;gap:6px;margin-top:8px}
 .add-service input{flex:1}
@@ -4318,6 +4320,7 @@ tr:hover{background:#fafbfc}
 .segment-pill:hover{border-color:var(--primary)}
 .segment-pill.active{background:var(--primary);color:#fff;border-color:var(--primary)}
 </style>
+<link rel="stylesheet" href="/assets/gh-theme.css">
 </head>
 <body>
 <header>
@@ -4435,7 +4438,7 @@ tr:hover{background:#fafbfc}
   </div>
     <h2>Sections "Pourquoi MonBonAgent"</h2>
     <p class="sub">Chaque bloc est entièrement personnalisable (titre, texte, image, bouton). L'IA peut générer les 6 blocs d'un coup pour démarrer.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:10px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffcdd2;border-radius:10px">
       <button class="btn" onclick="openAIStudio('section')"><i class="fas fa-wand-magic-sparkles"></i> Générer 6 blocs avec l'IA</button>
       <button class="btn ghost" onclick="seedSectionsFromTemplate()"><i class="fas fa-star"></i> Charger le modèle type</button>
       <div style="flex:1;font-size:12px;color:#6c757d;align-self:center;min-width:200px">Le modèle type reprend l'architecture éprouvée (6 blocs progressifs), ensuite tu peux tout modifier manuellement ou avec l'IA.</div>
@@ -4585,15 +4588,15 @@ tr:hover{background:#fafbfc}
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px" class="add-merchant-grid">
       <div style="background:#f8f9fa;border:1px dashed #dee2e6;border-radius:12px;padding:18px">
-        <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-link" style="color:#f82032"></i> Depuis un lien</h3>
+        <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-link" style="color:#006fff"></i> Depuis un lien</h3>
         <div class="row" style="gap:10px;flex-wrap:wrap">
           <input id="enrich_url" placeholder="https://instagram.com/ma-boulangerie…" style="flex:1;min-width:220px;padding:10px 12px;border:1.5px solid #dee2e6;border-radius:8px;font-family:inherit;font-size:14px">
           <button class="btn" onclick="enrichMerchant()"><i class="fas fa-download"></i> Récupérer</button>
         </div>
         <div id="enrich_result" style="margin-top:14px;display:none;background:#fff;border:1px solid #e9ecef;border-radius:10px;padding:16px"></div>
       </div>
-      <div style="background:linear-gradient(135deg,#fff0f1,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:18px">
-        <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-wand-magic-sparkles" style="color:#f82032"></i> Générer avec l'IA</h3>
+      <div style="background:linear-gradient(135deg,#e6f1ff,#fff);border:1px solid #ffcdd2;border-radius:12px;padding:18px">
+        <h3 style="font-size:15px;margin-bottom:10px"><i class="fas fa-wand-magic-sparkles" style="color:#006fff"></i> Générer avec l'IA</h3>
         <p style="font-size:13px;color:#6c757d;margin-bottom:12px">5 questions suffisent : l'IA rédige description, portrait, horaires, offres, hashtags.</p>
         <button class="btn" onclick="openAIStudio('merchant')" style="width:100%"><i class="fas fa-magic"></i> Créer une fiche avec l'IA</button>
       </div>
@@ -4763,7 +4766,7 @@ tr:hover{background:#fafbfc}
 
   <!-- ========== VILLES ========== -->
   <div class="panel" id="panel-cities">
-    <h2><i class="fas fa-city" style="color:#f82032"></i> Villes</h2>
+    <h2><i class="fas fa-city" style="color:#006fff"></i> Villes</h2>
     <p class="sub">Gérez les villes couvertes par MonBonAgent. Les commerçants et agents sont rattachés à une ville.</p>
     <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
       <input id="city_search" placeholder="Rechercher une ville…" style="flex:1;min-width:200px;padding:10px;border:1px solid #e5e5e5;border-radius:8px">
@@ -4775,7 +4778,7 @@ tr:hover{background:#fafbfc}
 
   <!-- ========== AGENTS ========== -->
   <div class="panel" id="panel-agents">
-    <h2><i class="fas fa-user-tie" style="color:#f82032"></i> Agents immobiliers</h2>
+    <h2><i class="fas fa-user-tie" style="color:#006fff"></i> Agents immobiliers</h2>
     <p class="sub">Réseau d'agents partenaires. Chaque agent peut couvrir plusieurs villes.</p>
     <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
       <input id="agent_search" placeholder="Rechercher un agent…" style="flex:1;min-width:200px;padding:10px;border:1px solid #e5e5e5;border-radius:8px">
@@ -4786,7 +4789,7 @@ tr:hover{background:#fafbfc}
 
   <!-- ========== JEUX / CONCOURS ========== -->
   <div class="panel" id="panel-contests">
-    <h2><i class="fas fa-gift" style="color:#f82032"></i> Jeux du mois</h2>
+    <h2><i class="fas fa-gift" style="color:#006fff"></i> Jeux du mois</h2>
     <p class="sub">Concours avec roue de la chance. Un gagnant automatique toutes les N participations.</p>
     <div style="display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap">
       <select id="contest_filter" style="padding:10px;border:1px solid #e5e5e5;border-radius:8px">
@@ -4805,7 +4808,7 @@ tr:hover{background:#fafbfc}
 <!-- ========== CITY MODAL ========== -->
 <div class="modal-overlay" id="cityModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:640px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 style="margin-bottom:4px"><i class="fas fa-city" style="color:#f82032"></i> Ville</h3>
+    <h3 style="margin-bottom:4px"><i class="fas fa-city" style="color:#006fff"></i> Ville</h3>
     <p class="sub">Ajoutez ou modifiez une ville du réseau.</p>
     <input type="hidden" id="city_id_hidden">
     <div class="grid-2">
@@ -4834,7 +4837,7 @@ tr:hover{background:#fafbfc}
 <!-- ========== AGENT MODAL ========== -->
 <div class="modal-overlay" id="agentModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 style="margin-bottom:4px"><i class="fas fa-user-tie" style="color:#f82032"></i> Agent immobilier</h3>
+    <h3 style="margin-bottom:4px"><i class="fas fa-user-tie" style="color:#006fff"></i> Agent immobilier</h3>
     <p class="sub">Fiche complète de l'agent, ses coordonnées et les villes qu'il couvre.</p>
     <input type="hidden" id="agent_id_hidden">
     <div class="grid-2">
@@ -4859,10 +4862,10 @@ tr:hover{background:#fafbfc}
     </div>
 
     <!-- ===== BRANDING DE L'AGENT ===== -->
-    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-palette"></i> Branding de l'agent</h4>
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#006fff"><i class="fas fa-palette"></i> Branding de l'agent</h4>
     <p class="sub" style="font-size:12px">Ces couleurs sont automatiquement reprises sur toutes les pages liées à cet agent (jeux concours, fiche agent, landing). Chaque jeu peut les surcharger au cas par cas.</p>
     <div class="grid-2">
-      <div class="field"><label>Couleur principale</label><input type="color" id="agent_brand_primary" value="#f82032"></div>
+      <div class="field"><label>Couleur principale</label><input type="color" id="agent_brand_primary" value="#006fff"></div>
       <div class="field"><label>Couleur accent</label><input type="color" id="agent_brand_accent" value="#ff6b35"></div>
     </div>
     <div class="grid-2">
@@ -4882,7 +4885,7 @@ tr:hover{background:#fafbfc}
 <div class="modal-overlay" id="contestModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:1240px;width:100%;max-height:94vh;overflow-y:auto;display:grid;grid-template-columns:1fr 1fr;gap:24px">
     <div style="min-width:0">
-    <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#f82032"></i> Jeu du mois</h3>
+    <h3 style="margin-bottom:4px"><i class="fas fa-gift" style="color:#006fff"></i> Jeu du mois</h3>
     <p class="sub">Concours avec roue de la chance. Sélection automatique toutes les N participations.</p>
     <input type="hidden" id="ct_id_hidden">
     <div class="field"><label>Titre *</label><input id="ct_title" placeholder="Gagnez un weekend à Barcelone"></div>
@@ -4927,14 +4930,14 @@ tr:hover{background:#fafbfc}
     </div>
 
     <!-- ===== AGENT BRANDING ===== -->
-    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-user-tie"></i> Agent immobilier (branding)</h4>
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#006fff"><i class="fas fa-user-tie"></i> Agent immobilier (branding)</h4>
     <p class="sub" style="font-size:12px">La page d'inscription reprendra le nom et les couleurs de l'agent. Chaque contest peut surcharger ces couleurs.</p>
     <div class="field">
       <label>Agent assigné</label>
       <select id="ct_agent_id"><option value="">— Aucun (branding par défaut MonBonAgent) —</option></select>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Couleur principale</label><input type="color" id="ct_brand_primary" value="#f82032"></div>
+      <div class="field"><label>Couleur principale</label><input type="color" id="ct_brand_primary" value="#006fff"></div>
       <div class="field"><label>Couleur accent</label><input type="color" id="ct_brand_accent" value="#ff6b35"></div>
     </div>
     <div class="grid-2">
@@ -4943,11 +4946,11 @@ tr:hover{background:#fafbfc}
     </div>
 
     <!-- ===== WHEEL EDITOR ===== -->
-    <h4 style="margin:22px 0 8px;font-size:15px;color:#f82032"><i class="fas fa-sync-alt"></i> Roue de la chance — palmes</h4>
+    <h4 style="margin:22px 0 8px;font-size:15px;color:#006fff"><i class="fas fa-sync-alt"></i> Roue de la chance — palmes</h4>
     <p class="sub" style="font-size:12px">Ajoutez, retirez ou modifiez les segments (gagné, perdu, café, bon d'achat, remise…). La roue s'adapte automatiquement au nombre de palmes.</p>
     <div id="ct_segments_list" style="display:flex;flex-direction:column;gap:6px;margin-bottom:8px"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button type="button" class="btn btn-sm" onclick="ctAddSegment('win','Gagné','#f82032','#ffffff')"><i class="fas fa-plus"></i> Gagné</button>
+      <button type="button" class="btn btn-sm" onclick="ctAddSegment('win','Gagné','#006fff','#ffffff')"><i class="fas fa-plus"></i> Gagné</button>
       <button type="button" class="btn btn-sm btn-ghost" onclick="ctAddSegment('lose','Perdu','#ffffff','#212529')"><i class="fas fa-plus"></i> Perdu</button>
       <button type="button" class="btn btn-sm" style="background:#ff6b35" onclick="ctAddSegment('win','Café offert','#ff6b35','#ffffff')"><i class="fas fa-mug-hot"></i> Café</button>
       <button type="button" class="btn btn-sm" style="background:#ffc107;color:#212529" onclick="ctAddSegment('win','Bon 5€','#ffc107','#212529')"><i class="fas fa-ticket-alt"></i> Bon</button>
@@ -4977,7 +4980,7 @@ tr:hover{background:#fafbfc}
 <!-- EDIT MERCHANT MODAL (full fields, same as merchant.html profile) -->
 <div class="modal-overlay" id="editMerchantModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:720px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 style="margin-bottom:4px"><i class="fas fa-store" style="color:#f82032"></i> Fiche commerçant</h3>
+    <h3 style="margin-bottom:4px"><i class="fas fa-store" style="color:#006fff"></i> Fiche commerçant</h3>
     <p class="sub">Édition complète de la fiche — mêmes champs que l'espace commerçant.</p>
     <input type="hidden" id="em_id">
     <div class="grid-2">
@@ -5000,9 +5003,9 @@ tr:hover{background:#fafbfc}
       </label>
       <textarea id="em_description" rows="4"></textarea>
     </div>
-    <div class="field" style="background:#fff0f1;border:1px dashed #ffcdd2;border-radius:10px;padding:12px">
+    <div class="field" style="background:#e6f1ff;border:1px dashed #ffcdd2;border-radius:10px;padding:12px">
       <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-        <i class="fas fa-wand-magic-sparkles" style="color:#f82032"></i>
+        <i class="fas fa-wand-magic-sparkles" style="color:#006fff"></i>
         <strong style="font-size:13px">Génération IA</strong>
         <button type="button" class="btn ghost" style="padding:6px 12px;font-size:12px" onclick="generateOffersForEditMerchant()"><i class="fas fa-tags"></i> 10 offres saisonnières</button>
         <button type="button" class="btn ghost" style="padding:6px 12px;font-size:12px" onclick="regenerateFullMerchant()"><i class="fas fa-sync"></i> Regénérer la fiche</button>
@@ -5059,7 +5062,7 @@ tr:hover{background:#fafbfc}
 <!-- PROSPECT MODAL -->
 <div class="modal-overlay" id="prospectModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 id="prospectModalTitle"><i class="fas fa-user-plus" style="color:#f82032"></i> Nouveau prospect</h3>
+    <h3 id="prospectModalTitle"><i class="fas fa-user-plus" style="color:#006fff"></i> Nouveau prospect</h3>
     <p class="sub">Commerçant à contacter pour une invitation, upgrade, etc.</p>
     <div class="grid-2">
       <div class="field"><label>Nom du commerce</label><input id="p_name"></div>
@@ -5096,7 +5099,7 @@ tr:hover{background:#fafbfc}
 <!-- ADMIN TEMPLATE MODAL -->
 <div class="modal-overlay" id="adminTemplateModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:680px;width:100%;max-height:92vh;overflow-y:auto">
-    <h3 id="adminTemplateModalTitle"><i class="fas fa-file-alt" style="color:#f82032"></i> Nouveau modèle d'outreach</h3>
+    <h3 id="adminTemplateModalTitle"><i class="fas fa-file-alt" style="color:#006fff"></i> Nouveau modèle d'outreach</h3>
     <div class="grid-2">
       <div class="field"><label>Nom interne</label><input id="at_name" placeholder="Ex: Invitation forfait gratuit"></div>
       <div class="field"><label>Catégorie</label><select id="at_category"><option value="outreach">Outreach</option><option value="upsell">Upgrade</option><option value="welcome">Bienvenue</option><option value="followup">Relance</option><option value="newsletter">Newsletter</option><option value="announcement">Annonce</option><option value="other">Autre</option></select></div>
@@ -5117,7 +5120,7 @@ tr:hover{background:#fafbfc}
 <!-- ADMIN CAMPAIGN WIZARD MODAL -->
 <div class="modal-overlay" id="adminCampaignModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:780px;width:100%;max-height:94vh;overflow-y:auto">
-    <h3 id="adminCampaignModalTitle"><i class="fas fa-paper-plane" style="color:#f82032"></i> Nouvelle campagne d'outreach</h3>
+    <h3 id="adminCampaignModalTitle"><i class="fas fa-paper-plane" style="color:#006fff"></i> Nouvelle campagne d'outreach</h3>
     <div class="field"><label>Nom interne</label><input id="acmp_name" placeholder="Ex: Vague invitation 2026 T2"></div>
 
     <h4 style="font-size:13px;text-transform:uppercase;color:#495057;letter-spacing:.3px;margin:14px 0 8px">1. Modèle</h4>
@@ -5163,7 +5166,7 @@ tr:hover{background:#fafbfc}
 <!-- AI STUDIO MODAL — single modal with dynamic form per mode -->
 <div class="modal-overlay" id="aiStudioModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:400;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:0;max-width:760px;width:100%;max-height:94vh;overflow:hidden;display:flex;flex-direction:column">
-    <div style="background:linear-gradient(135deg,#f82032,#c9152b);color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:center">
+    <div style="background:linear-gradient(135deg,#006fff,#c9152b);color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:center">
       <h3 style="margin:0;font-size:18px"><i class="fas fa-wand-magic-sparkles"></i> <span id="ais_title">Studio IA</span></h3>
       <button onclick="closeAIStudio()" style="background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:16px">×</button>
     </div>
@@ -5171,7 +5174,7 @@ tr:hover{background:#fafbfc}
       <p id="ais_intro" style="color:#6c757d;font-size:14px;margin-bottom:18px"></p>
       <div id="ais_form"></div>
       <div id="ais_loading" style="display:none;text-align:center;padding:30px;color:#6c757d">
-        <div style="font-size:32px;color:#f82032"><i class="fas fa-spinner fa-spin"></i></div>
+        <div style="font-size:32px;color:#006fff"><i class="fas fa-spinner fa-spin"></i></div>
         <div style="margin-top:10px;font-size:14px">L'IA rédige votre contenu… (10 à 30 secondes)</div>
       </div>
       <div id="ais_result" style="display:none"></div>
@@ -5191,7 +5194,7 @@ tr:hover{background:#fafbfc}
 <!-- BLOG POST EDIT MODAL -->
 <div class="modal-overlay" id="blogModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:20px">
   <div style="background:#fff;border-radius:16px;padding:28px;max-width:780px;width:100%;max-height:94vh;overflow-y:auto">
-    <h3 id="bp_modal_title"><i class="fas fa-newspaper" style="color:#f82032"></i> Nouvel article</h3>
+    <h3 id="bp_modal_title"><i class="fas fa-newspaper" style="color:#006fff"></i> Nouvel article</h3>
     <p class="sub">Article du magazine local. Tu peux le rédiger à la main ou partir d'une génération IA.</p>
     <input type="hidden" id="bp_id">
     <div class="field"><label>Titre</label><input id="bp_title" placeholder="Les boles de picolat, recette authentique"></div>
@@ -5226,7 +5229,7 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Tags (séparés par des virgules)</label><input id="bp_tags" placeholder="Perpignan, Catalogne, recette"></div>
       <div class="field"><label>Statut</label><select id="bp_status"><option value="published">Publié</option><option value="draft">Brouillon</option></select></div>
     </div>
-    <div style="background:#fff0f1;border:1px solid #ffcdd2;border-radius:10px;padding:14px;margin-top:10px">
+    <div style="background:#e6f1ff;border:1px solid #ffcdd2;border-radius:10px;padding:14px;margin-top:10px">
       <p style="font-size:12px;color:#6c757d;margin-bottom:10px"><i class="fas fa-link"></i> <strong>Source & mise en avant</strong> — lien d'action contextuel pour la carte (billetterie pour un événement, site d'un commerçant vedette pour une recette).</p>
       <div class="grid-2">
         <div class="field"><label>Libellé du lien source</label><input id="bp_source_label" placeholder="Ex : Acheter les billets / Voir le site"></div>
@@ -5564,7 +5567,7 @@ async function loadSettings() {
     if (inp) inp.value = v;
     if (pick) pick.value = v;
   };
-  setColor('color_primary', '#f82032');
+  setColor('color_primary', '#006fff');
   setColor('color_accent', '#ff6b35');
   setColor('color_secondary', '#0ea5e9');
   setColor('color_dark', '#1a1a2e');
@@ -5791,7 +5794,7 @@ function renderFooterSections() {
         <button class="btn ghost" onclick="saveFooterSection(${si})" title="Enregistrer"><i class="fas fa-save"></i></button>
         <button class="btn ghost" onclick="deleteFooterSection(${si})" style="color:#c0392b" title="Supprimer"><i class="fas fa-trash"></i></button>
       </div>
-      <div style="padding-left:14px;border-left:2px solid #f82032">
+      <div style="padding-left:14px;border-left:2px solid #006fff">
         ${(s.links||[]).map((l, li) => `
           <div class="row" style="gap:6px;margin-bottom:6px">
             <input style="flex:1" placeholder="Libellé" value="${escapeAttr(l.label||'')}" oninput="footerSections[${si}].links[${li}].label=this.value">
@@ -6424,10 +6427,10 @@ async function loadStats() {
   ]);
   const [m, o, l, e] = queries.map(q => q.count || 0);
   host.innerHTML = `
-    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Commerçants</div><div style="font-size:32px;font-weight:700;color:#f82032">${m}</div></div>
-    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Offres</div><div style="font-size:32px;font-weight:700;color:#f82032">${o}</div></div>
-    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Leads</div><div style="font-size:32px;font-weight:700;color:#f82032">${l}</div></div>
-    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Emails envoyés</div><div style="font-size:32px;font-weight:700;color:#f82032">${e}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Commerçants</div><div style="font-size:32px;font-weight:700;color:#006fff">${m}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Offres</div><div style="font-size:32px;font-weight:700;color:#006fff">${o}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Leads</div><div style="font-size:32px;font-weight:700;color:#006fff">${l}</div></div>
+    <div style="background:#f8f9fa;padding:20px;border-radius:10px"><div style="font-size:13px;color:#6c757d">Emails envoyés</div><div style="font-size:32px;font-weight:700;color:#006fff">${e}</div></div>
   `;
 }
 
@@ -6480,7 +6483,7 @@ function filterProspectsByStatus(status) {
   renderProspects();
 }
 function openProspectModal() {
-  (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-user-plus" style="color:#f82032"></i> Nouveau prospect';
+  (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-user-plus" style="color:#006fff"></i> Nouveau prospect';
   ['p_name','p_category','p_address','p_phone','p_email','p_website','p_notes','p_id'].forEach(id => document.getElementById(id).value = '');
   (document.getElementById('p_city')||{}).value = 'Perpignan';
   (document.getElementById('p_status')||{}).value = 'new';
@@ -6490,7 +6493,7 @@ function openProspectModal() {
 }
 function editProspect(id) {
   const p = allProspects.find(x => x.id === id); if (!p) return;
-  (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-edit" style="color:#f82032"></i> Éditer prospect';
+  (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-edit" style="color:#006fff"></i> Éditer prospect';
   (document.getElementById('p_id')||{}).value = p.id;
   (document.getElementById('p_name')||{}).value = p.name || '';
   (document.getElementById('p_category')||{}).value = p.category || '';
@@ -6631,14 +6634,14 @@ function renderAdminTemplates() {
     </div>`).join('');
 }
 function openAdminTemplateModal() {
-  (document.getElementById('adminTemplateModalTitle')||{}).innerHTML = '<i class="fas fa-file-alt" style="color:#f82032"></i> Nouveau modèle d\'outreach';
+  (document.getElementById('adminTemplateModalTitle')||{}).innerHTML = '<i class="fas fa-file-alt" style="color:#006fff"></i> Nouveau modèle d\'outreach';
   ['at_name','at_subject','at_body','at_id'].forEach(id => document.getElementById(id).value = '');
   (document.getElementById('at_category')||{}).value = 'outreach';
   document.getElementById('adminTemplateModal').style.display = 'flex';
 }
 function editAdminTemplate(id) {
   const t = adminTemplates.find(x => x.id === id); if (!t) return;
-  (document.getElementById('adminTemplateModalTitle')||{}).innerHTML = '<i class="fas fa-edit" style="color:#f82032"></i> Éditer modèle';
+  (document.getElementById('adminTemplateModalTitle')||{}).innerHTML = '<i class="fas fa-edit" style="color:#006fff"></i> Éditer modèle';
   (document.getElementById('at_id')||{}).value = t.id;
   (document.getElementById('at_name')||{}).value = t.name || '';
   (document.getElementById('at_category')||{}).value = t.category || 'other';
@@ -6677,7 +6680,8 @@ function previewAdminTemplate(id) {
   const w = window.open('', '_blank', 'width=640,height=720');
   w.document.write(`<html><head><title>${escapeHtmlText(t.name)}</title><style>
 :root{--primary:#0060e0;--primary-hover:#0050c0;--dark:#212529;--bg:#f5f6f8;--accent:#0060e0;--gold:#FFD700}
-body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:var(--primary)}</style></head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
+body{font-family:Rubik,sans-serif;padding:30px;max-width:600px;margin:auto}h2{color:var(--primary)}</style><link rel="stylesheet" href="/assets/gh-theme.css">
+</head><body><h2>${escapeHtmlText(t.subject)}</h2><hr>${html}</body></html>`);
 }
 function renderAdminVars(html, ctx) {
   ctx = ctx || {};
@@ -6723,7 +6727,7 @@ async function deleteAdminCampaign(id) {
   loadAdminCampaigns();
 }
 function openAdminCampaignWizard() {
-  (document.getElementById('adminCampaignModalTitle')||{}).innerHTML = '<i class="fas fa-paper-plane" style="color:#f82032"></i> Nouvelle campagne d\'outreach';
+  (document.getElementById('adminCampaignModalTitle')||{}).innerHTML = '<i class="fas fa-paper-plane" style="color:#006fff"></i> Nouvelle campagne d\'outreach';
   ['acmp_name','acmp_subject','acmp_body','acmp_id','acmp_custom_emails'].forEach(id => document.getElementById(id).value = '');
   (document.getElementById('acmp_target_type')||{}).value = 'all_prospects';
   document.querySelectorAll('#adminCampaignModal .segment-pill').forEach(p => p.classList.toggle('active', p.dataset.target === 'all_prospects'));
@@ -7016,7 +7020,7 @@ function aiStudioRenderForm() {
   const ctx = aiStudioState.context || {};
   host.innerHTML = def.fields.map(f => {
     const val = (aiStudioState.inputs[f.id] != null ? aiStudioState.inputs[f.id] : (ctx[f.id] || ''));
-    const req = f.required ? '<span style="color:#f82032">*</span>' : '';
+    const req = f.required ? '<span style="color:#006fff">*</span>' : '';
     if (f.type === 'textarea') {
       return '<div class="field"><label>' + f.label + ' ' + req + '</label><textarea id="ais_f_' + f.id + '" rows="2" placeholder="' + escapeAttr(f.placeholder || '') + '">' + escapeHtmlText(val) + '</textarea></div>';
     }
@@ -7083,22 +7087,22 @@ function aiStudioShowResult() {
   if (mode === 'merchant') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
       '<h4 style="margin-bottom:6px">' + escapeHtmlText(aiStudioState.inputs.name || '') + ' <span style="font-weight:400;color:#6c757d;font-size:13px">— ' + escapeHtmlText(r.category || '') + '</span></h4>' +
-      '<p style="font-style:italic;color:#f82032;margin-bottom:10px">« ' + escapeHtmlText(r.tagline || '') + ' »</p>' +
+      '<p style="font-style:italic;color:#006fff;margin-bottom:10px">« ' + escapeHtmlText(r.tagline || '') + ' »</p>' +
       '<p style="font-size:13px;margin-bottom:10px">' + escapeHtmlText(r.description || '') + '</p>' +
       '<details><summary style="cursor:pointer;font-size:13px;color:#495057;font-weight:600">Portrait narratif</summary>' +
       '<p style="font-size:13px;margin-top:8px;color:#495057">' + escapeHtmlText(r.portrait || '') + '</p>' +
-      (r.quote ? '<p style="font-size:13px;font-style:italic;color:#f82032;margin-top:8px">« ' + escapeHtmlText(r.quote) + ' »</p>' : '') +
+      (r.quote ? '<p style="font-size:13px;font-style:italic;color:#006fff;margin-top:8px">« ' + escapeHtmlText(r.quote) + ' »</p>' : '') +
       '</details>' +
       '<p style="font-size:12px;color:#6c757d;margin-top:10px"><i class="far fa-clock"></i> ' + escapeHtmlText(r.hours || '') + '</p>' +
       '<h5 style="margin-top:14px;font-size:12px;text-transform:uppercase;color:#495057;letter-spacing:.3px">Offres suggérées</h5>' +
       '<div style="display:grid;gap:8px;margin-top:8px">' +
-      (r.offers || []).map(o => '<div style="background:#fff;border:1px solid #e9ecef;border-radius:8px;padding:10px"><strong>' + escapeHtmlText(o.title || '') + '</strong> — <span style="color:#f82032">' + (o.price || 0) + '€</span> ' + (o.original_price ? '<s style="color:#6c757d;font-size:12px">' + o.original_price + '€</s>' : '') + '<div style="font-size:12px;color:#6c757d">' + escapeHtmlText(o.description || '') + '</div></div>').join('') +
+      (r.offers || []).map(o => '<div style="background:#fff;border:1px solid #e9ecef;border-radius:8px;padding:10px"><strong>' + escapeHtmlText(o.title || '') + '</strong> — <span style="color:#006fff">' + (o.price || 0) + '€</span> ' + (o.original_price ? '<s style="color:#6c757d;font-size:12px">' + o.original_price + '€</s>' : '') + '<div style="font-size:12px;color:#6c757d">' + escapeHtmlText(o.description || '') + '</div></div>').join('') +
       '</div>' +
       '<div style="margin-top:10px">' + (r.hashtags || []).map(h => '<span style="display:inline-block;background:#fff;border:1px solid #e9ecef;border-radius:20px;padding:3px 10px;font-size:11px;color:#495057;margin:2px">' + escapeHtmlText(h) + '</span>').join('') + '</div>' +
       '</div>';
   } else if (mode === 'blog') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
-      '<span style="background:#f82032;color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;text-transform:uppercase">' + escapeHtmlText(r.category || '') + '</span>' +
+      '<span style="background:#006fff;color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;text-transform:uppercase">' + escapeHtmlText(r.category || '') + '</span>' +
       '<h4 style="margin:10px 0 6px;font-size:18px">' + escapeHtmlText(r.title || '') + '</h4>' +
       '<p style="color:#6c757d;font-size:12px;margin-bottom:10px">Par ' + escapeHtmlText(r.author || '') + '</p>' +
       '<p style="font-style:italic;font-size:13px;margin-bottom:14px">' + escapeHtmlText(r.excerpt || '') + '</p>' +
@@ -7112,7 +7116,7 @@ function aiStudioShowResult() {
       (r.offers || []).map((o, i) => '<label style="background:#fff;border:1px solid #e9ecef;border-radius:8px;padding:10px;display:flex;gap:10px;align-items:flex-start;cursor:pointer">' +
         '<input type="checkbox" class="ais_offer_check" data-idx="' + i + '" checked style="margin-top:2px">' +
         '<div style="flex:1">' +
-        '<div><strong>' + escapeHtmlText(o.title || '') + '</strong> — <span style="color:#f82032">' + (o.price || 0) + '€</span> ' + (o.original_price ? '<s style="color:#6c757d;font-size:12px">' + o.original_price + '€</s>' : '') + '</div>' +
+        '<div><strong>' + escapeHtmlText(o.title || '') + '</strong> — <span style="color:#006fff">' + (o.price || 0) + '€</span> ' + (o.original_price ? '<s style="color:#6c757d;font-size:12px">' + o.original_price + '€</s>' : '') + '</div>' +
         '<div style="font-size:12px;color:#6c757d">' + escapeHtmlText(o.description || '') + '</div>' +
         '<div style="font-size:11px;color:#868e96;margin-top:4px"><i class="far fa-calendar"></i> ' + escapeHtmlText(o.season || '') + ' · ' + escapeHtmlText(o.occasion || '') + '</div>' +
         '</div></label>').join('') +
@@ -7120,8 +7124,8 @@ function aiStudioShowResult() {
   } else if (mode === 'portrait') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
       '<p style="font-size:14px;line-height:1.7">' + escapeHtmlText(r.portrait || '') + '</p>' +
-      (r.quote ? '<p style="font-size:14px;font-style:italic;color:#f82032;margin-top:12px">« ' + escapeHtmlText(r.quote) + ' »</p>' : '') +
-      (r.anecdote ? '<p style="font-size:12px;color:#6c757d;margin-top:10px;border-left:3px solid #f82032;padding-left:10px">' + escapeHtmlText(r.anecdote) + '</p>' : '') +
+      (r.quote ? '<p style="font-size:14px;font-style:italic;color:#006fff;margin-top:12px">« ' + escapeHtmlText(r.quote) + ' »</p>' : '') +
+      (r.anecdote ? '<p style="font-size:12px;color:#6c757d;margin-top:10px;border-left:3px solid #006fff;padding-left:10px">' + escapeHtmlText(r.anecdote) + '</p>' : '') +
       '</div>';
   } else if (mode === 'template') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
@@ -7140,16 +7144,16 @@ function aiStudioShowResult() {
         '<div style="font-size:11px;color:#6c757d;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px">Bloc ' + (i+1) + ' · ' + escapeHtmlText(s.cta_url || '#') + '</div>' +
         '<strong style="display:block;margin-bottom:4px">' + escapeHtmlText(s.title || '') + '</strong>' +
         '<p style="font-size:13px;color:#495057;margin:0 0 6px">' + escapeHtmlText(s.text || '') + '</p>' +
-        (s.cta_label ? '<span style="display:inline-block;background:#f82032;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px">' + escapeHtmlText(s.cta_label) + '</span>' : '') +
+        (s.cta_label ? '<span style="display:inline-block;background:#006fff;color:#fff;padding:3px 10px;border-radius:6px;font-size:11px">' + escapeHtmlText(s.cta_label) + '</span>' : '') +
         '</div>').join('') +
       '</div></div>';
   } else if (mode === 'merchant_enrich') {
     html = '<div style="background:#f8f9fa;border-radius:10px;padding:18px">' +
-      (r.tagline_premium ? '<p style="font-style:italic;color:#f82032;font-size:14px;margin-bottom:10px">« ' + escapeHtmlText(r.tagline_premium) + ' »</p>' : '') +
+      (r.tagline_premium ? '<p style="font-style:italic;color:#006fff;font-size:14px;margin-bottom:10px">« ' + escapeHtmlText(r.tagline_premium) + ' »</p>' : '') +
       (r.description_premium ? '<p style="font-size:13px;margin-bottom:10px">' + escapeHtmlText(r.description_premium) + '</p>' : '') +
       (r.portrait_long ? '<details open><summary style="cursor:pointer;font-size:13px;color:#495057;font-weight:600">Portrait long</summary><p style="font-size:13px;margin-top:8px;color:#495057;line-height:1.6">' + escapeHtmlText(r.portrait_long) + '</p></details>' : '') +
       (r.signature_sentence ? '<p style="margin-top:10px;font-size:13px;font-style:italic;color:#868e96">Signature : « ' + escapeHtmlText(r.signature_sentence) + ' »</p>' : '') +
-      (r.why_now ? '<p style="margin-top:10px;background:#fff0f1;padding:10px;border-radius:8px;font-size:13px">⏱ ' + escapeHtmlText(r.why_now) + '</p>' : '') +
+      (r.why_now ? '<p style="margin-top:10px;background:#e6f1ff;padding:10px;border-radius:8px;font-size:13px">⏱ ' + escapeHtmlText(r.why_now) + '</p>' : '') +
       (Array.isArray(r.three_reasons) && r.three_reasons.length ? '<ul style="margin:10px 0 0;padding-left:20px;font-size:13px">' + r.three_reasons.map(x => '<li>' + escapeHtmlText(x) + '</li>').join('') + '</ul>' : '') +
       (Array.isArray(r.faq) && r.faq.length ? '<details style="margin-top:12px"><summary style="cursor:pointer;font-size:13px;color:#495057;font-weight:600">FAQ (' + r.faq.length + ')</summary>' + r.faq.map(q => '<div style="margin-top:8px"><strong style="font-size:13px">' + escapeHtmlText(q.q || '') + '</strong><p style="font-size:12px;color:#6c757d;margin:4px 0 0">' + escapeHtmlText(q.a || '') + '</p></div>').join('') + '</details>' : '') +
       (r.instagram_caption ? '<p style="margin-top:10px;background:#fff;padding:10px;border:1px dashed #ced4da;border-radius:8px;font-size:12px;color:#495057"><strong>Instagram :</strong> ' + escapeHtmlText(r.instagram_caption) + '</p>' : '') +
@@ -7340,9 +7344,9 @@ function renderBlogPosts(list) {
   }
   host.innerHTML = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px">' + list.map(p => {
     const statusBadge = p.status === 'draft' ? '<span style="font-size:11px;color:#6c757d">⏳ Brouillon</span>' : '<span style="font-size:11px;color:#28a745">✓ Publié</span>';
-    return '<div style="background:#fff;border:1px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s" onmouseover="this.style.borderColor=\'#f82032\'" onmouseout="this.style.borderColor=\'#e9ecef\'" onclick="openBlogModal(\'' + p.id + '\')">' +
+    return '<div style="background:#fff;border:1px solid #e9ecef;border-radius:10px;padding:14px;cursor:pointer;transition:.2s" onmouseover="this.style.borderColor=\'#006fff\'" onmouseout="this.style.borderColor=\'#e9ecef\'" onclick="openBlogModal(\'' + p.id + '\')">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-      '<span style="background:#f82032;color:#fff;padding:2px 10px;border-radius:20px;font-size:10px;text-transform:uppercase;letter-spacing:.3px">' + escapeHtmlText(p.category || '') + '</span>' +
+      '<span style="background:#006fff;color:#fff;padding:2px 10px;border-radius:20px;font-size:10px;text-transform:uppercase;letter-spacing:.3px">' + escapeHtmlText(p.category || '') + '</span>' +
       statusBadge +
       '</div>' +
       '<h4 style="font-size:15px;margin-bottom:6px;line-height:1.3">' + escapeHtmlText(p.title || '') + '</h4>' +
@@ -7411,8 +7415,8 @@ window.bpUploadAttachment = bpUploadAttachment;
 
 async function openBlogModal(id) {
   (document.getElementById('bp_modal_title')||{}).innerHTML = id
-    ? '<i class="fas fa-newspaper" style="color:#f82032"></i> Éditer l\'article'
-    : '<i class="fas fa-newspaper" style="color:#f82032"></i> Nouvel article';
+    ? '<i class="fas fa-newspaper" style="color:#006fff"></i> Éditer l\'article'
+    : '<i class="fas fa-newspaper" style="color:#006fff"></i> Nouvel article';
   // Assure qu'on a la liste à jour des commerçants
   if (!Array.isArray(merchantsCache) || !merchantsCache.length) {
     try { const { data } = await sb.from('merchants').select('id,name,category').order('name'); if (data) merchantsCache = data; } catch (_) {}
@@ -7742,7 +7746,7 @@ function openAgentModal(id){
   (document.getElementById('agent_cities_in')||{}).value = slugs;
   // Branding
   const b = (a && a.brand) || {};
-  (document.getElementById('agent_brand_primary')||{}).value = b.primary || '#f82032';
+  (document.getElementById('agent_brand_primary')||{}).value = b.primary || '#006fff';
   (document.getElementById('agent_brand_accent')||{}).value = b.accent  || '#ff6b35';
   (document.getElementById('agent_brand_dark')||{}).value = b.dark    || '#212529';
   (document.getElementById('agent_brand_gold')||{}).value = b.gold    || '#ffc107';
@@ -7826,7 +7830,7 @@ function renderAdminContests(){
         '<div style="font-size:12px;color:#6c757d;margin-top:4px">'+_p6Esc(c.prize_description||'')+'</div>' +
         '<div style="font-size:11px;color:#999;margin-top:4px">'+(c.merchant && c.merchant.name ? _p6Esc(c.merchant.name) : '—')+' · '+(c.city && c.city.name ? _p6Esc(c.city.name) : '—')+'</div>' +
         '<div style="margin-top:12px;font-size:12px"><strong>'+(c.total_participants||0)+'</strong> participants · <strong>'+(c.total_spins||0)+'</strong> tours · <strong>'+(c.total_shares||0)+'</strong> partages</div>' +
-        '<div style="margin-top:8px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#f82032;height:100%;width:'+pct+'%"></div></div>' +
+        '<div style="margin-top:8px;background:#f0f0f0;height:6px;border-radius:3px;overflow:hidden"><div style="background:#006fff;height:100%;width:'+pct+'%"></div></div>' +
         '<div style="font-size:11px;color:#6c757d;margin-top:4px">Prochain gagnant dans '+(c.selection_interval - ((c.total_spins||0) % c.selection_interval))+' tours</div>' +
         '<div style="margin-top:12px;display:flex;gap:6px">' +
           '<button class="btn btn-sm" onclick="openContestModal(\''+c.id+'\')"><i class="fas fa-edit"></i></button>' +
@@ -7837,7 +7841,7 @@ function renderAdminContests(){
 }
 function _p6ToLocalInput(iso){ if(!iso) return ''; const d = new Date(iso); const p = n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())+'T'+p(d.getHours())+':'+p(d.getMinutes()); }
 const CT_DEFAULT_SEGMENTS = [
-  {label:'10% offerts', type:'win',  color:'#f82032', textColor:'#ffffff'},
+  {label:'10% offerts', type:'win',  color:'#006fff', textColor:'#ffffff'},
   {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
   {label:'Café offert', type:'win',  color:'#ff6b35', textColor:'#ffffff'},
   {label:'Perdu',       type:'lose', color:'#ffffff', textColor:'#212529'},
@@ -7863,7 +7867,7 @@ function ctRenderSegments(){
       '<input type="color" value="'+(s.color||'#ffffff')+'" oninput="_ctSegments['+i+'].color=this.value;ctSyncPreview()" title="Fond">' +
       '<input type="color" value="'+(s.textColor||'#212529')+'" oninput="_ctSegments['+i+'].textColor=this.value;ctSyncPreview()" title="Texte">' +
       '<input type="number" min="1" max="10" value="'+(s.weight||1)+'" oninput="_ctSegments['+i+'].weight=parseInt(this.value)||1;ctSyncPreview()" title="Poids" style="padding:6px;border:1px solid #ddd;border-radius:6px">' +
-      '<button type="button" onclick="_ctSegments.splice('+i+',1);ctRenderSegments();ctSyncPreview()" style="background:#fff0f1;color:#c62828;border:1px solid #ffc7cd;border-radius:6px;cursor:pointer" title="Supprimer"><i class="fas fa-trash"></i></button>' +
+      '<button type="button" onclick="_ctSegments.splice('+i+',1);ctRenderSegments();ctSyncPreview()" style="background:#e6f1ff;color:#c62828;border:1px solid #ffc7cd;border-radius:6px;cursor:pointer" title="Supprimer"><i class="fas fa-trash"></i></button>' +
     '</div>'
   ).join('') || '<p class="sub" style="font-size:12px;padding:10px;background:#fafafa;border-radius:8px;text-align:center">Aucune palme — ajoutez-en ci-dessous.</p>';
 }
@@ -7971,7 +7975,7 @@ async function openContestModal(id){
   const agentBrand = (selectedAgent && selectedAgent.brand) || {};
   const contestBrand = (c && c.brand) || {};
   const b = Object.assign({}, agentBrand, contestBrand);
-  (document.getElementById('ct_brand_primary')||{}).value = b.primary || '#f82032';
+  (document.getElementById('ct_brand_primary')||{}).value = b.primary || '#006fff';
   (document.getElementById('ct_brand_accent')||{}).value = b.accent  || '#ff6b35';
   (document.getElementById('ct_brand_dark')||{}).value = b.dark    || '#212529';
   (document.getElementById('ct_brand_gold')||{}).value = b.gold    || '#ffc107';
