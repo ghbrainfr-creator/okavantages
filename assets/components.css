@@ -812,6 +812,98 @@ body.has-immo-bar { padding-bottom: 76px; }
   color: #495057;
 }
 
+/* ---------- Catégories en grille visuelle (12 univers) ---------- */
+.categories-grid-section {
+  background: #fff;
+  padding: 70px 0;
+}
+.categories-grid-section .section-title {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.categories-grid-section .section-title h2 {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(28px, 4vw, 38px);
+  letter-spacing: 0.3px;
+  color: var(--gh-bleu-iris, #0f0a30);
+  margin-bottom: 8px;
+}
+.categories-grid-section .section-title p {
+  font-family: "Montserrat", sans-serif;
+  color: #6c757d;
+  font-size: 15px;
+}
+
+.cat-grid-visual {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.cat-tile {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  border-radius: 16px;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  cursor: pointer;
+  isolation: isolate;
+  background: linear-gradient(135deg, var(--gh-bleu-iris, #0f0a30) 0%, var(--gh-bleu-cyan, #006fff) 100%);
+  box-shadow: 0 4px 18px rgba(15, 10, 48, 0.08);
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+.cat-tile-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+  transition: transform 0.5s ease;
+}
+.cat-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(15, 10, 48, 0.25) 0%, rgba(15, 10, 48, 0.78) 100%);
+  z-index: -1;
+  transition: background 0.3s ease;
+}
+.cat-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(15, 10, 48, 0.22);
+}
+.cat-tile:hover .cat-tile-bg { transform: scale(1.06); }
+.cat-tile:hover::before {
+  background: linear-gradient(180deg, rgba(0, 111, 255, 0.3) 0%, rgba(15, 10, 48, 0.85) 100%);
+}
+.cat-tile i {
+  font-size: 32px;
+  color: #fff;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+}
+.cat-tile span {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(15px, 1.6vw, 19px);
+  letter-spacing: 0.4px;
+  text-align: center;
+  padding: 0 12px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 1024px) {
+  .cat-grid-visual { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 720px) {
+  .cat-grid-visual { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .cat-tile { aspect-ratio: 1 / 1; }
+  .cat-tile i { font-size: 26px; }
+}
+
 /* ---------- Section "Le bon agent / passeur du quartier" ---------- */
 .relay-section {
   background: linear-gradient(135deg, #f6f8fc 0%, #eef3fa 100%);
