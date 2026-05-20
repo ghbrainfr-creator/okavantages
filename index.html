@@ -1160,6 +1160,10 @@ window.openCookiesSettings = openCookiesSettings;
 window.saveCookiesChoice = saveCookiesChoice;
 
 async function loadSiteSettings() {
+  // Toujours afficher le fallback "Pourquoi MonBonAgent" immédiatement, même
+  // si Supabase est lent / échoue. Si la requête réussit ensuite avec une vraie
+  // data about_sections, applySiteSettings écrasera proprement.
+  try { renderAboutSections([]); } catch (e) {}
   try {
     const { data } = await sb.from('site_settings').select('*').limit(1).maybeSingle();
     if (data) applySiteSettings(data);
