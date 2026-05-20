@@ -42,7 +42,9 @@ nav .container{display:flex;align-items:center;justify-content:space-between;gap
 }
 
 /* Hero */
-.hero{background:linear-gradient(rgba(0,0,0,.5),rgba(0,0,0,.5)),url('https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2') center/cover;color:#fff;padding:80px 0;text-align:center}
+.hero{background:linear-gradient(135deg,var(--gh-bleu-iris) 0%,#1a134d 45%,var(--gh-bleu-cyan) 100%);color:#fff;padding:80px 0;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at top right,rgba(255,255,255,.08),transparent 60%),radial-gradient(ellipse at bottom left,rgba(0,111,255,.18),transparent 60%);pointer-events:none}
+.hero>.container{position:relative;z-index:1}
 .hero h1{font-size:clamp(28px,5vw,44px);font-weight:700;margin-bottom:12px}
 .hero p{font-size:18px;opacity:.9;margin-bottom:30px}
 .hero-stats{display:flex;justify-content:center;gap:40px;margin-top:30px}
@@ -317,7 +319,7 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
     <p class="hero-lead">Ce midi, votre déjeuner à 8&nbsp;€ au lieu de 12&nbsp;€. Demain, votre coupe à 25&nbsp;€ au lieu de 35&nbsp;€. Chez vos commerces de proximité, <strong>jusqu'à 50&nbsp;% d'avantage</strong> en plus. Et chaque bon réservé soutient un voisin commerçant.</p>
     <div class="hero-cta-group">
       <a href="#merchants" class="hero-cta-primary" onclick="event.preventDefault();document.getElementById('signupModal')?.classList.add('show');">
-        <i class="fas fa-gift"></i> Recevoir mon 1<sup>er</sup> bon offert
+        <span class="hero-cta-main"><i class="fas fa-gift"></i> Recevoir mon 1ᵉʳ bon offert</span>
         <small>30 sec · sans carte bancaire</small>
       </a>
       <a href="#how-it-works" class="hero-cta-ghost">
@@ -350,16 +352,14 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
     <div class="hiw-grid">
       <article class="hiw-step">
         <div class="hiw-step-num">1</div>
-        <div class="hiw-step-photo" style="background-image:url('https://images.unsplash.com/photo-1611605698335-8b1569810432?auto=format&fit=crop&w=600&q=70')"></div>
         <div class="hiw-step-body">
           <div class="hiw-step-icon"><i class="fas fa-user-plus"></i></div>
           <h3>Je m'inscris</h3>
-          <p>Votre email suffit. 30 secondes. Vous recevez votre <strong>1<sup>er</sup> bon offert</strong> immédiatement.</p>
+          <p>Votre email suffit. 30 secondes. Vous recevez votre <strong>1ᵉʳ bon offert</strong> immédiatement.</p>
         </div>
       </article>
       <article class="hiw-step">
         <div class="hiw-step-num">2</div>
-        <div class="hiw-step-photo" style="background-image:url('https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&w=600&q=70')"></div>
         <div class="hiw-step-body">
           <div class="hiw-step-icon"><i class="fas fa-bolt"></i></div>
           <h3>Je réserve mon bon</h3>
@@ -368,11 +368,10 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
       </article>
       <article class="hiw-step">
         <div class="hiw-step-num">3</div>
-        <div class="hiw-step-photo" style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&q=70')"></div>
         <div class="hiw-step-body">
           <div class="hiw-step-icon"><i class="fas fa-store"></i></div>
           <h3>Je l'utilise en magasin</h3>
-          <p>Je présente le QR&nbsp;code chez le commerçant. Il scanne, c'est validé. Si je ne l'utilise pas, je suis remboursé.</p>
+          <p>Je présente le QR&nbsp;code chez le commerçant. Il scanne, c'est validé. <strong>Sinon, je suis remboursé.</strong></p>
         </div>
       </article>
     </div>
@@ -961,18 +960,18 @@ function renderAboutSections(sections) {
   if (!Array.isArray(sections) || !sections.length) {
     // fallback content
     sections = [
-      { title:"Un service local 100 % dédié à Elne",
-        text:"MonBonAgent est une plateforme locale qui négocie en direct avec les commerçants d'Elne pour vous proposer des avantages exclusifs. Chaque bon réservé soutient un voisin commerçant.",
-        image:"https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1000&q=80",
+      { title:"Le portail des bons plans de votre quartier",
+        text:"Mon BonAgent rassemble en un seul endroit toutes les offres que vos commerçants d'Elne et des environs préparent rien que pour vous. Plus besoin de courir d'une vitrine à l'autre. Vous ouvrez le site, vous parcourez, vous réservez. Vos économies arrivent en même temps que votre QR code.",
+        image:"https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=1000&q=80",
         cta_label:"Voir les commerçants", cta_url:"#merchants" },
-      { title:"Des bons d'achat chez vos commerçants préférés",
-        text:"Chaque bon MonBonAgent est négocié en direct avec un commerçant perpignanais. Vous profitez de vraies remises, eux d'une nouvelle clientèle locale.",
+      { title:"Tout ce dont vous avez besoin, à deux pas",
+        text:"12 univers à explorer : alimentation, restaurants, santé, mode, escapades, maison, animaux, sport, jeux d'enfants, vins, services, divertissement. Une bonne table ce soir ? Un cadeau d'anniversaire ? Une remise sur vos courses du week-end ? Un abonnement au club de sport ? Vous trouverez ce qui vous fait plaisir, à un prix qui vous arrange.",
         image:"https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1000&q=80",
-        cta_label:"Voir les bons", cta_url:"#offers" },
-      { title:"Un réseau local qui fait vivre le quartier",
-        text:"En rejoignant MonBonAgent, vous soutenez une économie de proximité. 100% des commerçants présents sur la plateforme sont indépendants.",
+        cta_label:"Parcourir les catégories", cta_url:"#categories-grid" },
+      { title:"À chaque achat, un voisin commerçant gagne aussi",
+        text:"Quand vous réservez un bon ici, vous ne payez pas seulement moins. Vous donnez aussi un coup de pouce à un artisan qui fait vivre votre quartier. Le boulanger, le coiffeur, le restaurateur du coin gagnent en visibilité, en clients, en fidélité. C'est ça, l'esprit Mon BonAgent : un site qui fait du bien à tout le monde.",
         image:"https://images.unsplash.com/photo-1555529669-e69e7aa0ba9a?auto=format&fit=crop&w=1000&q=80",
-        cta_label:"Nos commerçants", cta_url:"#merchants" }
+        cta_label:"Voir les commerces partenaires", cta_url:"#merchants" }
     ];
   }
   host.innerHTML = sections.map((b, i) => `

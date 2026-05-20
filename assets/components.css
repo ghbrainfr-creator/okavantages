@@ -671,18 +671,26 @@ body.has-immo-bar { padding-bottom: 76px; }
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
   background: var(--gh-bleu-cyan, #006fff);
   color: #fff;
-  padding: 16px 30px;
+  padding: 14px 28px;
   border-radius: 12px;
   font-family: "Montserrat", sans-serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.2px;
   text-decoration: none;
+  white-space: nowrap;
   box-shadow: 0 10px 30px rgba(0, 111, 255, 0.32);
   transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+}
+.hero-cta-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 16px;
 }
 .hero-cta-primary:hover {
   background: var(--gh-bleu-cyan-hover, #0050cc);
@@ -756,14 +764,14 @@ body.has-immo-bar { padding-bottom: 76px; }
 }
 .hiw-step {
   position: relative;
-  background: #fff;
+  background: #f8f9fc;
   border: 1px solid #eef0f5;
   border-radius: 18px;
   text-align: center;
   transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  padding: 40px 28px 30px;
 }
 .hiw-step:hover {
   transform: translateY(-4px);
@@ -790,39 +798,36 @@ body.has-immo-bar { padding-bottom: 76px; }
   border: 3px solid #fff;
   box-shadow: 0 4px 12px rgba(15, 10, 48, 0.2);
 }
-.hiw-step-photo {
-  aspect-ratio: 16 / 9;
-  background-size: cover;
-  background-position: center;
-  background-color: var(--gh-bleu-iris, #0f0a30);
-  position: relative;
-}
-.hiw-step-photo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, transparent 0%, rgba(15, 10, 48, 0.15) 100%);
-  pointer-events: none;
-}
 .hiw-step-body {
-  padding: 32px 26px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   flex: 1;
 }
 .hiw-step-icon {
-  width: 64px;
-  height: 64px;
-  margin: -56px auto 18px;
-  border-radius: 16px;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 22px;
+  border-radius: 18px;
   background: linear-gradient(135deg, var(--gh-bleu-iris, #0f0a30) 0%, var(--gh-bleu-cyan, #006fff) 100%);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 26px;
-  box-shadow: 0 8px 22px rgba(0, 111, 255, 0.28);
-  position: relative;
-  z-index: 2;
-  border: 3px solid #fff;
+  font-size: 30px;
+  box-shadow: 0 10px 26px rgba(0, 111, 255, 0.28);
+  flex-shrink: 0;
+}
+/* Équilibre 3 cartes : titre + texte alignés sur même nombre de lignes */
+.hiw-step h3 { min-height: 28px; }
+.hiw-step p {
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 760px) {
+  .hiw-step p { min-height: 0; }
 }
 .hiw-step h3 {
   font-family: "Anton", sans-serif;
