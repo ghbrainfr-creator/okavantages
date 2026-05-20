@@ -1,0 +1,144 @@
+/* ==========================================================================
+   GH Theme — overlay charte Guy Hoquet 2026 (palette + typo)
+   ----------------------------------------------------------------------------
+   Source : BRANDBOOK GUY HOQUET 2026 (45 pages)
+   Couleurs canonical RVB (digital) :
+     - Bleu Iris  #0f0a30  (couleur de soutien principale)
+     - Bleu Cyan  #006fff  (accent action)
+   Typographies :
+     - Anton (substitut accessible de Guy Hoquet Sans) pour titres / accents
+     - Montserrat pour textes courants
+   Note : ce fichier est un OVERLAY, chargé après les <style> inline de chaque
+   page. Il ne casse rien — il aligne uniquement palette + typo sur la charte.
+   ========================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap");
+
+:root {
+  /* Palette canonical Guy Hoquet 2026 */
+  --gh-bleu-iris:        #0f0a30;
+  --gh-bleu-cyan:        #006fff;
+  --gh-bleu-cyan-hover:  #0050cc;
+  --gh-bleu-cyan-dark:   #003a99;
+  --gh-blanc:            #ffffff;
+  --gh-noir:             #000000;
+
+  /* 5 services GH (accents sémantiques) */
+  --gh-financement:  rgb(182, 154, 102);
+  --gh-assurances:   rgb(200, 212,   0);
+  --gh-gestion:      rgb(  0, 151, 103);
+  --gh-patrimoine:   rgb(255, 187,  13);
+  --gh-expertises:   rgb(233,  78,  27);
+
+  /* Aliases qui surclassent les définitions inline des pages */
+  --primary:        var(--gh-bleu-cyan);
+  --primary-hover:  var(--gh-bleu-cyan-hover);
+}
+
+/* Typo globale : Montserrat pour le corps */
+body,
+input,
+textarea,
+select,
+button {
+  font-family: "Montserrat", system-ui, -apple-system, sans-serif !important;
+}
+
+/* Titres + éléments d'identité en Anton (display) */
+h1,
+h2,
+h3,
+h4,
+.logo,
+.hero h1,
+.section-title h2,
+.newsletter h2 {
+  font-family: "Anton", "Montserrat", sans-serif !important;
+  letter-spacing: 0.5px;
+  font-weight: 400;
+}
+
+/* Logo : forcer les bonnes couleurs de marque */
+.logo {
+  color: var(--gh-bleu-cyan) !important;
+}
+.logo span {
+  color: var(--gh-bleu-iris) !important;
+}
+
+/* CTA / boutons primaires : Bleu Cyan + hover Bleu Cyan sombre */
+.nav-cta,
+.offer-btn,
+.modal button,
+.nl-form button,
+.cat-btn:hover,
+.cat-btn.active {
+  background: var(--gh-bleu-cyan) !important;
+  color: #fff !important;
+  border-color: var(--gh-bleu-cyan) !important;
+}
+.nav-cta:hover,
+.offer-btn:hover,
+.modal button:hover,
+.nl-form button:hover {
+  background: var(--gh-bleu-cyan-hover) !important;
+}
+
+/* Tag offre / badge : pastille rouge → pastille cyan */
+.offer-tag {
+  background: rgba(0, 111, 255, 0.08) !important;
+  color: var(--gh-bleu-cyan) !important;
+}
+.card-badge {
+  background: var(--gh-bleu-cyan) !important;
+}
+
+/* Newsletter : gradient noir → gradient Bleu Iris (charte) */
+.newsletter {
+  background: linear-gradient(135deg, var(--gh-bleu-iris), #1c1750) !important;
+}
+.nl-form button {
+  background: var(--gh-bleu-cyan) !important;
+}
+
+/* Footer : noir → Bleu Iris */
+footer {
+  background: var(--gh-bleu-iris) !important;
+}
+.footer-links a:hover {
+  color: var(--gh-bleu-cyan) !important;
+}
+
+/* Top banner : conserver le contraste mais accent cyan */
+.top-banner i {
+  color: var(--gh-bleu-cyan) !important;
+}
+
+/* Modal focus : bordure cyan */
+.modal input:focus {
+  border-color: var(--gh-bleu-cyan) !important;
+}
+
+/* Card price (offer-price) : rouge → bleu cyan */
+.offer-price {
+  color: var(--gh-bleu-cyan) !important;
+}
+
+/* Hover offer-card */
+.offer-card:hover {
+  border-color: var(--gh-bleu-cyan) !important;
+}
+
+/* Sections inline sombres résiduelles : forcer le gradient Bleu Iris */
+#jeu,
+[id="jeu"] {
+  background: linear-gradient(135deg, var(--gh-bleu-iris) 0%, #1c1750 100%) !important;
+}
+
+/* Section agent (rose pâle résiduel) : neutre bleu */
+.agent-section {
+  background: linear-gradient(135deg, #e6f1ff 0%, #ffffff 100%) !important;
+}
+
+/* Préserver les badges sémantiques (Premium gold / Boost / Pro)
+   — leur sens hiérarchique reste pertinent sous charte GH. */
