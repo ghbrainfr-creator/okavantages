@@ -365,6 +365,204 @@ body.has-immo-bar { padding-bottom: 76px; }
 .trust-item i { color: var(--gh-bleu-cyan, #006fff); font-size: 18px; }
 .trust-item strong { color: var(--gh-bleu-iris, #0f0a30); font-weight: 700; }
 
+/* ---------- Carte commerçant marketplace (rendu home) ---------- */
+.merchant-card-pro {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 14px rgba(15, 10, 48, 0.06);
+  border: 1px solid #eef0f5;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.merchant-card-pro:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 44px rgba(15, 10, 48, 0.14);
+  border-color: var(--gh-bleu-cyan, #006fff);
+}
+.mcp-hero {
+  position: relative;
+  aspect-ratio: 16/10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.95);
+}
+.mcp-hero-icon { font-size: 64px; opacity: 0.95; }
+.mcp-overlay-tl, .mcp-overlay-tr, .mcp-overlay-bl {
+  position: absolute;
+  display: flex;
+  gap: 6px;
+}
+.mcp-overlay-tl { top: 12px; left: 12px; }
+.mcp-overlay-tr { top: 12px; right: 12px; }
+.mcp-overlay-bl { bottom: 12px; left: 12px; }
+.mcp-cat {
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--gh-bleu-iris, #0f0a30);
+  font-family: "Montserrat", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 5px 10px;
+  border-radius: 6px;
+}
+.mcp-body {
+  padding: 18px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.mcp-name {
+  font-family: "Anton", sans-serif;
+  font-size: 22px;
+  letter-spacing: 0.3px;
+  color: var(--gh-bleu-iris, #0f0a30);
+  margin: 0 0 8px;
+  line-height: 1.15;
+}
+.mcp-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12.5px;
+  color: #6c757d;
+  margin-bottom: 14px;
+}
+.mcp-meta i { color: #adb5bd; width: 14px; margin-right: 4px; }
+.mcp-rating { color: #f1a83e; font-size: 13px; letter-spacing: 1px; }
+.mcp-rating small { color: #6c757d; margin-left: 4px; font-size: 12px; letter-spacing: 0; }
+
+/* Liste d'offres inline (clic = modal lead, pas de redirect) */
+.mcp-offers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.mcp-offer-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8f9fc;
+  border: 1px solid #eef0f5;
+  border-radius: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  font-family: "Montserrat", sans-serif;
+  transition: all 0.18s ease;
+}
+.mcp-offer-line:hover {
+  background: #eef3fa;
+  border-color: var(--gh-bleu-cyan, #006fff);
+  transform: translateX(2px);
+}
+.mcp-offer-left { flex: 1; min-width: 0; }
+.mcp-offer-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #212529;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mcp-offer-pricing {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.mcp-price-original {
+  font-size: 12px;
+  color: #adb5bd;
+  text-decoration: line-through;
+}
+.mcp-price-final {
+  font-family: "Anton", sans-serif;
+  font-size: 18px;
+  color: var(--gh-bleu-cyan, #006fff);
+  letter-spacing: 0.3px;
+}
+.mcp-saving {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1f7a3a;
+  background: #d4edda;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.mcp-offer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 10px;
+}
+.mcp-pct {
+  background: var(--gh-bleu-cyan, #006fff);
+  color: #fff;
+  font-family: "Anton", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  padding: 5px 9px;
+  border-radius: 6px;
+}
+.mcp-offer-arrow { color: var(--gh-bleu-cyan, #006fff); font-size: 13px; }
+.mcp-more { font-size: 12px; color: #6c757d; padding: 4px 12px; text-align: center; font-style: italic; }
+.mcp-no-offer {
+  background: #f8f9fc;
+  border: 1px dashed #ced4da;
+  border-radius: 10px;
+  padding: 14px;
+  text-align: center;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  color: #6c757d;
+  margin-bottom: 14px;
+}
+.mcp-stock {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff3cd;
+  color: #8a5b00;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  align-self: flex-start;
+}
+.mcp-stock i { color: #ff5630; }
+.mcp-stock strong { color: #ff5630; font-family: "Anton", sans-serif; font-size: 14px; }
+.mcp-cta {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  background: var(--gh-bleu-cyan, #006fff);
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: 0;
+  cursor: pointer;
+  transition: background 0.18s, transform 0.18s;
+}
+.mcp-cta:hover {
+  background: var(--gh-bleu-cyan-hover, #0050cc);
+  transform: translateY(-1px);
+}
+
 /* ---------- Mobile ---------- */
 @media (max-width: 600px) {
   .social-proof-track { gap: 24px; }
@@ -372,4 +570,6 @@ body.has-immo-bar { padding-bottom: 76px; }
   .immo-soft-bar { padding: 10px 12px; flex-direction: column; gap: 8px; text-align: center; }
   .immo-soft-bar-text { font-size: 13px; }
   body.has-immo-bar { padding-bottom: 110px; }
+  .merchant-card-pro .mcp-hero-icon { font-size: 50px; }
+  .merchant-card-pro .mcp-name { font-size: 19px; }
 }

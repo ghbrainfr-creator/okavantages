@@ -1161,35 +1161,103 @@ function renderMerchants() {
     merchantOffers[o.merchant_id].push(o);
   });
   
-  document.getElementById('merchantCards').innerHTML = filtered.length === 0 
+  document.getElementById('merchantCards').innerHTML = filtered.length === 0
     ? '<p style="text-align:center;color:var(--light);grid-column:1/-1;padding:40px">Aucun commerçant trouvé</p>'
     : filtered.map(m => {
       const offers = merchantOffers[m.id] || [];
-      const stars = '★'.repeat(Math.round(m.rating)) + '☆'.repeat(5-Math.round(m.rating));
+      const stars = '★'.repeat(Math.round(m.rating||0)) + '☆'.repeat(5-Math.round(m.rating||0));
       const plan = (m.plan || 'free').toLowerCase();
       const boostActive = m.boost_until && new Date(m.boost_until) > new Date();
-      let planBadge = '';
-      if (boostActive) planBadge = '<span class="plan-badge boost"><i class="fas fa-rocket"></i> Boost</span>';
-      else if (plan === 'premium') planBadge = '<span class="plan-badge premium"><i class="fas fa-gem"></i> Premium</span>';
-      else if (plan === 'pro') planBadge = '<span class="plan-badge pro"><i class="fas fa-check-circle"></i> Pro</span>';
-      const cardClass = 'card' + (boostActive ? ' card-boost' : '') + (plan === 'premium' ? ' card-premium' : '');
-      return `<div class="${cardClass}">
-        <div class="card-img" style="background-image:url('${m.image_url||''}')">
-          <span class="card-badge">${m.category}</span>
-          ${m.featured ? '<span class="card-featured"><i class="fas fa-star"></i> Vedette</span>' : ''}
-          ${planBadge}
+      const planBadge = boostActive
+        ? '<span class="plan-badge boost"><i class="fas fa-rocket"></i> Boost</span>'
+        : (plan === 'premium' ? '<span class="plan-badge premium"><i class="fas fa-gem"></i> Premium</span>'
+        : (plan === 'pro' ? '<span class="plan-badge pro"><i class="fas fa-check-circle"></i> Pro</span>' : ''));
+
+      // Icône catégorie cyan (placeholder visuel propre, pas de photo tierce)
+      const cat = (m.category||'').toLowerCase();
+      const icon =
+        /boulang|patiss/.test(cat) ? 'fa-bread-slice' :
+        /restau/.test(cat) ? 'fa-utensils' :
+        /coif|esthe|beaut/.test(cat) ? 'fa-cut' :
+        /super|epicer|alim/.test(cat) ? 'fa-shopping-cart' :
+        /pharm/.test(cat) ? 'fa-prescription-bottle-alt' :
+        /fleur/.test(cat) ? 'fa-spa' :
+        /opt/.test(cat) ? 'fa-glasses' :
+        /banq/.test(cat) ? 'fa-university' :
+        /auto|garag/.test(cat) ? 'fa-car-side' :
+        /bar|caf/.test(cat) ? 'fa-glass-cheers' : 'fa-store';
+
+      // Meilleure offre = best économie en €
+      const bestOffer = offers.reduce((b, o) => (!b || (o.gift||0) > (b.gift||0)) ? o : b, null);
+      const bestSaving = bestOffer ? Math.max(0, (bestOffer.gift||0)) : 0;
+      const bestPct = bestOffer && (bestOffer.price + (bestOffer.gift||0)) > 0
+        ? Math.round(100 * (bestOffer.gift||0) / (bestOffer.price + (bestOffer.gift||0)))
+        : 0;
+
+      // Stock total/résiduel cross-offres
+      const stockTotal = offers.reduce((s, o) => s + (o.stock_total || 0), 0);
+      const stockSold  = offers.reduce((s, o) => s + (o.sold_count  || 0), 0);
+      const stockLeft  = Math.max(0, stockTotal - stockSold);
+      const lowStock   = stockTotal > 0 && stockLeft <= Math.max(3, Math.round(stockTotal * 0.2));
+
+      // Visuel hero (gradient + icône) — placeholder propre, on remplacera quand photos uploadées
+      const heroBg = m.image_url
+        ? `background-image:linear-gradient(rgba(15,10,48,.35),rgba(15,10,48,.55)),url('${m.image_url}');background-size:cover;background-position:center`
+        : `background:linear-gradient(135deg,var(--gh-bleu-iris) 0%,var(--gh-bleu-cyan) 100%)`;
+
+      // Footer card : économie + CTA principal
+      const ctaLabel = bestOffer ? `Réserver mon bon` : `Voir les offres`;
+      const ctaAction = bestOffer
+        ? `openLead('${bestOffer.id}','${m.id}','${(m.name||'').replace(/'/g,"\\'")}',${bestOffer.price},${bestOffer.gift||0})`
+        : `document.getElementById('m-${m.id}')?.scrollIntoView({behavior:'smooth',block:'center'})`;
+
+      return `<article class="merchant-card-pro" id="m-${m.id}">
+        <div class="mcp-hero" style="${heroBg}">
+          <i class="fas ${icon} mcp-hero-icon"></i>
+          <div class="mcp-overlay-tl">
+            ${bestPct > 0 ? `<span class="badge-promo">−${bestPct}%</span>` : ''}
+            ${boostActive ? '<span class="badge-urgence"><i class="fas fa-bolt"></i> Top du jour</span>' : ''}
+          </div>
+          <div class="mcp-overlay-tr">
+            <span class="mcp-cat">${m.category||'Commerce'}</span>
+          </div>
+          ${planBadge ? `<div class="mcp-overlay-bl">${planBadge}</div>` : ''}
         </div>
-        <div class="card-body">
-          <h3>${m.name}</h3>
-          <div class="card-meta"><i class="fas fa-map-marker-alt"></i> ${m.address||''}</div>
-          <div class="card-meta"><i class="fas fa-clock"></i> ${m.hours||''}</div>
-          <div class="card-rating">${stars} <span>${m.rating}/5 (${m.avis} avis)</span></div>
-          <div class="card-desc">${m.description||''}</div>
-          ${offers.length ? '<div class="card-offers">' + offers.map(o =>
-            `<span class="offer-tag" style="cursor:pointer" onclick="openLead('${o.id}','${m.id}','${m.name}',${o.price},${o.gift})">${o.price}€ payé → ${o.price+o.gift}€ offert</span>`
-          ).join('') + '</div>' : ''}
+        <div class="mcp-body">
+          <h3 class="mcp-name">${m.name}</h3>
+          <div class="mcp-meta">
+            ${m.address ? `<span><i class="fas fa-location-dot"></i> ${m.address}</span>` : ''}
+            ${m.rating ? `<span class="mcp-rating">${stars}<small>(${m.avis||0})</small></span>` : ''}
+          </div>
+          ${offers.length ? `
+            <div class="mcp-offers-list">
+              ${offers.slice(0,3).map(o => {
+                const total = o.price + (o.gift||0);
+                const pct   = total > 0 ? Math.round(100*(o.gift||0)/total) : 0;
+                return `<button class="mcp-offer-line" onclick="openLead('${o.id}','${m.id}','${(m.name||'').replace(/'/g,"\\'")}',${o.price},${o.gift||0})">
+                  <div class="mcp-offer-left">
+                    <div class="mcp-offer-title">${o.description ? o.description.replace(/"/g,'&quot;') : 'Bon d\\'achat'}</div>
+                    <div class="mcp-offer-pricing">
+                      <span class="mcp-price-original">${total}&nbsp;€</span>
+                      <span class="mcp-price-final">${o.price}&nbsp;€</span>
+                      ${o.gift ? `<span class="mcp-saving">économisez ${o.gift}&nbsp;€</span>` : ''}
+                    </div>
+                  </div>
+                  <div class="mcp-offer-right">
+                    ${pct ? `<span class="mcp-pct">−${pct}%</span>` : ''}
+                    <i class="fas fa-arrow-right mcp-offer-arrow"></i>
+                  </div>
+                </button>`;
+              }).join('')}
+              ${offers.length > 3 ? `<div class="mcp-more">+ ${offers.length-3} autres offres</div>` : ''}
+            </div>
+          ` : `<div class="mcp-no-offer">Aucune offre active pour l'instant.</div>`}
+          ${lowStock ? `<div class="mcp-stock"><i class="fas fa-fire"></i> Plus que <strong>${stockLeft}</strong> bons disponibles</div>` : ''}
+          <button class="mcp-cta" onclick="${ctaAction}">
+            <i class="fas ${bestOffer ? 'fa-bolt' : 'fa-ticket'}"></i> ${ctaLabel}
+          </button>
         </div>
-      </div>`;
+      </article>`;
     }).join('');
 }
 
