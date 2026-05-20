@@ -365,6 +365,35 @@ body.has-immo-bar { padding-bottom: 76px; }
 .trust-item i { color: var(--gh-bleu-cyan, #006fff); font-size: 18px; }
 .trust-item strong { color: var(--gh-bleu-iris, #0f0a30); font-weight: 700; }
 
+/* Badge MBA — sceau de certification Mon BonAgent */
+.mba-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gh-bleu-iris, #0f0a30) 0%, var(--gh-bleu-cyan, #006fff) 100%);
+  color: #fff;
+  font-family: "Anton", sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.8px;
+  box-shadow: 0 4px 12px rgba(0, 111, 255, 0.28);
+  position: relative;
+  flex-shrink: 0;
+  border: 1.5px solid #fff;
+  outline: 1px solid rgba(0, 111, 255, 0.18);
+}
+.mba-badge::before {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+}
+
 /* ---------- Carte commerçant marketplace (rendu home) ---------- */
 .merchant-card-pro {
   background: #fff;
