@@ -783,6 +783,151 @@ body.has-immo-bar { padding-bottom: 76px; }
   color: #495057;
 }
 
+/* ---------- Section "Le bon agent / passeur du quartier" ---------- */
+.relay-section {
+  background: linear-gradient(135deg, #f6f8fc 0%, #eef3fa 100%);
+  padding: 80px 0;
+}
+.relay-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 56px;
+  align-items: center;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+.relay-visual {
+  position: relative;
+}
+.relay-photo {
+  aspect-ratio: 4/5;
+  border-radius: 22px;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 20px 50px rgba(15, 10, 48, 0.18);
+}
+.relay-photo-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+.relay-photo-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--gh-bleu-iris, #0f0a30);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+.relay-photo-pill i { color: var(--gh-bleu-cyan, #006fff); }
+.relay-content { font-family: "Montserrat", sans-serif; }
+.relay-pill {
+  display: inline-block;
+  background: rgba(0, 111, 255, 0.1);
+  color: var(--gh-bleu-cyan, #006fff);
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 16px;
+}
+.relay-content h2 {
+  font-family: "Anton", sans-serif;
+  font-size: clamp(28px, 4vw, 40px);
+  letter-spacing: 0.3px;
+  color: var(--gh-bleu-iris, #0f0a30);
+  margin-bottom: 18px;
+  line-height: 1.12;
+}
+.relay-content h2 em {
+  font-style: normal;
+  color: var(--gh-bleu-cyan, #006fff);
+}
+.relay-lead {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #212529;
+  margin-bottom: 14px;
+}
+.relay-content p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #495057;
+  margin-bottom: 14px;
+}
+.relay-content p strong { color: var(--gh-bleu-iris, #0f0a30); font-weight: 700; }
+.relay-bullets {
+  list-style: none;
+  margin: 18px 0 24px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.relay-bullets li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  color: #495057;
+}
+.relay-bullets li i {
+  color: var(--gh-bleu-cyan, #006fff);
+  font-size: 18px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.relay-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gh-bleu-iris, #0f0a30);
+  color: #fff;
+  padding: 14px 26px;
+  border-radius: 12px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 14.5px;
+  text-decoration: none;
+  transition: background 0.18s, transform 0.18s;
+}
+.relay-cta:hover {
+  background: #1c1750;
+  transform: translateY(-2px);
+}
+.relay-foot {
+  margin-top: 22px !important;
+  padding-top: 18px;
+  border-top: 1px solid #d6e2f0;
+  font-size: 13px !important;
+  color: #6c757d !important;
+  font-style: italic;
+}
+.relay-foot a {
+  color: var(--gh-bleu-cyan, #006fff);
+  font-weight: 600;
+  text-decoration: none;
+}
+.relay-foot a:hover { text-decoration: underline; }
+
+@media (max-width: 760px) {
+  .relay-section { padding: 56px 0; }
+  .relay-grid { grid-template-columns: 1fr; gap: 32px; }
+  .relay-photo { aspect-ratio: 16/12; }
+}
+
 /* ---------- FAQ ---------- */
 .faq-section {
   background: #fff;
