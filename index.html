@@ -1004,17 +1004,57 @@ const FALLBACK_BLOG = [
   }
 ];
 
+function mbaSlugify(s){
+  if (!s) return '';
+  return String(s).normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+}
+
 async function loadData() {
-  const [mRes, oRes, eRes, bRes] = await Promise.all([
-    sb.from('merchants').select('*').eq('status','active').order('featured',{ascending:false}),
-    sb.from('offers').select('*, merchants(name, category, image_url)').eq('status','active'),
-    sb.from('offers').select('*, merchants(name, category, image_url)').eq('status','ended').order('ended_at',{ascending:false}).limit(12),
-    sb.from('blog_posts').select('*, featured_merchant:merchants!featured_merchant_id(id,name,slug,image_url,category,city)').order('published_at',{ascending:false}).limit(6)
+  // Chaque source est résiliente : un échec Supabase ne bloque pas l'annuaire JSON.
+  const safe = (p, fallback) => p.then(r => (r && !r.error) ? r : { data: fallback }).catch(() => ({ data: fallback }));
+
+  const [mRes, oRes, eRes, bRes, dirRes] = await Promise.all([
+    safe(sb.from('merchants').select('*').eq('status','active').order('featured',{ascending:false}), []),
+    safe(sb.from('offers').select('*, merchants(name, category, image_url)').eq('status','active'), []),
+    safe(sb.from('offers').select('*, merchants(name, category, image_url)').eq('status','ended').order('ended_at',{ascending:false}).limit(12), []),
+    safe(sb.from('blog_posts').select('*, featured_merchant:merchants!featured_merchant_id(id,name,slug,image_url,category,city)').order('published_at',{ascending:false}).limit(6), []),
+    fetch('/data/commerces-elne.json').then(r => r.ok ? r.json() : { commerces: [] }).catch(() => ({ commerces: [] }))
   ]);
-  allMerchants = mRes.data || [];
-  allOffers = oRes.data || [];
+
+  const supaMerchants = mRes.data || [];
+  allOffers   = oRes.data || [];
   endedOffers = eRes.data || [];
   allBlogPosts = (bRes.data && bRes.data.length > 0) ? bRes.data : FALLBACK_BLOG;
+
+  // Index des merchants Supabase par slug (nom normalisé) pour éviter les doublons
+  const partnerSlugs = new Set(supaMerchants.map(m => mbaSlugify(m.name)));
+
+  // Adapte chaque entrée annuaire au format merchant + flag "directory" (pas d'offres)
+  const directory = (dirRes.commerces || [])
+    .filter(c => !partnerSlugs.has(mbaSlugify(c.nom)))
+    .map(c => ({
+      id: 'dir-' + c.id,
+      name: c.nom,
+      category: c.categorie || 'Commerce',
+      address: c.adresse || '',
+      phone: c.telephone || '',
+      website: c.site_web || '',
+      hours: '',
+      rating: 0,
+      avis: 0,
+      description: '',
+      slug: mbaSlugify(c.nom),
+      status: 'active',
+      featured: false,
+      plan: 'directory',         // marqueur "annuaire local"
+      icon: c.icone || 'fa-store',
+      maps_url: c.lien_maps || '',
+      __directory: true
+    }));
+
+  // Partenaires en premier (ils ont des offres), annuaire ensuite
+  allMerchants = [...supaMerchants, ...directory];
 
   document.getElementById('statMerchants').textContent = allMerchants.length;
   document.getElementById('statOffers').textContent = allOffers.length;
@@ -1168,15 +1208,18 @@ function renderMerchants() {
       const stars = '★'.repeat(Math.round(m.rating||0)) + '☆'.repeat(5-Math.round(m.rating||0));
       const plan = (m.plan || 'free').toLowerCase();
       const boostActive = m.boost_until && new Date(m.boost_until) > new Date();
-      const planBadge = boostActive
-        ? '<span class="plan-badge boost"><i class="fas fa-rocket"></i> Boost</span>'
-        : (plan === 'premium' ? '<span class="plan-badge premium"><i class="fas fa-gem"></i> Premium</span>'
-        : (plan === 'pro' ? '<span class="plan-badge pro"><i class="fas fa-check-circle"></i> Pro</span>' : ''));
+      const planBadge = m.__directory
+        ? '<span class="plan-badge directory"><i class="fas fa-map-pin"></i> Annuaire local</span>'
+        : (boostActive
+          ? '<span class="plan-badge boost"><i class="fas fa-rocket"></i> Boost</span>'
+          : (plan === 'premium' ? '<span class="plan-badge premium"><i class="fas fa-gem"></i> Premium</span>'
+          : (plan === 'pro' ? '<span class="plan-badge pro"><i class="fas fa-check-circle"></i> Pro</span>'
+          : '<span class="plan-badge partner"><i class="fas fa-handshake"></i> Partenaire</span>')));
 
       // Icône catégorie cyan (placeholder visuel propre, pas de photo tierce)
       const cat = (m.category||'').toLowerCase();
-      const icon =
-        /boulang|patiss/.test(cat) ? 'fa-bread-slice' :
+      const icon = m.icon ||
+       (/boulang|patiss/.test(cat) ? 'fa-bread-slice' :
         /restau/.test(cat) ? 'fa-utensils' :
         /coif|esthe|beaut/.test(cat) ? 'fa-cut' :
         /super|epicer|alim/.test(cat) ? 'fa-shopping-cart' :
@@ -1185,7 +1228,7 @@ function renderMerchants() {
         /opt/.test(cat) ? 'fa-glasses' :
         /banq/.test(cat) ? 'fa-university' :
         /auto|garag/.test(cat) ? 'fa-car-side' :
-        /bar|caf/.test(cat) ? 'fa-glass-cheers' : 'fa-store';
+        /bar|caf/.test(cat) ? 'fa-glass-cheers' : 'fa-store');
 
       // Meilleure offre = best économie en €
       const bestOffer = offers.reduce((b, o) => (!b || (o.gift||0) > (b.gift||0)) ? o : b, null);
@@ -1205,11 +1248,20 @@ function renderMerchants() {
         ? `background-image:linear-gradient(rgba(15,10,48,.35),rgba(15,10,48,.55)),url('${m.image_url}');background-size:cover;background-position:center`
         : `background:linear-gradient(135deg,var(--gh-bleu-iris) 0%,var(--gh-bleu-cyan) 100%)`;
 
-      // Footer card : économie + CTA principal
-      const ctaLabel = bestOffer ? `Réserver mon bon` : `Voir les offres`;
-      const ctaAction = bestOffer
-        ? `openLead('${bestOffer.id}','${m.id}','${(m.name||'').replace(/'/g,"\\'")}',${bestOffer.price},${bestOffer.gift||0})`
-        : `document.getElementById('m-${m.id}')?.scrollIntoView({behavior:'smooth',block:'center'})`;
+      // Footer card : CTA selon mode (annuaire vs partenaire)
+      const mapsUrl = m.maps_url
+        || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((m.name||'') + ' ' + (m.address||'') + ' Elne')}`;
+      let ctaLabel, ctaAction, ctaIcon;
+      if (bestOffer) {
+        ctaLabel = 'Réserver mon bon'; ctaIcon = 'fa-bolt';
+        ctaAction = `openLead('${bestOffer.id}','${m.id}','${(m.name||'').replace(/'/g,"\\'")}',${bestOffer.price},${bestOffer.gift||0})`;
+      } else if (m.__directory) {
+        ctaLabel = 'Voir sur Maps'; ctaIcon = 'fa-map';
+        ctaAction = `window.open('${mapsUrl.replace(/'/g,"\\'")}','_blank','noopener')`;
+      } else {
+        ctaLabel = 'Voir les offres'; ctaIcon = 'fa-ticket';
+        ctaAction = `document.getElementById('m-${m.id}')?.scrollIntoView({behavior:'smooth',block:'center'})`;
+      }
 
       return `<article class="merchant-card-pro" id="m-${m.id}">
         <div class="mcp-hero" style="${heroBg}">
@@ -1251,10 +1303,18 @@ function renderMerchants() {
               }).join('')}
               ${offers.length > 3 ? `<div class="mcp-more">+ ${offers.length-3} autres offres</div>` : ''}
             </div>
-          ` : `<div class="mcp-no-offer">Aucune offre active pour l'instant.</div>`}
+          ` : (m.__directory
+            ? `<div class="mcp-no-offer mcp-no-offer--directory">
+                 <i class="fas fa-handshake mcp-no-offer-icon"></i>
+                 <div>
+                   <div class="mcp-no-offer-title">Pas encore partenaire</div>
+                   <div class="mcp-no-offer-sub">Vous gérez ${(m.name||'').replace(/"/g,'&quot;')} ? <a href="mailto:contact@monbonagent.fr?subject=Devenir%20partenaire%20MonBonAgent%20-%20${encodeURIComponent(m.name||'')}">Proposer un bon d'achat</a></div>
+                 </div>
+               </div>`
+            : `<div class="mcp-no-offer">Aucune offre active pour l'instant — revenez bientôt.</div>`)}
           ${lowStock ? `<div class="mcp-stock"><i class="fas fa-fire"></i> Plus que <strong>${stockLeft}</strong> bons disponibles</div>` : ''}
-          <button class="mcp-cta" onclick="${ctaAction}">
-            <i class="fas ${bestOffer ? 'fa-bolt' : 'fa-ticket'}"></i> ${ctaLabel}
+          <button class="mcp-cta ${m.__directory && !bestOffer ? 'mcp-cta--directory' : ''}" onclick="${ctaAction}">
+            <i class="fas ${ctaIcon}"></i> ${ctaLabel}
           </button>
         </div>
       </article>`;
