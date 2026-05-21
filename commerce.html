@@ -329,7 +329,11 @@ footer p { opacity: .65; font-size: 13px; margin-top: 12px; }
     var slug = p.get('slug') || p.get('id');
     if(!slug){ renderError('Lien incomplet — slug commerçant manquant.'); return; }
 
-    var mr = await sb.from('merchants').select('*').or('slug.eq.'+slug+',id.eq.'+slug).maybeSingle();
+    // Cherche d'abord par slug (cas standard). Si UUID-like, tente aussi par id en fallback.
+    var mr = await sb.from('merchants').select('*').eq('slug', slug).maybeSingle();
+    if ((!mr.data || mr.error) && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(slug)) {
+      mr = await sb.from('merchants').select('*').eq('id', slug).maybeSingle();
+    }
     if(mr.error || !mr.data){ renderError('Ce commerçant n\'existe pas ou n\'est plus actif.'); return; }
     var m = mr.data;
 
