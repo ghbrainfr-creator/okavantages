@@ -1108,6 +1108,18 @@ body.has-immo-bar { padding-bottom: 76px; }
   background: #1c1750;
   transform: translateY(-2px);
 }
+.relay-confession {
+  margin-top: 18px !important;
+  padding: 16px 18px;
+  background: rgba(0, 111, 255, 0.05);
+  border-left: 3px solid var(--gh-bleu-cyan, #006fff);
+  border-radius: 0 10px 10px 0;
+  font-size: 14.5px !important;
+  line-height: 1.6 !important;
+  color: #212529 !important;
+  font-style: italic;
+}
+.relay-confession strong { font-style: normal; color: var(--gh-bleu-iris, #0f0a30); }
 .relay-foot {
   margin-top: 22px !important;
   padding-top: 18px;
