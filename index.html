@@ -581,7 +581,66 @@ function setCategoryFilter(catName) {
       <p>Profitez de bons d'achat exclusifs chez vos commerçants préférés</p>
     </div>
     <div class="offer-cards" id="offerCards">
-      <div class="loading"><i class="fas fa-spinner"></i> Chargement...</div>
+      <article class="offer-card">
+        <div class="offer-header">
+          <div class="offer-price">6&nbsp;€</div>
+          <div class="offer-gift"><i class="fas fa-gift"></i> +4&nbsp;€ offerts</div>
+        </div>
+        <div class="offer-merchant">Marie Blachère · Bd Jacques Albert</div>
+        <div class="offer-desc">Bon viennoiseries de 10&nbsp;€ à utiliser sur l'assortiment du matin (croissants, pains au chocolat, brioches).</div>
+        <button class="offer-btn" onclick="document.getElementById('signupModal')?.classList.add('show')"><i class="fas fa-bolt"></i> Réserver mon bon</button>
+        <div class="offer-sales"><i class="fas fa-fire"></i> Démo · offre type</div>
+      </article>
+      <article class="offer-card">
+        <div class="offer-header">
+          <div class="offer-price">20&nbsp;€</div>
+          <div class="offer-gift"><i class="fas fa-gift"></i> +10&nbsp;€ offerts</div>
+        </div>
+        <div class="offer-merchant">Lidl · 1 Bd Jacques Albert</div>
+        <div class="offer-desc">Bon courses de 30&nbsp;€ valable sur l'ensemble du magasin, hors carburant et tabac.</div>
+        <button class="offer-btn" onclick="document.getElementById('signupModal')?.classList.add('show')"><i class="fas fa-bolt"></i> Réserver mon bon</button>
+        <div class="offer-sales"><i class="fas fa-fire"></i> Démo · offre type</div>
+      </article>
+      <article class="offer-card">
+        <div class="offer-header">
+          <div class="offer-price">25&nbsp;€</div>
+          <div class="offer-gift"><i class="fas fa-gift"></i> +10&nbsp;€ offerts</div>
+        </div>
+        <div class="offer-merchant">Coiffure Daniel · Elne</div>
+        <div class="offer-desc">Coupe + brushing femme à 25&nbsp;€ au lieu de 35&nbsp;€. Sur rendez-vous, du mardi au samedi.</div>
+        <button class="offer-btn" onclick="document.getElementById('signupModal')?.classList.add('show')"><i class="fas fa-bolt"></i> Réserver mon bon</button>
+        <div class="offer-sales"><i class="fas fa-fire"></i> Démo · offre type</div>
+      </article>
+      <article class="offer-card">
+        <div class="offer-header">
+          <div class="offer-price">12&nbsp;€</div>
+          <div class="offer-gift"><i class="fas fa-gift"></i> +6&nbsp;€ offerts</div>
+        </div>
+        <div class="offer-merchant">Restaurant Frédéric Vicente</div>
+        <div class="offer-desc">Menu du midi à 12&nbsp;€ au lieu de 18&nbsp;€ : entrée, plat catalan du jour, café gourmand.</div>
+        <button class="offer-btn" onclick="document.getElementById('signupModal')?.classList.add('show')"><i class="fas fa-bolt"></i> Réserver mon bon</button>
+        <div class="offer-sales"><i class="fas fa-fire"></i> Démo · offre type</div>
+      </article>
+      <article class="offer-card">
+        <div class="offer-header">
+          <div class="offer-price">18&nbsp;€</div>
+          <div class="offer-gift"><i class="fas fa-gift"></i> +7&nbsp;€ offerts</div>
+        </div>
+        <div class="offer-merchant">Al Sima · Bd Jacques Albert</div>
+        <div class="offer-desc">Bon courses de 25&nbsp;€ valable sur l'ensemble des rayons (épicerie, fruits et légumes, boucherie halal).</div>
+        <button class="offer-btn" onclick="document.getElementById('signupModal')?.classList.add('show')"><i class="fas fa-bolt"></i> Réserver mon bon</button>
+        <div class="offer-sales"><i class="fas fa-fire"></i> Démo · offre type</div>
+      </article>
+      <article class="offer-card">
+        <div class="offer-header">
+          <div class="offer-price">0&nbsp;€</div>
+          <div class="offer-gift"><i class="fas fa-gift"></i> Bilan offert</div>
+        </div>
+        <div class="offer-merchant">Audial · 1 Bd Jacques Albert</div>
+        <div class="offer-desc">Bilan auditif complet offert + 50&nbsp;€ de réduction sur tout équipement. Sans engagement, sur rendez-vous.</div>
+        <button class="offer-btn" onclick="document.getElementById('signupModal')?.classList.add('show')"><i class="fas fa-bolt"></i> Réserver mon bilan</button>
+        <div class="offer-sales"><i class="fas fa-fire"></i> Démo · offre type</div>
+      </article>
     </div>
   </div>
 </section>
@@ -599,7 +658,60 @@ function setCategoryFilter(catName) {
     </div>
     <div class="ended-wrap">
       <div class="ended-scroll" id="endedScroll">
-        <div class="loading" style="flex:1"><i class="fas fa-spinner"></i> Chargement...</div>
+        <article class="ended-card">
+          <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1556228720-195a672e8a03?auto=format&fit=crop&w=600&q=70')"></div>
+          <span class="ended-badge">Terminé</span>
+          <div class="card-body">
+            <h4>Bon parapharmacie 14&nbsp;€</h4>
+            <div class="ended-merchant">Pharmacie d'Elne</div>
+            <div class="ended-price">20&nbsp;€</div>
+          </div>
+        </article>
+        <article class="ended-card">
+          <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1487070183336-b863922373d4?auto=format&fit=crop&w=600&q=70')"></div>
+          <span class="ended-badge">Terminé</span>
+          <div class="card-body">
+            <h4>Bouquet du fleuriste 17&nbsp;€</h4>
+            <div class="ended-merchant">Illiberis Fleurs</div>
+            <div class="ended-price">25&nbsp;€</div>
+          </div>
+        </article>
+        <article class="ended-card">
+          <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&q=70')"></div>
+          <span class="ended-badge">Terminé</span>
+          <div class="card-body">
+            <h4>Atelier cuisine 25&nbsp;€</h4>
+            <div class="ended-merchant">Cuisine &amp; Co</div>
+            <div class="ended-price">40&nbsp;€</div>
+          </div>
+        </article>
+        <article class="ended-card">
+          <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=600&q=70')"></div>
+          <span class="ended-badge">Terminé</span>
+          <div class="card-body">
+            <h4>Révision vélo 30&nbsp;€</h4>
+            <div class="ended-merchant">Cycles Colomines</div>
+            <div class="ended-price">50&nbsp;€</div>
+          </div>
+        </article>
+        <article class="ended-card">
+          <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=70')"></div>
+          <span class="ended-badge">Terminé</span>
+          <div class="card-body">
+            <h4>Panier primeur 12&nbsp;€</h4>
+            <div class="ended-merchant">Provenc'Halles</div>
+            <div class="ended-price">18&nbsp;€</div>
+          </div>
+        </article>
+        <article class="ended-card">
+          <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1559056199-641a0ac8b55e?auto=format&fit=crop&w=600&q=70')"></div>
+          <span class="ended-badge">Terminé</span>
+          <div class="card-body">
+            <h4>Soin visage 35&nbsp;€</h4>
+            <div class="ended-merchant">Institut Beauté d'Elne</div>
+            <div class="ended-price">55&nbsp;€</div>
+          </div>
+        </article>
       </div>
     </div>
   </div>
@@ -707,7 +819,33 @@ function setCategoryFilter(catName) {
       <p>Recettes typiques, événements locaux et conseils immobiliers</p>
     </div>
     <div class="blog-grid" id="blogGrid">
-      <div class="loading" style="grid-column:1/-1"><i class="fas fa-spinner"></i> Chargement...</div>
+      <article class="blog-card">
+        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=800&q=70');height:180px"></div>
+        <div class="card-body" style="padding:18px 20px 20px">
+          <span class="card-badge" style="position:static;display:inline-block;background:var(--gh-bleu-cyan);color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Recette</span>
+          <h3 style="font-family:Anton,sans-serif;font-size:19px;color:var(--gh-bleu-iris);margin-bottom:8px;letter-spacing:.3px">Le crémat catalan, la boisson chaude du Roussillon</h3>
+          <div class="blog-meta"><i class="fas fa-user"></i> Équipe MonBonAgent · <i class="fas fa-calendar"></i> 15 mai 2026</div>
+          <p style="font-size:13.5px;color:#495057;line-height:1.55">Rhum brun flambé, écorces d'orange, cannelle, sucre cassonade. Le crémat est le rituel d'après-repas des familles catalanes. Voici la version traditionnelle servie depuis trois générations à Elne.</p>
+        </div>
+      </article>
+      <article class="blog-card">
+        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=800&q=70');height:180px"></div>
+        <div class="card-body" style="padding:18px 20px 20px">
+          <span class="card-badge" style="position:static;display:inline-block;background:var(--gh-bleu-cyan);color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Événement local</span>
+          <h3 style="font-family:Anton,sans-serif;font-size:19px;color:var(--gh-bleu-iris);margin-bottom:8px;letter-spacing:.3px">Le marché de Noël d'Elne revient en décembre</h3>
+          <div class="blog-meta"><i class="fas fa-user"></i> Équipe MonBonAgent · <i class="fas fa-calendar"></i> 8 mai 2026</div>
+          <p style="font-size:13.5px;color:#495057;line-height:1.55">Trois week-ends d'animations sur la place de la République : producteurs locaux, artisans, vin chaud, ateliers pour enfants. Le programme complet et les bons plans MonBonAgent pour l'occasion.</p>
+        </div>
+      </article>
+      <article class="blog-card">
+        <div class="card-img" style="background-image:url('https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=800&q=70');height:180px"></div>
+        <div class="card-body" style="padding:18px 20px 20px">
+          <span class="card-badge" style="position:static;display:inline-block;background:var(--gh-bleu-cyan);color:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px">Conseil immo</span>
+          <h3 style="font-family:Anton,sans-serif;font-size:19px;color:var(--gh-bleu-iris);margin-bottom:8px;letter-spacing:.3px">Acheter à Elne en 2026 : les 3 quartiers à surveiller</h3>
+          <div class="blog-meta"><i class="fas fa-user"></i> Équipe MonBonAgent · <i class="fas fa-calendar"></i> 2 mai 2026</div>
+          <p style="font-size:13.5px;color:#495057;line-height:1.55">Centre historique, secteur de la cathédrale, abords de la Têt : trois quartiers d'Elne aux dynamiques très différentes. Prix au m², potentiel de plus-value, profils acquéreurs ciblés, le point complet.</p>
+        </div>
+      </article>
     </div>
   </div>
 </section>
