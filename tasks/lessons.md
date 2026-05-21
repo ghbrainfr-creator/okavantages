@@ -1,0 +1,2 @@
+
+[2026-05-22] | Sed aveugle "Perpignan" → "Elne" sur tout le repo : a produit des nonsens ("Sankéo Elne ↔ Elne", "à Elne et Elne") + j'ai inventé le gentilé "Elnois" au lieu d'**Illibérien** (les habitants d'Elne, d'Iliberis, l'ancien nom romain) | RÈGLE : avant TOUT remplacement de toponyme, vérifier (1) le gentilé exact, (2) chaque occurrence en contexte avant le sed (ligne par ligne mentale), (3) les composés "X et Y" ou "X ↔ Y" qui produisent des duplicats absurdes ("Elne et Elne"). Ne jamais faire de sed aveugle sur un mot polysémique géographique.
