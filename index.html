@@ -320,7 +320,7 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
       <i class="fas fa-bars"></i>
     </button>
     <div class="nav-links" id="navLinks">
-      <a href="#merchants">Commerçants</a>
+      <a href="/commerces.html">Commerçants</a>
       <a href="#offers">Offres</a>
       <a href="#how-it-works" class="opt-2">Comment ça marche</a>
       <a href="#le-bon-agent" class="opt-1">Mon BonAgent</a>
@@ -340,7 +340,7 @@ footer.footer-v2 .footer-payments i{font-size:26px;color:#aaa}
       <h1>Consommez <em>local</em>. C'est soutenir vos commerçants, artisans et producteurs.</h1>
       <p class="hero-lead">Ce midi, votre déjeuner à 8&nbsp;€ au lieu de 12&nbsp;€. Demain, votre coupe à 25&nbsp;€ au lieu de 35&nbsp;€. Chez vos commerçants d'Elne et des environs, chaque bon réservé soutient un voisin commerçant.</p>
       <div class="hero-cta-group">
-        <a href="#merchants" class="hero-cta-primary" onclick="event.preventDefault();document.getElementById('signupModal')?.classList.add('show');">
+        <a href="/commerces.html" class="hero-cta-primary" onclick="event.preventDefault();document.getElementById('signupModal')?.classList.add('show');">
           <span class="hero-cta-main"><i class="fas fa-gift"></i> Recevoir mon 1ᵉʳ bon offert</span>
           <small>30 sec · sans carte bancaire</small>
         </a>
@@ -538,7 +538,7 @@ function setCategoryFilter(catName) {
         <div class="about-text">
           <h3>Le portail des bons plans de votre quartier</h3>
           <p>Mon BonAgent rassemble en un seul endroit toutes les offres que vos commerçants d'Elne et des environs préparent rien que pour vous. Plus besoin de courir d'une vitrine à l'autre. Vous ouvrez le site, vous parcourez, vous réservez. Vos économies arrivent en même temps que votre QR code.</p>
-          <a href="#merchants" class="about-cta">Voir les commerçants <i class="fas fa-arrow-right"></i></a>
+          <a href="/commerces.html" class="about-cta">Voir les commerçants <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
       <div class="about-row reverse">
@@ -554,7 +554,7 @@ function setCategoryFilter(catName) {
         <div class="about-text">
           <h3>À chaque achat, un voisin commerçant gagne aussi</h3>
           <p>Quand vous réservez un bon ici, vous ne payez pas seulement moins. Vous donnez aussi un coup de pouce à un artisan qui fait vivre votre quartier. Le boulanger, le coiffeur, le restaurateur du coin gagnent en visibilité, en clients, en fidélité. C'est ça, l'esprit Mon BonAgent : un site qui fait du bien à tout le monde.</p>
-          <a href="#merchants" class="about-cta">Voir les commerces partenaires <i class="fas fa-arrow-right"></i></a>
+          <a href="/commerces.html" class="about-cta">Voir les commerces partenaires <i class="fas fa-arrow-right"></i></a>
         </div>
       </div>
     </div>
@@ -724,7 +724,7 @@ function setCategoryFilter(catName) {
           <li><i class="fas fa-circle-check"></i> Chaque commerce partenaire est <strong>visité et validé</strong> avant publication</li>
           <li><i class="fas fa-circle-check"></i> Chaque réservation soutient un <strong>artisan ou commerçant du quartier</strong></li>
         </ul>
-        <a href="#merchants" class="relay-cta">
+        <a href="/commerces.html" class="relay-cta">
           <i class="fas fa-store"></i> Découvrir les commerces partenaires
         </a>
         <p class="relay-foot">Par ailleurs, je suis aussi agent immobilier sur le secteur. C'est ce qui m'a appris à connaître le territoire et les commerçants si bien. Si vous voulez en parler, <a href="https://estime66.vercel.app?utm_source=monbonagent&utm_medium=relay_section&utm_campaign=cross_sell" target="_blank" rel="noopener">vous me trouverez ici</a>.</p>
@@ -876,7 +876,7 @@ function setCategoryFilter(catName) {
         <h4>MonBonAgent</h4>
         <ul>
           <li><a href="#about">À propos</a></li>
-          <li><a href="#merchants">Nos commerçants</a></li>
+          <li><a href="/commerces.html">Nos commerçants</a></li>
           <li><a href="#offers">Les bons moments</a></li>
           <li><a href="#blog">Le Mag</a></li>
         </ul>
@@ -1854,7 +1854,7 @@ async function submitSignup(e) {
         <h2 style="font-family:Anton,sans-serif;font-size:26px;color:#0f0a30;margin-bottom:10px">C'est noté${name ? ', ' + name.split(' ')[0] : ''}.</h2>
         <p style="font-family:Montserrat,sans-serif;font-size:14px;color:#495057;margin-bottom:20px;line-height:1.55">Vous recevrez votre 1<sup>er</sup> bon offert par email à <strong>${email.replace(/[<>"]/g,'')}</strong>. Pensez à vérifier vos spams si rien dans les 5 minutes.</p>
         <p style="font-family:Montserrat,sans-serif;font-size:12px;color:#6c757d">Pendant qu'on vous le prépare, découvrez les commerces partenaires d'Elne juste en dessous.</p>
-        <a href="#merchants" onclick="document.getElementById('signupModal').classList.remove('show')" style="display:inline-block;margin-top:18px;background:#006fff;color:#fff;padding:12px 22px;border-radius:10px;font-family:Montserrat,sans-serif;font-weight:600;text-decoration:none">Voir les commerçants</a>
+        <a href="/commerces.html" onclick="document.getElementById('signupModal').classList.remove('show')" style="display:inline-block;margin-top:18px;background:#006fff;color:#fff;padding:12px 22px;border-radius:10px;font-family:Montserrat,sans-serif;font-weight:600;text-decoration:none">Voir les commerçants</a>
       </div>`;
   } catch (err) {
     console.error('signup error:', err);
