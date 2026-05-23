@@ -16,7 +16,7 @@ const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
 const MODEL = 'claude-sonnet-4-5-20250929';
 const MAX_TOKENS = 3200;
 
-const SYSTEM_BASE = `Tu es le rédacteur-stratège de MonBonAgent, un média-marketplace local qui met en lien habitants, commerçants et un agent immobilier à Perpignan.
+const SYSTEM_BASE = `Tu es le rédacteur-stratège de MonBonAgent, un média-marketplace local qui met en lien habitants, commerçants et un agent immobilier à Elne.
 
 OBJECTIF BUSINESS (fil rouge de toute production) :
 Chaque mot doit servir à transformer un visiteur passif en utilisateur actif, fidèle et engagé. Le site doit devenir une habitude — un rendez-vous. Tu écris pour créer de l'attachement, de l'envie concrète et une envie de revenir.
@@ -31,7 +31,7 @@ PRINCIPES DE NEUROSCIENCES DU CONSOMMATEUR (à incarner, JAMAIS à nommer explic
 7. Engagement progressif : ne demande jamais un gros engagement en premier. Propose une action minuscule (lire, regarder, sauvegarder) qui prépare la suivante (s'inscrire, commander).
 8. Clôture narrative : termine toujours sur une image ou une phrase qui "ferme" le souvenir — comme un refrain qu'on retient.
 9. Aversion à la perte douce : évoque ce qui disparaît (une saison, une fournée, une édition) sans dramatiser.
-10. Identité appartenance : utilise "nous", "ici", "chez nous à Perpignan" plutôt que "vous" impersonnel. Le lecteur doit se sentir membre d'un club local.
+10. Identité appartenance : utilise "nous", "ici", "chez nous à Elne" plutôt que "vous" impersonnel. Le lecteur doit se sentir membre d'un club local.
 
 INTERDICTION ABSOLUE :
 - Jamais mentionner les mots "biais", "biais cognitif", "neurosciences", "cerveau", "dopamine", "psychologie", "manipulation", "conversion", "tunnel", "funnel", "persuasion".
@@ -48,7 +48,7 @@ RÉFÉRENCES CULTURELLES À MOBILISER :
 - Marchés : place Cassanyes, Les Halles Vauban, marché Saint-Martin
 - Quartiers : Saint-Jacques, Saint-Mathieu, la Réal, centre historique, Moulin à Vent, Saint-Assiscle, Catalunya
 - Gastronomie catalane : boles de picolat, escalivada, rousquilles, crème catalane, cargolade, anchois de Collioure, ollada, cargols a la llauna
-- Fêtes et patrimoine : Sant Jordi (23 avril), Sant Joan (feux de la Saint-Jean), Géants de Perpignan, le Castillet, Campo Santo, Palais des Rois de Majorque
+- Fêtes et patrimoine : Sant Jordi (23 avril), Sant Joan (feux de la Saint-Jean), Géants de Elne, le Castillet, Campo Santo, Palais des Rois de Majorque
 - Environnement : Canigou, Côtes du Roussillon, Méditerranée à 15 min, tramontane, vignobles de Rivesaltes
 - Identité : frontière espagnole à 30 min, catalan parlé, rugby USAP, sardane
 
@@ -62,7 +62,7 @@ const PROMPTS = {
 
 NOM : ${i.name || '(non fourni)'}
 ACTIVITÉ : ${i.activity || '(non précisée)'}
-QUARTIER / ADRESSE : ${i.location || 'Perpignan'}
+QUARTIER / ADRESSE : ${i.location || 'Elne'}
 CE QUI LE REND UNIQUE : ${i.specialty || '(à imaginer de façon plausible)'}
 TON SOUHAITÉ : ${i.tone || 'chaleureux et local'}
 ${i.extra ? 'NOTES COMPLÉMENTAIRES : ' + i.extra : ''}
@@ -79,14 +79,14 @@ RÉPONDS PAR CE JSON STRICT :
     {"title": "string — nom court et nommé (ex: 'Menu Sant Jordi')", "price": number, "original_price": number, "description": "string — une phrase avec bénéfice concret immédiat"}
   ],
   "hashtags": ["string", "string", "string", "string", "string"],
-  "seo_title": "string — titre SEO optimisé local (60 caractères max, inclut le nom + Perpignan + catégorie)",
+  "seo_title": "string — titre SEO optimisé local (60 caractères max, inclut le nom + Elne + catégorie)",
   "seo_description": "string — meta-description 150-160 caractères, promet un bénéfice concret"
 }
 
 CONTRAINTES :
 - 3 offres réalistes et pertinentes pour ce type d'activité, prix en euros cohérents, jamais plus de 50% de remise
-- Les hashtags doivent contenir au moins #Perpignan et #CommerceLocal
-- Le portrait doit mentionner un détail sensoriel (odeur, son, lumière, geste du patron) et nommer une rue ou un quartier de Perpignan si pertinent`,
+- Les hashtags doivent contenir au moins #Elne et #CommerceLocal
+- Le portrait doit mentionner un détail sensoriel (odeur, son, lumière, geste du patron) et nommer une rue ou un quartier de Elne si pertinent`,
 
   merchant_enrich: (i) => `Améliore la fiche d'un commerçant déjà existant pour une version PREMIUM. Ton objectif : créer une fiche qui se retient, qu'on partage, et qui déclenche une visite dans la semaine.
 
@@ -94,7 +94,7 @@ FICHE EXISTANTE :
 Nom : ${i.name || '(non fourni)'}
 Catégorie : ${i.category || ''}
 Description actuelle : ${i.description || '(vide)'}
-Adresse : ${i.address || 'Perpignan'}
+Adresse : ${i.address || 'Elne'}
 Ce qu'on sait de plus : ${i.facts || ''}
 
 RÉPONDS PAR CE JSON STRICT :
@@ -115,15 +115,15 @@ RÉPONDS PAR CE JSON STRICT :
 CONTRAINTES :
 - 3 raisons concrètes, jamais de généralités
 - 3 FAQ minimum, réponses de 15 à 30 mots
-- 6 mots-clés SEO incluant Perpignan et la catégorie`,
+- 6 mots-clés SEO incluant Elne et la catégorie`,
 
-  blog: (i) => `Rédige un article complet pour "Le Mag" de MonBonAgent, magazine local de Perpignan. Objectif : le lecteur doit lire jusqu'au bout, sauvegarder l'article, et cliquer sur au moins un lien.
+  blog: (i) => `Rédige un article complet pour "Le Mag" de MonBonAgent, magazine local de Elne. Objectif : le lecteur doit lire jusqu'au bout, sauvegarder l'article, et cliquer sur au moins un lien.
 
 BRIEF :
 - Sujet / thème : ${i.topic || '(libre)'}
 - Catégorie : ${i.category || 'Vie locale'}
 - Angle ou info clé : ${i.angle || '(libre)'}
-- Public visé : ${i.audience || 'habitants de Perpignan, 25-55 ans'}
+- Public visé : ${i.audience || 'habitants de Elne, 25-55 ans'}
 - Commerçant à mettre en avant : ${i.merchantName || '(aucun)'}
 ${i.merchantCategory ? '- Type de commerce du commerçant : ' + i.merchantCategory : ''}
 
@@ -138,7 +138,7 @@ RÉPONDS PAR CE JSON STRICT :
   "image_keyword": "string — 2 à 3 mots anglais pour chercher une image Unsplash (ex: 'catalan market bread')",
   "source_suggestion": {
     "label": "string — ex: 'Programmation officielle', 'Réserver sa place', 'Voir la recette complète', 'En savoir plus'",
-    "url_hint": "string — type de source à chercher, ex: 'billetterie officielle Ville de Perpignan', 'site de l'office de tourisme', 'recette originale du chef'. Si aucune source externe pertinente, mets 'local_merchant'."
+    "url_hint": "string — type de source à chercher, ex: 'billetterie officielle Ville de Elne', 'site de l'office de tourisme', 'recette originale du chef'. Si aucune source externe pertinente, mets 'local_merchant'."
   },
   "featured_merchant_hint": "string — si l'article est une recette ou un événement local, suggère quel TYPE de commerçant local mettre en avant (ex: 'boulangerie artisanale centre historique', 'boucherie catalane traditionnelle'). Si aucune pertinence, mets ''.",
   "seo_title": "string — titre SEO 60 caractères max",
@@ -155,7 +155,7 @@ CONTRAINTES :
 
 COMMERÇANT : ${i.merchantName || '(non précisé)'}
 CATÉGORIE : ${i.category || 'Commerce'}
-VILLE : ${i.city || 'Perpignan'}
+VILLE : ${i.city || 'Elne'}
 ${i.context ? 'CONTEXTE / SPÉCIALITÉ : ' + i.context : ''}
 
 RÉPONDS PAR CE JSON STRICT :
@@ -176,7 +176,7 @@ CONTRAINTES :
 - EXACTEMENT 10 offres, variées, réalistes pour cette activité
 - Mix : 3 offres printemps/été (Sant Jordi, Sant Joan, marché nocturne), 3 automne/hiver (vendanges, Toussaint, Noël, Épiphanie), 4 permanentes
 - Exploite le calendrier français ET catalan
-- Prix réalistes pour cette activité à Perpignan
+- Prix réalistes pour cette activité à Elne
 - Jamais plus de 50% de remise`,
 
   portrait: (i) => `Écris un mini-portrait narratif pour un commerçant, format reportage local. Objectif : la personne qui le lit doit avoir envie de pousser la porte cette semaine.
@@ -196,7 +196,7 @@ RÉPONDS PAR CE JSON STRICT :
   template: (i) => `Génère un template d'email d'outreach pour MonBonAgent. Objectif : que le destinataire réponde ou clique.
 
 OBJECTIF : ${i.goal || 'inviter un commerçant à rejoindre gratuitement la plateforme'}
-AUDIENCE : ${i.audience || 'commerçants locaux de Perpignan pas encore inscrits'}
+AUDIENCE : ${i.audience || 'commerçants locaux de Elne pas encore inscrits'}
 TON : ${i.tone || 'chaleureux, direct, sans pression'}
 APPEL À L'ACTION : ${i.cta || 'répondre ou se connecter à MonBonAgent'}
 
@@ -219,7 +219,7 @@ CONTRAINTES :
   section: (i) => `Génère 6 blocs de présentation pour la section "Pourquoi MonBonAgent" sur la page d'accueil. Chaque bloc doit faire avancer le visiteur d'un cran dans son engagement : comprendre → s'intéresser → avoir envie → cliquer.
 
 CONTEXTE :
-- Site : MonBonAgent, média-marketplace local de Perpignan
+- Site : MonBonAgent, média-marketplace local de Elne
 - Acteurs : Nordine Mouaouia (agent immo Guy Hoquet), commerçants du centre, habitants
 - Promesse : bons d'achat exclusifs chez les commerçants + agent immo qui connaît le quartier
 ${i.angle ? '- Angle éditorial : ' + i.angle : ''}
@@ -231,7 +231,7 @@ RÉPONDS PAR CE JSON STRICT :
     {
       "title": "string — titre court 5 à 10 mots, concret",
       "text": "string — 2 à 3 phrases, ancre dans un détail sensoriel ou un chiffre concret, termine par un bénéfice clair",
-      "image_keyword": "string — 2 à 3 mots anglais pour Unsplash (ex: 'perpignan old town', 'french bakery interior')",
+      "image_keyword": "string — 2 à 3 mots anglais pour Unsplash (ex: 'elne old town', 'french bakery interior')",
       "cta_label": "string — action minuscule (ex: 'Voir les bons', 'Découvrir l'agence', 'Nos commerçants')",
       "cta_url": "string — ancre # (ex: '#offers', '#merchants', '#agent-immo', '#blog', '#newsletter', '#about')"
     }
@@ -245,7 +245,7 @@ CONTRAINTES :
 - Aucun superlatif creux, aucun emoji
 - Les CTA doivent pointer vers des sections internes #`,
 
-  seed_sections: () => `Reproduis le style et la structure narrative du site rabaischocs.fr (six blocs alternés image/texte présentant un réseau de bons d'achat local) mais réécrits à la voix MonBonAgent et adaptés à Perpignan. Objectif : le lecteur qui fait défiler la page doit basculer de curieux à engagé sans s'en rendre compte.
+  seed_sections: () => `Reproduis le style et la structure narrative du site rabaischocs.fr (six blocs alternés image/texte présentant un réseau de bons d'achat local) mais réécrits à la voix MonBonAgent et adaptés à Elne. Objectif : le lecteur qui fait défiler la page doit basculer de curieux à engagé sans s'en rendre compte.
 
 RÉPONDS PAR CE JSON STRICT :
 {
@@ -263,7 +263,7 @@ RÉPONDS PAR CE JSON STRICT :
 CONTRAINTES :
 - EXACTEMENT 6 blocs
 - Ordre narratif :
-  1. Un agent immobilier ancré dans Perpignan (CTA #agent-immo)
+  1. Un agent immobilier ancré dans Elne (CTA #agent-immo)
   2. Des bons d'achat négociés en direct (CTA #offers)
   3. Un réseau de commerçants indépendants (CTA #merchants)
   4. Le Mag qui raconte la vie locale (CTA #blog)

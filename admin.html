@@ -361,7 +361,7 @@ tr:hover{background:#fafbfc}
       <hr style="margin:16px 0;">
       <div style="margin-bottom:12px;">
         <label style="display:block;margin-bottom:4px;font-weight:600;">Titre principal (hero)</label>
-        <input type="text" id="hero_title" class="input" style="width:100%;" placeholder="Ex: Perpignan vit mieux avec MonBonAgent">
+        <input type="text" id="hero_title" class="input" style="width:100%;" placeholder="Ex: Elne vit mieux avec MonBonAgent">
       </div>
       <div style="margin-bottom:12px;">
         <label style="display:block;margin-bottom:4px;font-weight:600;">Sous-titre (hero)</label>
@@ -577,7 +577,7 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Nom</label><input id="nm_name"></div>
       <div class="grid-2">
         <div class="field"><label>Catégorie</label><input id="nm_category" placeholder="Boulangerie, Restaurant…"></div>
-        <div class="field"><label>Ville</label><input id="nm_city" value="Perpignan"></div>
+        <div class="field"><label>Ville</label><input id="nm_city" value="Elne"></div>
       </div>
       <div class="field"><label>Adresse</label><input id="nm_address"></div>
       <div class="field"><label>Description</label><textarea id="nm_description" rows="3"></textarea></div>
@@ -676,7 +676,7 @@ tr:hover{background:#fafbfc}
         </div>
         <div class="field">
           <label>Texte HTML de la signature</label>
-          <textarea id="adm_sig_html" rows="8" placeholder="Cordialement,&#10;Nordine Mouaouia&#10;Conseiller Guy Hoquet Perpignan&#10;04 68 00 00 00"></textarea>
+          <textarea id="adm_sig_html" rows="8" placeholder="Cordialement,&#10;Nordine Mouaouia&#10;Conseiller Guy Hoquet Elne&#10;04 68 00 00 00"></textarea>
         </div>
         <div class="field" style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn ghost" onclick="loadAdminSignaturePreset()"><i class="fas fa-magic"></i> Modèle Nordine</button>
@@ -695,7 +695,7 @@ tr:hover{background:#fafbfc}
     <div class="row-between">
       <div>
         <h2>Le Mag — Articles de blog</h2>
-        <p class="sub">Magazine local de Perpignan. Génération IA complète en 4 questions.</p>
+        <p class="sub">Magazine local de Elne. Génération IA complète en 4 questions.</p>
       </div>
       <div class="section-toolbar">
         <button class="btn ghost" onclick="openBlogModal()"><i class="fas fa-plus"></i> Article vide</button>
@@ -773,7 +773,7 @@ tr:hover{background:#fafbfc}
     <p class="sub">Ajoutez ou modifiez une ville du réseau.</p>
     <input type="hidden" id="city_id_hidden">
     <div class="grid-2">
-      <div class="field"><label>Nom de la ville *</label><input id="city_name_in" placeholder="ex : Elne, Perpignan, Marseille" oninput="var v=this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');document.getElementById('city_slug_in').value=v;"><small style="color:#666;font-size:11px">Le nom affiché sur le site</small></div>
+      <div class="field"><label>Nom de la ville *</label><input id="city_name_in" placeholder="ex : Elne, Argelès-sur-Mer, Saint-Cyprien" oninput="var v=this.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');document.getElementById('city_slug_in').value=v;"><small style="color:#666;font-size:11px">Le nom affiché sur le site</small></div>
       <div class="field"><label>Identifiant URL (slug)</label><input id="city_slug_in" placeholder="se remplit automatiquement"><small style="color:#666;font-size:11px">Minuscules, sans accents, sans espaces — utilisé dans l'URL</small></div>
     </div>
     <div class="grid-2">
@@ -807,7 +807,7 @@ tr:hover{background:#fafbfc}
     </div>
     <div class="grid-2">
       <div class="field"><label>Rôle / Titre</label><input id="agent_role" placeholder="Conseiller immobilier"></div>
-      <div class="field"><label>Agence</label><input id="agent_agency" placeholder="Guy Hoquet Perpignan"></div>
+      <div class="field"><label>Agence</label><input id="agent_agency" placeholder="Guy Hoquet Elne"></div>
     </div>
     <div class="grid-2">
       <div class="field"><label>Email</label><input id="agent_email"></div>
@@ -818,7 +818,7 @@ tr:hover{background:#fafbfc}
     <div class="field"><label>Bio</label><textarea id="agent_bio" rows="4" placeholder="Expert local à l'écoute de votre projet…"></textarea></div>
     <div class="field">
       <label>Villes couvertes (séparées par des virgules, slug)</label>
-      <input id="agent_cities_in" placeholder="perpignan, canet-en-roussillon, argeles-sur-mer">
+      <input id="agent_cities_in" placeholder="elne, canet-en-roussillon, argeles-sur-mer">
       <small style="color:#6c757d">La 1ʳᵉ ville indiquée sera marquée comme principale.</small>
     </div>
 
@@ -859,7 +859,7 @@ tr:hover{background:#fafbfc}
     <div class="field"><label>Image de couverture (URL)</label><input id="ct_cover"></div>
     <div class="grid-2">
       <div class="field"><label>Commerçant partenaire (id)</label><input id="ct_merchant" placeholder="UUID ou laisser vide"></div>
-      <div class="field"><label>Ville (slug)</label><input id="ct_city" placeholder="perpignan"></div>
+      <div class="field"><label>Ville (slug)</label><input id="ct_city" placeholder="elne"></div>
     </div>
     <div class="grid-2">
       <div class="field"><label>Début</label><input id="ct_start" type="datetime-local"></div>
@@ -1030,7 +1030,7 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Catégorie</label><input id="p_category" placeholder="Restaurant, Boulangerie…"></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Ville</label><input id="p_city" value="Perpignan"></div>
+      <div class="field"><label>Ville</label><input id="p_city" value="Elne"></div>
       <div class="field"><label>Adresse</label><input id="p_address"></div>
     </div>
     <div class="grid-2">
@@ -1187,7 +1187,7 @@ tr:hover{background:#fafbfc}
       <textarea id="bp_content_html" rows="14" style="font-family:inherit;font-size:12px"></textarea>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Tags (séparés par des virgules)</label><input id="bp_tags" placeholder="Perpignan, Catalogne, recette"></div>
+      <div class="field"><label>Tags (séparés par des virgules)</label><input id="bp_tags" placeholder="Elne, Catalogne, recette"></div>
       <div class="field"><label>Statut</label><select id="bp_status"><option value="published">Publié</option><option value="draft">Brouillon</option></select></div>
     </div>
     <div style="background:#e6f1ff;border:1px solid #ffcdd2;border-radius:10px;padding:14px;margin-top:10px">
@@ -2038,7 +2038,7 @@ function openNewMerchantFromEnrichment() {
   const e = enrichedPayload;
   (document.getElementById('nm_name')||{}).value = e.name || '';
   (document.getElementById('nm_category')||{}).value = e.category || '';
-  (document.getElementById('nm_city')||{}).value = 'Perpignan';
+  (document.getElementById('nm_city')||{}).value = 'Elne';
   (document.getElementById('nm_address')||{}).value = e.address || '';
   (document.getElementById('nm_description')||{}).value = e.description || '';
   (document.getElementById('nm_image_url')||{}).value = e.image_url || '';
@@ -2058,7 +2058,7 @@ async function createMerchant() {
   const payload = {
     name: document.getElementById('nm_name').value.trim(),
     category: document.getElementById('nm_category').value.trim() || 'Commerce',
-    city: document.getElementById('nm_city').value.trim() || 'Perpignan',
+    city: document.getElementById('nm_city').value.trim() || 'Elne',
     address: document.getElementById('nm_address').value.trim() || null,
     description: document.getElementById('nm_description').value.trim() || null,
     phone: document.getElementById('nm_phone').value.trim() || null,
@@ -2363,7 +2363,7 @@ async function saveEditMerchant() {
   const patch = {
     name,
     category: document.getElementById('em_category').value.trim() || 'Commerce',
-    city: document.getElementById('em_city').value.trim() || 'Perpignan',
+    city: document.getElementById('em_city').value.trim() || 'Elne',
     address: document.getElementById('em_address').value.trim() || null,
     phone: document.getElementById('em_phone').value.trim() || null,
     email: document.getElementById('em_email').value.trim() || null,
@@ -2511,7 +2511,7 @@ function filterProspectsByStatus(status) {
 function openProspectModal() {
   (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-user-plus" style="color:#006fff"></i> Nouveau prospect';
   ['p_name','p_category','p_address','p_phone','p_email','p_website','p_notes','p_id'].forEach(id => document.getElementById(id).value = '');
-  (document.getElementById('p_city')||{}).value = 'Perpignan';
+  (document.getElementById('p_city')||{}).value = 'Elne';
   (document.getElementById('p_status')||{}).value = 'new';
   (document.getElementById('p_plan')||{}).value = 'free';
   (document.getElementById('p_source')||{}).value = 'manual';
@@ -2539,7 +2539,7 @@ async function saveProspect() {
   const payload = {
     name: document.getElementById('p_name').value.trim(),
     category: document.getElementById('p_category').value.trim() || null,
-    city: document.getElementById('p_city').value.trim() || 'Perpignan',
+    city: document.getElementById('p_city').value.trim() || 'Elne',
     address: document.getElementById('p_address').value.trim() || null,
     phone: document.getElementById('p_phone').value.trim() || null,
     email: document.getElementById('p_email').value.trim() || null,
@@ -2603,7 +2603,7 @@ async function importProspectsCsv(file) {
   const records = rows.slice(1).map(r => ({
     name: idx.name>=0 ? (r[idx.name]||'').trim() : '',
     category: idx.category>=0 ? (r[idx.category]||'').trim()||null : null,
-    city: idx.city>=0 ? (r[idx.city]||'').trim()||'Perpignan' : 'Perpignan',
+    city: idx.city>=0 ? (r[idx.city]||'').trim()||'Elne' : 'Elne',
     address: idx.address>=0 ? (r[idx.address]||'').trim()||null : null,
     phone: idx.phone>=0 ? (r[idx.phone]||'').trim()||null : null,
     email: idx.email>=0 ? (r[idx.email]||'').trim()||null : null,
@@ -2905,7 +2905,7 @@ function loadAdminSignaturePreset() {
   (document.getElementById('adm_sig_html')||{}).value =
 `Cordialement,
 <strong>Nordine Mouaouia</strong>
-Conseiller — Guy Hoquet Perpignan
+Conseiller — Guy Hoquet Elne
 04 68 00 00 00 — <a href="mailto:n.mouaouia@guyhoquet.com">n.mouaouia@guyhoquet.com</a>
 <a href="https://monbonagent.vercel.app">monbonagent.vercel.app</a>`;
   renderAdminSigPreview();
@@ -2968,7 +2968,7 @@ const AI_MODES = {
     fields: [
       { id: 'merchantName', label: 'Nom du commerçant', required: true },
       { id: 'category', label: 'Catégorie', required: true, placeholder: 'Restaurant, Boulangerie…' },
-      { id: 'city', label: 'Ville', placeholder: 'Perpignan' },
+      { id: 'city', label: 'Ville', placeholder: 'Elne' },
       { id: 'context', label: 'Spécialité / contexte', type: 'textarea', placeholder: 'Optionnel : infos pour personnaliser' }
     ],
     applyLabel: 'Ajouter les offres cochées',
@@ -3200,7 +3200,7 @@ async function aiStudioApply() {
     if (mode === 'merchant') {
       (document.getElementById('nm_name')||{}).value = aiStudioState.inputs.name || '';
       (document.getElementById('nm_category')||{}).value = r.category || '';
-      (document.getElementById('nm_city')||{}).value = 'Perpignan';
+      (document.getElementById('nm_city')||{}).value = 'Elne';
       (document.getElementById('nm_address')||{}).value = aiStudioState.inputs.location || '';
       (document.getElementById('nm_description')||{}).value = (r.description || '') + (r.portrait ? '\n\n' + r.portrait : '');
       (document.getElementById('nm_hours')||{}).value = r.hours || '';
@@ -4616,7 +4616,7 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Nom</label><input id="nm_name"></div>
       <div class="grid-2">
         <div class="field"><label>Catégorie</label><input id="nm_category" placeholder="Boulangerie, Restaurant…"></div>
-        <div class="field"><label>Ville</label><input id="nm_city" value="Perpignan"></div>
+        <div class="field"><label>Ville</label><input id="nm_city" value="Elne"></div>
       </div>
       <div class="field"><label>Adresse</label><input id="nm_address"></div>
       <div class="field"><label>Description</label><textarea id="nm_description" rows="3"></textarea></div>
@@ -4715,7 +4715,7 @@ tr:hover{background:#fafbfc}
         </div>
         <div class="field">
           <label>Texte HTML de la signature</label>
-          <textarea id="adm_sig_html" rows="8" placeholder="Cordialement,&#10;Nordine Mouaouia&#10;Conseiller Guy Hoquet Perpignan&#10;04 68 00 00 00"></textarea>
+          <textarea id="adm_sig_html" rows="8" placeholder="Cordialement,&#10;Nordine Mouaouia&#10;Conseiller Guy Hoquet Elne&#10;04 68 00 00 00"></textarea>
         </div>
         <div class="field" style="display:flex;gap:8px;flex-wrap:wrap">
           <button class="btn ghost" onclick="loadAdminSignaturePreset()"><i class="fas fa-magic"></i> Modèle Nordine</button>
@@ -4734,7 +4734,7 @@ tr:hover{background:#fafbfc}
     <div class="row-between">
       <div>
         <h2>Le Mag — Articles de blog</h2>
-        <p class="sub">Magazine local de Perpignan. Génération IA complète en 4 questions.</p>
+        <p class="sub">Magazine local de Elne. Génération IA complète en 4 questions.</p>
       </div>
       <div class="section-toolbar">
         <button class="btn ghost" onclick="openBlogModal()"><i class="fas fa-plus"></i> Article vide</button>
@@ -4812,8 +4812,8 @@ tr:hover{background:#fafbfc}
     <p class="sub">Ajoutez ou modifiez une ville du réseau.</p>
     <input type="hidden" id="city_id_hidden">
     <div class="grid-2">
-      <div class="field"><label>Nom *</label><input id="city_name_in" placeholder="Perpignan"></div>
-      <div class="field"><label>Slug (url)</label><input id="city_slug_in" placeholder="perpignan"></div>
+      <div class="field"><label>Nom *</label><input id="city_name_in" placeholder="Elne"></div>
+      <div class="field"><label>Slug (url)</label><input id="city_slug_in" placeholder="elne"></div>
     </div>
     <div class="grid-2">
       <div class="field"><label>Code postal</label><input id="city_postal"></div>
@@ -4846,7 +4846,7 @@ tr:hover{background:#fafbfc}
     </div>
     <div class="grid-2">
       <div class="field"><label>Rôle / Titre</label><input id="agent_role" placeholder="Conseiller immobilier"></div>
-      <div class="field"><label>Agence</label><input id="agent_agency" placeholder="Guy Hoquet Perpignan"></div>
+      <div class="field"><label>Agence</label><input id="agent_agency" placeholder="Guy Hoquet Elne"></div>
     </div>
     <div class="grid-2">
       <div class="field"><label>Email</label><input id="agent_email"></div>
@@ -4857,7 +4857,7 @@ tr:hover{background:#fafbfc}
     <div class="field"><label>Bio</label><textarea id="agent_bio" rows="4" placeholder="Expert local à l'écoute de votre projet…"></textarea></div>
     <div class="field">
       <label>Villes couvertes (séparées par des virgules, slug)</label>
-      <input id="agent_cities_in" placeholder="perpignan, canet-en-roussillon, argeles-sur-mer">
+      <input id="agent_cities_in" placeholder="elne, canet-en-roussillon, argeles-sur-mer">
       <small style="color:#6c757d">La 1ʳᵉ ville indiquée sera marquée comme principale.</small>
     </div>
 
@@ -4898,7 +4898,7 @@ tr:hover{background:#fafbfc}
     <div class="field"><label>Image de couverture (URL)</label><input id="ct_cover"></div>
     <div class="grid-2">
       <div class="field"><label>Commerçant partenaire (id)</label><input id="ct_merchant" placeholder="UUID ou laisser vide"></div>
-      <div class="field"><label>Ville (slug)</label><input id="ct_city" placeholder="perpignan"></div>
+      <div class="field"><label>Ville (slug)</label><input id="ct_city" placeholder="elne"></div>
     </div>
     <div class="grid-2">
       <div class="field"><label>Début</label><input id="ct_start" type="datetime-local"></div>
@@ -5069,7 +5069,7 @@ tr:hover{background:#fafbfc}
       <div class="field"><label>Catégorie</label><input id="p_category" placeholder="Restaurant, Boulangerie…"></div>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Ville</label><input id="p_city" value="Perpignan"></div>
+      <div class="field"><label>Ville</label><input id="p_city" value="Elne"></div>
       <div class="field"><label>Adresse</label><input id="p_address"></div>
     </div>
     <div class="grid-2">
@@ -5226,7 +5226,7 @@ tr:hover{background:#fafbfc}
       <textarea id="bp_content_html" rows="14" style="font-familyinheritmonospace;font-size:12px"></textarea>
     </div>
     <div class="grid-2">
-      <div class="field"><label>Tags (séparés par des virgules)</label><input id="bp_tags" placeholder="Perpignan, Catalogne, recette"></div>
+      <div class="field"><label>Tags (séparés par des virgules)</label><input id="bp_tags" placeholder="Elne, Catalogne, recette"></div>
       <div class="field"><label>Statut</label><select id="bp_status"><option value="published">Publié</option><option value="draft">Brouillon</option></select></div>
     </div>
     <div style="background:#e6f1ff;border:1px solid #ffcdd2;border-radius:10px;padding:14px;margin-top:10px">
@@ -6074,7 +6074,7 @@ function openNewMerchantFromEnrichment() {
   const e = enrichedPayload;
   (document.getElementById('nm_name')||{}).value = e.name || '';
   (document.getElementById('nm_category')||{}).value = e.category || '';
-  (document.getElementById('nm_city')||{}).value = 'Perpignan';
+  (document.getElementById('nm_city')||{}).value = 'Elne';
   (document.getElementById('nm_address')||{}).value = e.address || '';
   (document.getElementById('nm_description')||{}).value = e.description || '';
   (document.getElementById('nm_image_url')||{}).value = e.image_url || '';
@@ -6094,7 +6094,7 @@ async function createMerchant() {
   const payload = {
     name: document.getElementById('nm_name').value.trim(),
     category: document.getElementById('nm_category').value.trim() || 'Commerce',
-    city: document.getElementById('nm_city').value.trim() || 'Perpignan',
+    city: document.getElementById('nm_city').value.trim() || 'Elne',
     address: document.getElementById('nm_address').value.trim() || null,
     description: document.getElementById('nm_description').value.trim() || null,
     phone: document.getElementById('nm_phone').value.trim() || null,
@@ -6337,7 +6337,7 @@ async function saveEditMerchant() {
   const patch = {
     name,
     category: document.getElementById('em_category').value.trim() || 'Commerce',
-    city: document.getElementById('em_city').value.trim() || 'Perpignan',
+    city: document.getElementById('em_city').value.trim() || 'Elne',
     address: document.getElementById('em_address').value.trim() || null,
     phone: document.getElementById('em_phone').value.trim() || null,
     email: document.getElementById('em_email').value.trim() || null,
@@ -6485,7 +6485,7 @@ function filterProspectsByStatus(status) {
 function openProspectModal() {
   (document.getElementById('prospectModalTitle')||{}).innerHTML = '<i class="fas fa-user-plus" style="color:#006fff"></i> Nouveau prospect';
   ['p_name','p_category','p_address','p_phone','p_email','p_website','p_notes','p_id'].forEach(id => document.getElementById(id).value = '');
-  (document.getElementById('p_city')||{}).value = 'Perpignan';
+  (document.getElementById('p_city')||{}).value = 'Elne';
   (document.getElementById('p_status')||{}).value = 'new';
   (document.getElementById('p_plan')||{}).value = 'free';
   (document.getElementById('p_source')||{}).value = 'manual';
@@ -6513,7 +6513,7 @@ async function saveProspect() {
   const payload = {
     name: document.getElementById('p_name').value.trim(),
     category: document.getElementById('p_category').value.trim() || null,
-    city: document.getElementById('p_city').value.trim() || 'Perpignan',
+    city: document.getElementById('p_city').value.trim() || 'Elne',
     address: document.getElementById('p_address').value.trim() || null,
     phone: document.getElementById('p_phone').value.trim() || null,
     email: document.getElementById('p_email').value.trim() || null,
@@ -6577,7 +6577,7 @@ async function importProspectsCsv(file) {
   const records = rows.slice(1).map(r => ({
     name: idx.name>=0 ? (r[idx.name]||'').trim() : '',
     category: idx.category>=0 ? (r[idx.category]||'').trim()||null : null,
-    city: idx.city>=0 ? (r[idx.city]||'').trim()||'Perpignan' : 'Perpignan',
+    city: idx.city>=0 ? (r[idx.city]||'').trim()||'Elne' : 'Elne',
     address: idx.address>=0 ? (r[idx.address]||'').trim()||null : null,
     phone: idx.phone>=0 ? (r[idx.phone]||'').trim()||null : null,
     email: idx.email>=0 ? (r[idx.email]||'').trim()||null : null,
@@ -6879,7 +6879,7 @@ function loadAdminSignaturePreset() {
   (document.getElementById('adm_sig_html')||{}).value =
 `Cordialement,
 <strong>Nordine Mouaouia</strong>
-Conseiller — Guy Hoquet Perpignan
+Conseiller — Guy Hoquet Elne
 04 68 00 00 00 — <a href="mailto:n.mouaouia@guyhoquet.com">n.mouaouia@guyhoquet.com</a>
 <a href="https://monbonagent.vercel.app">monbonagent.vercel.app</a>`;
   renderAdminSigPreview();
@@ -6942,7 +6942,7 @@ const AI_MODES = {
     fields: [
       { id: 'merchantName', label: 'Nom du commerçant', required: true },
       { id: 'category', label: 'Catégorie', required: true, placeholder: 'Restaurant, Boulangerie…' },
-      { id: 'city', label: 'Ville', placeholder: 'Perpignan' },
+      { id: 'city', label: 'Ville', placeholder: 'Elne' },
       { id: 'context', label: 'Spécialité / contexte', type: 'textarea', placeholder: 'Optionnel : infos pour personnaliser' }
     ],
     applyLabel: 'Ajouter les offres cochées',
@@ -7174,7 +7174,7 @@ async function aiStudioApply() {
     if (mode === 'merchant') {
       (document.getElementById('nm_name')||{}).value = aiStudioState.inputs.name || '';
       (document.getElementById('nm_category')||{}).value = r.category || '';
-      (document.getElementById('nm_city')||{}).value = 'Perpignan';
+      (document.getElementById('nm_city')||{}).value = 'Elne';
       (document.getElementById('nm_address')||{}).value = aiStudioState.inputs.location || '';
       (document.getElementById('nm_description')||{}).value = (r.description || '') + (r.portrait ? '\n\n' + r.portrait : '');
       (document.getElementById('nm_hours')||{}).value = r.hours || '';
