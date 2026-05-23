@@ -277,6 +277,7 @@ tr:hover{background:#fafbfc}
     <div class="tab" data-tab="agents"><i class="fas fa-user-tie"></i> <span>Agents</span></div>
     <div class="tab" data-tab="contests"><i class="fas fa-gift"></i> <span>Jeux</span></div>
     <div class="tab" data-tab="stats"><i class="fas fa-chart-bar"></i> <span>Stats</span></div>
+    <div class="tab" data-tab="strategy-a" style="background:linear-gradient(135deg,#006fff 0%,#0f0a30 100%);color:#fff"><i class="fas fa-flask"></i> <span>Stratégie A</span></div>
   </div>
 
   <!-- BRANDING -->
@@ -764,6 +765,198 @@ tr:hover{background:#fafbfc}
     </div>
     <div id="contests_list" class="loader">Chargement…</div>
   </div>
+
+  <!-- ========== STRATÉGIE A · SECTIONS HOME ========== -->
+  <div class="panel" id="panel-strategy-a">
+    <h2 style="display:flex;align-items:center;gap:10px"><i class="fas fa-flask" style="color:#006fff"></i> Stratégie A · Pilotage 100 % admin de la home</h2>
+    <p class="sub">Chaque section visible sur la home est ici éditable. Cliquez sur un bandeau pour ouvrir l'éditeur, modifiez, puis <strong>« Enregistrer »</strong>. Le site se met à jour immédiatement.</p>
+
+    <div id="strA_status" style="margin-bottom:14px;padding:12px 16px;border-radius:10px;background:#eef6ff;border:1px solid #b8dafd;color:#0050cc;font-size:13px;display:none"></div>
+
+    <details class="strA-acc" open>
+      <summary><i class="fas fa-bullseye"></i> Hero (accroche, CTAs, statistiques)</summary>
+      <div class="strA-body">
+        <div class="grid-2">
+          <div class="field"><label>Pill (étiquette au-dessus du H1)</label><input id="strA_hero_pill_text"></div>
+          <div class="field"><label>Icône pill (FontAwesome)</label><input id="strA_hero_pill_icon" placeholder="fas fa-heart"></div>
+        </div>
+        <div class="field"><label>Titre H1 (HTML autorisé : &lt;em&gt; pour la mise en avant cyan)</label><textarea id="strA_hero_title" rows="2"></textarea></div>
+        <div class="field"><label>Lead (paragraphe d'accroche)</label><textarea id="strA_hero_lead" rows="3"></textarea></div>
+        <h4 style="margin:14px 0 6px">CTA primaire</h4>
+        <div class="grid-2">
+          <div class="field"><label>Label</label><input id="strA_hero_cta_primary_label"></div>
+          <div class="field"><label>Sous-label</label><input id="strA_hero_cta_primary_sub"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Icône</label><input id="strA_hero_cta_primary_icon"></div>
+          <div class="field"><label>Lien</label><input id="strA_hero_cta_primary_href"></div>
+        </div>
+        <div class="field"><label>Action</label>
+          <select id="strA_hero_cta_primary_action">
+            <option value="open_signup">Ouvrir la modale signup</option>
+            <option value="navigate">Naviguer vers le lien</option>
+          </select>
+        </div>
+        <h4 style="margin:14px 0 6px">CTA secondaire</h4>
+        <div class="grid-2">
+          <div class="field"><label>Label</label><input id="strA_hero_cta_secondary_label"></div>
+          <div class="field"><label>Icône</label><input id="strA_hero_cta_secondary_icon"></div>
+        </div>
+        <div class="field"><label>Lien</label><input id="strA_hero_cta_secondary_href"></div>
+        <h4 style="margin:14px 0 6px">Statistiques (3)</h4>
+        <div class="grid-2">
+          <div class="field"><label>Stat 1 — valeur</label><input id="strA_hero_stat_1_value"></div>
+          <div class="field"><label>Stat 1 — label</label><input id="strA_hero_stat_1_label"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Stat 2 — valeur</label><input id="strA_hero_stat_2_value"></div>
+          <div class="field"><label>Stat 2 — label</label><input id="strA_hero_stat_2_label"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Stat 3 — valeur</label><input id="strA_hero_stat_3_value"></div>
+          <div class="field"><label>Stat 3 — label</label><input id="strA_hero_stat_3_label"></div>
+        </div>
+        <button class="btn" onclick="strA_saveSettings()"><i class="fas fa-save"></i> Enregistrer le hero</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-shield-halved"></i> Trust strip (4 piliers de réassurance)</summary>
+      <div class="strA-body">
+        <p class="sub">Éditez le JSON ci-dessous. Champs par item : <code>type</code> (<code>icon</code> ou <code>badge</code>), <code>icon</code>, <code>badge</code>, <code>text_html</code>.</p>
+        <textarea id="strA_trust_pillars" rows="10" style="font-family:'Courier New',monospace;font-size:12px"></textarea>
+        <button class="btn" onclick="strA_saveSettings()"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-list-ol"></i> Comment ça marche (3 étapes)</summary>
+      <div class="strA-body">
+        <div class="grid-2">
+          <div class="field"><label>Titre de section</label><input id="strA_hiw_section_title"></div>
+          <div class="field"><label>Sous-titre</label><input id="strA_hiw_section_subtitle"></div>
+        </div>
+        <div id="strA_hiw_list"></div>
+        <button class="btn ghost" onclick="strA_addHiw()"><i class="fas fa-plus"></i> Ajouter une étape</button>
+        <button class="btn" onclick="strA_saveSettings();strA_saveHiw()"><i class="fas fa-save"></i> Enregistrer les étapes</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-th"></i> Catégories grille (tuiles home)</summary>
+      <div class="strA-body">
+        <div class="grid-2">
+          <div class="field"><label>Titre de section</label><input id="strA_categories_section_title"></div>
+          <div class="field"><label>Sous-titre</label><input id="strA_categories_section_subtitle"></div>
+        </div>
+        <div id="strA_cats_list"></div>
+        <button class="btn ghost" onclick="strA_addCat()"><i class="fas fa-plus"></i> Ajouter une catégorie</button>
+        <button class="btn" onclick="strA_saveSettings();strA_saveCats()"><i class="fas fa-save"></i> Enregistrer les catégories</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-heart"></i> Pourquoi MonBonAgent (titres de section)</summary>
+      <div class="strA-body">
+        <p class="sub">Le contenu des 3 rangées (titre + texte + photo + CTA par rangée) reste géré dans l'onglet <strong>Sections</strong> existant (champ <code>about_sections</code>). Ici on n'édite que les titres de section.</p>
+        <div class="grid-2">
+          <div class="field"><label>Titre de section</label><input id="strA_about_section_title"></div>
+          <div class="field"><label>Sous-titre</label><input id="strA_about_section_subtitle"></div>
+        </div>
+        <button class="btn" onclick="strA_saveSettings()"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-hand-holding-heart"></i> Le passeur (section Nordine)</summary>
+      <div class="strA-body">
+        <div class="grid-2">
+          <div class="field"><label>Pill</label><input id="strA_passeur_pill"></div>
+          <div class="field"><label>URL photo</label><input id="strA_passeur_photo_url"></div>
+        </div>
+        <div class="field"><label>Caption photo</label><input id="strA_passeur_caption"></div>
+        <div class="field"><label>Titre H2 (HTML autorisé)</label><textarea id="strA_passeur_title_html" rows="2"></textarea></div>
+        <div class="field"><label>Lead (paragraphe d'intro · HTML autorisé)</label><textarea id="strA_passeur_lead_html" rows="3"></textarea></div>
+        <div class="field"><label>Corps du texte (plusieurs &lt;p&gt; · HTML)</label><textarea id="strA_passeur_body_html" rows="8"></textarea></div>
+        <div class="field"><label>Bullets (JSON)</label><textarea id="strA_passeur_bullets" rows="6" style="font-family:monospace;font-size:12px"></textarea></div>
+        <div class="field"><label>Confession (paragraphe encadré)</label><textarea id="strA_passeur_confession" rows="3"></textarea></div>
+        <div class="grid-2">
+          <div class="field"><label>CTA label</label><input id="strA_passeur_cta_label"></div>
+          <div class="field"><label>CTA lien</label><input id="strA_passeur_cta_href"></div>
+        </div>
+        <div class="field"><label>Pied de section (HTML autorisé)</label><textarea id="strA_passeur_foot_html" rows="2"></textarea></div>
+        <button class="btn" onclick="strA_saveSettings()"><i class="fas fa-save"></i> Enregistrer la section</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-circle-question"></i> FAQ (questions / réponses)</summary>
+      <div class="strA-body">
+        <div class="grid-2">
+          <div class="field"><label>Titre de section</label><input id="strA_faq_section_title"></div>
+          <div class="field"><label>Sous-titre</label><input id="strA_faq_section_subtitle"></div>
+        </div>
+        <div id="strA_faq_list"></div>
+        <button class="btn ghost" onclick="strA_addFaq()"><i class="fas fa-plus"></i> Ajouter une question</button>
+        <button class="btn" onclick="strA_saveSettings();strA_saveFaq()"><i class="fas fa-save"></i> Enregistrer la FAQ</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-house"></i> Bandeau immo (cross-sell flottant)</summary>
+      <div class="strA-body">
+        <div class="field"><label><input type="checkbox" id="strA_immo_bar_active"> Bandeau visible</label></div>
+        <div class="field"><label>Texte (HTML)</label><textarea id="strA_immo_bar_text" rows="2"></textarea></div>
+        <div class="grid-2">
+          <div class="field"><label>CTA label</label><input id="strA_immo_bar_cta_label"></div>
+          <div class="field"><label>Icône</label><input id="strA_immo_bar_icon"></div>
+        </div>
+        <div class="field"><label>CTA lien</label><input id="strA_immo_bar_cta_href"></div>
+        <button class="btn" onclick="strA_saveSettings()"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-gift"></i> Modale signup (lead magnet 1er bon)</summary>
+      <div class="strA-body">
+        <div class="field"><label><input type="checkbox" id="strA_signup_modal_active"> Modale active</label></div>
+        <div class="grid-2">
+          <div class="field"><label>Pill</label><input id="strA_signup_modal_pill"></div>
+          <div class="field"><label>Bouton (label)</label><input id="strA_signup_modal_button_label"></div>
+        </div>
+        <div class="field"><label>Titre H2 (HTML autorisé)</label><input id="strA_signup_modal_title_html"></div>
+        <div class="field"><label>Texte du body</label><textarea id="strA_signup_modal_body" rows="3"></textarea></div>
+        <div class="field"><label>Bullets (JSON)</label><textarea id="strA_signup_modal_bullets" rows="6" style="font-family:monospace;font-size:12px"></textarea></div>
+        <button class="btn" onclick="strA_saveSettings()"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </details>
+
+    <details class="strA-acc">
+      <summary><i class="fas fa-arrow-up"></i> Sticky CTA bar (apparaît au scroll)</summary>
+      <div class="strA-body">
+        <div class="field"><label><input type="checkbox" id="strA_sticky_cta_active"> Sticky bar active</label></div>
+        <div class="field"><label>Texte (HTML)</label><textarea id="strA_sticky_cta_text_html" rows="2"></textarea></div>
+        <div class="grid-2">
+          <div class="field"><label>Bouton (label)</label><input id="strA_sticky_cta_button_label"></div>
+          <div class="field"><label>Seuil scroll (%)</label><input id="strA_sticky_cta_scroll_pct" type="number" min="0" max="100"></div>
+        </div>
+        <button class="btn" onclick="strA_saveSettings()"><i class="fas fa-save"></i> Enregistrer</button>
+      </div>
+    </details>
+  </div>
+
+  <style>
+  .strA-acc{background:#fff;border:1px solid #e9ecef;border-radius:12px;margin-bottom:14px;overflow:hidden}
+  .strA-acc>summary{cursor:pointer;padding:16px 20px;background:linear-gradient(135deg,#f6f8fc 0%,#eef3fa 100%);font-weight:600;font-size:14.5px;color:#0f0a30;list-style:none;display:flex;align-items:center;gap:10px}
+  .strA-acc>summary::-webkit-details-marker{display:none}
+  .strA-acc>summary:before{content:'▸';margin-right:4px;transition:.2s}
+  .strA-acc[open]>summary:before{transform:rotate(90deg)}
+  .strA-acc .strA-body{padding:20px;border-top:1px solid #e9ecef}
+  .strA-row{display:grid;grid-template-columns:80px 1fr 1fr 1fr 1fr auto;gap:10px;align-items:end;padding:12px;background:#fafbfc;border:1px solid #e9ecef;border-radius:10px;margin-bottom:10px}
+  .strA-row .field{margin:0}
+  .strA-row .field label{font-size:11px;color:#6c757d;margin-bottom:2px}
+  .strA-row .field input,.strA-row .field textarea{font-size:13px}
+  </style>
 </div>
 
 <!-- ========== CITY MODAL ========== -->
@@ -4109,6 +4302,286 @@ window.saveP6Agent = saveP6Agent;
 window.openContestModal = openContestModal;
 window.saveContest = saveContest;
 
+/* =====================================================================
+   STRATEGY A · Admin handlers
+   ===================================================================== */
+(function(){
+  if (typeof sb === 'undefined') return;
+  let strA_settingsId = null;
+  let strA_hiwRows = [];
+  let strA_catRows = [];
+  let strA_faqRows = [];
+
+  function $(id){ return document.getElementById(id); }
+  function val(id, fallback=''){ const e=$(id); return e ? (e.type==='checkbox'?e.checked:e.value) : fallback; }
+  function setVal(id, v){
+    const e=$(id); if(!e) return;
+    if (e.type==='checkbox') { e.checked = !!v; return; }
+    e.value = (v==null) ? '' : v;
+  }
+  function status(msg, type){
+    const el = $('strA_status'); if(!el) return;
+    el.style.display = 'block';
+    el.style.background = type==='err'?'#fdecea':'#eef6ff';
+    el.style.borderColor= type==='err'?'#f5c6cb':'#b8dafd';
+    el.style.color      = type==='err'?'#c0392b':'#0050cc';
+    el.innerHTML = msg;
+    setTimeout(()=>{ el.style.display='none'; }, 4000);
+  }
+
+  // ----- HIW rows -----
+  function renderHiwRows(){
+    const list = $('strA_hiw_list'); if(!list) return;
+    list.innerHTML = strA_hiwRows.map((r,i)=>`
+      <div class="strA-row" data-i="${i}">
+        <div class="field"><label>Pos.</label><input data-k="position" type="number" value="${r.position||i+1}"></div>
+        <div class="field"><label>N°</label><input data-k="num_label" value="${(r.num_label||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Titre</label><input data-k="title" value="${(r.title||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field" style="grid-column:span 2"><label>Corps (HTML)</label><textarea data-k="body_html" rows="2">${(r.body_html||'').replace(/</g,'&lt;')}</textarea></div>
+        <button class="btn ghost" onclick="strA_removeHiw(${i})" title="Supprimer" style="padding:8px 10px"><i class="fas fa-trash"></i></button>
+        <div class="field"><label>Icône principale</label><input data-k="icon" value="${(r.icon||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Icône visuelle</label><input data-k="visual_icon" value="${(r.visual_icon||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Déco A</label><input data-k="deco_a_icon" value="${(r.deco_a_icon||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Déco B</label><input data-k="deco_b_icon" value="${(r.deco_b_icon||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Actif</label><input data-k="active" type="checkbox" ${r.active===false?'':'checked'}></div>
+        <span></span>
+      </div>
+    `).join('');
+    list.querySelectorAll('.strA-row').forEach(row=>{
+      const i = +row.dataset.i;
+      row.querySelectorAll('[data-k]').forEach(inp=>{
+        inp.addEventListener('input', ()=>{
+          const k = inp.dataset.k;
+          strA_hiwRows[i][k] = inp.type==='checkbox'?inp.checked:(inp.type==='number'?+inp.value:inp.value);
+        });
+      });
+    });
+  }
+  window.strA_addHiw = function(){ strA_hiwRows.push({position:strA_hiwRows.length+1,num_label:String(strA_hiwRows.length+1),title:'',body_html:'',icon:'',visual_icon:'',deco_a_icon:'',deco_b_icon:'',active:true}); renderHiwRows(); };
+  window.strA_removeHiw = function(i){ strA_hiwRows.splice(i,1); renderHiwRows(); };
+
+  // ----- Cats rows -----
+  function renderCatRows(){
+    const list = $('strA_cats_list'); if(!list) return;
+    list.innerHTML = strA_catRows.map((r,i)=>`
+      <div class="strA-row" data-i="${i}">
+        <div class="field"><label>Pos.</label><input data-k="position" type="number" value="${r.position||i+1}"></div>
+        <div class="field"><label>Slug</label><input data-k="slug" value="${(r.slug||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Label</label><input data-k="label" value="${(r.label||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Icône</label><input data-k="icon" value="${(r.icon||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Image URL</label><input data-k="image_url" value="${(r.image_url||'').replace(/"/g,'&quot;')}"></div>
+        <button class="btn ghost" onclick="strA_removeCat(${i})" title="Supprimer" style="padding:8px 10px"><i class="fas fa-trash"></i></button>
+      </div>
+    `).join('');
+    list.querySelectorAll('.strA-row').forEach(row=>{
+      const i = +row.dataset.i;
+      row.querySelectorAll('[data-k]').forEach(inp=>{
+        inp.addEventListener('input', ()=>{
+          const k = inp.dataset.k;
+          strA_catRows[i][k] = inp.type==='number'?+inp.value:inp.value;
+        });
+      });
+    });
+  }
+  window.strA_addCat = function(){ strA_catRows.push({position:strA_catRows.length+1,slug:'',label:'',icon:'',image_url:'',active:true}); renderCatRows(); };
+  window.strA_removeCat = function(i){ strA_catRows.splice(i,1); renderCatRows(); };
+
+  // ----- FAQ rows -----
+  function renderFaqRows(){
+    const list = $('strA_faq_list'); if(!list) return;
+    list.innerHTML = strA_faqRows.map((r,i)=>`
+      <div style="background:#fafbfc;border:1px solid #e9ecef;border-radius:10px;padding:12px;margin-bottom:10px" data-i="${i}">
+        <div class="grid-2">
+          <div class="field"><label>Position</label><input data-k="position" type="number" value="${r.position||i+1}"></div>
+          <div style="text-align:right"><button class="btn ghost" onclick="strA_removeFaq(${i})"><i class="fas fa-trash"></i> Supprimer</button></div>
+        </div>
+        <div class="field"><label>Question</label><input data-k="question" value="${(r.question||'').replace(/"/g,'&quot;')}"></div>
+        <div class="field"><label>Réponse (HTML)</label><textarea data-k="answer_html" rows="3">${(r.answer_html||'').replace(/</g,'&lt;')}</textarea></div>
+        <label><input data-k="active" type="checkbox" ${r.active===false?'':'checked'}> Active</label>
+      </div>
+    `).join('');
+    list.querySelectorAll('[data-i]').forEach(row=>{
+      const i = +row.dataset.i;
+      row.querySelectorAll('[data-k]').forEach(inp=>{
+        inp.addEventListener('input', ()=>{
+          const k = inp.dataset.k;
+          strA_faqRows[i][k] = inp.type==='checkbox'?inp.checked:(inp.type==='number'?+inp.value:inp.value);
+        });
+      });
+    });
+  }
+  window.strA_addFaq = function(){ strA_faqRows.push({position:strA_faqRows.length+1,question:'',answer_html:'',active:true}); renderFaqRows(); };
+  window.strA_removeFaq = function(i){ strA_faqRows.splice(i,1); renderFaqRows(); };
+
+  // ----- LOAD -----
+  async function strA_load(){
+    const { data: s, error } = await sb.from('site_settings').select('*').limit(1).maybeSingle();
+    if (error || !s) { console.warn('[strA] settings introuvable', error); return; }
+    strA_settingsId = s.id;
+    // Hero
+    ['hero_pill_text','hero_pill_icon','hero_title','hero_lead',
+     'hero_cta_primary_label','hero_cta_primary_sub','hero_cta_primary_icon','hero_cta_primary_href','hero_cta_primary_action',
+     'hero_cta_secondary_label','hero_cta_secondary_icon','hero_cta_secondary_href',
+     'hero_stat_1_value','hero_stat_1_label','hero_stat_2_value','hero_stat_2_label','hero_stat_3_value','hero_stat_3_label',
+     'hiw_section_title','hiw_section_subtitle','categories_section_title','categories_section_subtitle',
+     'about_section_title','about_section_subtitle','faq_section_title','faq_section_subtitle',
+     'passeur_pill','passeur_photo_url','passeur_caption','passeur_title_html','passeur_lead_html','passeur_body_html','passeur_confession','passeur_cta_label','passeur_cta_href','passeur_foot_html',
+     'immo_bar_text','immo_bar_cta_label','immo_bar_icon','immo_bar_cta_href',
+     'signup_modal_pill','signup_modal_button_label','signup_modal_title_html','signup_modal_body',
+     'sticky_cta_text_html','sticky_cta_button_label','sticky_cta_scroll_pct'
+    ].forEach(k => setVal('strA_'+k, s[k]));
+    // Booléens
+    setVal('strA_immo_bar_active',    s.immo_bar_active !== false);
+    setVal('strA_signup_modal_active',s.signup_modal_active !== false);
+    setVal('strA_sticky_cta_active',  s.sticky_cta_active !== false);
+    // JSON
+    setVal('strA_trust_pillars',        JSON.stringify(s.trust_pillars||[], null, 2));
+    setVal('strA_passeur_bullets',      JSON.stringify(s.passeur_bullets||[], null, 2));
+    setVal('strA_signup_modal_bullets', JSON.stringify(s.signup_modal_bullets||[], null, 2));
+
+    // Tables
+    const [{data: hiw}, {data: cats}, {data: faq}] = await Promise.all([
+      sb.from('how_it_works_steps').select('*').order('position'),
+      sb.from('categories_grid').select('*').order('position'),
+      sb.from('faq_items').select('*').order('position')
+    ]);
+    strA_hiwRows = hiw||[]; renderHiwRows();
+    strA_catRows = cats||[]; renderCatRows();
+    strA_faqRows = faq||[]; renderFaqRows();
+  }
+
+  // ----- SAVE settings -----
+  window.strA_saveSettings = async function(){
+    if (!strA_settingsId) { status('Settings non chargés', 'err'); return; }
+    let trust=[], pBullets=[], sBullets=[];
+    try { trust    = JSON.parse(val('strA_trust_pillars','[]')||'[]'); }        catch(e){ status('JSON trust invalide', 'err'); return; }
+    try { pBullets = JSON.parse(val('strA_passeur_bullets','[]')||'[]'); }      catch(e){ status('JSON passeur bullets invalide', 'err'); return; }
+    try { sBullets = JSON.parse(val('strA_signup_modal_bullets','[]')||'[]'); } catch(e){ status('JSON signup bullets invalide', 'err'); return; }
+
+    const patch = {
+      hero_pill_text: val('strA_hero_pill_text'),
+      hero_pill_icon: val('strA_hero_pill_icon'),
+      hero_title:     val('strA_hero_title'),
+      hero_lead:      val('strA_hero_lead'),
+      hero_cta_primary_label:  val('strA_hero_cta_primary_label'),
+      hero_cta_primary_sub:    val('strA_hero_cta_primary_sub'),
+      hero_cta_primary_icon:   val('strA_hero_cta_primary_icon'),
+      hero_cta_primary_href:   val('strA_hero_cta_primary_href'),
+      hero_cta_primary_action: val('strA_hero_cta_primary_action'),
+      hero_cta_secondary_label: val('strA_hero_cta_secondary_label'),
+      hero_cta_secondary_icon:  val('strA_hero_cta_secondary_icon'),
+      hero_cta_secondary_href:  val('strA_hero_cta_secondary_href'),
+      hero_stat_1_value: val('strA_hero_stat_1_value'),
+      hero_stat_1_label: val('strA_hero_stat_1_label'),
+      hero_stat_2_value: val('strA_hero_stat_2_value'),
+      hero_stat_2_label: val('strA_hero_stat_2_label'),
+      hero_stat_3_value: val('strA_hero_stat_3_value'),
+      hero_stat_3_label: val('strA_hero_stat_3_label'),
+      hiw_section_title: val('strA_hiw_section_title'),
+      hiw_section_subtitle: val('strA_hiw_section_subtitle'),
+      categories_section_title: val('strA_categories_section_title'),
+      categories_section_subtitle: val('strA_categories_section_subtitle'),
+      about_section_title: val('strA_about_section_title'),
+      about_section_subtitle: val('strA_about_section_subtitle'),
+      faq_section_title: val('strA_faq_section_title'),
+      faq_section_subtitle: val('strA_faq_section_subtitle'),
+      passeur_pill: val('strA_passeur_pill'),
+      passeur_photo_url: val('strA_passeur_photo_url'),
+      passeur_caption: val('strA_passeur_caption'),
+      passeur_title_html: val('strA_passeur_title_html'),
+      passeur_lead_html:  val('strA_passeur_lead_html'),
+      passeur_body_html:  val('strA_passeur_body_html'),
+      passeur_confession: val('strA_passeur_confession'),
+      passeur_cta_label:  val('strA_passeur_cta_label'),
+      passeur_cta_href:   val('strA_passeur_cta_href'),
+      passeur_foot_html:  val('strA_passeur_foot_html'),
+      passeur_bullets: pBullets,
+      trust_pillars: trust,
+      immo_bar_active:    !!val('strA_immo_bar_active'),
+      immo_bar_text:      val('strA_immo_bar_text'),
+      immo_bar_cta_label: val('strA_immo_bar_cta_label'),
+      immo_bar_icon:      val('strA_immo_bar_icon'),
+      immo_bar_cta_href:  val('strA_immo_bar_cta_href'),
+      signup_modal_active:       !!val('strA_signup_modal_active'),
+      signup_modal_pill:         val('strA_signup_modal_pill'),
+      signup_modal_button_label: val('strA_signup_modal_button_label'),
+      signup_modal_title_html:   val('strA_signup_modal_title_html'),
+      signup_modal_body:         val('strA_signup_modal_body'),
+      signup_modal_bullets:      sBullets,
+      sticky_cta_active:       !!val('strA_sticky_cta_active'),
+      sticky_cta_text_html:    val('strA_sticky_cta_text_html'),
+      sticky_cta_button_label: val('strA_sticky_cta_button_label'),
+      sticky_cta_scroll_pct:   parseInt(val('strA_sticky_cta_scroll_pct','25'),10) || 25
+    };
+    const { error } = await sb.from('site_settings').update(patch).eq('id', strA_settingsId);
+    if (error) { status('Erreur sauvegarde : ' + error.message, 'err'); return; }
+    status('✓ Réglages enregistrés · rafraîchissez la home pour voir le résultat');
+  };
+
+  // ----- SAVE HIW (full replace) -----
+  window.strA_saveHiw = async function(){
+    await sb.from('how_it_works_steps').delete().neq('id', 0);
+    if (strA_hiwRows.length){
+      const payload = strA_hiwRows.map((r,i)=>({
+        position: r.position||i+1,
+        num_label: r.num_label||String(i+1),
+        title: r.title||'',
+        body_html: r.body_html||'',
+        icon: r.icon||null,
+        visual_icon: r.visual_icon||null,
+        deco_a_icon: r.deco_a_icon||null,
+        deco_b_icon: r.deco_b_icon||null,
+        active: r.active!==false
+      }));
+      const { error } = await sb.from('how_it_works_steps').insert(payload);
+      if (error) { status('Erreur HIW : '+error.message, 'err'); return; }
+    }
+    status('✓ Étapes "Comment ça marche" enregistrées');
+  };
+
+  // ----- SAVE Cats (full replace) -----
+  window.strA_saveCats = async function(){
+    await sb.from('categories_grid').delete().neq('id', 0);
+    if (strA_catRows.length){
+      const payload = strA_catRows.map((r,i)=>({
+        position: r.position||i+1,
+        slug: r.slug||('cat-'+(i+1)),
+        label: r.label||'',
+        icon: r.icon||null,
+        image_url: r.image_url||null,
+        active: r.active!==false
+      }));
+      const { error } = await sb.from('categories_grid').insert(payload);
+      if (error) { status('Erreur catégories : '+error.message, 'err'); return; }
+    }
+    status('✓ Catégories enregistrées');
+  };
+
+  // ----- SAVE FAQ (full replace) -----
+  window.strA_saveFaq = async function(){
+    await sb.from('faq_items').delete().neq('id', 0);
+    if (strA_faqRows.length){
+      const payload = strA_faqRows.map((r,i)=>({
+        position: r.position||i+1,
+        question: r.question||'',
+        answer_html: r.answer_html||'',
+        active: r.active!==false
+      }));
+      const { error } = await sb.from('faq_items').insert(payload);
+      if (error) { status('Erreur FAQ : '+error.message, 'err'); return; }
+    }
+    status('✓ FAQ enregistrée');
+  };
+
+  // Charger automatiquement quand on clique sur le tab Strategy A
+  document.addEventListener('click', function(e){
+    const tab = e.target.closest('[data-tab="strategy-a"]');
+    if (tab) strA_load();
+  });
+  // Si l'onglet est ouvert par défaut au chargement (par fragment URL), charger aussi
+  if (location.hash === '#strategy-a') strA_load();
+})();
+
 </script>
 </body>
 </html>
@@ -4350,6 +4823,7 @@ tr:hover{background:#fafbfc}
     <div class="tab" data-tab="agents"><i class="fas fa-user-tie"></i> <span>Agents</span></div>
     <div class="tab" data-tab="contests"><i class="fas fa-gift"></i> <span>Jeux</span></div>
     <div class="tab" data-tab="stats"><i class="fas fa-chart-bar"></i> <span>Stats</span></div>
+    <div class="tab" data-tab="strategy-a" style="background:linear-gradient(135deg,#006fff 0%,#0f0a30 100%);color:#fff"><i class="fas fa-flask"></i> <span>Stratégie A</span></div>
   </div>
 
   <!-- BRANDING -->
